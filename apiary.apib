@@ -1,0 +1,1559 @@
+FORMAT: 1A
+HOST: http://example.com/api
+
+# HC OneClick API
+API documentation for Home Credit One-Click API
+
+# Group Application operations
+
+## Applications [/applications/]
+
+### Applications [POST]
+Create application
+
++ Request (application/json)
+    + Attributes (ApplicationRequest)
+
+
++ Response 200 (application/json)
+
+        Žádost byla vytvořena.
+
+    + Attributes (ApplicationRequestResult)
+
+
++ Response 400 
+
+        Status 400
+
+
+
+
+
+## Applications By ApplicationId [/applications/{applicationId}]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### ApplicationsByApplicationId [GET]
+Get application
+
++ Response 200 (application/json)
+
+        Vrátí aktuální data žádosti.
+
+    + Attributes (Application)
+
+
++ Response 404 
+
+        Žádost neexistuje.
+
+
+
+
+
+## Applications AdditionalData [/applications/{applicationId}/additionalData]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### ApplicationsAdditionalData [POST]
+Send additional data
+
++ Request (application/json)
+    + Attributes (AdditionalDataRequest)
+
+
++ Response 200 (application/json)
+
+        Data byla přijata.
+
+    + Attributes (Application)
+
+
++ Response 400 
+
+        Data nebyla přijata.
+
+
+
+
+
+## Applications Cancel By ApplicationId [/applications/{applicationId}/cancel{?reason}]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### ApplicationsCancelByApplicationId [PUT]
+Cancel application
++ Parameters
+    + reason (string, required)
+
+        Důvod zrušení.
+        
+        
+        
+        Možné důvody:
+        
+        
+        
+        orderCancelledCustomer - Zrušená objednávka zákazníkem.
+        
+        
+        
+        orderCancelledItems - Zrušená objednávka z důvodu zboží.
+        
+        
+        
+        orderCancelledOther - Zrušená objednávka z jiných důvodů.
+        
+        
+        
+        ... a další TODO
+
+
++ Response 200 
+
+
+
++ Response 400 
+
+        Žádost není možné zrušit.
+
+
+
+
+
+## Applications Order By ApplicationId [/applications/{applicationId}/order{?reason}]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### ApplicationsOrderByApplicationId [PUT]
+Change order
++ Parameters
+    + reason (string, optional)
+
+        Důvod změny.
+
+
++ Request (application/json)
+    + Attributes (Order)
+
+
++ Response 200 (application/json)
+
+        Objednávka byla pozměněna.
+
+    + Attributes (Order)
+
+
++ Response 400 
+
+        Objednávku není možné změnit.
+
+
+
+
+
+## Applications Order Cancel [/applications/{applicationId}/order/cancel]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### ApplicationsOrderCancelByApplicationId [PUT]
+Mark order items as cancelled
+
++ Request (application/json)
+    + Attributes (OrderItemsChangeRequest)
+
+
++ Response 200 (application/json)
+
+        Položky objednávky byly označeny jako zrušené, případně celá objednávka byla označena jako zrušená.
+
+    + Attributes (Order)
+
+
++ Response 400 
+
+        Položky objednávky nebyly označeny jako zrušené.
+
+
+
+
+
+## Applications Order Deliver [/applications/{applicationId}/order/deliver]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### ApplicationsOrderDeliverByApplicationId [PUT]
+Mark order items as delivered
+
++ Request (application/json)
+    + Attributes (OrderItemsChangeRequest)
+
+
++ Response 200 (application/json)
+
+        Položky objednávky byly označeny jako doručené, případně celá objednávka byla označena jako doručená.
+
+    + Attributes (Order)
+
+
++ Response 400 
+
+        Položky objednávky nebyly označeny jako doručené.
+
+
+
+
+
+## Applications Order Return [/applications/{applicationId}/order/return]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### ApplicationsOrderReturnByApplicationId [PUT]
+Mark order items as returned
+
++ Request (application/json)
+    + Attributes (OrderItemsChangeRequest)
+
+
++ Response 200 (application/json)
+
+        Položky objednávky byly označeny jako vrácené, případně celá objednávka byla označena jako vrácená.
+
+    + Attributes (Order)
+
+
++ Response 400 
+
+        Položky objednávky nebyly označeny jako vrácené.
+
+
+
+
+
+## Applications Order Send By ApplicationId [/applications/{applicationId}/order/send]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### ApplicationsOrderSendByApplicationId [PUT]
+Mark order items as sent
+
++ Request (application/json)
+    + Attributes (OrderItemsChangeRequest)
+
+
++ Response 200 (application/json)
+
+        Položky objednávky byly označeny jako odeslané, případně celá objednávka byla označena jako odeslaná.
+
+    + Attributes (Order)
+
+
++ Response 400 
+
+        Položky objednávky nebyly označeny jako odeslané.
+
+
+
+
+
+## Applications Payments By ApplicationId [/applications/{applicationId}/payments]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### ApplicationsPaymentsByApplicationId [GET]
+Get payments
+
++ Response 200 (application/json)
+
+        Seznam provedených plateb (pokud žádost byla schválena...).
+
+
+
+Je prázdný, jestliže žádné platby nebyly zatím realizovány.
+
+    + Attributes (array[Payment])
+
+
++ Response 404 
+
+        Žádost neexistuje.
+
+
+
+
+
+## Applications Verify By ApplicationId [/applications/{applicationId}/verify]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### ApplicationsVerifyByApplicationId [POST]
+Verify application with code
+
++ Request 
+    + Attributes (number)
+
+
++ Response 200 (application/json)
+
+        Žádost byla kódem verifikována.
+
+    + Attributes (Application)
+
+
++ Response 400 
+
+        Kód nesouhlasí. Žádost nebyla verifikována.
+
+
+
+
+
+## Invoices [/invoices/{?orderNumber,orderVariableSymbol,applicationId}]
+
+### Invoices [GET]
+Get invoice info
++ Parameters
+    + orderNumber (string, optional)
+
+        Číslo objednávky.
+
+    + orderVariableSymbol (string, optional)
+
+        Variabilní symbol objednávky.
+
+    + applicationId (string, optional)
+
+        Identifikátor žádosti.
+
+
++ Response 200 (application/json)
+
+        Údaje na faktuře.
+
+    + Attributes (InvoiceInfo)
+
+
++ Response 404 
+
+        Data nebyla nalezena.
+
+
+
+
+
+## Orders [/orders/{?orderNumber,orderVariableSymbol,applicationId}]
+
+### Orders [GET]
+Get order
++ Parameters
+    + orderNumber (string, optional)
+
+        Číslo objednávky.
+
+    + orderVariableSymbol (string, optional)
+
+        Variabilní symbol objednávky.
+
+    + applicationId (string, optional)
+
+        Identifikátor žádosti.
+
+
++ Response 200 (application/json)
+
+        Data objednávky.
+
+    + Attributes (Order)
+
+
++ Response 404 
+
+        Data nebyla nalezena.
+
+
+
+
+
+
+# Group Offers operations
+
+## Installment Programs Down Payments [/installment-programs-down-payments/]
+
+### InstallmentProgramsDownPayments [POST]
+Calculate installment programs down payments
+
++ Request (application/json)
+    + Attributes (InstallmentProgramsDownPaymentsRequest)
+
+
++ Response 200 (application/json)
+
+        Informace o akontacích. Nejnižší možná, nejvyšší možná akontace a výše kroku mezi nimi.
+
+    + Attributes (InstallmentProgramsDownPayments)
+
+
+
+## Installment Programs Offers [/installment-programs-offers/]
+
+### InstallmentProgramsOffers [POST]
+Calculate installment programs offer
+
++ Request (application/json)
+    + Attributes (array[InstallmentProgramsOffersRequest])
+
+
++ Response 200 (application/json)
+
+        Seznam splátkových programů (nejoblíbenější, nejnižší splátka...).
+
+    + Attributes (array[InstallmentProgram])
+
+
+
+## Installment Programs [/installment-programs/]
+
+### InstallmentPrograms [POST]
+Calculate installment program
+
++ Request (application/json)
+    + Attributes (InstallmentProgramsRequest)
+
+
++ Response 200 (application/json)
+
+        Detailní informace o splátkovém programu, který nejblíže odpovídá zadaným kritériím.
+
+    + Attributes (InstallmentProgram)
+
+
++ Response 400 
+
+        Neexistuje splátkový program pro vstupní hodnoty.
+
+
+
+
+
+
+# Group Prescoring operations
+
+## Customer Information [/customer-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
+
+### CustomerInformation [GET]
+Get customer's information
++ Parameters
+    + emailHash (string, optional)
+
+        E-mail zahashovaný pomocí SHA-256.
+        
+        
+        
+        Nejprve je třeba v e-mailové adrese převést všechny znaky na malé a poté zahashovat.
+
+    + phoneHash (string, optional)
+
+        Telefonní číslo zahashované pomocí SHA-256.
+        
+        
+        
+        Nejprve je třeba telefonní číslo převést do mezinárodního formátu +XXXYYYZZZZZZ a poté zahashovat.
+
+    + firstNameHash (string, optional)
+
+        Křestní jméno zahashované pomocí SHA-256.
+        
+        
+        
+        Nejprve je třeba odstranit diakritiku, převést všechny písmena na malé. Poté je třeba odstranit všechny bílé znaky před samotným jménem a po samotném jménu. Pokud je jméno víceslovné, je třeba, aby jednotlivá slova měla mezi sebou pouze jednu mezeru. Nakonec zahashovat.
+
+    + lastNameHash (string, optional)
+
+        Příjmení zahashované pomocí SHA-256.
+        
+        
+        
+        Nejprve je třeba odstranit diakritiku, převést všechny písmena na malé. Poté je třeba odstranit všechny bílé znaky před samotným jménem a po samotném jménu. Pokud je příjmení víceslovné, je třeba aby jednotlivá slova měla mezi sebou pouze jednu mezeru. Nakonec zahashovat.
+
+
++ Response 200 (application/json)
+
+        Zákaznická data.
+
+    + Attributes (Customer)
+
+
++ Response 404 
+
+        Zákazník nebyl nalezen.
+
+
+
+
+
+## Customer Limit Information [/customer-limit-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
+
+### CustomerLimitInformation [GET]
+Get customer's limit information
++ Parameters
+    + emailHash (string, optional)
+
+        E-mail zahashovaný pomocí SHA-256.
+        
+        
+        
+        Nejprve je třeba v e-mailové adrese převést všechny znaky na malé a poté zahashovat.
+
+    + phoneHash (string, optional)
+
+        Telefonní číslo zahashované pomocí SHA-256.
+        
+        
+        
+        Nejprve je třeba telefonní číslo převést do mezinárodního formátu +XXXYYYZZZZZZ a poté zahashovat.
+
+    + firstNameHash (string, optional)
+
+        Křestní jméno zahashované pomocí SHA-256.
+        
+        
+        
+        Nejprve je třeba odstranit diakritiku, převést všechny písmena na malé. Poté je třeba odstranit všechny bílé znaky před samotným jménem a po samotném jménu. Pokud je jméno víceslovné, je třeba, aby jednotlivá slova měla mezi sebou pouze jednu mezeru. Nakonec zahashovat.
+
+    + lastNameHash (string, optional)
+
+        Příjmení zahashované pomocí SHA-256.
+        
+        
+        
+        Nejprve je třeba odstranit diakritiku, převést všechny písmena na malé. Poté je třeba odstranit všechny bílé znaky před samotným jménem a po samotném jménu. Pokud je příjmení víceslovné, je třeba aby jednotlivá slova měla mezi sebou pouze jednu mezeru. Nakonec zahashovat.
+
+
++ Response 200 (application/json)
+
+        Aktuální limity zákazníka.
+
+    + Attributes (Limits)
+
+
++ Response 404 
+
+        Zákazník nebyl nalezen.
+
+
+
+
+
+## Prescore [/prescore/]
+
+### Prescore [POST]
+Prescores application
+
++ Request (application/json)
+    + Attributes (PrescoreRequest)
+
+
++ Response 200 (application/json)
+
+        Status 200
+
+    + Attributes (PrescoreResult)
+
+
+
+
+# Group Merchantsite operations
+
+## OrderChangeRequest [/{application.merchantUrls.changeEndpoint}/orderChangeRequest{?applicationId,orderNumber,type}]
+
++ Parameters
+    + application.merchantUrls.changeEndpoint (string, required)
+
+
+### OrderChangeRequest [POST]
+Order change request
++ Parameters
+    + applicationId (string, optional)
+
+        Identifikátor žádosti o financování.
+
+    + orderNumber (string, optional)
+
+        Číslo objednávky.
+
+    + type (string, optional)
+
+        Typ změny. Možné typy:
+        
+        
+        
+        personalInfo - změna osobních údajů
+        
+        
+        
+        orderItems - změna položek objednávky
+        
+        
+        
+        ... případně další změny
+
+
++ Request (application/json)
+    + Attributes (Order)
+
+
++ Response 200 
+
+
+
++ Response 400 
+
+        Změny není možné zpracovat.
+
+
+
+
+
+## ApplicationNotification [/{application.merchantUrls.notificationEndpoint}/applicationNotification{?applicationId,type}]
+
++ Parameters
+    + application.merchantUrls.notificationEndpoint (string, required)
+
+
+### ApplicationNotification [POST]
+Application notification
++ Parameters
+    + applicationId (string, optional)
+
+        Identifikátor žádosti o financování.
+
+    + type (string, optional)
+
+        Typ notifikace. Možné typ:
+        
+        
+        
+        approved - schváleno ze strany HC
+        
+        
+        
+        rejected - zamítnuto ze strany HC
+        
+        
+        
+        cancelled - zrušeno na žádost zákazníka
+        
+        
+        
+        ... případně další stavy
+
+
++ Request (application/json)
+    + Attributes (Application)
+
+
++ Response 200 
+    + Attributes (string)
+
+
+
+## PaymentNotification [/{application.merchantUrls.paymentEndpoint}/paymentNotification{?applicationId}]
+
++ Parameters
+    + application.merchantUrls.paymentEndpoint (string, required)
+
+
+### PaymentNotification [POST]
+Payment notification
++ Parameters
+    + applicationId (string, optional)
+
+        Identifikátor žádosti o financování.
+
+
++ Request (application/json)
+    + Attributes (Payment)
+
+
++ Response 200 
+
+
+
+
+
+# Data Structures
+
+## Address (object)
+Adresa.
+
+### Properties
++ `name` (string, optional) - Jméno, které je uvedené v adrese.
++ `country` (string, optional)
+
+    Stát. Např.: "CZ".
+    
+    
+    
+    (ISO 3166 alpha-2)
+
++ `city` (string, optional) - Obec.
++ `streetAddress` (string, optional) - Ulice.
++ `streetNumber` (string, optional) - Číslo popisné a/nebo orientační.
++ `zip` (string, optional) - Poštovní směrovací číslo.
+
+
+## Amount (object)
+Finanční částka.
+
+### Properties
++ `amount` (number, required)
+
+    Částka.
+    
+    ISO 4217
+    
+    
+    
+    Například 12590
+
++ `currency` (string, required)
+
+    Měna. ISO 4217
+    
+    
+    
+    Například CZK
+
++ `formated` (string, optional)
+
+    Naformátovaný zápis. 
+    
+    
+    
+    Například "125,90 Kč"
+
+
+
+## Application (object)
+Žádost o financování.
+
+### Properties
++ `id` (string, required) - Unikátní identifikátor žádosti v rámci HCO.
++ `state` (string, required) - Stav žádosti.
++ `stateReason` (string, optional) - Důvod stavu. Pouze pro nějaké stavy žádosti. Například důvody zrušení / zamítnutí.
++ `customer` (Customer, required) - Data zákazníka.
++ `order` (Order, required) - Data objednávky.
++ `type` (string, required)
+
+    Typ financování.
+    
+    Rozklad, "zaplať později", "zaplať až po vyzkoušení".
+
++ `preferredMonths` (number, optional) - Preferovaný počet splátek (v měsících).
++ `preferredInstallmentAmount` (Amount, optional) - Preferovaná výše měsíční splátky.
++ `preferredDownPaymentAmount` (Amount, optional) - Preferovaná výše akontace.
++ `subscriptionFlag` (boolean, optional)
+
+    Příznak, zda se jedná o opakovanou platbu.
+    
+    
+    
+    Výchozí hodnota - false.
+
++ `subscriptionPaymentFrequency` (string, optional) - Jedná-li se o opakovanou platbu,  frekvence platby (měsíční, týdenní, ...).
++ `subscriptionPaymentFirstDate` (string, optional) - Jedná-li se o opakovanou platbu,  datum první platby.
++ `agreementPersonalDataProcessing` (boolean, required) - Příznak, zda zákazník souhlasí se zpracováním osobních údajů již u partnera.
++ `agreementTermsAndConditions` (string, optional) - Příznak, zda zákazník souhlasí s obchodními podmínkami již u partnera.
++ `productCode` (string, optional) - Kód produktu splátkového programu. Konkrétní identifikátor kalkulace.
++ `productSetCode` (string, optional) - Kód produktové sady splátkového programu. Omezení budoucí kalkulace.
+
+
+## Customer (object)
+Data zákazníka.
+
+### Properties
++ `fullName` (string, optional) - Plné jméno zákazníka (např. i s tituly před jménem a za jménem a oslovením pan/paní/slečna).
++ `firstName` (string, optional) - Křestní jméno zákazníka.
++ `lastName` (string, optional) - Příjmení zákazníka.
++ `email` (string, required) - E-mailová adresa zákazníka.
++ `mobilePhone` (string, required) - Mobilní telefonní číslo zákazníka.
++ `permanentAddress` (Address, optional) - Trvalá adresa.
++ `contactAddress` (Address, optional) - Kontaktní adresa.
++ `tin` (string, optional) - IČ
++ `vatin` (string, optional) - DIČ
++ `extraData` (ExtraData, optional) - Další data zákazníka, které mohou vylepšit pravděpodobnost schválení.
+
+
+## ExtraData (object)
+
+
+### Properties
++ `transactionsNumber` (number, optional) - Historický počet hotovostních transakcí zákazníka v e-shopu partnera.
++ `cashlessTransactionsNumber` (number, optional) - Historický počet bezhotovostních transakcí zákazníka v e-shopu partnera.
++ `transactionsAmount` (Amount, optional) - Součet cen všech hotovostních transakcí zákazníka v e-shopu partnera.
++ `cashlessTransactionsAmount` (Amount, optional) - Součet cen všech bezhotovostních transakcí zákazníka v e-shopu partnera.
++ `latestTransactionDate` (string, optional) - Datum nejstarší transakce na e-shopu partnera.
++ `earliestTransactionDate` (string, optional) - Datum nejnovější transakce na e-shopu partnera.
++ `pageTotalTime` (number, optional) - Celková doba strávená na stránce partnera ve vteřinách.
++ `pageReviewsTime` (string, optional) - Doba strávená na stránkách s recenzemi a komentáři zboží ve vteřinách.
++ `cartItemsRemoved` (number, optional) - Celkový počet odstraněných položek v košíku v rámci aktuálního nákupu.
++ `itemsViewed` (number, optional) - Počet zobrazených stránek s produkty.
+
+
+## Order (object)
+Data objednávky.
+
+### Properties
++ `number` (string, required) - Číslo objednávky (interní v e-shopu).
++ `variableSymbols` (array[string], optional) - Variabilní symboly (interní v e-shopu).
++ `totalAmount` (Amount, required) - Celková cena objednávky s DPH.
++ `totalTaxAmount` (Amount, required) - Celková hodnota DPH objednávky.
++ `billingAddress` (Address, required) - Fakturační adresa.
++ `deliveryType` (string, optional) - Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
++ `deliveryAddress` (Address, optional) - Doručovací adresa.
++ `deliveryCarrier` (string, optional)
+
+    Název dopravce při typu doručení "Dopravcem". Např. "Česká pošta".
+    
+    Potřeba číselník dopravců - pro lepší scoring. Možné hodnoty:
+    
+    
+    
+    1 = Czech Post - Parcel Delivery to Hand
+    
+    2 = Czech Post - Parcel Delivery to Post Office
+    
+    3 = PPL
+    
+    4 = DPD
+    
+    5 = GEIS
+    
+    6 = InTime
+    
+    7 = TopTrans
+    
+    8 = Gebruder Weiss
+    
+    9 = Local Courier
+    
+    10 = Personal Collection at Branch
+    
+    11 = Personal Collection at Partner Network
+    
+    12 = TNT
+    
+    13 = GLS
+    
+    14 = Czech Post - other services
+    
+    15 = HDS Komfort
+    
+    16 = HDS Standard
+
++ `deliveryDate` (string, optional) - Datum a čas doručení.
++ `deliveryTrackingNumber` (string, optional) - Číslo pro sledování zásilky.
++ `sentDate` (string, optional) - Datum a čas odeslání zboží.
++ `reservationDate` (string, optional)
+
+    Datum a čas rezervace zboží.
+    
+    
+    
+    Po tomto termínu e-shop negarantuje dostupnost zboží (pokud schválení žádosti trvá déle).
+
++ `items` (array[OrderItem], required) - Položky objednávky.
++ `documents` (array[Document], optional) - Přiložené soubory objednávky (faktury, proforma faktury, ...).
++ `invoiceInfo` (InvoiceInfo, required) - Fakturační údaje.
+
+
+## OrderItem (object)
+Položka zboží na objednávce.
+
+### Properties
++ `type` (string, optional)
+
+    Typ:
+    
+    
+    
+    physical - fyzické zboží
+    
+    
+    
+    discount - sleva
+    
+    
+    
+    shippingFee - poplatek za dopravu
+    
+    
+    
+    salesTax - daň
+    
+    
+    
+    digital - digitální zboží
+    
+    
+    
+    giftCard - slevový kupón
+    
+    
+    
+    storeCredit - kredit
+    
+    
+    
+    surcharge - poplatek
+
++ `code` (string, optional) - Kód zboží (interní v e-shopu). Pro lepší identifikaci zboží pro budoucí změny pomocí dalších metod.
++ `ean` (string, optional)
+
+    EAN.
+    
+    
+    
+    Například: "888462064002"
+
++ `name` (string, required)
+
+    Název zboží.
+    
+    
+    
+    Například: "iPhone 6s 32GB SpaceGray"
+
++ `variant` (string, optional)
+
+    Varianta zboží.
+    
+    
+    
+    Například: "32GB SpaceGray"
+
++ `description` (string, optional)
+
+    Popisek zboží.
+    
+    
+    
+    Například: "Mobilní telefon Apple A9 s 64bitovou architekturou a pohybovým koprocesorem M9, dotyko..."
+
++ `producer` (string, optional)
+
+    Výrobce zboží.
+    
+    
+    
+    Například: "Apple"
+
++ `categories` (array[string], optional)
+
+    Seznam kategorií zboží.
+    
+    
+    
+    Například: ["Mobilní telefony", "iPhone"]
+
++ `quantity` (number, optional) - Počet kusů zboží.
++ `unitPriceAmount` (Amount, optional) - Cena za jeden kus.
++ `totalAmount` (Amount, required) - Celková cena za všechny kusy zboží i s DPH.
++ `totalTaxAmount` (Amount, required) - Celková hodnota DPH za všechny kusy zboží.
++ `image` (File7, optional) - Obrázek zboží.
++ `productURL` (string, optional) - URL adresa položky v e-shopu.
++ `sendDate` (string, optional) - Datum a čas odeslání této položky. Pokud všechno zboží nebylo expedováno najednou.
++ `deliveryDate` (string, optional) - Datum a čas doručení této položky. Pokud všechno zboží nebylo expedováno najednou.
++ `deliveryTrackingNumber` (string, optional) - Číslo pro sledování zásilky této položky. Pokud všechno zboží nebylo expedováno najednou.
+
+
+## File7 (object)
+
+
+### Properties
++ `filename` (string, optional) - Název souboru.
++ `content` (string, optional)
+
+    Obsah souboru. Nepovinné, pokud je zadán url.
+    
+    
+    
+    Base64, maximální velikost 500kB.
+
++ `url` (string, optional) - URL souboru. Nepovinné, pokud je zadán file.
+
+
+## Document (object)
+Přiložený soubor objednávky (faktura, proforma faktura, dobropis...).
+
+### Properties
++ `type` (string, required)
+
+    Faktura, proforma faktura, dobropis...
+    
+    
+    
+    invoice - faktura
+    
+    
+    
+    proformaInvoice - proforma faktura
+    
+    
+    
+    creditNote - dobropis
+    
+    
+    
+    other - ostatní
+
++ `file` (File7, required) - Soubor.
++ `description` (string, optional) - Popis souboru.
++ `extraData` (ExtraData9, optional) - Případná data z dokumentu.
+
+
+## ExtraData9 (object)
+
+
+### Properties
++ `variableSymbol` (string, optional) - Variabilní symbol (interní v e-shopu).
+
+
+## InvoiceInfo (object)
+Údaje, které mají být uvedeny na faktuře.
+
+### Properties
++ `fullName` (string, required) - Plné jméno zákazníka (např. i s tituly před jménem a za jménem a oslovením pan/paní/slečna).
++ `address` (Address, required) - Adresa.
++ `dueDate` (string, required) - Datum splatnosti.
+
+
+## InstallmentProgram (object)
+Splátkový program.
+
+### Properties
++ `type` (string, optional)
+
+    Typ programu.
+    
+    
+    
+    minimal - Splátkový program s nejnižší splátkou.
+    
+    
+    
+    favourite - Doporučený (oblíbený) splátkový program.
+    
+    
+    
+    other - Ostatní programy.
+
++ `installmentAmount` (Amount, optional) - Výše měsíční splátky.
++ `numberOfInstallments` (number, optional)
+
+    Počet měsíčních splátek.
+    
+    
+    
+    Například 6
+
++ `detail` (Detail, optional)
+
+    Detailní data kalkulace.
+    
+    
+    
+    K dispozici pouze pokud je získáno metodou "POST /installment-programs/".
+    
+    
+    
+    U metody "POST /installment-programs-offers/" není k dispozici.
+
+
+
+## Detail (object)
+
+
+### Properties
++ `installmentDay` (number, optional)
+
+    Den splátky v měsíci.
+    
+    
+    
+    Například 20
+
++ `installmentFirstDate` (string, optional)
+
+    Datum první splátky.
+    
+    
+    
+    Například 20. ledna 2017
+
++ `installmentLastDate` (string, optional)
+
+    Datum první splátky.
+    
+    
+    
+    Například 20. července 2017
+
++ `annualInterestRate` (string, optional)
+
+    Roční úroková sazba.
+    
+    
+    
+    Například: 0.17
+
++ `predictedProvisionDate` (string, optional)
+
+    Předpokládané datum poskytnutí úvěru.
+    
+    
+    
+    Například: 18.1.2017
+
++ `paidBackAmount` (Amount, optional) - Celková částka, kterou zákazník zaplatí.
++ `rpsn` (string, optional)
+
+    RPSN
+    
+    
+    
+    Například: 0.23
+
++ `legalline` (string, optional)
+
+    Textový popis nabídky.
+    
+    
+    
+    Například:
+    
+    "Uvedené hodnoty jsou spočítány k datu poskytnutí 18.1.2017, datu 1. splátky 20.1.2017 a se splatností všech dalších splátek k 20. dni v měsíci počítaje 20.1.2017. Nejedná se o nabídku či veřejnou nabídku. Platí při splnění podmínek Home Credit...."
+
+
+
+## InstallmentProgramsDownPayments (object)
+Informace o akontacích. Nejnižší možná, nejvyšší možná akontace a výše kroku mezi nimi.
+
+### Properties
++ `minimumAmount` (Amount, optional)
+
+    Nejnižší možná akontace.
+    
+    
+    
+    Např.: 0 Kč.
+
++ `maximumAmount` (Amount, optional)
+
+    Nejvyšší možná akontace.
+    
+    
+    
+    Např.: 2 500 Kč.
+
++ `stepAmount` (Amount, optional)
+
+    Výše kroku mezi nimi.
+    
+    
+    
+    Např.: 500 Kč.
+    
+    Možné akontace pak jsou:
+    
+    
+    
+    0 Kč, 500 Kč, 1000 Kč, 1500 Kč, 2000 Kč, 2500 Kč
+
+
+
+## Limits (object)
+Limity zákazníka.
+
+### Properties
++ `availableLimit` (Amount, required) - Dostupný limit zákazníka.
++ `totalLimit` (Amount, required) - Celkový limit zákazníka.
+
+
+## Payment (object)
+Informace o proplacení.
+
+### Properties
++ `date` (string, required) - Datum provedení platby.
++ `applicationId` (string, required) - Žádost, díky které byla platba provedena.
++ `amount` (Amount, required) - Výše platby
++ `invoice` (InvoiceInfo, required) - Faktura.
+
+
+## MerchantURLs (object)
+Kolekce URL adres pro notifikace a návrat k partnerovi (approved, rejected, notify, change...).
+
+### Properties
++ `approvedRedirect` (string, required) - URL partnera, kam bude zákazník přesměrován po schválení žádosti na bráně HCO.
++ `rejectedRedirect` (string, required) - URL partnera, kam bude zákazník přesměrován po zamítnutí žádosti na bráně HCO.
++ `notificationEndpoint` (string, required) - URL partnera, kde bude notifikován o změnách žádosti (schválení, zamítnutí, stornování...).
++ `paymentsEndpoint` (string, optional) - URL partnera, kde bude notifikován o provedení plateb z žádosti.
+
+
+## ApplicationRequest (object)
+Žádost o financování.
+
+### Properties
++ `customer` (Customer, required) - Data zákazníka.
++ `order` (ApplicationRequestOrder, required) - Data objednávky.
++ `type` (string, required)
+
+    Typ financování.
+    
+    Rozklad, "zaplať později", "zaplať až po vyzkoušení".
+
++ `preferredMonths` (number, optional) - Preferovaný počet splátek (v měsících).
++ `preferredInstallmentAmount` (Amount, optional) - Preferovaná výše měsíční splátky.
++ `preferredDownPaymentAmount` (Amount, optional) - Preferovaná výše akontace.
++ `subscriptionFlag` (boolean, optional)
+
+    Příznak, zda se jedná o opakovanou platbu.
+    
+    
+    
+    Výchozí hodnota - false.
+
++ `subscriptionPaymentFrequency` (string, optional) - Jedná-li se o opakovanou platbu,  frekvence platby (měsíční, týdenní, ...).
++ `subscriptionPaymentFirstDate` (string, optional) - Jedná-li se o opakovanou platbu,  datum první platby.
++ `agreementPersonalDataProcessing` (boolean, required) - Příznak, zda zákazník souhlasí se zpracováním osobních údajů již u partnera.
++ `agreementTermsAndConditions` (string, optional) - Příznak, zda zákazník souhlasí s obchodními podmínkami již u partnera.
++ `productCode` (string, optional) - Kód produktu splátkového programu. Konkrétní identifikátor kalkulace.
++ `productSetCode` (string, optional) - Kód produktové sady splátkového programu. Omezení budoucí kalkulace.
++ `merchantURLs` (MerchantURLs, optional) - Kolekce URL adres pro notifikace a návrat k partnerovi (approved, rejected, notify, change...).
+
+
+## ApplicationRequestOrder (object)
+Data objednávky potřebná pro založení žádosti.
+
+### Properties
++ `number` (string, required) - Číslo objednávky (interní v e-shopu).
++ `variableSymbols` (array[string], optional) - Variabilní symboly (interní v e-shopu).
++ `totalAmount` (Amount, required) - Celková cena objednávky s DPH.
++ `totalTaxAmount` (Amount, required) - Celková hodnota DPH objednávky.
++ `billingAddress` (Address, required) - Fakturační adresa.
++ `deliveryType` (string, optional) - Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
++ `deliveryAddress` (Address, optional) - Doručovací adresa.
++ `deliveryCarrier` (string, optional)
+
+    Název dopravce při typu doručení "Dopravcem". Např. "Česká pošta".
+    
+    Potřeba číselník dopravců - pro lepší scoring. Možné hodnoty:
+    
+    
+    
+    1 = Czech Post - Parcel Delivery to Hand
+    
+    2 = Czech Post - Parcel Delivery to Post Office
+    
+    3 = PPL
+    
+    4 = DPD
+    
+    5 = GEIS
+    
+    6 = InTime
+    
+    7 = TopTrans
+    
+    8 = Gebruder Weiss
+    
+    9 = Local Courier
+    
+    10 = Personal Collection at Branch
+    
+    11 = Personal Collection at Partner Network
+    
+    12 = TNT
+    
+    13 = GLS
+    
+    14 = Czech Post - other services
+    
+    15 = HDS Komfort
+    
+    16 = HDS Standard
+
++ `reservationDate` (string, optional)
+
+    Datum a čas rezervace zboží.
+    
+    
+    
+    Po tomto termínu e-shop negarantuje dostupnost zboží (pokud schválení žádosti trvá déle).
+
++ `items` (array[OrderItem], required) - Položky objednávky.
++ `documents` (array[Document], optional) - Přiložené soubory objednávky (faktury, proforma faktury, ...).
+
+
+## ApplicationRequestResult (object)
+Odpověď na žádost o financování.
+
+### Properties
++ `id` (string, required) - Unikátní identifikátor žádosti v rámci HCO.
++ `state` (string, required) - Stav žádosti.
++ `gatewayRedirectURL` (string, required) - URL adresa brány.
+
+
+## AdditionalDataRequest (object)
+Dodatečná data o zákazníkovi.
+
+### Properties
++ `personalId` (string, optional) - Rodné číslo. Ve formátu XXXXXX/YYYY.
++ `idCard` (string, optional) - Číslo občanského průkazu.
++ `idCardExpiryDate` (string, optional) - Datum platnosti občanského průkazu.
++ `idCardScan` (IdCardScan, optional) - Sken občanského průkazu.
+
+
+## IdCardScan (object)
+
+
+### Properties
++ `front` (File7, optional) - Přední strana.
++ `back` (File7, optional) - Zadní strana.
+
+
+## InstallmentProgramsRequest (object)
+
+
+### Properties
++ `productCode` (string, required) - Kód produktu splátkového programu. Konkrétní identifikátor kalkulace.
++ `amount` (Amount, required) - Cena zboží.
++ `downPaymentAmount` (Amount, optional) - Výše akontace. Výchozí hodnota 0.
+
+
+## InstallmentProgramsOffersRequest (object)
+
+
+### Properties
++ `productSetCode` (string, required) - Kód produktové sady splátkového programu. Omezení kalkulací.
++ `amount` (Amount, required) - Cena zboží.
++ `downPaymentAmount` (Amount, optional) - Výše akontace. Výchozí hodnota 0.
+
+
+## InstallmentProgramsDownPaymentsRequest (object)
+
+
+### Properties
++ `productSetCode` (string, required) - Kód produktové sady splátkového programu. Omezení kalkulací.
++ `amount` (Amount, required) - Cena zboží.
+
+
+## PrescoreRequest (object)
+Data pro prescoring. 
+
+Obdobná struktura jako Application.
+
+### Properties
++ `customer` (Customer, optional) - Data zákazníka.
++ `order` (Order, optional) - Data objednávky.
++ `fingerprintComponents` (array[string], optional) - Komponenty fingerprintu.
++ `ipAddress` (string, optional) - IPv4 nebo IPv6 adresa zákazníka.
++ `agreementPersonalDataProcessing` (string, optional) - Příznak, zda zákazník souhlasí se zpracováním osobních údajů již u partnera.
++ `productType` (string, optional)
+
+    Typ financování.
+    
+    Rozklad, "zaplať později", "zaplať až po vyzkoušení".
+
++ `preferredMonths` (number, optional) - Preferovaný počet splátek (v měsících).
++ `preferredInstallmentAmount` (Amount, optional) - Preferovaná výše měsíční splátky.
++ `preferredDownPaymentAmount` (Amount, optional) - Preferovaná výše akontace.
++ `subscriptionFlag` (boolean, optional)
+
+    Příznak, zda se jedná o opakovanou platbu.
+    
+    
+    
+    Výchozí hodnota - false.
+
++ `subscriptionPaymentFrequency` (string, optional) - Jedná-li se o opakovanou platbu,  frekvence platby (měsíční, týdenní, ...).
++ `subscriptionPaymentFirstDate` (string, optional) - Jedná-li se o opakovanou platbu,  datum první platby.
+
+
+## PrescoreResult (object)
+Výsledek prescoringu.
+
+### Properties
++ `recommendation` (boolean, required)
+
+    Doporučení, zda objednávku předat do služby. 
+    
+    
+    
+    true = Žádost bude pravděpodobně schválena.
+    
+    
+    
+    false = Žádost nebude pravděpodobně schválena.
+
++ `probabilityOfApproval` (number, required)
+
+    Pravděpodobnost schválení objednávky v intervalu <0, 1>. 
+    
+    
+    
+    0 = 0% šance na schválení
+    
+    
+    
+    1 = 100% šance na schválení
+    
+    
+    
+    Partner (e-shop) může vytvořit vlastní logiku a neřídit se podle doporučení (být přísnější, nebo naopak být benevolentnější).
+
++ `code` (string, required)
+
+    Kód výsledku prescoringu. Možné hodnoty:
+    
+    
+    
+    ok
+    
+    
+    
+    additionalDataSecurity -
+    
+    Zákazník bude doptán na další osobní údaje z důvodu bezpečnosti.
+    
+    
+    
+    additionalDataLimit -
+    
+    Zákazníka známe, ale nemá dostatečný limit. Zákazník bude doptán na další osobní údaje z důvodu navýšení limitu (má nedostatečný).
+    
+    
+    
+    insufficientLimit -
+    
+    Zákazníka známe, ale nemá dostatečný limit a není možnost si ho navýšit.
+    
+    
+    
+    insufficientLimitOpportunity -
+    
+    Zákazníka známe, ale nemá dostatečný limit. Existuje ale možnost si ho navýšit zaplacením aktuálních objednávek.
+    
+    
+    
+    detailsNotMatching -
+    
+    Zákazníka známe, ale nesedí údaje. Zákazník bude vyzván k opravě dat.
+
++ `customerType` (string, required)
+
+    Typ zákazníka. Možné hodnoty:
+    
+    
+    
+    unknown -
+    
+    Zákazníka neznáme.
+    
+    
+    
+    firstOrder -
+    
+    Zákazníka známe, ale zatím nezaplatil první objednávku.
+    
+    
+    
+    full -
+    
+    Zákazníka známe a již zaplatil alespoň jednu objednávku.
+    
+    
+    
+    blocked -
+    
+    Zákazníka známe. Je zablokován.
+
++ `message` (string, optional)
+
+    Zpráva pro zákazníka.
+    
+    
+    
+    Např.: 
+    
+    “V HCO peněžence nemáte dostatečný limit.”
+    
+    
+    
+    “Uveďte do objednávky jméno a příjmení, které používáte ve službě HCO.”
+    
+    
+    
+    a další...
+
++ `additionalData` (array[string], optional)
+
+    Seznam dodatečných informací, na které bude zákazník doptán.
+    
+    
+    
+    Možné hodnoty:
+    
+    personalId,
+    
+    idCard,
+    
+    idCardExpiryDate,
+    
+    idCardScan
+
++ `limits` (Limits, optional)
+
+    Limity zákazníka. 
+    
+    Pokud zákazníka neznáme, jsou výše limitů odhadnuty.
+    
+    Pokud zákazníka známe, jedná se o aktuální limity.
+    
+    
+    
+    Pokud zákazník dal souhlas o předávání limitů. TODO legal.
+
+
+
+## OrderItemsChangeRequest (object)
+
+
+### Properties
++ `orderItems` (array[OrderItem], optional) - Seznam zboží, které se mění. Pokud není vyplněno, změna se týká všeho zboží objednávky..
++ `invoice` (Document, optional) - Přiložený soubor (faktura, proforma faktura, dobropis ...).
++ `variableSymbol` (string, optional) - Variabilní symbol nově vystaveného dokumentu (faktury, proforma faktury, dobropisu...).
++ `sendDate` (string, optional) - Datum a čas odeslání.
++ `deliveryDate` (string, optional) - Datum a čas doručení.
++ `deliveryTrackingNumber` (string, optional) - Číslo pro sledování zásilky.
