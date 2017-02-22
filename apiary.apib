@@ -759,34 +759,32 @@ Finanční částka.
 Žádost o financování.
 
 ### Properties
-+ `id` (string, required) - Unikátní identifikátor žádosti v rámci HCO.
-+ `state` (string, required) - Stav žádosti.
-+ `stateReason` (string, optional) - Důvod stavu. Pouze pro nějaké stavy žádosti. Například důvody zrušení / zamítnutí.
-+ `customer` (Customer, required) - Data zákazníka.
-+ `order` (Order, required) - Data objednávky.
-+ `type` (string, required)
-
-    Typ financování.
++ `id` (string, required) - Unique identifier in HCO
++ `state` (enum, required) - Application state.
+    + `VERIFICATION_CODE_NEEDED` - SMS code verification is required
+    + `ADDITIONAL_DATA_NEEDED` - need additional data for further processing
+    + `PROCESSING` - application is being processed
+    + `APPROVED` - application was approved
+    + `REJECTED` - application was rejected
+    + `CANCELLED` - application was cancelled
++ `stateReason` (string, optional) - State transition reason; only applicable for some of the states, e.g. REJECTED - reason to reject
++ `customer` (Customer, required) - Customer data
++ `order` (Order, required) - Order data
++ `type` (enum, required) - Financing type. TODO
+    + `POSTPONE` - "zaplať později"
+    + `LOAN` - Rozklad
++ `preferredMonths` (number, optional) - Preferred number of installments (in months).
++ `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount.
++ `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount.
++ `subscriptionFlag` (boolean, optional) - Flag indicating repeated payment
+    + Default: false
     
-    Rozklad, "zaplať později", "zaplať až po vyzkoušení".
-
-+ `preferredMonths` (number, optional) - Preferovaný počet splátek (v měsících).
-+ `preferredInstallmentAmount` (Amount, optional) - Preferovaná výše měsíční splátky.
-+ `preferredDownPaymentAmount` (Amount, optional) - Preferovaná výše akontace.
-+ `subscriptionFlag` (boolean, optional)
-
-    Příznak, zda se jedná o opakovanou platbu.
-    
-    
-    
-    Výchozí hodnota - false.
-
-+ `subscriptionPaymentFrequency` (string, optional) - Jedná-li se o opakovanou platbu,  frekvence platby (měsíční, týdenní, ...).
-+ `subscriptionPaymentFirstDate` (string, optional) - Jedná-li se o opakovanou platbu,  datum první platby.
-+ `agreementPersonalDataProcessing` (boolean, required) - Příznak, zda zákazník souhlasí se zpracováním osobních údajů již u partnera.
-+ `agreementTermsAndConditions` (string, optional) - Příznak, zda zákazník souhlasí s obchodními podmínkami již u partnera.
-+ `productCode` (string, optional) - Kód produktu splátkového programu. Konkrétní identifikátor kalkulace.
-+ `productSetCode` (string, optional) - Kód produktové sady splátkového programu. Omezení budoucí kalkulace.
++ `subscriptionPaymentFrequency` (string, optional) - payment frequency for repeated payment
++ `subscriptionPaymentFirstDate` (string, optional) - first payment date for repeated payment
++ `agreementPersonalDataProcessing` (boolean, required) - flag indicating already approved personal data processing
++ `agreementTermsAndConditions` (boolean, optional) - flag indicating already approved terms and conditions
++ `productCode` (string, optional) - Product code, this indicates previous calculation result
++ `productSetCode` (string, optional) - Product set code, this will limit further calculations
 
 
 ## Customer (object)
