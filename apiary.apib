@@ -2,7 +2,166 @@ FORMAT: 1A
 HOST: http://example.com/api
 
 # HC OneClick API
-API documentation for Home Credit One-Click API
+API documentation for Home Credit One-Click API.
+
+## Naming conventions
+- we use camelCase for all object and attribute names
+- we use CAPITAL_UNDERSCORE for enum values
+- we use plural in resource names
+
+## Paging
+- some resources (stated in documentation) that return collection of objects support pagination.
+- on request:
+  - query parameter `limit` specifies maximum number of objects in returned collection
+  - query parameter `after` specifies last object retrieved in previous request. Its value is usually `id` of last object retrieved in previous call, but this will be stated in documentation. Parameter `after` is used when traversing collection forwards.
+  - query parameter `before` specifies first object retrieved in previous request (analogy to `after` parameter), and is used when traversing collection backwards.
+  - if `before` and `after` are omitted, beginning of collection is returned, using specified sort order
+  - items in collection are always sorted accoridng to attribute which could be passed in after/before parameters. Even if you specify different sorting order, this attribute will be last sorting criterion; if you do not specify sorting order, result collection will be sorted according to this attribute.
+- on response:
+  - `pagingInfo` object is returned as part of response body with following attributes:
+    - _nextPage_ - request to retrieve next page. Either nextPage or previousPage is returned, depending whether you specify `after` or `before` parameter. If you specify neither `before` nor `after` parameter, these attributes will be omitted from response. 
+    - _prevPage_ - request to retrieve previous page (see `nextPage` attribute description above).
+    - _itemsPerPage_ - number of items per page
+
+
+Example request:
+```
+curl -X GET https://api.homecredit.eu/customer/v1/my/contracts?sort=category&limit=10&after=15
+```
+
+Example response pagingInfo:
+
+```javascript
+"pagingInfo": {
+    "nextPage": "/my/contracts?sort=category&limit=10&after=25"
+    "itemsPerPage": 10,
+}
+```
+
+## Sorting
+- some resources (stated in documentation) suppors result sorting. You can specify sorting attributes and order using `sort` request parameter. For ascending order, specify just attribute name; for descending order, add unary - in front of attribute name. You can specify multiple attributes for sorting, separated by comma.
+- each resource that supports sorting specifies list of attributes that can be used for sorting.
+
+Examples:
+- `/public/fxrates?sort=currencyCode` - get list of FX rates sorted by attribute currencyCode
+- `/public/branches?sort=-name` - get list of branches, sorted by attribute name in descending order
+- `/banking/accounts?sort=accountType,-accountCurrency,accountName` - get list of accounts, sorted by type (ascending), then by currency descending and then by account name (ascending)
+
+
+## Filtering
+Some resources (stated in documentation) supports results filtering. Such resources have list of filters specified together with possible operations and possible values.
+
+You can specify filtering by passing `filter` attribute. General pattern to specify filter is:
+
+`<filterName>|<operator>|<values>`
+
+- `filterName` - filter name from documentation
+- `operator` - operator, specified in resource documentation
+- `values` - one or more values for filter. Multiple values are separated by comma
+
+Multiple filters can be specified on each request, separated by semi-colon. They are joined by "AND", so each result item must satisfy all conditions.
+
+### Filtering examples
+
+- get a list of partners with category in (1, 5, 10)
+```
+GET /general/partners?filter=category|in|1,5,10
+```
+
+- get a list of contracts with contractDate in (2016-02-10, 2016-04-28>
+```
+GET /general/contracts?filter=contractDate|gt|2016-02-10;contractDate|lteq|2016-04-28
+```
+
+### List of operators
+| operator | meaning |
+| ---      | ---     |
+| lt       | less than |
+| lteq       | less than or equals |
+| eq       | equals    |
+| gteq       | greater than or equals    |
+| gt       | greater than |
+| in       | value in list |
+
+## API calls limits
+When limit is reached, you receive HTTP error 429. To inform you about limits we use following headers:
+- `X-Rate-Limit-Limit` - The number of allowed requests in the current period
+- `X-Rate-Limit-Remaining` - The number of remaining requests in the current period
+- `X-Rate-Limit-Reset` - The number of seconds left in the current period
+
+## Response encoding
+Unless stated otherwise, all responses are sent as `Content-Type: application/json; charset=utf-8`
+
+## HTTP status codes
+We use following status codes throughout the API, except for OAuth flow when response codes are prescribed in RFC
+- 200 `OK` - request was successful
+- 201 `Created` - request was successfull and resource was created
+- 204 `No content` - we accepted your request but there is nothing to return (e.g. response is empty)
+- 400 `Bad Request` - request is missing required parameters
+- 401 `Unauthorized` - your API key is wrong or user not authorized (not logged in)
+- 403 `Forbidden` - access denied (e.g. user / application is not allowed to use the resource)
+- 404 `Not Found` - resource could not be found
+- 405 `Method Not Allowed` - specified method is not allowed for resource
+- 422 `Unprocessable Entity` - validation errors. Errors are specified in response body (see below)
+- 429 `Too Many Requests` - you exceeded the rate limit (see X-Rate-Limit headers)
+- 500 `Internal Server Error` - something went wrong on our side
+- 503 `Service Unavailable` - there is planned service outage (TODO: should specify response headers with more details on service outage)
+
+## Error handling
+Besides HTTP status codes, which are the main indication if something goes wrong, we also use `errors` object to report more details about errors.
+
+Errors object example:
+```javascript
+{
+    ...
+
+    errors: [
+        {
+            "code": "ERR_100,
+            "message": "Invalid contract number",
+            "severity": "ERROR",
+            "attribute": "partyAccount.accountNumber",          // optional
+            "ticketId": "UAT1:AMS:20160516-091658.450:45e4" // optional
+        },
+        {
+            "code": 352,
+            "message": "Insufficiend funds for payment order realization",
+            "severity": "WARN"
+        },
+        {
+            "code": 523,
+            "message": "This order will trigger currency exchange operation",
+            "severity": "INFO"
+        }
+    ]
+}
+```
+
+Error object attributes
+| attribute name | description |
+| --- | --- |
+| code | unique error code |
+| message | human readable error description (non-localized) |
+| severity | error severity (see below) |
+| attribute | json path of request attribute that caused the error (optional) |
+| ticketId | internal ticket ID, used for error backtracking |
+
+There are 3 levels of error severity:
+
+- ERROR - critical error, execution cannot continue. This MUST be indicated also by appropriate HTTP status code (`422 Unprocessable Entity`)
+- WARN - non-critical error, execution can continue but further user interaction is advisable (for request to proceed, you MUST specify this error code in `override` request attribute). This MIGHT be indicated also by appropriate HTTP status code.
+- INFO - information only, execution can continue without user interaction.
+
+## Formats
+- **date** and **time** uses [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) formatting, e.g.:
+  - date is represented as `YYYY-mm-dd`. Timezone is added when necessary.
+  - time is represented as `Thh:mm:ss`. Timezone is added when necessary.
+  - day of week is represented as number 1..7, with 1 being Monday
+  - week no. 1 is the week with the year's first Thursday in it
+- **phone numbers** uses international format starting with '+' and including country code
+- **numbers format** number format is defined by [JSON standard](http://www.json.org), e.g. decimals are separated by `.`
+
+
 
 # Group Application operations
 
@@ -24,7 +183,9 @@ Create application
 
 + Response 400 
 
-        Status 400
+        There was an error processing request
+        
+    + Attributes (Errors)    
 
 
 
@@ -37,7 +198,7 @@ Create application
 
 
 ### ApplicationsByApplicationId [GET]
-Get application
+Get specific application
 
 + Response 200 (application/json)
 
@@ -49,7 +210,8 @@ Get application
 + Response 404 
 
         Application does not exist
-
+        
+    + Attributes (Errors)
 
 
 
@@ -61,7 +223,7 @@ Get application
 
 
 ### ApplicationsAdditionalData [POST]
-Send additional data
+Send additional data needed to complete the application.
 
 + Request (application/json)
     + Attributes (AdditionalDataRequest)
@@ -69,16 +231,16 @@ Send additional data
 
 + Response 200 (application/json)
 
-        Data byla přijata.
+        Data was accepted
 
     + Attributes (Application)
 
 
 + Response 400 
 
-        Data nebyla přijata.
+        Error in processing request.
 
-
+    + Attributes (Errors)
 
 
 
@@ -89,43 +251,26 @@ Send additional data
 
 
 ### ApplicationsCancelByApplicationId [PUT]
-Cancel application
+Cancel application, or cancel repeated payment.
+
 + Parameters
-    + reason (string, required)
-
-        Důvod zrušení.
+    + reason (enum, required) - Reason of cancellation
+        + `ORDER_CANCELLED_CUSTOMER` - customer cancelled the application
+        + `ORDER_CANCELLED_ITEMS` - application was cancelled because some items were unavailable
+        + `ORDER_CANCELLED_OTHER` - other reason
+        + `TODO`
         
         
-        
-        Možné důvody:
-        
-        
-        
-        orderCancelledCustomer - Zrušená objednávka zákazníkem.
-        
-        
-        
-        orderCancelledItems - Zrušená objednávka z důvodu zboží.
-        
-        
-        
-        orderCancelledOther - Zrušená objednávka z jiných důvodů.
-        
-        
-        
-        ... a další TODO
++ Response 204
+    Application was cancelled.
+    
+    + Body
 
 
-+ Response 200 
-
-
-
-+ Response 400 
-
-        Žádost není možné zrušit.
-
-
-
++ Response 422
+    Application cannot be cancelled
+    
+    + Attributes (Errors)
 
 
 ## Applications Order By ApplicationId [/applications/{applicationId}/order{?reason}]
@@ -135,11 +280,12 @@ Cancel application
 
 
 ### ApplicationsOrderByApplicationId [PUT]
-Change order
+Change order. Used to change order items, total amount, billing details etc.
+
 + Parameters
     + reason (string, optional)
 
-        Důvod změny.
+        Reason for change.
 
 
 + Request (application/json)
@@ -147,15 +293,15 @@ Change order
 
 
 + Response 200 (application/json)
-
-        Objednávka byla pozměněna.
+        Order was changed
 
     + Attributes (Order)
 
 
-+ Response 400 
-
-        Objednávku není možné změnit.
++ Response 422 
+    Order cannot be changed.
+        
+    + Attributes (Errors)    
 
 
 
@@ -170,20 +316,25 @@ Change order
 ### ApplicationsOrderCancelByApplicationId [PUT]
 Mark order items as cancelled
 
+System notification. Some or all of the order items were cancelled. Based on application type and partner setting, credit note may be issued.
+
+
 + Request (application/json)
     + Attributes (OrderItemsChangeRequest)
 
 
 + Response 200 (application/json)
-
-        Položky objednávky byly označeny jako zrušené, případně celá objednávka byla označena jako zrušená.
+        Some order items or the whole order was cancelled
+        
 
     + Attributes (Order)
 
 
-+ Response 400 
++ Response 422
 
-        Položky objednávky nebyly označeny jako zrušené.
+        Cannot cancel order items.
+        
+    + Attributes (Errors)    
 
 
 
@@ -196,23 +347,26 @@ Mark order items as cancelled
 
 
 ### ApplicationsOrderDeliverByApplicationId [PUT]
-Mark order items as delivered
+Mark order items as delivered.
+
+System notification. Some or all order items were delivered to customer. 
+Based on application type and partner setting, application payment may be processed.
+
 
 + Request (application/json)
     + Attributes (OrderItemsChangeRequest)
 
 
 + Response 200 (application/json)
-
-        Položky objednávky byly označeny jako doručené, případně celá objednávka byla označena jako doručená.
-
+        Order items or whole order is marked as delivered.
+        
     + Attributes (Order)
 
 
-+ Response 400 
-
-        Položky objednávky nebyly označeny jako doručené.
-
++ Response 422 
+        Cannot process state change.
+        
+    + Attributes (Errors)
 
 
 
@@ -224,24 +378,26 @@ Mark order items as delivered
 
 
 ### ApplicationsOrderReturnByApplicationId [PUT]
-Mark order items as returned
+Mark order items as returned.
+
+System notification. Some or all order items were returned by customer back to e-shop.
+Based on application type and partner setting, credit note may be issued.
+
 
 + Request (application/json)
     + Attributes (OrderItemsChangeRequest)
 
 
 + Response 200 (application/json)
-
-        Položky objednávky byly označeny jako vrácené, případně celá objednávka byla označena jako vrácená.
-
+        Order items or whole order is marked as returned.
+        
     + Attributes (Order)
 
 
-+ Response 400 
-
-        Položky objednávky nebyly označeny jako vrácené.
-
-
++ Response 422 
+        Cannot process state change.
+        
+    + Attributes (Errors)
 
 
 
@@ -254,21 +410,23 @@ Mark order items as returned
 ### ApplicationsOrderSendByApplicationId [PUT]
 Mark order items as sent
 
+System notification. Some or all order items were shipped to customer. 
+Based on application type and partner setting, application payment may be processed.
+
 + Request (application/json)
     + Attributes (OrderItemsChangeRequest)
 
 
 + Response 200 (application/json)
-
-        Položky objednávky byly označeny jako odeslané, případně celá objednávka byla označena jako odeslaná.
+        Order items or whole order is marked as shipped.
 
     + Attributes (Order)
 
 
-+ Response 400 
-
-        Položky objednávky nebyly označeny jako odeslané.
-
++ Response 422 
+        Cannot process state change.
+        
+    + Attributes (Errors)
 
 
 
@@ -282,22 +440,21 @@ Mark order items as sent
 ### ApplicationsPaymentsByApplicationId [GET]
 Get payments
 
+List of realized payments from HC to partner. In case of repeated payment, list may contain more items.
+
+
 + Response 200 (application/json)
-
-        Seznam provedených plateb (pokud žádost byla schválena...).
-
-
-
-        Je prázdný, jestliže žádné platby nebyly zatím realizovány.
-
-    + Attributes (array[Payment])
+        List of payments. May be empty if no payment was processed yet.
+        
+    + Attributes (array[Payment], fixed-type, required)
+    
 
 
 + Response 404 
 
-        Žádost neexistuje.
-
-
+        Application does not exists
+        
+    + Attributes (Errors)
 
 
 
@@ -308,7 +465,7 @@ Get payments
 
 
 ### ApplicationsVerifyByApplicationId [POST]
-Verify application with code
+Verify application with OTP sent to customer by SMS.
 
 + Request 
     + Attributes (number)
@@ -316,16 +473,16 @@ Verify application with code
 
 + Response 200 (application/json)
 
-        Žádost byla kódem verifikována.
+        Application was verified correctly.
 
     + Attributes (Application)
 
 
-+ Response 400 
++ Response 422
 
-        Kód nesouhlasí. Žádost nebyla verifikována.
+        Application was not verified.
 
-
+    + Attributes (Errors)
 
 
 
@@ -333,32 +490,36 @@ Verify application with code
 
 ### Invoices [GET]
 Get invoice info
+
+Finds billing information to be included in invoice.
+This should be used by partner before issuing an invoice, to include correct billing information.
+
 + Parameters
     + orderNumber (string, optional)
 
-        Číslo objednávky.
+        Order number
 
     + orderVariableSymbol (string, optional)
 
-        Variabilní symbol objednávky.
+        Variable symbol
 
     + applicationId (string, optional)
 
-        Identifikátor žádosti.
+        Application identifier
 
 
 + Response 200 (application/json)
 
-        Údaje na faktuře.
+        Invoice info.
 
     + Attributes (InvoiceInfo)
 
 
 + Response 404 
 
-        Data nebyla nalezena.
+        Application was not found.
 
-
+    + Attributes (Errors)
 
 
 
@@ -366,6 +527,9 @@ Get invoice info
 
 ### Orders [GET]
 Get order
+
+Vyhledá a vrátí aktuální data objednávky.\n\nHledá podle variabilního symbolu, čísla objednávky nebo čísla žádosti o financování.
+
 + Parameters
     + orderNumber (string, optional)
 
@@ -391,7 +555,7 @@ Get order
 
         Data nebyla nalezena.
 
-
+    + Attributes (Errors)
 
 
 
@@ -401,7 +565,7 @@ Get order
 ## Installment Programs Down Payments [/installment-programs-down-payments/]
 
 ### InstallmentProgramsDownPayments [POST]
-Calculate installment programs down payments
+Calculate installment programs down payments according to specified input
 
 + Request (application/json)
     + Attributes (InstallmentProgramsDownPaymentsRequest)
@@ -409,7 +573,7 @@ Calculate installment programs down payments
 
 + Response 200 (application/json)
 
-        Informace o akontacích. Nejnižší možná, nejvyšší možná akontace a výše kroku mezi nimi.
+        Down payments information. Minimal, maximal and steps between.
 
     + Attributes (InstallmentProgramsDownPayments)
 
@@ -418,7 +582,7 @@ Calculate installment programs down payments
 ## Installment Programs Offers [/installment-programs-offers/]
 
 ### InstallmentProgramsOffers [POST]
-Calculate installment programs offer
+Calculate installment programs offer according to specified input
 
 + Request (application/json)
     + Attributes (array[InstallmentProgramsOffersRequest])
@@ -426,16 +590,18 @@ Calculate installment programs offer
 
 + Response 200 (application/json)
 
-        Seznam splátkových programů (nejoblíbenější, nejnižší splátka...).
+        Installment programs collection
 
-    + Attributes (array[InstallmentProgram])
+    + Attributes (array[InstallmentProgram], fixed-type, required)
 
 
 
 ## Installment Programs [/installment-programs/]
 
 ### InstallmentPrograms [POST]
-Calculate installment program
+Calculate installment program detailed information.
+
+It returns the installment program that most closely matches specified input.
 
 + Request (application/json)
     + Attributes (InstallmentProgramsRequest)
@@ -443,18 +609,16 @@ Calculate installment program
 
 + Response 200 (application/json)
 
-        Detailní informace o splátkovém programu, který nejblíže odpovídá zadaným kritériím.
+        Detailed information about installment program.
 
     + Attributes (InstallmentProgram)
 
 
-+ Response 400 
++ Response 422
 
-        Neexistuje splátkový program pro vstupní hodnoty.
-
-
-
-
+        No installment program was found.
+    
+    + Attributes (Errors)
 
 
 # Group Prescoring operations
@@ -462,7 +626,8 @@ Calculate installment program
 ## Customer Information [/customer-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
 
 ### CustomerInformation [GET]
-Get customer's information
+Get customer's information according to input
+
 + Parameters
     + emailHash (string, optional)
 
@@ -499,23 +664,23 @@ Get customer's information
 
 + Response 200 (application/json)
 
-        Zákaznická data.
+        Customer data
 
     + Attributes (Customer)
 
 
 + Response 404 
 
-        Zákazník nebyl nalezen.
-
-
-
+        Customer was not found
+    
+    + Attributes (Errors)
 
 
 ## Customer Limit Information [/customer-limit-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
 
 ### CustomerLimitInformation [GET]
 Get customer's limit information
+
 + Parameters
     + emailHash (string, optional)
 
@@ -552,16 +717,16 @@ Get customer's limit information
 
 + Response 200 (application/json)
 
-        Aktuální limity zákazníka.
+        Limits of customer
 
     + Attributes (Limits)
 
 
 + Response 404 
 
-        Zákazník nebyl nalezen.
+        Customer was not found.
 
-
+    + Attributes (Errors)
 
 
 
@@ -570,13 +735,15 @@ Get customer's limit information
 ### Prescore [POST]
 Prescores application
 
+Returns probability of application's approval and limits of customer, if known to HC
+
 + Request (application/json)
     + Attributes (PrescoreRequest)
 
 
 + Response 200 (application/json)
 
-        Status 200
+        Probability of approval
 
     + Attributes (PrescoreResult)
 
@@ -584,6 +751,7 @@ Prescores application
 
 
 # Group Merchantsite operations
+This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
 ## OrderChangeRequest [/{application.merchantUrls.changeEndpoint}/orderChangeRequest{?applicationId,orderNumber,type}]
 
@@ -593,6 +761,9 @@ Prescores application
 
 ### OrderChangeRequest [POST]
 Order change request
+
+Žádá partnera o opravu dat objednávky (např. fakturačních údajů, položek objednávky...).
+
 + Parameters
     + applicationId (string, optional)
 
@@ -624,12 +795,13 @@ Order change request
 
 
 + Response 200 
+    Request processed successfully.
 
 
 
 + Response 400 
 
-        Změny není možné zpracovat.
+        Can not process changes
 
 
 
@@ -642,7 +814,8 @@ Order change request
 
 
 ### ApplicationNotification [POST]
-Application notification
+Notify partner about changes in application.
+
 + Parameters
     + applicationId (string, optional)
 
@@ -674,7 +847,9 @@ Application notification
 
 
 + Response 200 
-    + Attributes (string)
+    Notification successfully processed.
+
+    + Body
 
 
 
@@ -685,11 +860,12 @@ Application notification
 
 
 ### PaymentNotification [POST]
-Payment notification
+Notification about new payment.
+
 + Parameters
     + applicationId (string, optional)
 
-        Identifikátor žádosti o financování.
+        Application identifier
 
 
 + Request (application/json)
@@ -697,9 +873,9 @@ Payment notification
 
 
 + Response 200 
-
-
-
+    Notification successfully processed.
+    
+    + Body
 
 
 # Data Structures
@@ -1555,3 +1731,21 @@ Výsledek prescoringu.
 + `sendDate` (string, optional) - Datum a čas odeslání.
 + `deliveryDate` (string, optional) - Datum a čas doručení.
 + `deliveryTrackingNumber` (string, optional) - Číslo pro sledování zásilky.
+
+## Error (object)
++ code: `ERR_1000_SOME_ERROR_CODE` (string, required) - unique internal error code
++ message: `Some error/validation message description` (string, required) - human readable error description (non-localized)
++ severity (enum, required)
+    + ERROR - critical error, execution cannot continue. This MUST be indicated also by appropriate HTTP status code
+    + WARN - non-critical error, execution can continue but further user interaction is advisable. This MIGHT be indicated also by appropriate HTTP status code
+    + INFO - information only, execution can continue without user interaction
++ attribute: `personalBirthNumber` (string, optional) - json path of request attribute that caused the error (if applicable)    
++ ticketId: `UAT1:AMS:20160516-091658.450:45e4` (string, optional) - internal ticket ID, used for error backtracking
+
+## Errors (object)
++ errors: (array[Error], fixed-type, required)
+
+## PagingInfo (object)
++ itemsPerPage: 10 (number, required) - number of items per page
++ nextPage: `transactions?sort=category&limit=10&after=25` (string, optional) - request to retrieve next page, if it exists and can be unambiguously specified
++ prevPage: `transactions?sort=category&limit=10&before=25` (string, optional) - request to retrieve previous page, if it exists and can be unambiguously specified
