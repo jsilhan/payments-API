@@ -1733,8 +1733,11 @@ Výsledek prescoringu.
 + `invoice` (Document, optional) - Přiložený soubor (faktura, proforma faktura, dobropis ...).
 + `variableSymbol` (string, optional) - Variabilní symbol nově vystaveného dokumentu (faktury, proforma faktury, dobropisu...).
 + `sendDate` (string, optional) - Datum a čas odeslání.
++ `deliveryCarrier` (string, optional) - Dopravce. Číselník dopravců. 
 + `deliveryDate` (string, optional) - Datum a čas doručení.
 + `deliveryTrackingNumber` (string, optional) - Číslo pro sledování zásilky.
++ `totalAmount` (Amount, optional) - Celková cena za všechny kusy zboží v poli orderItems i s DPH. Povinné pokud vznikla faktura (přiložená v invoice).
++ `totalTaxAmount` (Amount, optional) - Nová celková hodnota DPH za všechny kusy zboží poli v orderItems. Povinné pokud vznikla faktura (přiložená v invoice).
 
 ## Error (object)
 + code: `ERR_1000_SOME_ERROR_CODE` (string, required) - unique internal error code
