@@ -39,7 +39,7 @@ Example response pagingInfo:
 ```
 
 ## Sorting
-- some resources (stated in documentation) suppors result sorting. You can specify sorting attributes and order using `sort` request parameter. For ascending order, specify just attribute name; for descending order, add unary - in front of attribute name. You can specify multiple attributes for sorting, separated by comma.
+- some resources (stated in documentation) supports result sorting. You can specify sorting attributes and order using `sort` request parameter. For ascending order, specify just attribute name; for descending order, add unary - in front of attribute name. You can specify multiple attributes for sorting, separated by comma.
 - each resource that supports sorting specifies list of attributes that can be used for sorting.
 
 Examples:
@@ -491,21 +491,25 @@ Verify application with OTP sent to customer by SMS.
 ### Invoices [GET]
 Get invoice info
 
-Finds billing information to be included in invoice.
+Generates billing information to be included in invoice for specific date for specific order or delivery.
 This should be used by partner before issuing an invoice, to include correct billing information.
 
 + Parameters
     + orderNumber (string, optional)
 
-        Order number
+        Order number.
 
     + orderVariableSymbol (string, optional)
 
-        Variable symbol
+        Variable symbol.
 
     + applicationId (string, optional)
 
-        Application identifier
+        Application identifier.
+
+    + billingDate (string, optional)
+
+        Date of issuing an invoice. Default value: today.
 
 
 + Response 200 (application/json)
