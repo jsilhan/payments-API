@@ -1022,6 +1022,46 @@ Data zákazníka.
 + `itemsViewed` (number, optional) - Počet zobrazených stránek s produkty.
 
 
+## OrderItemsChangeRequest (object)
+Object used to change order.
+
+### Properties
++ `orderItems` (array[OrderItem], optional) - Seznam zboží, které se mění. Pokud není vyplněno, změna se týká všeho zboží objednávky..
++ `invoice` (Document, optional) - Přiložený soubor (faktura, proforma faktura, dobropis ...).
++ `variableSymbol` (string, optional) - Variabilní symbol nově vystaveného dokumentu (faktury, proforma faktury, dobropisu...).
++ `sendDate` (string, optional) - Datum a čas odeslání.
++ `deliveryCarrier` (DeliveryCarrier, optional) - Dopravce. Číselník dopravců. 
++ `deliveryDate` (string, optional) - Datum a čas doručení.
++ `deliveryTrackingNumber` (string, optional) - Číslo pro sledování zásilky.
++ `totalAmount` (Amount, optional) - Celková cena za všechny kusy zboží v poli orderItems i s DPH. Povinné pokud vznikla faktura (přiložená v invoice).
++ `totalTaxAmount` (Amount, optional) - Nová celková hodnota DPH za všechny kusy zboží poli v orderItems. Povinné pokud vznikla faktura (přiložená v invoice).
+
+
+## ApplicationRequestOrder (object)
+Order information, needed to create an application.
+
+### Properties
++ `number` (string, required) - order number (internal for e-shop)
++ `variableSymbols` (array[string], optional) - variable symbols (internal for e-shop)
++ `totalAmount` (Amount, required) - total order amount, including VAT
++ `totalTaxAmount` (Amount, required) - total VAT amount
++ `billingAddress` (Address, required) - billing address
++ `deliveryAddress` (Address, optional) - delivery address.
++ `deliveryType` (enum, optional) - delivery type, for `DELIVERY_CARRIER` type can be further specified by DeliveryCarrier attribute.Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
+    + `PERSONAL_BRANCH` - personal collection at branch
+    + `PERSONAL_PARTNER` - personal collection at partner network
+    + `ONLINE` - online delivery (e.g. for intangible assets)
++ `deliveryCarrier` (DeliveryCarrier, optional) - delivery carrier, when applicable.
++ `reservationDate` (string, optional)
+
+   Date and time until order is reserved. 
+
+   After this date, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
+    
++ `items` (array[OrderItem], required) - order items
++ `documents` (array[Document], optional) - attached documents (invoices etc.)
+
+
 ## Order (ApplicationRequestOrder)
 Order information.
 
@@ -1396,30 +1436,6 @@ Kolekce URL adres pro notifikace a návrat k partnerovi (approved, rejected, not
 + `merchantURLs` (MerchantURLs, optional) - Kolekce URL adres pro notifikace a návrat k partnerovi (approved, rejected, notify, change...).
 
 
-## ApplicationRequestOrder (object)
-Order information, needed to create an application.
-
-### Properties
-+ `number` (string, required) - order number (internal for e-shop)
-+ `variableSymbols` (array[string], optional) - variable symbols (internal for e-shop)
-+ `totalAmount` (Amount, required) - total order amount, including VAT
-+ `totalTaxAmount` (Amount, required) - total VAT amount
-+ `billingAddress` (Address, required) - billing address
-+ `deliveryAddress` (Address, optional) - delivery address.
-+ `deliveryType` (enum, optional) - delivery type, for `DELIVERY_CARRIER` type can be further specified by DeliveryCarrier attribute.Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
-    + `PERSONAL_BRANCH` - personal collection at branch
-    + `PERSONAL_PARTNER` - personal collection at partner network
-    + `ONLINE` - online delivery (e.g. for intangible assets)
-+ `deliveryCarrier` (DeliveryCarrier, optional) - delivery carrier, when applicable.
-+ `reservationDate` (string, optional)
-
-   Date and time until order is reserved. 
-
-   After this date, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
-    
-+ `items` (array[OrderItem], required) - order items
-+ `documents` (array[Document], optional) - attached documents (invoices etc.)
-
 
 ## ApplicationRequestResult (object)
 Odpověď na žádost o financování.
@@ -1651,20 +1667,6 @@ Výsledek prescoringu.
     Pokud zákazník dal souhlas o předávání limitů. TODO legal.
 
 
-
-## OrderItemsChangeRequest (object)
-
-
-### Properties
-+ `orderItems` (array[OrderItem], optional) - Seznam zboží, které se mění. Pokud není vyplněno, změna se týká všeho zboží objednávky..
-+ `invoice` (Document, optional) - Přiložený soubor (faktura, proforma faktura, dobropis ...).
-+ `variableSymbol` (string, optional) - Variabilní symbol nově vystaveného dokumentu (faktury, proforma faktury, dobropisu...).
-+ `sendDate` (string, optional) - Datum a čas odeslání.
-+ `deliveryCarrier` (string, optional) - Dopravce. Číselník dopravců. 
-+ `deliveryDate` (string, optional) - Datum a čas doručení.
-+ `deliveryTrackingNumber` (string, optional) - Číslo pro sledování zásilky.
-+ `totalAmount` (Amount, optional) - Celková cena za všechny kusy zboží v poli orderItems i s DPH. Povinné pokud vznikla faktura (přiložená v invoice).
-+ `totalTaxAmount` (Amount, optional) - Nová celková hodnota DPH za všechny kusy zboží poli v orderItems. Povinné pokud vznikla faktura (přiložená v invoice).
 
 ## Error (object)
 + code: `ERR_1000_SOME_ERROR_CODE` (string, required) - unique internal error code
