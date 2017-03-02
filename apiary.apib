@@ -486,7 +486,7 @@ Verify application with OTP sent to customer by SMS.
 
 
 
-## Invoices [/invoices/{?orderNumber,orderVariableSymbol,applicationId}]
+## Invoices [/invoices/{?orderNumber,orderVariableSymbol,applicationId,billingDate}]
 
 ### Invoices [GET]
 Get invoice info
@@ -884,6 +884,29 @@ Notification about new payment.
 
 # Data Structures
 
+## DeliveryCarrier (object) 
+Delivery carrier
+
+### Properties
++ One Of
+    + carrierId (enum, required)
+        + CZ_POST_HAND - Czech Post, Parcel Delivery to Hand
+        + CZ_POST_OFFICE - Czech Post, Parcel Delivery to Post Office
+        + CZ_POST_OTHER - Czech Post, other service
+        + PPL
+        + DPD
+        + GEIS
+        + IN_TIME
+        + TOP_TRANS
+        + GEBRUDER_WEISS
+        + LOCAL_COURIER
+        + TNT
+        + GLS
+        + HDS_COMFORT
+        + HDS_STANDARD
+
+    + carrierCustom: `my custom carrier` (string, required) - for carriers not found in enumeration of customer ID, specify value as text
+
 ## Address (object)
 Adresa.
 
@@ -999,71 +1022,13 @@ Data zákazníka.
 + `itemsViewed` (number, optional) - Počet zobrazených stránek s produkty.
 
 
-## Order (object)
-Data objednávky.
+## Order (ApplicationRequestOrder)
+Order information.
 
 ### Properties
-+ `number` (string, required) - Číslo objednávky (interní v e-shopu).
-+ `variableSymbols` (array[string], optional) - Variabilní symboly (interní v e-shopu).
-+ `totalAmount` (Amount, required) - Celková cena objednávky s DPH.
-+ `totalTaxAmount` (Amount, required) - Celková hodnota DPH objednávky.
-+ `billingAddress` (Address, required) - Fakturační adresa.
-+ `deliveryType` (string, optional) - Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
-+ `deliveryAddress` (Address, optional) - Doručovací adresa.
-+ `deliveryCarrier` (string, optional)
-
-    Název dopravce při typu doručení "Dopravcem". Např. "Česká pošta".
-    
-    Potřeba číselník dopravců - pro lepší scoring. Možné hodnoty:
-    
-    
-    
-    1 = Czech Post - Parcel Delivery to Hand
-    
-    2 = Czech Post - Parcel Delivery to Post Office
-    
-    3 = PPL
-    
-    4 = DPD
-    
-    5 = GEIS
-    
-    6 = InTime
-    
-    7 = TopTrans
-    
-    8 = Gebruder Weiss
-    
-    9 = Local Courier
-    
-    10 = Personal Collection at Branch
-    
-    11 = Personal Collection at Partner Network
-    
-    12 = TNT
-    
-    13 = GLS
-    
-    14 = Czech Post - other services
-    
-    15 = HDS Komfort
-    
-    16 = HDS Standard
-
-+ `deliveryDate` (string, optional) - Datum a čas doručení.
-+ `deliveryTrackingNumber` (string, optional) - Číslo pro sledování zásilky.
-+ `sentDate` (string, optional) - Datum a čas odeslání zboží.
-+ `reservationDate` (string, optional)
-
-    Datum a čas rezervace zboží.
-    
-    
-    
-    Po tomto termínu e-shop negarantuje dostupnost zboží (pokud schválení žádosti trvá déle).
-
-+ `items` (array[OrderItem], required) - Položky objednávky.
-+ `documents` (array[Document], optional) - Přiložené soubory objednávky (faktury, proforma faktury, ...).
-+ `invoiceInfo` (InvoiceInfo, required) - Fakturační údaje.
++ `deliveryDate` (string, optional) - date and time of delivery
++ `deliveryTrackingNumber` (string, optional) - delivery tracking number
++ `sentDate` (string, optional) - date and time of order shipping
 
 
 ## OrderItem (object)
@@ -1432,66 +1397,28 @@ Kolekce URL adres pro notifikace a návrat k partnerovi (approved, rejected, not
 
 
 ## ApplicationRequestOrder (object)
-Data objednávky potřebná pro založení žádosti.
+Order information, needed to create an application.
 
 ### Properties
-+ `number` (string, required) - Číslo objednávky (interní v e-shopu).
-+ `variableSymbols` (array[string], optional) - Variabilní symboly (interní v e-shopu).
-+ `totalAmount` (Amount, required) - Celková cena objednávky s DPH.
-+ `totalTaxAmount` (Amount, required) - Celková hodnota DPH objednávky.
-+ `billingAddress` (Address, required) - Fakturační adresa.
-+ `deliveryType` (string, optional) - Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
-+ `deliveryAddress` (Address, optional) - Doručovací adresa.
-+ `deliveryCarrier` (string, optional)
-
-    Název dopravce při typu doručení "Dopravcem". Např. "Česká pošta".
-    
-    Potřeba číselník dopravců - pro lepší scoring. Možné hodnoty:
-    
-    
-    
-    1 = Czech Post - Parcel Delivery to Hand
-    
-    2 = Czech Post - Parcel Delivery to Post Office
-    
-    3 = PPL
-    
-    4 = DPD
-    
-    5 = GEIS
-    
-    6 = InTime
-    
-    7 = TopTrans
-    
-    8 = Gebruder Weiss
-    
-    9 = Local Courier
-    
-    10 = Personal Collection at Branch
-    
-    11 = Personal Collection at Partner Network
-    
-    12 = TNT
-    
-    13 = GLS
-    
-    14 = Czech Post - other services
-    
-    15 = HDS Komfort
-    
-    16 = HDS Standard
-
++ `number` (string, required) - order number (internal for e-shop)
++ `variableSymbols` (array[string], optional) - variable symbols (internal for e-shop)
++ `totalAmount` (Amount, required) - total order amount, including VAT
++ `totalTaxAmount` (Amount, required) - total VAT amount
++ `billingAddress` (Address, required) - billing address
++ `deliveryAddress` (Address, optional) - delivery address.
++ `deliveryType` (enum, optional) - delivery type, for `DELIVERY_CARRIER` type can be further specified by DeliveryCarrier attribute.Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
+    + `PERSONAL_BRANCH` - personal collection at branch
+    + `PERSONAL_PARTNER` - personal collection at partner network
+    + `ONLINE` - online delivery (e.g. for intangible assets)
++ `deliveryCarrier` (DeliveryCarrier, optional) - delivery carrier, when applicable.
 + `reservationDate` (string, optional)
 
-    Datum a čas rezervace zboží.
-    
-    
-    
-    Po tomto termínu e-shop negarantuje dostupnost zboží (pokud schválení žádosti trvá déle).
+   Date and time until order is reserved. 
 
-+ `items` (array[OrderItem], required) - Položky objednávky.
-+ `documents` (array[Document], optional) - Přiložené soubory objednávky (faktury, proforma faktury, ...).
+   After this date, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
+    
++ `items` (array[OrderItem], required) - order items
++ `documents` (array[Document], optional) - attached documents (invoices etc.)
 
 
 ## ApplicationRequestResult (object)
