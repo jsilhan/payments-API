@@ -1028,16 +1028,16 @@ Customer data
 
 
 ### Properties
-+ `transactionsNumber` (number, optional) - Historický počet hotovostních transakcí zákazníka v e-shopu partnera.
-+ `cashlessTransactionsNumber` (number, optional) - Historický počet bezhotovostních transakcí zákazníka v e-shopu partnera.
++ `transactionsNumber`: 10 (number, optional) - Historický počet hotovostních transakcí zákazníka v e-shopu partnera.
++ `cashlessTransactionsNumber`: 5 (number, optional) - Historický počet bezhotovostních transakcí zákazníka v e-shopu partnera.
 + `transactionsAmount` (Amount, optional) - Součet cen všech hotovostních transakcí zákazníka v e-shopu partnera.
 + `cashlessTransactionsAmount` (Amount, optional) - Součet cen všech bezhotovostních transakcí zákazníka v e-shopu partnera.
-+ `latestTransactionDate` (string, optional) - Datum nejstarší transakce na e-shopu partnera.
-+ `earliestTransactionDate` (string, optional) - Datum nejnovější transakce na e-shopu partnera.
-+ `pageTotalTime` (number, optional) - Celková doba strávená na stránce partnera ve vteřinách.
-+ `pageReviewsTime` (string, optional) - Doba strávená na stránkách s recenzemi a komentáři zboží ve vteřinách.
-+ `cartItemsRemoved` (number, optional) - Celkový počet odstraněných položek v košíku v rámci aktuálního nákupu.
-+ `itemsViewed` (number, optional) - Počet zobrazených stránek s produkty.
++ `latestTransactionDate`: `2017-01-10` (string, optional) - newest transaction date on partner e-shop.
++ `earliestTransactionDate`: `2015-10-12` (string, optional) - oldest transaction date on partner e-shop
++ `pageTotalTime`: 250 (number, optional) - Celková doba strávená na stránce partnera ve vteřinách.
++ `pageReviewsTime`: 100 (number, optional) - Doba strávená na stránkách s recenzemi a komentáři zboží ve vteřinách.
++ `cartItemsRemoved`: 2 (number, optional) - Celkový počet odstraněných položek v košíku v rámci aktuálního nákupu.
++ `itemsViewed`: 10 (number, optional) - Počet zobrazených stránek s produkty.
 
 
 ## OrderItemsChangeRequest (object)
@@ -1046,11 +1046,11 @@ Object used to change order.
 ### Properties
 + `orderItems` (array[OrderItem], optional) - Seznam zboží, které se mění. Pokud není vyplněno, změna se týká všeho zboží objednávky..
 + `invoice` (Document, optional) - Přiložený soubor (faktura, proforma faktura, dobropis ...).
-+ `variableSymbol` (string, optional) - Variabilní symbol nově vystaveného dokumentu (faktury, proforma faktury, dobropisu...).
-+ `sendDate` (string, optional) - Datum a čas odeslání.
++ `variableSymbol`: `122a111` (string, optional) - Variabilní symbol nově vystaveného dokumentu (faktury, proforma faktury, dobropisu...).
++ `sendDate`: `2017-01-12` (string, optional) - Datum a čas odeslání.
 + `deliveryCarrier` (DeliveryCarrier, optional) - Dopravce. Číselník dopravců. 
-+ `deliveryDate` (string, optional) - Datum a čas doručení.
-+ `deliveryTrackingNumber` (string, optional) - Číslo pro sledování zásilky.
++ `deliveryDate`: `2017-01-15` (string, optional) - Datum a čas doručení.
++ `deliveryTrackingNumber`: `EEX1221` (string, optional) - Číslo pro sledování zásilky.
 + `totalAmount` (Amount, optional) - Celková cena za všechny kusy zboží v poli orderItems i s DPH. Povinné pokud vznikla faktura (přiložená v invoice).
 + `totalTaxAmount` (Amount, optional) - Nová celková hodnota DPH za všechny kusy zboží poli v orderItems. Povinné pokud vznikla faktura (přiložená v invoice).
 
@@ -1059,7 +1059,7 @@ Object used to change order.
 Order information, needed to create an application.
 
 ### Properties
-+ `number` (string, required) - order number (internal for e-shop)
++ `number`: `AA234` (string, required) - order number (internal for e-shop)
 + `variableSymbols` (array[string], optional) - variable symbols (internal for e-shop)
 + `totalAmount` (Amount, required) - total order amount, including VAT
 + `totalTaxAmount` (Amount, required) - total VAT amount
@@ -1069,7 +1069,7 @@ Order information, needed to create an application.
     + `PERSONAL_PARTNER` - personal collection at partner network
     + `ONLINE` - online delivery (e.g. for intangible assets)
 + `deliveryCarrier` (DeliveryCarrier, optional) - delivery carrier, when applicable.
-+ `reservationDate` (string, optional)
++ `reservationDate`: `2017-01-20` (string, optional)
 
    Date and time until order is reserved. 
 
@@ -1083,109 +1083,43 @@ Order information, needed to create an application.
 Order information.
 
 ### Properties
-+ `deliveryDate` (string, optional) - date and time of delivery
-+ `deliveryTrackingNumber` (string, optional) - delivery tracking number
-+ `sentDate` (string, optional) - date and time of order shipping
++ `deliveryDate`: `2017-01-17` (string, optional) - date and time of delivery
++ `deliveryTrackingNumber`: `EX12221` (string, optional) - delivery tracking number
++ `sentDate`: `2017-01-12` (string, optional) - date and time of order shipping
 
 
 ## OrderItem (object)
-Položka zboží na objednávce.
+Item on order
 
 ### Properties
-+ `type` (string, optional)
++ `type` (enum, optional) - item type
+    + PHYSICAL
+    + DISCOUNT 
+    + `SHIPPING_FEE`
+    + `SALES_TAX`
+    + DIGITAL
+    + `GIFT_CARD`
+    + `STORE_CREDIT`
+    + `FEE`
 
-    Typ:
-    
-    
-    
-    physical - fyzické zboží
-    
-    
-    
-    discount - sleva
-    
-    
-    
-    shippingFee - poplatek za dopravu
-    
-    
-    
-    salesTax - daň
-    
-    
-    
-    digital - digitální zboží
-    
-    
-    
-    giftCard - slevový kupón
-    
-    
-    
-    storeCredit - kredit
-    
-    
-    
-    surcharge - poplatek
-
-+ `code` (string, optional) - Kód zboží (interní v e-shopu). Pro lepší identifikaci zboží pro budoucí změny pomocí dalších metod.
-+ `ean` (string, optional)
-
-    EAN.
-    
-    
-    
-    Například: "888462064002"
-
-+ `name` (string, required)
-
-    Název zboží.
-    
-    
-    
-    Například: "iPhone 6s 32GB SpaceGray"
-
-+ `variant` (string, optional)
-
-    Varianta zboží.
-    
-    
-    
-    Například: "32GB SpaceGray"
-
-+ `description` (string, optional)
-
-    Popisek zboží.
-    
-    
-    
-    Například: "Mobilní telefon Apple A9 s 64bitovou architekturou a pohybovým koprocesorem M9, dotyko..."
-
-+ `producer` (string, optional)
-
-    Výrobce zboží.
-    
-    
-    
-    Například: "Apple"
-
-+ `categories` (array[string], optional)
-
-    Seznam kategorií zboží.
-    
-    
-    
-    Například: ["Mobilní telefony", "iPhone"]
-
-+ `quantity` (number, optional) - Počet kusů zboží.
-+ `unitPriceAmount` (Amount, optional) - Cena za jeden kus.
-+ `totalAmount` (Amount, required) - Celková cena za všechny kusy zboží i s DPH.
-+ `totalTaxAmount` (Amount, required) - Celková hodnota DPH za všechny kusy zboží.
-+ `image` (File7, optional) - Obrázek zboží.
-+ `productURL` (string, optional) - URL adresa položky v e-shopu.
-+ `sendDate` (string, optional) - Datum a čas odeslání této položky. Pokud všechno zboží nebylo expedováno najednou.
-+ `deliveryDate` (string, optional) - Datum a čas doručení této položky. Pokud všechno zboží nebylo expedováno najednou.
-+ `deliveryTrackingNumber` (string, optional) - Číslo pro sledování zásilky této položky. Pokud všechno zboží nebylo expedováno najednou.
++ `code`: `EXC4677-1a` (string, optional) - internal code for item (internal to e-shop). Used to better identify the item for future changes
++ `ean`: 888462064002 (string, optional) - EAN code.
++ `name`: `iPhone 6s 32GB SpaceGray` (string, required) - item name
++ `variant`: `32GB SpaceGray` (string, optional) - item variant
++ `description`: `Mobile phone with 32GB of RAM` (string, optional)
++ `producer`: `Apple` (string, optional)
++ `categories` (array[string], optional) - item categories
+    + `mobile phones`
+    + `iPhone`
++ `quantity`: 1 (number, optional) - item quantity
++ `unitPriceAmount` (Amount, optional) - price per one piece
++ `totalAmount` (Amount, required) - total price for all pieces, VAT inclusive
++ `totalTaxAmount` (Amount, required) - total VAT amount for all pieces
++ `image` (File7, optional) - item image
++ `productURL`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
++ `sendDate`: `2017-01-10` (string, optional) - date when item was sent. Only when the whole order was NOT sent at once.
++ `deliveryDate`: `2017-01-12` (string, optional) - date when item was delivered. Only when the whole order was NOT sent at once.
++ `deliveryTrackingNumber: `EX21121` (string, optional) - Tracking number for the item. Only when the whole order was NOT sent at once.
 
 
 ## File7 (object)
@@ -1250,45 +1184,22 @@ Přiložený soubor objednávky (faktura, proforma faktura, dobropis...).
 
 
 ## InstallmentProgram (object)
-Splátkový program.
+Installment programs
 
 ### Properties
-+ `type` (string, optional)
-
-    Typ programu.
-    
-    
-    
-    minimal - Splátkový program s nejnižší splátkou.
-    
-    
-    
-    favourite - Doporučený (oblíbený) splátkový program.
-    
-    
-    
-    other - Ostatní programy.
-
-+ `installmentAmount` (Amount, optional) - Výše měsíční splátky.
-+ `numberOfInstallments` (number, optional)
-
-    Počet měsíčních splátek.
-    
-    
-    
-    Například 6
-
++ `type` (enum, optional) - program type
+    + MINIMAL - lowest installment
+    + FAVOURITE - recommended (favourite) installment program
+    + OTHER
++ `installmentAmount` (Amount, optional) - monthly installment amount
++ `numberOfInstallments`: 10 (number, optional) - installment count
 + `detail` (Detail, optional)
 
-    Detailní data kalkulace.
+    Calculation detailed information.
+
+    Only available for calculations received by calling `POST /installment-programs`
     
-    
-    
-    K dispozici pouze pokud je získáno metodou "POST /installment-programs/".
-    
-    
-    
-    U metody "POST /installment-programs-offers/" není k dispozici.
+    Not available for  "POST /installment-programs-offers/" 
 
 
 
