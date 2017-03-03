@@ -907,62 +907,61 @@ Delivery carrier
 
     + carrierCustom: `my custom carrier` (string, required) - for carriers not found in enumeration of customer ID, specify value as text
 
+## PhoneNumber (object)
++ phoneType: `PRIMARY_MOBILE` (enum, required) - type of phone
+    + `PRIMARY_MOBILE`
+    + `SECONDARY_MOBILE`
+    + `HOME_PHONE`
+    + `EMPLOYMENT_PHONE`
++ countryCode: `+420` (string, optional) - country code, including leading `+`
++ number: `123456789` (string, required) - phone number
+
 ## Address (object)
-Adresa.
+Address.
 
 ### Properties
-+ `name` (string, optional) - Jméno, které je uvedené v adrese.
-+ `country` (string, optional)
++ `name`: `John Doe` (string, optional) - name on address
++ `country`: `CZ` (string, optional)
 
-    Stát. Např.: "CZ".
+    Country. 
     
-    
-    
-    (ISO 3166 alpha-2)
+    (see ISO 3166 alpha-2)
 
-+ `city` (string, optional) - Obec.
-+ `streetAddress` (string, optional) - Ulice.
-+ `streetNumber` (string, optional) - Číslo popisné a/nebo orientační.
-+ `zip` (string, optional) - Poštovní směrovací číslo.
++ `city`: `Prague` (string, optional) - city.
++ `streetAddress`: `Letenská` (string, optional) - street/city part.
++ `streetNumber`: `22` (string, optional) - street number
++ `zip`: `140 00` (string, required) - postal code
++ `addressType` (enum, required) - type of the address. Only some of the types are allowed in each context.
+    + `PERMANENT` - permanent residential address
+    + `CONTACT` - contact address
+    + `DELIVERY` - delivery address
+    + `BILLING` - billing address
 
 
 ## Amount (object)
-Finanční částka.
+Financial amount
 
 ### Properties
-+ `amount` (number, required)
++ `amount`: `125.90` (number, required)
 
-    Částka.
+    Amount in decimal format 
     
-    ISO 4217
-    
-    
-    
-    Například 12590
 
-+ `currency` (string, required)
++ `currency`: `CZK` (string, required)
 
-    Měna. ISO 4217
-    
-    
-    
-    Například CZK
+    Amount currency. ISO 4217
 
-+ `formated` (string, optional)
-
-    Naformátovaný zápis. 
++ `formated`: `125,90 Kč` (string, optional)
     
-    
-    
-    Například "125,90 Kč"
+    Formatted interpretation, localized.
 
 
 
 ## Application (object)
-Žádost o financování.
+Financing application request
 
 ### Properties
-+ `id` (string, required) - Unique identifier in HCO
++ `id`: `HCO-11200a0ee1` (string, required) - Unique identifier in HCO
 + `state` (enum, required) - Application state.
     + `VERIFICATION_CODE_NEEDED` - SMS code verification is required
     + `ADDITIONAL_DATA_NEEDED` - need additional data for further processing
@@ -970,40 +969,41 @@ Finanční částka.
     + `APPROVED` - application was approved
     + `REJECTED` - application was rejected
     + `CANCELLED` - application was cancelled
-+ `stateReason` (string, optional) - State transition reason; only applicable for some of the states, e.g. REJECTED - reason to reject
++ `stateReason`: `rejected from previous history` (string, optional) - State transition reason; only applicable for some of the states, e.g. REJECTED - reason to reject
 + `customer` (Customer, required) - Customer data
 + `order` (Order, required) - Order data
 + `type` (enum, required) - Financing type. TODO
     + `POSTPONE` - "zaplať později"
     + `LOAN` - Rozklad
-+ `preferredMonths` (number, optional) - Preferred number of installments (in months).
++ `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months).
 + `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount.
 + `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount.
 + `subscriptionFlag` (boolean, optional) - Flag indicating repeated payment
     + Default: false
     
 + `subscriptionPaymentFrequency` (string, optional) - payment frequency for repeated payment
-+ `subscriptionPaymentFirstDate` (string, optional) - first payment date for repeated payment
-+ `agreementPersonalDataProcessing` (boolean, required) - flag indicating already approved personal data processing
-+ `agreementTermsAndConditions` (boolean, optional) - flag indicating already approved terms and conditions
-+ `productCode` (string, optional) - Product code, this indicates previous calculation result
-+ `productSetCode` (string, optional) - Product set code, this will limit further calculations
++ `subscriptionPaymentFirstDate`: `2016-10-12` (string, optional) - first payment date for repeated payment
++ `agreementPersonalDataProcessing`: `true` (boolean, required) - flag indicating already approved personal data processing
++ `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
++ `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
++ `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
 
 
 ## Customer (object)
-Data zákazníka.
+Customer data
 
 ### Properties
-+ `fullName` (string, optional) - Plné jméno zákazníka (např. i s tituly před jménem a za jménem a oslovením pan/paní/slečna).
-+ `firstName` (string, optional) - Křestní jméno zákazníka.
-+ `lastName` (string, optional) - Příjmení zákazníka.
-+ `email` (string, required) - E-mailová adresa zákazníka.
-+ `mobilePhone` (string, required) - Mobilní telefonní číslo zákazníka.
-+ `permanentAddress` (Address, optional) - Trvalá adresa.
-+ `contactAddress` (Address, optional) - Kontaktní adresa.
-+ `tin` (string, optional) - IČ
-+ `vatin` (string, optional) - DIČ
-+ `extraData` (ExtraData, optional) - Další data zákazníka, které mohou vylepšit pravděpodobnost schválení.
++ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation.
++ `firstName`: `John` (string, optional) - Křestní jméno zákazníka.
++ `lastName`: `Newborn` (string, optional) - Příjmení zákazníka.
++ `honourBeforeName`: `Ing.` (string, optional) - academical degree, in front of the name
++ `honourAfterName`: `CSc.` (string, optional) - academical degree, behind name
++ `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
++ `phoneNumber` (array[PhoneNumber], required) - phone numbers
++ `addresses` (array[Address], optional) - addresses. Only `PERMANENT` and `CONTACT` types are allowed.
++ `tin`: `12333321` (string, optional) - tax identification number (ICO)
++ `vatin`: `CZ8402154456` (string, optional) - VAT identification number
++ `extraData` (ExtraData, optional) - additional data, that may improve the approval probability
 
 
 ## ExtraData (object)
@@ -1045,8 +1045,7 @@ Order information, needed to create an application.
 + `variableSymbols` (array[string], optional) - variable symbols (internal for e-shop)
 + `totalAmount` (Amount, required) - total order amount, including VAT
 + `totalTaxAmount` (Amount, required) - total VAT amount
-+ `billingAddress` (Address, required) - billing address
-+ `deliveryAddress` (Address, optional) - delivery address.
++ `addresses` (array[Address], required) - addresses. Only `BILLING` and `DELIVERY` types are allowed.
 + `deliveryType` (enum, optional) - delivery type, for `DELIVERY_CARRIER` type can be further specified by DeliveryCarrier attribute.Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
     + `PERSONAL_BRANCH` - personal collection at branch
     + `PERSONAL_PARTNER` - personal collection at partner network
@@ -1227,9 +1226,9 @@ Přiložený soubor objednávky (faktura, proforma faktura, dobropis...).
 Údaje, které mají být uvedeny na faktuře.
 
 ### Properties
-+ `fullName` (string, required) - Plné jméno zákazníka (např. i s tituly před jménem a za jménem a oslovením pan/paní/slečna).
-+ `address` (Address, required) - Adresa.
-+ `dueDate` (string, optional) - Datum splatnosti. Pokud není vyplněno, e-shop použije výchozí hodnotu.
++ `fullName` (string, required) - customer full name, including academical degrees and salutation (Mr./Mrs./..)
++ `address` (Address, required) - Adresa. Only `BILLING` address type is allowed.
++ `dueDate` (string, optional) - Invoice due date. If not specified, default value will be used by partner.
 
 
 ## InstallmentProgram (object)
