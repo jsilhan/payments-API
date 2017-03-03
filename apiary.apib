@@ -10,7 +10,7 @@ API documentation for Home Credit One-Click API.
 - we use plural in resource names
 
 ## Paging
-- some resources (stated in documentation) that return collection of objects support pagination.
+- some resources (stated in documentation) that return collection of objects support pagination. We are using technique known as 'cursor-based pagination'.
 - on request:
   - query parameter `limit` specifies maximum number of objects in returned collection
   - query parameter `after` specifies last object retrieved in previous request. Its value is usually `id` of last object retrieved in previous call, but this will be stated in documentation. Parameter `after` is used when traversing collection forwards.
@@ -191,13 +191,14 @@ Create application
 
 
 
-## Applications By ApplicationId [/applications/{applicationId}]
+## Application detail [/applications/{applicationId}]
+Operations on specific application
 
 + Parameters
     + applicationId (string, required)
 
 
-### ApplicationsByApplicationId [GET]
+### Application detail by ID [GET]
 Get specific application
 
 + Response 200 (application/json)
@@ -222,7 +223,7 @@ Get specific application
     + applicationId (string, required)
 
 
-### ApplicationsAdditionalData [POST]
+### Add Applications Additional Data [POST]
 Send additional data needed to complete the application.
 
 + Request (application/json)
@@ -250,7 +251,7 @@ Send additional data needed to complete the application.
     + applicationId (string, required)
 
 
-### ApplicationsCancelByApplicationId [PUT]
+### Cancel Application [PUT]
 Cancel application, or cancel repeated payment.
 
 + Parameters
@@ -273,13 +274,13 @@ Cancel application, or cancel repeated payment.
     + Attributes (Errors)
 
 
-## Applications Order By ApplicationId [/applications/{applicationId}/order{?reason}]
+## Application Order [/applications/{applicationId}/order{?reason}]
 
 + Parameters
     + applicationId (string, required)
 
 
-### ApplicationsOrderByApplicationId [PUT]
+### Change Application Order [PUT]
 Change order. Used to change order items, total amount, billing details etc.
 
 + Parameters
@@ -307,13 +308,13 @@ Change order. Used to change order items, total amount, billing details etc.
 
 
 
-## Applications Order Cancel [/applications/{applicationId}/order/cancel]
+## Cancel Applications Order  [/applications/{applicationId}/order/cancel]
 
 + Parameters
     + applicationId (string, required)
 
 
-### ApplicationsOrderCancelByApplicationId [PUT]
+### Cancel Application Order [PUT]
 Mark order items as cancelled
 
 System notification. Some or all of the order items were cancelled. Based on application type and partner setting, credit note may be issued.
@@ -340,13 +341,13 @@ System notification. Some or all of the order items were cancelled. Based on app
 
 
 
-## Applications Order Deliver [/applications/{applicationId}/order/deliver]
+## Applications Order Delivery [/applications/{applicationId}/order/deliver]
 
 + Parameters
     + applicationId (string, required)
 
 
-### ApplicationsOrderDeliverByApplicationId [PUT]
+### Deliver Applications Order [PUT]
 Mark order items as delivered.
 
 System notification. Some or all order items were delivered to customer. 
@@ -377,7 +378,7 @@ Based on application type and partner setting, application payment may be proces
     + applicationId (string, required)
 
 
-### ApplicationsOrderReturnByApplicationId [PUT]
+### Return Application Order [PUT]
 Mark order items as returned.
 
 System notification. Some or all order items were returned by customer back to e-shop.
@@ -401,13 +402,13 @@ Based on application type and partner setting, credit note may be issued.
 
 
 
-## Applications Order Send By ApplicationId [/applications/{applicationId}/order/send]
+## Applications Order Send [/applications/{applicationId}/order/send]
 
 + Parameters
     + applicationId (string, required)
 
 
-### ApplicationsOrderSendByApplicationId [PUT]
+### Application Order Send [PUT]
 Mark order items as sent
 
 System notification. Some or all order items were shipped to customer. 
@@ -431,17 +432,26 @@ Based on application type and partner setting, application payment may be proces
 
 
 
-## Applications Payments By ApplicationId [/applications/{applicationId}/payments]
+## Applications Payments  [/applications/{applicationId}/payments]
 
 + Parameters
     + applicationId (string, required)
 
 
 ### ApplicationsPaymentsByApplicationId [GET]
-Get payments
+Get payments on specific application
 
 List of realized payments from HC to partner. In case of repeated payment, list may contain more items.
 
+feature | supported by resource
+--- | ---
+[paging](#header-paging) | yes
+[sorting](#header-sorting) | no
+[filtering](#header-filtering) | no
+
+This resource supports [paging](#header-paging). As a value to `before` and `after` parameters, use `paymentId` attribute.
+
+Collection is sorted by paymentId attribute.
 
 + Response 200 (application/json)
         List of payments. May be empty if no payment was processed yet.
@@ -458,13 +468,13 @@ List of realized payments from HC to partner. In case of repeated payment, list 
 
 
 
-## Applications Verify By ApplicationId [/applications/{applicationId}/verify]
+## Applications Verify  [/applications/{applicationId}/verify]
 
 + Parameters
     + applicationId (string, required)
 
 
-### ApplicationsVerifyByApplicationId [POST]
+### Application Verify [POST]
 Verify application with OTP sent to customer by SMS.
 
 + Request 
@@ -532,32 +542,34 @@ This should be used by partner before issuing an invoice, to include correct bil
 ### Orders [GET]
 Get order
 
-Vyhledá a vrátí aktuální data objednávky.\n\nHledá podle variabilního symbolu, čísla objednávky nebo čísla žádosti o financování.
+Search for order using specified parameters.
+
+Parameters include variable symbol, order number or application number
 
 + Parameters
     + orderNumber (string, optional)
 
-        Číslo objednávky.
+        Order number
 
     + orderVariableSymbol (string, optional)
 
-        Variabilní symbol objednávky.
+        Order variable symbol
 
     + applicationId (string, optional)
 
-        Identifikátor žádosti.
+        Application ID.
 
 
 + Response 200 (application/json)
 
-        Data objednávky.
+        Order data.
 
     + Attributes (Order)
 
 
 + Response 404 
 
-        Data nebyla nalezena.
+        Order not found.
 
     + Attributes (Errors)
 
@@ -587,6 +599,12 @@ Calculate installment programs down payments according to specified input
 
 ### InstallmentProgramsOffers [POST]
 Calculate installment programs offer according to specified input
+
+feature | supported by resource
+--- | ---
+[paging](#header-paging) | no
+[sorting](#header-sorting) | no
+[filtering](#header-filtering) | no
 
 + Request (application/json)
     + Attributes (array[InstallmentProgramsOffersRequest])
@@ -1387,10 +1405,11 @@ Limity zákazníka.
 Informace o proplacení.
 
 ### Properties
-+ `date` (string, required) - Datum provedení platby.
-+ `applicationId` (string, required) - Žádost, díky které byla platba provedena.
-+ `amount` (Amount, required) - Výše platby
-+ `invoice` (InvoiceInfo, required) - Faktura.
++ `paymentId` (string, required) - payment identifier
++ `date` (string, required) - payment date.
++ `applicationId` (string, required) - application ID, that this payment belongs to
++ `amount` (Amount, required) - payment amount
++ `invoice` (InvoiceInfo, required) - invoice data.
 
 
 ## MerchantURLs (object)
