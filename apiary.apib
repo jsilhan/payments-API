@@ -644,7 +644,7 @@ It returns the installment program that most closely matches specified input.
     + Attributes (Errors)
 
 
-# Group Prescoring operations
+# Group Precheck operations
 
 ## Customer Information [/customer-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
 
@@ -753,22 +753,22 @@ Get customer's limit information
 
 
 
-## Prescore [/prescore/]
+## Precheck [/precheck/]
 
-### Prescore [POST]
-Prescores application
+### Precheck [POST]
+Prechecks application
 
 Returns probability of application's approval and limits of customer, if known to HC
 
 + Request (application/json)
-    + Attributes (PrescoreRequest)
+    + Attributes (PrecheckRequest)
 
 
 + Response 200(application/json)
 
         Probability of approval
 
-    + Attributes (PrescoreResult)
+    + Attributes (PrecheckResult)
 
 
 
@@ -1440,8 +1440,8 @@ Dodatečná data o zákazníkovi.
 + `amount` (Amount, required) - Cena zboží.
 
 
-## PrescoreRequest (object)
-Data pro prescoring. 
+## PrecheckRequest (object)
+Data pro precheck. 
 
 Obdobná struktura jako Application.
 
@@ -1472,8 +1472,8 @@ Obdobná struktura jako Application.
 + `subscriptionPaymentFirstDate` (string, optional) - Jedná-li se o opakovanou platbu,  datum první platby.
 
 
-## PrescoreResult (object)
-Výsledek prescoringu.
+## PrecheckResult (object)
+Výsledek prechecku.
 
 ### Properties
 + `recommendation` (boolean, required)
@@ -1506,7 +1506,7 @@ Výsledek prescoringu.
 
 + `code` (string, required)
 
-    Kód výsledku prescoringu. Možné hodnoty:
+    Kód výsledku prechecku. Možné hodnoty:
     
     
     
