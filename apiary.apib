@@ -181,7 +181,7 @@ Create application
     + Attributes (ApplicationRequestResult)
 
 
-+ Response 400 
++ Response 400 (application/json)
 
         There was an error processing request
         
@@ -208,7 +208,7 @@ Get specific application
     + Attributes (Application)
 
 
-+ Response 404 
++ Response 404 (application/json)
 
         Application does not exist
         
@@ -237,7 +237,7 @@ Send additional data needed to complete the application.
     + Attributes (Application)
 
 
-+ Response 400 
++ Response 400 (application/json)
 
         Error in processing request.
 
@@ -262,13 +262,13 @@ Cancel application, or cancel repeated payment.
         + `TODO`
         
         
-+ Response 200
++ Response 200 (application/json)
     Application was cancelled.
     
     + Body
 
 
-+ Response 422
++ Response 422 (application/json)
     Application cannot be cancelled
     
     + Attributes (Errors)
@@ -299,7 +299,7 @@ Change order. Used to change order items, total amount, billing details etc.
     + Attributes (Order)
 
 
-+ Response 422 
++ Response 422 (application/json)
     Order cannot be changed.
         
     + Attributes (Errors)    
@@ -331,7 +331,7 @@ System notification. Some or all of the order items were cancelled. Based on app
     + Attributes (Order)
 
 
-+ Response 422
++ Response 422 (application/json)
 
         Cannot cancel order items.
         
@@ -364,7 +364,7 @@ Based on application type and partner setting, application payment may be proces
     + Attributes (Order)
 
 
-+ Response 422 
++ Response 422 (application/json)
         Cannot process state change.
         
     + Attributes (Errors)
@@ -395,7 +395,7 @@ Based on application type and partner setting, credit note may be issued.
     + Attributes (Order)
 
 
-+ Response 422 
++ Response 422 (application/json)
         Cannot process state change.
         
     + Attributes (Errors)
@@ -424,7 +424,7 @@ Based on application type and partner setting, application payment may be proces
     + Attributes (Order)
 
 
-+ Response 422 
++ Response 422 (application/json)
         Cannot process state change.
         
     + Attributes (Errors)
@@ -460,7 +460,7 @@ Collection is sorted by paymentId attribute.
     
 
 
-+ Response 404 
++ Response 404 (application/json)
 
         Application does not exists
         
@@ -477,7 +477,7 @@ Collection is sorted by paymentId attribute.
 ### Application Verify [POST]
 Verify application with OTP sent to customer by SMS.
 
-+ Request 
++ Request (application/json)
     + Attributes (number, required)
     
 
@@ -489,7 +489,7 @@ Verify application with OTP sent to customer by SMS.
     + Attributes (Application)
 
 
-+ Response 422
++ Response 422 (application/json)
 
         Application was not verified.
 
@@ -530,7 +530,7 @@ This should be used by partner before issuing an invoice, to include correct bil
     + Attributes (InvoiceInfo)
 
 
-+ Response 404 
++ Response 404 (application/json)
 
         Application was not found.
 
@@ -568,7 +568,7 @@ Parameters include variable symbol, order number or application number
     + Attributes (Order)
 
 
-+ Response 404 
++ Response 404 (application/json)
 
         Order not found.
 
@@ -637,7 +637,7 @@ It returns the installment program that most closely matches specified input.
     + Attributes (InstallmentProgram)
 
 
-+ Response 422
++ Response 422 (application/json)
 
         No installment program was found.
     
@@ -692,7 +692,7 @@ Get customer's information according to input
     + Attributes (Customer)
 
 
-+ Response 404 
++ Response 404 (application/json)
 
         Customer was not found
     
@@ -745,7 +745,7 @@ Get customer's limit information
     + Attributes (Limits)
 
 
-+ Response 404 
++ Response 404 (application/json)
 
         Customer was not found.
 
@@ -817,12 +817,12 @@ Asks partner to correct order data (billing information, order items etc.)
     + Attributes (Order)
 
 
-+ Response 200 
++ Response 200 (application/json)
     Request processed successfully.
 
 
 
-+ Response 400 
++ Response 400 (application/json)
 
         Can not process changes
 
@@ -869,7 +869,7 @@ Notify partner about changes in application.
     + Attributes (Application)
 
 
-+ Response 200 
++ Response 200 (application/json)
     Notification successfully processed.
 
     + Body
@@ -895,7 +895,7 @@ Notification about new payment.
     + Attributes (Payment)
 
 
-+ Response 200 
++ Response 200 (application/json)
     Notification successfully processed.
     
     + Body
