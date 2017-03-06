@@ -478,7 +478,8 @@ Collection is sorted by paymentId attribute.
 Verify application with OTP sent to customer by SMS.
 
 + Request 
-    + Attributes (number)
+    + Attributes (number, required)
+    
 
 
 + Response 200 (application/json)
@@ -784,7 +785,7 @@ This set of APIs is NOT exposed from HC. Instead, it should be developed by part
 ### OrderChangeRequest [POST]
 Order change request
 
-Žádá partnera o opravu dat objednávky (např. fakturačních údajů, položek objednávky...).
+Asks partner to correct order data (billing information, order items etc.)
 
 + Parameters
     + applicationId (string, optional)
