@@ -1032,8 +1032,8 @@ Customer data
 
 ### Properties
 + `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation.
-+ `firstName`: `John` (string, optional) - Křestní jméno zákazníka.
-+ `lastName`: `Newborn` (string, optional) - Příjmení zákazníka.
++ `firstName`: `John` (string, optional) -  Customer first (given) name
++ `lastName`: `Newborn` (string, optional) - Customer last (family) name
 + `honourBeforeName`: `Ing.` (string, optional) - academical degree, in front of the name
 + `honourAfterName`: `CSc.` (string, optional) - academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
@@ -1146,36 +1146,38 @@ Item on order
 
 
 ### Properties
-+ `filename` (string, optional) - Filename
-+ `content` (string, optional)
-    Content of the file. Optional as long as url is defined.
-    Base64, maximum size 500kB.
-+ `url` (string, optional) - URL of the file. Optional as long as content is defined.
++ `filename`: `invoice.pdf` (string, optional) - file name.
++ One Of
+    + `content`: `VG90byBqZSBvYnNhaCBzb3Vib3J1` (string, required)
+
+        File content - Base64 encoded, maximum size is 500kB
+    
+    + `url`: `https://www.partner.com/file?id=12345` (string, required) - file URL.
 
 
 ## Document (object)
-Attached file of the application.
+Attached document (e.g. invoice, credit note etc.)
 
 ### Properties
-+ `type` (enum, required) - Document type
++ `type` (enum, required) - type of the document
     + `INVOICE` - Invoice
-    + `PROFORMA_INVOCE` - Proforma invoice
+    + `PROFORMA_INVOICE` - Proforma invoice
     + `CREDIT_NOTE` - Credit note
     + `OTHER` - Other document type
-+ `file` (File7, required) - File
-+ `description` (string, optional) - File description
-+ `extraData` (ExtraData9, optional) - Document additional data
++ `file` (File7, required) - attached file.
++ `description`: `This is an invoice` (string, optional) - file description.
++ `extraData` (ExtraData9, optional) - additional data, if applicable
 
 
 ## ExtraData9 (object)
 
 
 ### Properties
-+ `variableSymbol` (string, optional) - Internal variable symbol of e-shop.
++ `variableSymbol`: `112254asdf` (string, optional) - variable symbol (internal for e-shop)
 
 
 ## InvoiceInfo (object)
-Invoice information.
+Billing information, to be included in invoice.
 
 ### Properties
 + `fullName` (string, required) - customer full name, including academical degrees and salutation (Mr./Mrs./..)
