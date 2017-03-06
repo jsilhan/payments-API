@@ -985,12 +985,11 @@ Financing application request
 ### Properties
 + `id`: `HCO-11200a0ee1` (string, required) - Unique identifier in HCO
 + `state` (enum, required) - Application state.
-    + `INCOMPLETE` - application is being collected (use redirect or send required data)
     + `PROCESSING` - application is being processed by HC
-    + `READY` - application was approved
+    + `READY` - application was approved and is ready for financing
     + `REJECTED` - application was rejected
-    + `CANCELLED` - application was cancelled
-+ `stateReason`: `rejected from previous history` (enum, optional) - State transition reason; only applicable for some of the states, e.g. REJECTED - reason to reject
+    + `CANCELLED` - application was cancelled by client, either before approval or after delivery
++ `stateReason`: `PROCESSING_APPROVED` (enum, optional) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
     + `INCOMPLETE_ADDITIONAL_DATA` - Additional data needed (redirect to HC or send Application additional data)
     + `INCOMPLETE_VERIFICATION` - Verification needed (redirect to HC or send Application verification)
     + `PROCESSING_NEW` - New application created
