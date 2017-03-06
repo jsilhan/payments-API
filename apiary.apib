@@ -117,7 +117,7 @@ Errors object example:
 
     errors: [
         {
-            "code": "ERR_100,
+            "code": "ERR_100",
             "message": "Invalid contract number",
             "severity": "ERROR",
             "attribute": "partyAccount.accountNumber",          // optional
@@ -818,7 +818,10 @@ Asks partner to correct order data (billing information, order items etc.)
 
 
 + Response 200(application/json)
-    Request processed successfully.
+        
+        Request processed successfully.
+
+    + Attributes (Order)
 
 
 
