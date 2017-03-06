@@ -167,7 +167,7 @@ There are 3 levels of error severity:
 
 ## Applications [/applications/]
 
-### Create application [POST]
+### Create Application [POST]
 Create new funding application
 
 + Request (application/json)
@@ -198,7 +198,7 @@ Operations on specific application
     + applicationId (string, required)
 
 
-### Get application detail [GET]
+### Get Application Detail [GET]
 Get specific application detail by ID
 
 + Response 200(application/json)
@@ -223,7 +223,7 @@ Get specific application detail by ID
     + applicationId (string, required)
 
 
-### Add Applications Additional Data [POST]
+### Add Application Additional Data [POST]
 Send additional data needed to complete the application.
 
 + Request (application/json)
@@ -1147,16 +1147,16 @@ Item on order
 
 
 ### Properties
-+ `filename` (string, optional) - Název souboru.
++ `filename` (string, optional) - Filename.
 + `content` (string, optional)
 
-    Obsah souboru. Nepovinné, pokud je zadán url.
+    Content of the file. Optional as long as url is defined.
     
     
     
-    Base64, maximální velikost 500kB.
+    Base64, max size of 500kB.
 
-+ `url` (string, optional) - URL souboru. Nepovinné, pokud je zadán file.
++ `url` (string, optional) - Source URL of the file. Optional as long as content is defined.
 
 
 ## Document (object)
