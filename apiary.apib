@@ -174,14 +174,14 @@ Create application
     + Attributes (ApplicationRequest)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Application was created
 
     + Attributes (ApplicationRequestResult)
 
 
-+ Response 400 (application/json)
++ Response 400(application/json)
 
         There was an error processing request
         
@@ -201,14 +201,14 @@ Operations on specific application
 ### Application detail by ID [GET]
 Get specific application
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Actual application data
 
     + Attributes (Application)
 
 
-+ Response 404 (application/json)
++ Response 404(application/json)
 
         Application does not exist
         
@@ -230,14 +230,14 @@ Send additional data needed to complete the application.
     + Attributes (AdditionalDataRequest)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Data was accepted
 
     + Attributes (Application)
 
 
-+ Response 400 (application/json)
++ Response 400(application/json)
 
         Error in processing request.
 
@@ -262,13 +262,13 @@ Cancel application, or cancel repeated payment.
         + `TODO`
         
         
-+ Response 200 (application/json)
++ Response 200(application/json)
     Application was cancelled.
     
     + Body
 
 
-+ Response 422 (application/json)
++ Response 422(application/json)
     Application cannot be cancelled
     
     + Attributes (Errors)
@@ -293,13 +293,13 @@ Change order. Used to change order items, total amount, billing details etc.
     + Attributes (Order)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
         Order was changed
 
     + Attributes (Order)
 
 
-+ Response 422 (application/json)
++ Response 422(application/json)
     Order cannot be changed.
         
     + Attributes (Errors)    
@@ -324,14 +324,14 @@ System notification. Some or all of the order items were cancelled. Based on app
     + Attributes (OrderItemsChangeRequest)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
         Some order items or the whole order was cancelled
         
 
     + Attributes (Order)
 
 
-+ Response 422 (application/json)
++ Response 422(application/json)
 
         Cannot cancel order items.
         
@@ -358,13 +358,13 @@ Based on application type and partner setting, application payment may be proces
     + Attributes (OrderItemsChangeRequest)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
         Order items or whole order is marked as delivered.
         
     + Attributes (Order)
 
 
-+ Response 422 (application/json)
++ Response 422(application/json)
         Cannot process state change.
         
     + Attributes (Errors)
@@ -389,13 +389,13 @@ Based on application type and partner setting, credit note may be issued.
     + Attributes (OrderItemsChangeRequest)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
         Order items or whole order is marked as returned.
         
     + Attributes (Order)
 
 
-+ Response 422 (application/json)
++ Response 422(application/json)
         Cannot process state change.
         
     + Attributes (Errors)
@@ -418,13 +418,13 @@ Based on application type and partner setting, application payment may be proces
     + Attributes (OrderItemsChangeRequest)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
         Order items or whole order is marked as shipped.
 
     + Attributes (Order)
 
 
-+ Response 422 (application/json)
++ Response 422(application/json)
         Cannot process state change.
         
     + Attributes (Errors)
@@ -453,14 +453,14 @@ This resource supports [paging](#header-paging). As a value to `before` and `aft
 
 Collection is sorted by paymentId attribute.
 
-+ Response 200 (application/json)
++ Response 200(application/json)
         List of payments. May be empty if no payment was processed yet.
         
     + Attributes (array[Payment], fixed-type, required)
     
 
 
-+ Response 404 (application/json)
++ Response 404(application/json)
 
         Application does not exists
         
@@ -482,14 +482,14 @@ Verify application with OTP sent to customer by SMS.
     
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Application was verified correctly.
 
     + Attributes (Application)
 
 
-+ Response 422 (application/json)
++ Response 422(application/json)
 
         Application was not verified.
 
@@ -523,14 +523,14 @@ This should be used by partner before issuing an invoice, to include correct bil
         Date of issuing an invoice. Default value: today.
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Invoice info.
 
     + Attributes (InvoiceInfo)
 
 
-+ Response 404 (application/json)
++ Response 404(application/json)
 
         Application was not found.
 
@@ -561,14 +561,14 @@ Parameters include variable symbol, order number or application number
         Application ID.
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Order data.
 
     + Attributes (Order)
 
 
-+ Response 404 (application/json)
++ Response 404(application/json)
 
         Order not found.
 
@@ -588,7 +588,7 @@ Calculate installment programs down payments according to specified input
     + Attributes (InstallmentProgramsDownPaymentsRequest)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Down payments information. Minimal, maximal and steps between.
 
@@ -611,7 +611,7 @@ feature | supported by resource
     + Attributes (array[InstallmentProgramsOffersRequest])
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Installment programs collection
 
@@ -630,14 +630,14 @@ It returns the installment program that most closely matches specified input.
     + Attributes (InstallmentProgramsRequest)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Detailed information about installment program.
 
     + Attributes (InstallmentProgram)
 
 
-+ Response 422 (application/json)
++ Response 422(application/json)
 
         No installment program was found.
     
@@ -685,14 +685,14 @@ Get customer's information according to input
         Nejprve je třeba odstranit diakritiku, převést všechny písmena na malé. Poté je třeba odstranit všechny bílé znaky před samotným jménem a po samotném jménu. Pokud je příjmení víceslovné, je třeba aby jednotlivá slova měla mezi sebou pouze jednu mezeru. Nakonec zahashovat.
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Customer data
 
     + Attributes (Customer)
 
 
-+ Response 404 (application/json)
++ Response 404(application/json)
 
         Customer was not found
     
@@ -738,14 +738,14 @@ Get customer's limit information
         Nejprve je třeba odstranit diakritiku, převést všechny písmena na malé. Poté je třeba odstranit všechny bílé znaky před samotným jménem a po samotném jménu. Pokud je příjmení víceslovné, je třeba aby jednotlivá slova měla mezi sebou pouze jednu mezeru. Nakonec zahashovat.
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Limits of customer
 
     + Attributes (Limits)
 
 
-+ Response 404 (application/json)
++ Response 404(application/json)
 
         Customer was not found.
 
@@ -764,7 +764,7 @@ Returns probability of application's approval and limits of customer, if known t
     + Attributes (PrescoreRequest)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
 
         Probability of approval
 
@@ -817,12 +817,12 @@ Asks partner to correct order data (billing information, order items etc.)
     + Attributes (Order)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
     Request processed successfully.
 
 
 
-+ Response 400 (application/json)
++ Response 400(application/json)
 
         Can not process changes
 
@@ -869,7 +869,7 @@ Notify partner about changes in application.
     + Attributes (Application)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
     Notification successfully processed.
 
     + Body
@@ -895,7 +895,7 @@ Notification about new payment.
     + Attributes (Payment)
 
 
-+ Response 200 (application/json)
++ Response 200(application/json)
     Notification successfully processed.
     
     + Body
