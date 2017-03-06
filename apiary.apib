@@ -981,11 +981,14 @@ Financing application request
 ### Properties
 + `id`: `HCO-11200a0ee1` (string, required) - Unique identifier in HCO
 + `state` (enum, required) - Application state.
-    + `PROCESSING` - application is being processed
+    + `INCOMPLETE` - application is being collected (use redirect or send required data)
+    + `PROCESSING` - application is being processed by HC
     + `READY` - application was approved
     + `REJECTED` - application was rejected
     + `CANCELLED` - application was cancelled
 + `stateReason`: `rejected from previous history` (enum, optional) - State transition reason; only applicable for some of the states, e.g. REJECTED - reason to reject
+    + `INCOMPLETE_ADDITIONAL_DATA` - Additional data needed (redirect to HC or send Application additional data)
+    + `INCOMPLETE_VERIFICATION` - Verification needed (redirect to HC or send Application verification)
     + `PROCESSING_NEW` - New application created
     + `PROCESSING_PREAPPROVED` - Preliminary approval by HC
     + `REJECTED` - Rejected by HC
@@ -1002,7 +1005,7 @@ Financing application request
     + `READY_PAID` - Paid to merchant
     + `CANCELLED_TO_RETURN` - Cancelled after delivery, goods to be returned (not implemented)
     + `CANCELLED_RETURNED` - Cancelled after delivery, goods returned to merchant
-+ `customer` (Customer, required) - Customer data
++ `customer` (Customer, optional) - Customer data
 + `order` (Order, required) - Order data
 + `type` (enum, required) - Financing type. TODO
     + `POSTPONE` - "zaplať později"
