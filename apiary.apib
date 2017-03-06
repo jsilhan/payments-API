@@ -1009,10 +1009,10 @@ Financing application request
     + `CANCELLED_TO_RETURN` - Cancelled after delivery, goods to be returned (not implemented)
     + `CANCELLED_RETURNED` - Cancelled after delivery, goods returned to merchant
 + `customer` (Customer, optional) - Customer data
-+ `order` (Order, required) - Order data
-+ `type` (enum, required) - Financing type. TODO
-    + `POSTPONE` - "zaplať později"
-    + `LOAN` - Rozklad
++ `order` (Order, optional) - Order data 
++ `type` (enum, optional) - Financing type. 
+    + `DEFERRED_PAYMENT` - Pay after delivery ("odklad")
+    + `INSTALMENT` - Pay in monthly instalments ("rozklad")
 + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months).
 + `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount.
 + `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount.
@@ -1021,7 +1021,7 @@ Financing application request
     
 + `subscriptionPaymentFrequency` (string, optional) - payment frequency for repeated payment
 + `subscriptionPaymentFirstDate`: `2016-10-12` (string, optional) - first payment date for repeated payment
-+ `agreementPersonalDataProcessing`: `true` (boolean, required) - flag indicating already approved personal data processing
++ `agreementPersonalDataProcessing`: `true` (boolean, optional) - flag indicating already approved personal data processing
 + `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
 + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
 + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
