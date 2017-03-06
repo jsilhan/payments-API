@@ -1147,56 +1147,36 @@ Item on order
 
 
 ### Properties
-+ `filename` (string, optional) - Filename.
++ `filename` (string, optional) - Filename
 + `content` (string, optional)
-
     Content of the file. Optional as long as url is defined.
-    
-    
-    
-    Base64, max size of 500kB.
-
-+ `url` (string, optional) - Source URL of the file. Optional as long as content is defined.
+    Base64, maximum size 500kB.
++ `url` (string, optional) - URL of the file. Optional as long as content is defined.
 
 
 ## Document (object)
-Přiložený soubor objednávky (faktura, proforma faktura, dobropis...).
+Attached file of the application.
 
 ### Properties
-+ `type` (string, required)
-
-    Faktura, proforma faktura, dobropis...
-    
-    
-    
-    invoice - faktura
-    
-    
-    
-    proformaInvoice - proforma faktura
-    
-    
-    
-    creditNote - dobropis
-    
-    
-    
-    other - ostatní
-
-+ `file` (File7, required) - Soubor.
-+ `description` (string, optional) - Popis souboru.
-+ `extraData` (ExtraData9, optional) - Případná data z dokumentu.
++ `type` (enum, required) - Document type
+    + `INVOICE` - Invoice
+    + `PROFORMA_INVOCE` - Proforma invoice
+    + `CREDIT_NOTE` - Credit note
+    + `OTHER` - Other document type
++ `file` (File7, required) - File
++ `description` (string, optional) - File description
++ `extraData` (ExtraData9, optional) - Document additional data
 
 
 ## ExtraData9 (object)
 
 
 ### Properties
-+ `variableSymbol` (string, optional) - Variabilní symbol (interní v e-shopu).
++ `variableSymbol` (string, optional) - Internal variable symbol of e-shop.
 
 
 ## InvoiceInfo (object)
-Údaje, které mají být uvedeny na faktuře.
+Invoice information.
 
 ### Properties
 + `fullName` (string, required) - customer full name, including academical degrees and salutation (Mr./Mrs./..)
@@ -1215,34 +1195,21 @@ Installment programs
 + `installmentAmount` (Amount, optional) - monthly installment amount
 + `numberOfInstallments`: 10 (number, optional) - installment count
 + `detail` (Detail, optional)
-
     Calculation detailed information.
-
     Only available for calculations received by calling `POST /installment-programs`
-    
     Not available for  "POST /installment-programs-offers/" 
-
 
 
 ## Detail (object)
 
-
 ### Properties
 + `installmentDay` (number, optional)
-
-    Den splátky v měsíci.
-    
-    
-    
-    Například 20
+    Installment date (day in month)
+    e.g. 20
 
 + `installmentFirstDate` (string, optional)
-
-    Datum první splátky.
-    
-    
-    
-    Například 20. ledna 2017
+    Date of the first installment
+    e.g. 20. ledna 2017
 
 + `installmentLastDate` (string, optional)
 
