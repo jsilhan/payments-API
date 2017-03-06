@@ -1159,14 +1159,14 @@ Item on order
 Attached document (e.g. invoice, credit note etc.)
 
 ### Properties
-+ `type` (enum, required) - type of the document
++ `type` (enum, required) - Type of the document
     + `INVOICE` - Invoice
     + `PROFORMA_INVOICE` - Proforma invoice
     + `CREDIT_NOTE` - Credit note
     + `OTHER` - Other document type
-+ `file` (File7, required) - attached file.
-+ `description`: `This is an invoice` (string, optional) - file description.
-+ `extraData` (ExtraData9, optional) - additional data, if applicable
++ `file` (File7, required) - Attached file
++ `description`: `This is an invoice` (string, optional) - File description
++ `extraData` (ExtraData9, optional) - Additional data, if applicable
 
 
 ## ExtraData9 (object)
@@ -1180,8 +1180,8 @@ Attached document (e.g. invoice, credit note etc.)
 Billing information, to be included in invoice.
 
 ### Properties
-+ `fullName` (string, required) - customer full name, including academical degrees and salutation (Mr./Mrs./..)
-+ `address` (Address, required) - Adresa. Only `BILLING` address type is allowed.
++ `fullName` (string, required) - Customer full name, including academical degrees and salutation (Mr./Mrs./..).
++ `address` (Address, required) - Address. Only `BILLING` address type is allowed.
 + `dueDate` (string, optional) - Invoice due date. If not specified, default value will be used by partner.
 
 
@@ -1189,16 +1189,16 @@ Billing information, to be included in invoice.
 Installment programs
 
 ### Properties
-+ `type` (enum, optional) - program type
-    + MINIMAL - lowest installment
-    + FAVOURITE - recommended (favourite) installment program
-    + OTHER
++ `type` (enum, optional) - Program type
+    + MINIMAL - Lowest installment
+    + FAVOURITE - Recommended (favourite) installment program
+    + OTHER - Other
 + `installmentAmount` (Amount, optional) - monthly installment amount
 + `numberOfInstallments`: 10 (number, optional) - installment count
 + `detail` (Detail, optional)
     Calculation detailed information.
     Only available for calculations received by calling `POST /installment-programs`
-    Not available for  "POST /installment-programs-offers/" 
+    Not available for `POST /installment-programs-offers/` 
 
 
 ## Detail (object)
@@ -1207,162 +1207,106 @@ Installment programs
 + `installmentDay` (number, optional)
     Installment date (day in month)
     e.g. 20
-
 + `installmentFirstDate` (string, optional)
     Date of the first installment
     e.g. 20. ledna 2017
-
 + `installmentLastDate` (string, optional)
-
-    Datum poslednní splátky.
-    
-    
-    
-    Například 20. července 2017
-
+    Date of the last installment
+    e.g. 20. července 2019
 + `annualInterestRate` (string, optional)
-
-    Roční úroková sazba.
-    
-    
-    
-    Například: 0.17
-
+    Annual interest rate
+    e.g. 0.17
 + `predictedProvisionDate` (string, optional)
-
-    Předpokládané datum poskytnutí úvěru.
-    
-    
-    
-    Například: 18. ledna 2017
-
-+ `paidBackAmount` (Amount, optional) - Celková částka, kterou zákazník zaplatí.
+    Predicted provision date
+    e.g. 18. ledna 2017
++ `paidBackAmount` (Amount, optional) - Total amount paid by customer
 + `rpsn` (string, optional)
-
     RPSN
-    
-    
-    
-    Například: 0.23
-
+    e.g. 0.23
 + `legalline` (string, optional)
-
-    Textový popis nabídky.
-    
-    
-    
-    Například:
-    
+    Text interpretation of the offer
+    e.g.
     "Uvedené hodnoty jsou spočítány k datu poskytnutí 18.1.2017, datu 1. splátky 20.1.2017 a se splatností všech dalších splátek k 20. dni v měsíci počítaje 20.1.2017. Nejedná se o nabídku či veřejnou nabídku. Platí při splnění podmínek Home Credit...."
 
 
-
 ## InstallmentProgramsDownPayments (object)
-Informace o akontacích. Nejnižší možná, nejvyšší možná akontace a výše kroku mezi nimi.
+Down payments information - the lowest down payment possible, the maximum down payment possible and a size of one step between them.
 
 ### Properties
 + `minimumAmount` (Amount, optional)
-
-    Nejnižší možná akontace.
-    
-    
-    
-    Např.: 0 Kč.
-
+    The lowest down payment amount
+    e.g. 0 (0 Kč)
 + `maximumAmount` (Amount, optional)
-
-    Nejvyšší možná akontace.
-    
-    
-    
-    Např.: 2 500 Kč.
-
+    Maximum down payment amount
+    e.g. 2500 (2 500 Kč)
 + `stepAmount` (Amount, optional)
-
-    Výše kroku mezi nimi.
+    Size of one step between the lowest and maximum down payment amounts
+    e.g. 500 (500 Kč)
+    Available down payments could be (min 0, max 2500):
+    0, 500, 1000, 1500, 2000, 2500
     
-    
-    
-    Např.: 500 Kč.
-    
-    Možné akontace pak jsou:
-    
-    
-    
-    0 Kč, 500 Kč, 1000 Kč, 1500 Kč, 2000 Kč, 2500 Kč
-
-
 
 ## Limits (object)
-Limity zákazníka.
+Customer's limits
 
 ### Properties
-+ `availableLimit` (Amount, required) - Dostupný limit zákazníka.
-+ `totalLimit` (Amount, required) - Celkový limit zákazníka.
++ `availableLimit` (Amount, required) - Customer's available limit
++ `totalLimit` (Amount, required) - Customer's global limit
 
 
 ## Payment (object)
-Informace o proplacení.
+Payment information
 
 ### Properties
-+ `paymentId` (string, required) - payment identifier
-+ `date` (string, required) - payment date.
-+ `applicationId` (string, required) - application ID, that this payment belongs to
-+ `amount` (Amount, required) - payment amount
-+ `invoice` (InvoiceInfo, required) - invoice data.
++ `paymentId` (string, required) - Payment identifier
++ `date` (string, required) - Payment date
++ `applicationId` (string, required) - Application ID that this payment belongs to
++ `amount` (Amount, required) - Payment amount
++ `invoice` (InvoiceInfo, required) - Invoice data.
 
 
 ## MerchantURLs (object)
-Kolekce URL adres pro notifikace a návrat k partnerovi (approved, rejected, notify, change...).
+Collection of URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
 ### Properties
-+ `approvedRedirect` (string, required) - URL partnera, kam bude zákazník přesměrován po schválení žádosti na bráně HCO.
-+ `rejectedRedirect` (string, required) - URL partnera, kam bude zákazník přesměrován po zamítnutí žádosti na bráně HCO.
-+ `notificationEndpoint` (string, required) - URL partnera, kde bude notifikován o změnách žádosti (schválení, zamítnutí, stornování...).
-+ `paymentsEndpoint` (string, optional) - URL partnera, kde bude notifikován o provedení plateb z žádosti.
++ `approvedRedirect` (string, required) - URL of the partner used for redirection of the customer back to partner website (from HCO gateway) after application approval.
++ `rejectedRedirect` (string, required) - URL of the partner used for redirection of the customer back to partner website (from HCO gateway) after application rejection.
++ `notificationEndpoint` (string, required) - URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
++ `paymentsEndpoint` (string, optional) - URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
 
 
 ## ApplicationRequest (object)
-Žádost o financování.
+Funding application
 
 ### Properties
-+ `customer` (Customer, required) - Data zákazníka.
-+ `order` (ApplicationRequestOrder, required) - Data objednávky.
-+ `type` (string, required)
-
-    Typ financování.
-    
-    Rozklad, "zaplať později", "zaplať až po vyzkoušení".
-
-+ `preferredMonths` (number, optional) - Preferovaný počet splátek (v měsících).
-+ `preferredInstallmentAmount` (Amount, optional) - Preferovaná výše měsíční splátky.
-+ `preferredDownPaymentAmount` (Amount, optional) - Preferovaná výše akontace.
-+ `subscriptionFlag` (boolean, optional)
-
-    Příznak, zda se jedná o opakovanou platbu.
-    
-    
-    
-    Výchozí hodnota - false.
-
-+ `subscriptionPaymentFrequency` (string, optional) - Jedná-li se o opakovanou platbu,  frekvence platby (měsíční, týdenní, ...).
-+ `subscriptionPaymentFirstDate` (string, optional) - Jedná-li se o opakovanou platbu,  datum první platby.
-+ `agreementPersonalDataProcessing` (boolean, required) - Příznak, zda zákazník souhlasí se zpracováním osobních údajů již u partnera.
-+ `agreementTermsAndConditions` (boolean, optional) - Příznak, zda zákazník souhlasí s obchodními podmínkami již u partnera.
-+ `productCode` (string, optional) - Kód produktu splátkového programu. Konkrétní identifikátor kalkulace.
-+ `productSetCode` (string, optional) - Kód produktové sady splátkového programu. Omezení budoucí kalkulace.
-+ `merchantURLs` (MerchantURLs, optional) - Kolekce URL adres pro notifikace a návrat k partnerovi (approved, rejected, notify, change...).
-
++ `customer` (Customer, required) - Customer information
++ `order` (ApplicationRequestOrder, required) - Order information
++ `type` (enum, required) - Funding type
+    + `INSTALLMENT` - Funding by installments
+    + `DEFERRED_PAYMENT` - "Pay later"
++ `preferredMonths` (number, optional) - Preferred number of installments (in months)
++ `preferredInstallmentAmount` (Amount, optional) - Preferred installment amount
++ `preferredDownPaymentAmount` (Amount, optional) - Preferred down payment amount
++ `subscriptionFlag` : false (boolean, optional)
+    Recurring payment flag
+    Default value - false
++ `subscriptionPaymentFrequency` (string, optional) - Recurring payment frequency (monthly, weekly, ...)
++ `subscriptionPaymentFirstDate` (string, optional) - First recurring payment date
++ `agreementPersonalDataProcessing` (boolean, required) - Personal data processing agreement
++ `agreementTermsAndConditions` (boolean, optional) - Terms and conditions agreement
++ `productCode` (string, optional) - Installment program product code - calculation identificator
++ `productSetCode` (string, optional) - Installment program product set code -  future calculation restriction
++ `merchantURLs` (MerchantURLs, optional) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
 
 ## ApplicationRequestResult (object)
-Odpověď na žádost o financování.
+Funding application response
 
 ### Properties
-+ `id` (string, required) - Unikátní identifikátor žádosti v rámci HCO.
-+ `state` (string, required) - Stav žádosti.
-+ `gatewayRedirectURL` (string, required) - URL adresa brány.
-
++ `id` (string, required) - Unique ID of the application
++ `state` (string, required) - State of the application
++ `gatewayRedirectURL` (string, required) - Gateway redirect URL
+anslat
 
 ## AdditionalDataRequest (object)
 Dodatečná data o zákazníkovi.
