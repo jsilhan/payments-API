@@ -995,8 +995,8 @@ Financing application request
 + `customer` (Customer, optional) - Customer data
 + `order` (Order, optional) - Order data 
 + `type` (enum, optional) - Financing type. 
-    + `DEFERRED_PAYMENT` - Pay after delivery ("odklad")
-    + `INSTALMENT` - Pay in monthly instalments ("rozklad")
+    + `DEFERRED_PAYMENT` - Pay after delivery
+    + `INSTALMENT` - Pay in monthly instalments
 + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months).
 + `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount.
 + `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount.
@@ -1276,8 +1276,8 @@ Funding application
 + `subscriptionPaymentFirstDate`: `2017-05-20` (string, optional) - First recurring payment date
 + `agreementPersonalDataProcessing`: true (boolean, required) - Personal data processing agreement
 + `agreementTermsAndConditions`: true (boolean, optional) - Terms and conditions agreement
-+ `productCode` (string, optional) - Installment program product code - calculation identificator
-+ `productSetCode` (string, optional) - Installment program product set code -  future calculation restriction
++ `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
++ `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
 + `merchantURLs` (MerchantURLs, optional) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
 
@@ -1293,10 +1293,10 @@ Funding application response
 Dodatečná data o zákazníkovi.
 
 ### Properties
-+ `personalId` (string, optional) - Rodné číslo. Ve formátu XXXXXX/YYYY.
-+ `idCard` (string, optional) - Číslo občanského průkazu.
-+ `idCardExpiryDate` (string, optional) - Datum platnosti občanského průkazu.
-+ `idCardScan` (IdCardScan, optional) - Sken občanského průkazu.
++ `personalId`: 720320/1234 (string, optional) - Personal identification number (format XXXXXX/YYYY)
++ `idCard`: 123456789 (string, optional) - ID card number
++ `idCardExpiryDate`: `2020-05-19` (string, optional) - ID card expiration date
++ `idCardScan` (IdCardScan, optional) - ID card scan
 
 
 ## IdCardScan (object)
@@ -1311,26 +1311,26 @@ Dodatečná data o zákazníkovi.
 
 
 ### Properties
-+ `productCode` (string, required) - Kód produktu splátkového programu. Konkrétní identifikátor kalkulace
-+ `amount` (Amount, required) - Cena zboží
-+ `downPaymentAmount` (Amount, optional) - Výše akontace. Výchozí hodnota 0
++ `productCode`: `a122ax` (string, required) - Product code, this indicates previous calculation result
++ `amount` (Amount, required) - Goods price
++ `downPaymentAmount` (Amount, optional) - Down payment amount (default is 0)
 
 
 ## InstallmentProgramsOffersRequest (object)
 
 
 ### Properties
-+ `productSetCode` (string, required) - Kód produktové sady splátkového programu. Omezení kalkulací.
-+ `amount` (Amount, required) - Cena zboží.
-+ `downPaymentAmount` (Amount, optional) - Výše akontace. Výchozí hodnota 0.
++ `productSetCode`: `bc11523` (string, required) - Product set code, this will limit further calculations
++ `amount` (Amount, required) - Goods price
++ `downPaymentAmount` (Amount, optional) - Down payment amount (default is 0)
 
 
 ## InstallmentProgramsDownPaymentsRequest (object)
 
 
 ### Properties
-+ `productSetCode` (string, required) - Kód produktové sady splátkového programu. Omezení kalkulací.
-+ `amount` (Amount, required) - Cena zboží.
++ `productSetCode`: `bc11523` (string, required) - Product set code, this will limit further calculations
++ `amount` (Amount, required) - Goods price
 
 
 ## PrecheckRequest (object)
