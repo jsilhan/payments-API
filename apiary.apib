@@ -165,7 +165,7 @@ There are 3 levels of error severity:
 
 # Group Application operations
 
-## Applications [/applications/]
+## Create Application [/applications/]
 
 ### Create Application [POST]
 Create new funding application
@@ -217,13 +217,13 @@ Get specific application detail by ID
 
 
 
-## Applications AdditionalData [/applications/{applicationId}/additionalData]
+## Send Application Additional Data [/applications/{applicationId}/additionalData]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Add Application Additional Data [POST]
+### Send Application Additional Data [POST]
 Send additional data needed to complete the application.
 
 + Request (application/json)
@@ -245,7 +245,7 @@ Send additional data needed to complete the application.
 
 
 
-## Applications Cancel By ApplicationId [/applications/{applicationId}/cancel{?reason}]
+## Cancel Application [/applications/{applicationId}/cancel{?reason}]
 
 + Parameters
     + applicationId (string, required)
@@ -275,7 +275,7 @@ Cancel application, or cancel repeated payment.
     + Attributes (Errors)
 
 
-## Application Order [/applications/{applicationId}/order{?reason}]
+## Change Application Order [/applications/{applicationId}/order{?reason}]
 
 + Parameters
     + applicationId (string, required)
@@ -309,13 +309,13 @@ Change order. Used to change order items, total amount, billing details etc.
 
 
 
-## Cancel Applications Order  [/applications/{applicationId}/order/cancel]
+## Mark order items as cancelled  [/applications/{applicationId}/order/cancel]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Cancel Application Order [PUT]
+### Mark order items as cancelled [PUT]
 Mark order items as cancelled
 
 System notification. Some or all of the order items were cancelled. Based on application type and partner setting, credit note may be issued.
@@ -342,13 +342,13 @@ System notification. Some or all of the order items were cancelled. Based on app
 
 
 
-## Applications Order Delivery [/applications/{applicationId}/order/deliver]
+## Mark order items as delivered [/applications/{applicationId}/order/deliver]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Deliver Applications Order [PUT]
+### Mark order items as delivered [PUT]
 Mark order items as delivered.
 
 System notification. Some or all order items were delivered to customer. 
@@ -373,13 +373,13 @@ Based on application type and partner setting, application payment may be proces
 
 
 
-## Applications Order Return [/applications/{applicationId}/order/return]
+## Mark order items as returned [/applications/{applicationId}/order/return]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Return Application Order [PUT]
+### Mark order items as returned [PUT]
 Mark order items as returned.
 
 System notification. Some or all order items were returned by customer back to e-shop.
@@ -403,13 +403,13 @@ Based on application type and partner setting, credit note may be issued.
 
 
 
-## Applications Order Send [/applications/{applicationId}/order/send]
+## Mark order items as sent [/applications/{applicationId}/order/send]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Application Order Send [PUT]
+### Mark order items as sent [PUT]
 Mark order items as sent
 
 System notification. Some or all order items were shipped to customer. 
@@ -469,13 +469,13 @@ Collection is sorted by paymentId attribute.
 
 
 
-## Applications Verify  [/applications/{applicationId}/verify]
+## Verify Application  [/applications/{applicationId}/verify]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Application Verify [POST]
+### Verify Application [POST]
 Verify application with OTP sent to customer by SMS.
 
 + Request (application/json)
@@ -500,7 +500,7 @@ Verify application with OTP sent to customer by SMS.
 
 ## Invoices [/invoices/{?orderNumber,orderVariableSymbol,applicationId,billingDate}]
 
-### Invoices [GET]
+### Get invoice info [GET]
 Get invoice info
 
 Generates billing information to be included in invoice for specific date for specific order or delivery.
@@ -694,24 +694,36 @@ Get customer's limit information
 
 + Parameters
     + emailHash (string, optional)
-       
-        E-mail hashed by SHA-256
-        E-mail address has to be transformed to lowercase only before hashing.
+
+        E-mail zahashovaný pomocí SHA-256.
         
+        
+        
+        Nejprve je třeba v e-mailové adrese převést všechny znaky na malé a poté zahashovat.
+
     + phoneHash (string, optional)
+
+        Telefonní číslo zahashované pomocí SHA-256.
         
-        Phone number hashed by SHA-256
-        Phone number has to be transformed to international format +XXXYYYZZZZZZ before hashing.
+        
+        
+        Nejprve je třeba telefonní číslo převést do mezinárodního formátu +XXXYYYZZZZZZ a poté zahashovat.
 
     + firstNameHash (string, optional)
 
-        First name hashed by SHA-256.
-        First name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word first name) before hashing.
+        Křestní jméno zahashované pomocí SHA-256.
         
+        
+        
+        Nejprve je třeba odstranit diakritiku, převést všechny písmena na malé. Poté je třeba odstranit všechny bílé znaky před samotným jménem a po samotném jménu. Pokud je jméno víceslovné, je třeba, aby jednotlivá slova měla mezi sebou pouze jednu mezeru. Nakonec zahashovat.
+
     + lastNameHash (string, optional)
 
-        Last name hashed by SHA-256.
-        Last name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word last name) before hashing.
+        Příjmení zahashované pomocí SHA-256.
+        
+        
+        
+        Nejprve je třeba odstranit diakritiku, převést všechny písmena na malé. Poté je třeba odstranit všechny bílé znaky před samotným jménem a po samotném jménu. Pokud je příjmení víceslovné, je třeba aby jednotlivá slova měla mezi sebou pouze jednu mezeru. Nakonec zahashovat.
 
 
 + Response 200(application/json)
