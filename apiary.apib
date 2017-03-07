@@ -694,36 +694,24 @@ Get customer's limit information
 
 + Parameters
     + emailHash (string, optional)
-
-        E-mail zahashovaný pomocí SHA-256.
+       
+        E-mail hashed by SHA-256
+        E-mail address has to be transformed to lowercase only before hashing.
         
-        
-        
-        Nejprve je třeba v e-mailové adrese převést všechny znaky na malé a poté zahashovat.
-
     + phoneHash (string, optional)
-
-        Telefonní číslo zahashované pomocí SHA-256.
         
-        
-        
-        Nejprve je třeba telefonní číslo převést do mezinárodního formátu +XXXYYYZZZZZZ a poté zahashovat.
+        Phone number hashed by SHA-256
+        Phone number has to be transformed to international format +XXXYYYZZZZZZ before hashing.
 
     + firstNameHash (string, optional)
 
-        Křestní jméno zahashované pomocí SHA-256.
+        First name hashed by SHA-256.
+        First name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word first name) before hashing.
         
-        
-        
-        Nejprve je třeba odstranit diakritiku, převést všechny písmena na malé. Poté je třeba odstranit všechny bílé znaky před samotným jménem a po samotném jménu. Pokud je jméno víceslovné, je třeba, aby jednotlivá slova měla mezi sebou pouze jednu mezeru. Nakonec zahashovat.
-
     + lastNameHash (string, optional)
 
-        Příjmení zahashované pomocí SHA-256.
-        
-        
-        
-        Nejprve je třeba odstranit diakritiku, převést všechny písmena na malé. Poté je třeba odstranit všechny bílé znaky před samotným jménem a po samotném jménu. Pokud je příjmení víceslovné, je třeba aby jednotlivá slova měla mezi sebou pouze jednu mezeru. Nakonec zahashovat.
+        Last name hashed by SHA-256.
+        Last name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word last name) before hashing.
 
 
 + Response 200(application/json)
