@@ -744,7 +744,7 @@ Returns probability of application's approval and limits of customer, if known t
 
         Probability of approval
 
-    + Attributes (PrecheckResult)
+    + Attributes (PrecheckResults)
 
 
 
@@ -1373,6 +1373,10 @@ Obdobná struktura jako Application.
 Výsledek prechecku.
 
 ### Properties
++ `type` (enum, required) - Precheck result type for Funding type.
+    + `DEFERRED_PAYMENT` - Pay after delivery ("odklad")
+    + `INSTALMENT` - Pay in monthly instalments ("rozklad")
+
 + `recommendation` (boolean, required)
 
     Doporučení, zda objednávku předat do služby. 
@@ -1500,6 +1504,15 @@ Výsledek prechecku.
     idCardExpiryDate,
     
     idCardScan
+
+## PrecheckResults (object)
+Výsledek prechecku.
+
+### Properties
++ `results` (array[PrecheckResult], optional)
+
+    Precheck results for each type of product.
+
 
 + `limits` (Limits, optional)
 
