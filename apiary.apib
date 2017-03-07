@@ -978,6 +978,13 @@ Financial amount
     
     Formatted interpretation, localized.
 
+## TaxAmount (Amount)
+Financial amount with tax rate.
+
+### Properties
++ `taxRate`: `0.15` (number, required)
+
+    Tax rate in decimal format 
 
 
 ## Application (object)
@@ -1073,7 +1080,7 @@ Object used to change order.
 + `deliveryDate`: `2017-01-15` (string, optional) - Datum a čas doručení.
 + `deliveryTrackingNumber`: `EEX1221` (string, optional) - Číslo pro sledování zásilky.
 + `totalAmount` (Amount, optional) - Celková cena za všechny kusy zboží v poli orderItems i s DPH. Povinné pokud vznikla faktura (přiložená v invoice).
-+ `totalTaxAmount` (Amount, optional) - Nová celková hodnota DPH za všechny kusy zboží poli v orderItems. Povinné pokud vznikla faktura (přiložená v invoice).
++ `totalTaxAmount` (TaxAmount, optional) - Nová celková hodnota DPH za všechny kusy zboží poli v orderItems. Povinné pokud vznikla faktura (přiložená v invoice).
 
 
 ## ApplicationRequestOrder (object)
@@ -1083,7 +1090,7 @@ Order information, needed to create an application.
 + `number`: `AA234` (string, required) - order number (internal for e-shop)
 + `variableSymbols` (array[string], optional) - variable symbols (internal for e-shop)
 + `totalAmount` (Amount, required) - total order amount, including VAT
-+ `totalTaxAmount` (Amount, required) - total VAT amount
++ `totalTaxAmounts` (array[TaxAmount], required) - total VAT amounts split by their VAT rates
 + `addresses` (array[Address], required) - addresses. Only `BILLING` and `DELIVERY` types are allowed.
 + `deliveryType` (enum, optional) - delivery type, for `DELIVERY_CARRIER` type can be further specified by DeliveryCarrier attribute.Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
     + `PERSONAL_BRANCH` - personal collection at branch
@@ -1134,8 +1141,9 @@ Item on order
     + `iPhone`
 + `quantity`: 1 (number, optional) - item quantity
 + `unitPriceAmount` (Amount, optional) - price per one piece
++ `unitTaxAmount` (TaxAmount, optional) - VAT amount per one piece
 + `totalAmount` (Amount, required) - total price for all pieces, VAT inclusive
-+ `totalTaxAmount` (Amount, required) - total VAT amount for all pieces
++ `totalTaxAmount` (TaxAmount, required) - total VAT amount for all pieces
 + `image` (File7, optional) - item image
 + `productURL`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
 + `sendDate`: `2017-01-10` (string, optional) - date when item was sent. Only when the whole order was NOT sent at once.
