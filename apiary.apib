@@ -1000,9 +1000,7 @@ Financing application request
 + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
 + `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount
 + `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount
-+ `subscriptionFlag` (boolean, optional) - Flag indicating repeated payment
-    + Default: false
-    
++ `subscriptionFlag`: `false` (boolean, optional) - Flag indicating repeated payment (default is false)
 + `subscriptionPaymentFrequency` (string, optional) - payment frequency for repeated payment
 + `subscriptionPaymentFirstDate`: `2016-10-12` (string, optional) - first payment date for repeated payment
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - flag indicating already approved personal data processing
@@ -1269,13 +1267,13 @@ Funding application
 + `preferredMonths` (number, optional) - Preferred number of installments (in months)
 + `preferredInstallmentAmount` (Amount, optional) - Preferred installment amount
 + `preferredDownPaymentAmount` (Amount, optional) - Preferred down payment amount
-+ `subscriptionFlag` : false (boolean, optional)
++ `subscriptionFlag` : `false` (boolean, optional)
     Recurring payment flag
     Default value - false
 + `subscriptionPaymentFrequency` (string, optional) - Recurring payment frequency (monthly, weekly, ...)
 + `subscriptionPaymentFirstDate`: `2017-05-20` (string, optional) - First recurring payment date
-+ `agreementPersonalDataProcessing`: true (boolean, required) - Personal data processing agreement
-+ `agreementTermsAndConditions`: true (boolean, optional) - Terms and conditions agreement
++ `agreementPersonalDataProcessing`: `true` (boolean, required) - Personal data processing agreement
++ `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
 + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
 + `merchantURLs` (MerchantURLs, optional) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
@@ -1340,7 +1338,7 @@ Precheck data (has similar structure as `Application`).
 + `customer` (Customer, optional) - Customer data
 + `order` (Order, optional) - Order data 
 + `fingerprintComponents` (array[string], optional) - Fingerprints components
-+ `ipAddress` (string, optional) - IPv4 nebo IPv6 adresa zákazníka.
++ `ipAddress` (string, optional) - IPv4 or IPv6 address of a customer
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
 + `productType` (enum, optional) - Financing type 
     + `DEFERRED_PAYMENT` - Pay after delivery
