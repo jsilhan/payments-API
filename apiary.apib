@@ -987,6 +987,7 @@ Financing application request
 + `stateReason`: `PROCESSING_APPROVED` (enum, optional) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
     + `INCOMPLETE_ADDITIONAL_DATA` - Additional data needed (redirect to HC or send Application additional data)
     + `INCOMPLETE_VERIFICATION` - Verification needed (redirect to HC or send Application verification)
+    + `INCOMPLETE_REDIRECT_NEEDED` - Redirect to HC is needed. Redirect user to gatewayRedirectURL.
     + `PROCESSING_NEW` - New application created
     + `PROCESSING_PREAPPROVED` - Preliminary approval by HC
     + `REJECTED` - Rejected by HC
@@ -1020,6 +1021,7 @@ Financing application request
 + `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
 + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
 + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
++ `gatewayRedirectURL` (string, required) - Gateway redirect URL. 
 
 
 ## Customer (object)
@@ -1302,7 +1304,6 @@ Funding application response
 + `id` (string, required) - Unique ID of the application
 + `state` (string, required) - State of the application
 + `gatewayRedirectURL` (string, required) - Gateway redirect URL
-anslat
 
 ## AdditionalDataRequest (object)
 Dodatečná data o zákazníkovi.
