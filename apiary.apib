@@ -912,7 +912,7 @@ Delivery carrier
     + `HOME_PHONE`
     + `EMPLOYMENT_PHONE`
 + countryCode: `+420` (string, optional) - country code, including leading `+`
-+ number: `123456789` (string, required) - phone number
++ number: `123456789` (number, required) - phone number
 
 ## Address (object)
 Address.
@@ -927,8 +927,8 @@ Address.
 
 + `city`: `Prague` (string, optional) - city.
 + `streetAddress`: `Letenská` (string, optional) - street/city part.
-+ `streetNumber`: `22` (string, optional) - street number
-+ `zip`: `140 00` (string, required) - postal code
++ `streetNumber`: `22` (number, optional) - street number
++ `zip`: `14000` (number, required) - postal code
 + `addressType` (enum, required) - type of the address. Only some of the types are allowed in each context.
     + `PERMANENT` - permanent residential address
     + `CONTACT` - contact address
@@ -966,7 +966,7 @@ Financial amount with VAT rate.
 Financing application request
 
 ### Properties
-+ `id`: `HCO-11200a0ee1` (string, required) - Unique identifier in HCO
++ `id`: `01-11200a0ee1` (string, required) - Unique identifier in HCO
 + `state` (enum, required) - Application state.
     + `PROCESSING` - application is being processed by HC
     + `READY` - application was approved and is ready for financing
@@ -1098,11 +1098,11 @@ Item on order
 
 ### Properties
 + `type` (enum, optional) - item type
-    + PHYSICAL
-    + DISCOUNT 
+    + `PHYSICAL`
+    + `DISCOUNT` 
     + `SHIPPING_FEE`
     + `SALES_TAX`
-    + DIGITAL
+    + `DIGITAL`
     + `GIFT_CARD`
     + `STORE_CREDIT`
     + `FEE`
@@ -1113,9 +1113,7 @@ Item on order
 + `variant`: `32GB SpaceGray` (string, optional) - item variant
 + `description`: `Mobile phone with 32GB of RAM` (string, optional)
 + `producer`: `Apple` (string, optional)
-+ `categories` (array[string], optional) - item categories
-    + `mobile phones`
-    + `iPhone`
++ `categories`: [`mobile phones`,`iPhone`] (array[string], optional) - item categories
 + `quantity`: 1 (number, optional) - item quantity
 + `unitPriceAmount` (Amount, optional) - price per one piece
 + `unitVatAmount` (VatAmount, optional) - VAT amount per one piece
@@ -1166,9 +1164,9 @@ Attached document (e.g. invoice, credit note etc.)
 Billing information, to be included in invoice.
 
 ### Properties
-+ `fullName` (string, required) - Customer full name, including academical degrees and salutation (Mr./Mrs./..).
++ `fullName`: `Ing. Jan Novák, Csc.` (string, required) - Customer full name, including academical degrees and salutation (Mr./Mrs./..).
 + `address` (Address, required) - Address. Only `BILLING` address type is allowed.
-+ `dueDate` (string, optional) - Invoice due date. If not specified, default value will be used by partner.
++ `dueDate`: `2017-06-20` (string, optional) - Invoice due date. If not specified, default value will be used by partner.
 
 
 ## InstallmentProgram (object)
@@ -1190,29 +1188,27 @@ Installment programs
 ## Detail (object)
 
 ### Properties
-+ `installmentDay` (number, optional)
++ `installmentDay`: 20 (number, optional)
     Installment date (day in month)
-    e.g. 20
-+ `installmentFirstDate` (string, optional)
+    
++ `installmentFirstDate`: `2017-05-20` (string, optional)
     Date of the first installment
-    e.g. 20. ledna 2017
-+ `installmentLastDate` (string, optional)
+    
++ `installmentLastDate`: `2018-03-20` (string, optional)
     Date of the last installment
-    e.g. 20. července 2019
-+ `annualInterestRate` (string, optional)
+    
++ `annualInterestRate`: 0.17 (number, optional)
     Annual interest rate
-    e.g. 0.17
-+ `predictedProvisionDate` (string, optional)
+    
++ `predictedProvisionDate`: `2017-05-20` (string, optional)
     Predicted provision date
-    e.g. 18. ledna 2017
+    
 + `paidBackAmount` (Amount, optional) - Total amount paid by customer
-+ `rpsn` (string, optional)
++ `rpsn`: 0.23 (number, optional)
     RPSN
-    e.g. 0.23
-+ `legalline` (string, optional)
+    
++ `legalline`: "Uvedené hodnoty jsou spočítány k datu poskytnutí 18.1.2017, datu 1. splátky 20.1.2017 a se splatností všech dalších splátek k 20. dni v měsíci počítaje 20.1.2017. Nejedná se o nabídku či veřejnou nabídku. Platí při splnění podmínek Home Credit...." (string, optional)
     Text interpretation of the offer
-    e.g.
-    "Uvedené hodnoty jsou spočítány k datu poskytnutí 18.1.2017, datu 1. splátky 20.1.2017 a se splatností všech dalších splátek k 20. dni v měsíci počítaje 20.1.2017. Nejedná se o nabídku či veřejnou nabídku. Platí při splnění podmínek Home Credit...."
 
 
 ## InstallmentProgramsDownPayments (object)
@@ -1245,7 +1241,7 @@ Payment information
 
 ### Properties
 + `paymentId` (string, required) - Payment identifier
-+ `date` (string, required) - Payment date
++ `date`: `2017-05-20` (string, required) - Payment date
 + `applicationId` (string, required) - Application ID that this payment belongs to
 + `amount` (Amount, required) - Payment amount
 + `invoice` (InvoiceInfo, required) - Invoice data.
@@ -1277,9 +1273,9 @@ Funding application
     Recurring payment flag
     Default value - false
 + `subscriptionPaymentFrequency` (string, optional) - Recurring payment frequency (monthly, weekly, ...)
-+ `subscriptionPaymentFirstDate` (string, optional) - First recurring payment date
-+ `agreementPersonalDataProcessing` (boolean, required) - Personal data processing agreement
-+ `agreementTermsAndConditions` (boolean, optional) - Terms and conditions agreement
++ `subscriptionPaymentFirstDate`: `2017-05-20` (string, optional) - First recurring payment date
++ `agreementPersonalDataProcessing`: true (boolean, required) - Personal data processing agreement
++ `agreementTermsAndConditions`: true (boolean, optional) - Terms and conditions agreement
 + `productCode` (string, optional) - Installment program product code - calculation identificator
 + `productSetCode` (string, optional) - Installment program product set code -  future calculation restriction
 + `merchantURLs` (MerchantURLs, optional) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
@@ -1307,17 +1303,17 @@ Dodatečná data o zákazníkovi.
 
 
 ### Properties
-+ `front` (File7, optional) - Přední strana.
-+ `back` (File7, optional) - Zadní strana.
++ `front` (File7, optional) - Front side
++ `back` (File7, optional) - Back side
 
 
 ## InstallmentProgramsRequest (object)
 
 
 ### Properties
-+ `productCode` (string, required) - Kód produktu splátkového programu. Konkrétní identifikátor kalkulace.
-+ `amount` (Amount, required) - Cena zboží.
-+ `downPaymentAmount` (Amount, optional) - Výše akontace. Výchozí hodnota 0.
++ `productCode` (string, required) - Kód produktu splátkového programu. Konkrétní identifikátor kalkulace
++ `amount` (Amount, required) - Cena zboží
++ `downPaymentAmount` (Amount, optional) - Výše akontace. Výchozí hodnota 0
 
 
 ## InstallmentProgramsOffersRequest (object)
@@ -1338,9 +1334,7 @@ Dodatečná data o zákazníkovi.
 
 
 ## PrecheckRequest (object)
-Data pro precheck. 
-
-Obdobná struktura jako Application.
+Precheck data (has similar structure as `Application`).
 
 ### Properties
 + `customer` (Customer, optional) - Data zákazníka.
@@ -1370,12 +1364,12 @@ Obdobná struktura jako Application.
 
 
 ## PrecheckResult (object)
-Výsledek prechecku.
+Precheck result.
 
 ### Properties
 + `type` (enum, required) - Precheck result type for Funding type.
-    + `DEFERRED_PAYMENT` - Pay after delivery ("odklad")
-    + `INSTALMENT` - Pay in monthly instalments ("rozklad")
+    + `DEFERRED_PAYMENT` - Pay after delivery ("zaplať později")
+    + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
 
 + `recommendation` (boolean, required)
 
@@ -1506,7 +1500,7 @@ Výsledek prechecku.
     idCardScan
 
 ## PrecheckResults (object)
-Výsledek prechecku.
+Precheck results.
 
 ### Properties
 + `results` (array[PrecheckResult], optional)
