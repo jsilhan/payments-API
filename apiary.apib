@@ -1047,15 +1047,15 @@ Customer data
 Object used to change order.
 
 ### Properties
-+ `orderItems` (array[OrderItem], optional) - Seznam zboží, které se mění. Pokud není vyplněno, změna se týká všeho zboží objednávky..
-+ `invoice` (Document, optional) - Přiložený soubor (faktura, proforma faktura, dobropis ...).
-+ `variableSymbol`: `122a111` (string, optional) - Variabilní symbol nově vystaveného dokumentu (faktury, proforma faktury, dobropisu...).
-+ `sendDate`: `2017-01-12` (string, optional) - Datum a čas odeslání.
-+ `deliveryCarrier` (DeliveryCarrier, optional) - Dopravce. Číselník dopravců. 
-+ `deliveryDate`: `2017-01-15` (string, optional) - Datum a čas doručení.
-+ `deliveryTrackingNumber`: `EEX1221` (string, optional) - Číslo pro sledování zásilky.
-+ `totalAmount` (Amount, optional) - Celková cena za všechny kusy zboží v poli orderItems i s DPH. Povinné pokud vznikla faktura (přiložená v invoice).
-+ `totalVatAmount` (VatAmount, optional) - Nová celková hodnota DPH za všechny kusy zboží poli v orderItems. Povinné pokud vznikla faktura (přiložená v invoice).
++ `orderItems` (array[OrderItem], optional) - List of changed items. All items are considered when empty
++ `invoice` (Document, optional) - Attached file (invoice, proforma invoice, credit note, ...)
++ `variableSymbol`: `122a111` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, credit note,...)
++ `sendDate`: `2017-01-12` (string, optional) - Shipping date
++ `deliveryCarrier` (DeliveryCarrier, optional) - Carrier 
++ `deliveryDate`: `2017-01-15` (string, optional) - Delivery date
++ `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number
++ `totalAmount` (Amount, optional) - Total amount of items (from orderItems array), including VAT - required when invoice is attached
++ `totalVatAmount` (VatAmount, optional) - New total VAT amount for all items (from orderItems array) - required when invoice is attached
 
 
 ## ApplicationRequestOrder (object)
