@@ -994,12 +994,12 @@ Financing application request
     + `CANCELLED_RETURNED` - Cancelled after delivery, goods returned to merchant
 + `customer` (Customer, optional) - Customer data
 + `order` (Order, optional) - Order data 
-+ `type` (enum, optional) - Financing type. 
++ `type` (enum, optional) - Financing type 
     + `DEFERRED_PAYMENT` - Pay after delivery
     + `INSTALMENT` - Pay in monthly instalments
-+ `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months).
-+ `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount.
-+ `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount.
++ `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
++ `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount
++ `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount
 + `subscriptionFlag` (boolean, optional) - Flag indicating repeated payment
     + Default: false
     
@@ -1009,7 +1009,7 @@ Financing application request
 + `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
 + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
 + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
-+ `gatewayRedirectURL` (string, required) - Gateway redirect URL. 
++ `gatewayRedirectURL` (string, required) - Gateway redirect URL 
 
 
 ## Customer (object)
@@ -1337,30 +1337,20 @@ Dodatečná data o zákazníkovi.
 Precheck data (has similar structure as `Application`).
 
 ### Properties
-+ `customer` (Customer, optional) - Data zákazníka.
-+ `order` (Order, optional) - Data objednávky.
-+ `fingerprintComponents` (array[string], optional) - Komponenty fingerprintu.
++ `customer` (Customer, optional) - Customer data
++ `order` (Order, optional) - Order data 
++ `fingerprintComponents` (array[string], optional) - Fingerprints components
 + `ipAddress` (string, optional) - IPv4 nebo IPv6 adresa zákazníka.
-+ `agreementPersonalDataProcessing` (string, optional) - Příznak, zda zákazník souhlasí se zpracováním osobních údajů již u partnera.
-+ `productType` (string, optional)
-
-    Typ financování.
-    
-    Rozklad, "zaplať později", "zaplať až po vyzkoušení".
-
-+ `preferredMonths` (number, optional) - Preferovaný počet splátek (v měsících).
-+ `preferredInstallmentAmount` (Amount, optional) - Preferovaná výše měsíční splátky.
-+ `preferredDownPaymentAmount` (Amount, optional) - Preferovaná výše akontace.
-+ `subscriptionFlag` (boolean, optional)
-
-    Příznak, zda se jedná o opakovanou platbu.
-    
-    
-    
-    Výchozí hodnota - false.
-
-+ `subscriptionPaymentFrequency` (string, optional) - Jedná-li se o opakovanou platbu,  frekvence platby (měsíční, týdenní, ...).
-+ `subscriptionPaymentFirstDate` (string, optional) - Jedná-li se o opakovanou platbu,  datum první platby.
++ `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
++ `productType` (enum, optional) - Financing type 
+    + `DEFERRED_PAYMENT` - Pay after delivery
+    + `INSTALMENT` - Pay in monthly instalments
++ `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
++ `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount
++ `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount
++ `subscriptionFlag`: `false` (boolean, optional) - Flag indicating repeated payment (default is false)
++ `subscriptionPaymentFrequency` (string, optional) - Payment frequency for repeated payment
++ `subscriptionPaymentFirstDate`: `2016-10-12` (string, optional) - First payment date for repeated payment
 
 
 ## PrecheckResult (object)
