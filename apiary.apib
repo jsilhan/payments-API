@@ -752,7 +752,7 @@ Returns probability of application's approval and limits of customer, if known t
 # Group Merchantsite operations
 This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
-## OrderChangeRequest [{application.merchantUrls.changeEndpoint}/{?applicationId,orderNumber,type}]
+## OrderChangeRequest [/{application.merchantUrls.changeEndpoint}/{?applicationId,orderNumber,type}]
 
 ### OrderChangeRequest [POST]
 Order change request
@@ -805,7 +805,7 @@ Asks partner to correct order data (billing information, order items etc.)
 
 
 
-## ApplicationNotification [{application.merchantUrls.notificationEndpoint}/{?applicationId,type}]
+## ApplicationNotification [/{application.merchantUrls.notificationEndpoint}/{?applicationId,type}]
 
 ### ApplicationNotification [POST]
 Notify partner about changes in application.
@@ -847,7 +847,7 @@ Notify partner about changes in application.
 
 
 
-## PaymentNotification [{application.merchantUrls.paymentEndpoint}/{?applicationId}]
+## PaymentNotification [/{application.merchantUrls.paymentEndpoint}/{?applicationId}]
 
 ### PaymentNotification [POST]
 Notification about new payment.
@@ -1108,14 +1108,14 @@ Item on order
 + `unitVatAmount` (VatAmount, optional) - VAT amount per one piece
 + `totalAmount` (Amount, required) - total price for all pieces, VAT inclusive
 + `totalVatAmount` (VatAmount, required) - total VAT amount for all pieces
-+ `image` (File7, optional) - item image
++ `image` (File, optional) - item image
 + `productURL`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
 + `sendDate`: `2017-01-10` (string, optional) - date when item was sent. Only when the whole order was NOT sent at once.
 + `deliveryDate`: `2017-01-12` (string, optional) - date when item was delivered. Only when the whole order was NOT sent at once.
 + `deliveryTrackingNumber: `EX21121` (string, optional) - Tracking number for the item. Only when the whole order was NOT sent at once.
 
 
-## File7 (object)
+## File (object)
 
 
 ### Properties
@@ -1137,7 +1137,7 @@ Attached document (e.g. invoice, credit note etc.)
     + `PROFORMA_INVOICE` - Proforma invoice
     + `CREDIT_NOTE` - Credit note
     + `OTHER` - Other document type
-+ `file` (File7, required) - Attached file
++ `file` (File, required) - Attached file
 + `description`: `This is an invoice` (string, optional) - File description
 + `extraData` (DocumentExtraData, optional) - Additional data, if applicable
 
@@ -1299,8 +1299,8 @@ Dodatečná data o zákazníkovi.
 
 
 ### Properties
-+ `front` (File7, optional) - Front side
-+ `back` (File7, optional) - Back side
++ `front` (File, optional) - Front side
++ `back` (File, optional) - Back side
 
 
 ## InstallmentProgramsRequest (object)
