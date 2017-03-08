@@ -759,20 +759,16 @@ Order change request
 
 Asks partner to correct order data (billing information, order items etc.)
 
-
 + Request (application/json)
     + Attributes (OrderChangeRequest)
 
++ Response 200 (application/json)
 
-+ Response 200(application/json)
-        
-        Request processed successfully.
+        {
+            "status": "OK"
+        }
 
-    + Attributes (Order)
-
-
-
-+ Response 400(application/json)
++ Response 400 (application/json)
 
         Can not process changes
 
@@ -780,67 +776,37 @@ Asks partner to correct order data (billing information, order items etc.)
 
 
 
-## ApplicationNotification [/{application.merchantUrls.notificationEndpoint}/{?applicationId,type}]
+## ApplicationNotification [/{application.merchantUrls.notificationEndpoint}/]
 
 ### ApplicationNotification [POST]
 Notify partner about changes in application.
-
-+ Parameters
-    + applicationId (string, optional)
-
-        Identifikátor žádosti o financování.
-
-    + type (string, optional)
-
-        Typ notifikace. Možné typ:
-        
-        
-        
-        approved - schváleno ze strany HC
-        
-        
-        
-        rejected - zamítnuto ze strany HC
-        
-        
-        
-        cancelled - zrušeno na žádost zákazníka
-        
-        
-        
-        ... případně další stavy
-
 
 + Request (application/json)
     + Attributes (Application)
 
 
-+ Response 200(application/json)
-    Notification successfully processed.
++ Response 200 (application/json)
 
-    + Body
+         {
+            "status": "OK"
+         }
 
 
 
-## PaymentNotification [/{application.merchantUrls.paymentEndpoint}/{?applicationId}]
+## PaymentNotification [/{application.merchantUrls.paymentEndpoint}/]
 
 ### PaymentNotification [POST]
 Notification about new payment.
-
-+ Parameters
-    + applicationId (string, optional)
-
-        Application identifier
-
 
 + Request (application/json)
     + Attributes (Payment)
 
 
-+ Response 200(application/json)
-    Notification successfully processed.
-    
-    + Body
++ Response 200 (application/json)
+
+         {
+            "status": "OK"
+         }
 
 
 # Data Structures
@@ -1477,7 +1443,7 @@ Precheck results.
     Pokud zákazníka známe, jedná se o aktuální limity. Pokud zákazník dal souhlas o předávání limitů. TODO legal.
 
 ## OrderChangeRequest (object)
-Order change request (HC asks partner to correct order data)
+Order change request data (HC asks partner to correct order data).
 
 ### Properties
 + `applicationId` (string, required) - Application identifier.
@@ -1486,7 +1452,6 @@ Order change request (HC asks partner to correct order data)
     + ORDER_ITEMS - HC received order items change proposal from customer.
     + DELIVER_ADDRESS - HC received delivery address change proposal from customer.
 + `order` (Order, required) - Corrected order data.
-
 
 ## Error (object)
 + code: `ERR_1000_SOME_ERROR_CODE` (string, required) - unique internal error code
