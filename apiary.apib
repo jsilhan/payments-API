@@ -752,41 +752,16 @@ Returns probability of application's approval and limits of customer, if known t
 # Group Merchantsite operations
 This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
-## OrderChangeRequest [/{application.merchantUrls.changeEndpoint}/{?applicationId,orderNumber,type}]
+## OrderChangeRequest [/{application.merchantUrls.changeEndpoint}/]
 
 ### OrderChangeRequest [POST]
 Order change request
 
 Asks partner to correct order data (billing information, order items etc.)
 
-+ Parameters
-    + applicationId (string, optional)
-
-        Identifikátor žádosti o financování.
-
-    + orderNumber (string, optional)
-
-        Číslo objednávky.
-
-    + type (string, optional)
-
-        Typ změny. Možné typy:
-        
-        
-        
-        personalInfo - změna osobních údajů
-        
-        
-        
-        orderItems - změna položek objednávky
-        
-        
-        
-        ... případně další změny
-
 
 + Request (application/json)
-    + Attributes (Order)
+    + Attributes (OrderChangeRequest)
 
 
 + Response 200(application/json)
@@ -1500,6 +1475,17 @@ Precheck results.
     Pokud zákazníka neznáme, jsou výše limitů odhadnuty.
     
     Pokud zákazníka známe, jedná se o aktuální limity. Pokud zákazník dal souhlas o předávání limitů. TODO legal.
+
+## OrderChangeRequest (object)
+Order change request (HC asks partner to correct order data)
+
+### Properties
++ `applicationId` (string, required) - Application identifier.
++ `type` (enum, required) - Change type.
+    + PERSONAL_INFO - HC is trying correct customer's personal info (typos in name, surname... etc.).
+    + ORDER_ITEMS - HC received order items change proposal from customer.
+    + DELIVER_ADDRESS - HC received delivery address change proposal from customer.
++ `order` (Order, required) - Corrected order data.
 
 
 ## Error (object)
