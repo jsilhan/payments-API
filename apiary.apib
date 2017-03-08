@@ -1264,8 +1264,8 @@ Funding application
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
 + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
++ `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See precheck operations and it's response (PrecheckResults).
 + `merchantURLs` (MerchantURLs, optional) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
-
 
 ## ApplicationRequestResult (object)
 Funding application response
@@ -1479,23 +1479,15 @@ Precheck result.
 Precheck results.
 
 ### Properties
-+ `results` (array[PrecheckResult], optional)
-
-    Precheck results for each type of product.
-
-
++ `id` (string, required) - Unique identificator of precheck. Send this identificator in ApplicationRequest for better approval rate.
++ `results` (array[PrecheckResult], required) - Precheck results for each type of product.
 + `limits` (Limits, optional)
 
     Limity zákazníka. 
     
     Pokud zákazníka neznáme, jsou výše limitů odhadnuty.
     
-    Pokud zákazníka známe, jedná se o aktuální limity.
-    
-    
-    
-    Pokud zákazník dal souhlas o předávání limitů. TODO legal.
-
+    Pokud zákazníka známe, jedná se o aktuální limity. Pokud zákazník dal souhlas o předávání limitů. TODO legal.
 
 
 ## Error (object)
