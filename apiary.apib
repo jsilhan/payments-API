@@ -989,7 +989,10 @@ Financing application request
 + `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount
 + `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount
 + `subscriptionFlag`: `false` (boolean, optional) - Flag indicating repeated payment (default is false)
-+ `subscriptionPaymentFrequency` (string, optional) - payment frequency for repeated payment
++ `subscriptionPaymentFrequency` (enum, optional) - payment frequency for repeated payment
+    + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
+    + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
+    + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
 + `subscriptionPaymentFirstDate`: `2016-10-12` (string, optional) - first payment date for repeated payment
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - flag indicating already approved personal data processing
 + `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
