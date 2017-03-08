@@ -1012,10 +1012,10 @@ Customer data
 + `addresses` (array[Address], optional) - addresses. Only `PERMANENT` and `CONTACT` types are allowed.
 + `tin`: `12333321` (string, optional) - tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
-+ `extraData` (ExtraData, optional) - additional data, that may improve the approval probability
++ `extraData` (CustomerExtraData, optional) - additional data, that may improve the approval probability
 
 
-## ExtraData (object)
+## CustomerExtraData (object)
 
 
 ### Properties
@@ -1136,10 +1136,10 @@ Attached document (e.g. invoice, credit note etc.)
     + `OTHER` - Other document type
 + `file` (File7, required) - Attached file
 + `description`: `This is an invoice` (string, optional) - File description
-+ `extraData` (ExtraData9, optional) - Additional data, if applicable
++ `extraData` (DocumentExtraData, optional) - Additional data, if applicable
 
 
-## ExtraData9 (object)
+## DocumentExtraData (object)
 
 
 ### Properties
