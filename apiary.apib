@@ -752,11 +752,7 @@ Returns probability of application's approval and limits of customer, if known t
 # Group Merchantsite operations
 This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
-## OrderChangeRequest [/{application.merchantUrls.changeEndpoint}/orderChangeRequest{?applicationId,orderNumber,type}]
-
-+ Parameters
-    + application.merchantUrls.changeEndpoint (string, required)
-
+## OrderChangeRequest [{application.merchantUrls.changeEndpoint}/{?applicationId,orderNumber,type}]
 
 ### OrderChangeRequest [POST]
 Order change request
@@ -809,11 +805,7 @@ Asks partner to correct order data (billing information, order items etc.)
 
 
 
-## ApplicationNotification [/{application.merchantUrls.notificationEndpoint}/applicationNotification{?applicationId,type}]
-
-+ Parameters
-    + application.merchantUrls.notificationEndpoint (string, required)
-
+## ApplicationNotification [{application.merchantUrls.notificationEndpoint}/{?applicationId,type}]
 
 ### ApplicationNotification [POST]
 Notify partner about changes in application.
@@ -855,11 +847,7 @@ Notify partner about changes in application.
 
 
 
-## PaymentNotification [/{application.merchantUrls.paymentEndpoint}/paymentNotification{?applicationId}]
-
-+ Parameters
-    + application.merchantUrls.paymentEndpoint (string, required)
-
+## PaymentNotification [{application.merchantUrls.paymentEndpoint}/{?applicationId}]
 
 ### PaymentNotification [POST]
 Notification about new payment.
