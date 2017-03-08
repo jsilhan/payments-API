@@ -1153,7 +1153,14 @@ Billing information, to be included in invoice.
 + `fullName`: `Ing. Jan Novák, Csc.` (string, required) - Customer full name, including academical degrees and salutation (Mr./Mrs./..).
 + `address` (Address, required) - Address. Only `BILLING` address type is allowed.
 + `dueDate`: `2017-06-20` (string, optional) - Invoice due date. If not specified, default value will be used by partner.
++ `accountNumber` (AccountNumber, required) - Account number in format.
 
+## AccountNumber (object)
+Account number with bank code.
+
+### Properties
++ `accountNumber` `123-123456789` (string, required) - Account number (IBAN, BIC, etc.).
++ `bankCode` `1234` (string, required) - Bank code (SWIFT, etc.).
 
 ## InstallmentProgram (object)
 Installment programs
