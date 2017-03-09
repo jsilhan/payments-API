@@ -1,0 +1,11 @@
+{
+  "name": "open-api",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "drakov": "^1.0.2",
+    "gulp": "^3.9.1",
+    "gulp-aglio": "0.0.10",
+    "gulp-cli": "^1.2.2"
+  }
+}
