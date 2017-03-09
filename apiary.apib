@@ -869,7 +869,7 @@ Address.
 Financial amount
 
 ### Properties
-+ `amount`: `125.90` (number, required)
++ `value`: `125.90` (number, required)
 
     Amount in decimal format 
     
@@ -927,8 +927,8 @@ Financing application request
     + `DEFERRED_PAYMENT` - Pay after delivery
     + `INSTALMENT` - Pay in monthly instalments
 + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
-+ `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount
-+ `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount
++ `preferredInstallment` (Amount, optional) - Preferred repayment amount
++ `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
 + `subscriptionFlag`: `false` (boolean, optional) - Flag indicating repeated payment (default is false)
 + `subscriptionPaymentFrequency` (enum, optional) - payment frequency for repeated payment
     + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
@@ -965,8 +965,8 @@ Customer data
 ### Properties
 + `transactionsNumber`: 10 (number, optional) - Historical count of customer's cash transactions made in partner's e-shop
 + `cashlessTransactionsNumber`: 5 (number, optional) - Historical count of customer's cashless transactions made in partner's e-shop
-+ `transactionsAmount` (Amount, optional) - Sum of all cash transactions made in partner's e-shop
-+ `cashlessTransactionsAmount` (Amount, optional) - Sum of all cashless transactions made in partner's e-shop 
++ `transactionsSum` (Amount, optional) - Sum of all cash transactions made in partner's e-shop
++ `cashlessTransactionsSum` (Amount, optional) - Sum of all cashless transactions made in partner's e-shop 
 + `latestTransactionDate`: `2017-01-10` (string, optional) - newest transaction date on partner e-shop.
 + `earliestTransactionDate`: `2015-10-12` (string, optional) - oldest transaction date on partner e-shop
 + `pageTotalTime`: 250 (number, optional) - Total time spent on partners website (in seconds)
@@ -986,8 +986,8 @@ Object used to change order.
 + `deliveryCarrier` (DeliveryCarrier, optional) - Carrier 
 + `deliveryDate`: `2017-01-15` (string, optional) - Delivery date
 + `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number
-+ `totalAmount` (Amount, optional) - Total amount of items (from orderItems array), including VAT - required when invoice is attached
-+ `totalVatAmount` (VatAmount, optional) - New total VAT amount for all items (from orderItems array) - required when invoice is attached
++ `totalPrice` (Amount, optional) - Total amount of items (from orderItems array), including VAT - required when invoice is attached
++ `totalVat` (VatAmount, optional) - New total VAT amount for all items (from orderItems array) - required when invoice is attached
 
 
 ## ApplicationRequestOrder (object)
@@ -996,8 +996,8 @@ Order information, needed to create an application.
 ### Properties
 + `number`: `AA234` (string, required) - order number (internal for e-shop)
 + `variableSymbols` (array[string], optional) - variable symbols (internal for e-shop)
-+ `totalAmount` (Amount, required) - total order amount, including VAT
-+ `totalVatAmounts` (array[VatAmount], required) - total VAT amounts split by their VAT rates
++ `totalPrice` (Amount, required) - total order amount, including VAT
++ `totalVat` (array[VatAmount], required) - total VAT amounts split by their VAT rates
 + `addresses` (array[Address], required) - addresses. Only `BILLING` and `DELIVERY` types are allowed.
 + `deliveryType` (enum, optional) - delivery type, for `DELIVERY_CARRIER` type can be further specified by DeliveryCarrier attribute.Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
     + `PERSONAL_BRANCH` - personal collection at branch
@@ -1045,10 +1045,10 @@ Item on order
 + `producer`: `Apple` (string, optional)
 + `categories`: `mobile phones`,`iPhone` (array[string], optional) - item categories
 + `quantity`: 1 (number, optional) - item quantity
-+ `unitPriceAmount` (Amount, optional) - price per one piece
-+ `unitVatAmount` (VatAmount, optional) - VAT amount per one piece
-+ `totalAmount` (Amount, required) - total price for all pieces, VAT inclusive
-+ `totalVatAmount` (VatAmount, required) - total VAT amount for all pieces
++ `unitPrice` (Amount, optional) - price per one piece
++ `unitVat` (VatAmount, optional) - VAT amount per one piece
++ `totalPrice` (Amount, required) - total price for all pieces, VAT inclusive
++ `totalVat` (VatAmount, required) - total VAT amount for all pieces
 + `image` (File, optional) - item image
 + `productURL`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
 + `sendDate`: `2017-01-10` (string, optional) - date when item was sent. Only when the whole order was NOT sent at once.
@@ -1114,7 +1114,7 @@ Installment programs
     + MINIMAL - Lowest installment
     + FAVOURITE - Recommended (favourite) installment program
     + OTHER - Other
-+ `installmentAmount` (Amount, optional) - monthly installment amount
++ `installment` (Amount, optional) - monthly installment amount
 + `numberOfInstallments`: 10 (number, optional) - installment count
 + `detail` (Detail, optional)
     Calculation detailed information.
@@ -1140,7 +1140,7 @@ Installment programs
 + `predictedProvisionDate`: `2017-05-20` (string, optional)
     Predicted provision date
     
-+ `paidBackAmount` (Amount, optional) - Total amount paid by customer
++ `paidBack` (Amount, optional) - Total amount paid by customer
 + `rpsn`: 0.23 (number, optional)
     RPSN
     
@@ -1152,13 +1152,13 @@ Installment programs
 Down payments information - the lowest down payment possible, the maximum down payment possible and a size of one step between them.
 
 ### Properties
-+ `minimumAmount` (Amount, optional)
++ `minimum` (Amount, optional)
     The lowest down payment amount
     e.g. 0 (0 Kč)
-+ `maximumAmount` (Amount, optional)
++ `maximum` (Amount, optional)
     Maximum down payment amount
     e.g. 2500 (2 500 Kč)
-+ `stepAmount` (Amount, optional)
++ `step` (Amount, optional)
     Size of one step between the lowest and maximum down payment amounts
     e.g. 500 (500 Kč)
     Available down payments could be (min 0, max 2500):
@@ -1204,8 +1204,8 @@ Funding application
     + `INSTALLMENT` - Funding by installments
     + `DEFERRED_PAYMENT` - "Pay later"
 + `preferredMonths` (number, optional) - Preferred number of installments (in months)
-+ `preferredInstallmentAmount` (Amount, optional) - Preferred installment amount
-+ `preferredDownPaymentAmount` (Amount, optional) - Preferred down payment amount
++ `preferredInstallment` (Amount, optional) - Preferred installment amount
++ `preferredDownPayment` (Amount, optional) - Preferred down payment amount
 + `subscriptionFlag` : `false` (boolean, optional)
     Recurring payment flag
     Default value - false
@@ -1250,7 +1250,7 @@ Dodatečná data o zákazníkovi.
 ### Properties
 + `productCode`: `a122ax` (string, required) - Product code, this indicates previous calculation result
 + `amount` (Amount, required) - Goods price
-+ `downPaymentAmount` (Amount, optional) - Down payment amount (default is 0)
++ `downPayment` (Amount, optional) - Down payment amount (default is 0)
 
 
 ## InstallmentProgramsOffersRequest (object)
@@ -1259,7 +1259,7 @@ Dodatečná data o zákazníkovi.
 ### Properties
 + `productSetCode`: `bc11523` (string, required) - Product set code, this will limit further calculations
 + `amount` (Amount, required) - Goods price
-+ `downPaymentAmount` (Amount, optional) - Down payment amount (default is 0)
++ `downPayment` (Amount, optional) - Down payment amount (default is 0)
 
 
 ## InstallmentProgramsDownPaymentsRequest (object)
@@ -1283,8 +1283,8 @@ Precheck data (has similar structure as `Application`).
     + `DEFERRED_PAYMENT` - Pay after delivery
     + `INSTALMENT` - Pay in monthly instalments
 + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
-+ `preferredInstallmentAmount` (Amount, optional) - Preferred repayment amount
-+ `preferredDownPaymentAmount` (Amount, optional) - Preferred downpayment amount
++ `preferredInstallment` (Amount, optional) - Preferred repayment amount
++ `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
 + `subscriptionFlag`: `false` (boolean, optional) - Flag indicating repeated payment (default is false)
 + `subscriptionPaymentFrequency` (string, optional) - Payment frequency for repeated payment
 + `subscriptionPaymentFirstDate`: `2016-10-12` (string, optional) - First payment date for repeated payment
