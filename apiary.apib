@@ -170,18 +170,18 @@ There are 3 levels of error severity:
 ### Create Application [POST]
 Create new funding application
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (ApplicationRequest)
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Application was created
 
     + Attributes (ApplicationRequestResult)
 
 
-+ Response 400(application/json)
++ Response 400(application/json; charset=utf-8)
 
         There was an error processing request
         
@@ -201,14 +201,14 @@ Operations on specific application
 ### Get Application Detail [GET]
 Get specific application detail by ID
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Actual application data
 
     + Attributes (Application)
 
 
-+ Response 404(application/json)
++ Response 404(application/json; charset=utf-8)
 
         Application does not exist
         
@@ -226,18 +226,18 @@ Get specific application detail by ID
 ### Send Application Additional Data [POST]
 Send additional data needed to complete the application.
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (AdditionalDataRequest)
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Data was accepted
 
     + Attributes (Application)
 
 
-+ Response 400(application/json)
++ Response 400(application/json; charset=utf-8)
 
         Error in processing request.
 
@@ -261,7 +261,7 @@ Cancel application, or cancel repeated payment.
         + `ORDER_CANCELLED_OTHER` - other reason
         + `TODO`
     
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Application was cancelled.
     
@@ -269,7 +269,7 @@ Cancel application, or cancel repeated payment.
 + Attributes (Order)
 
 
-+ Response 422(application/json)
++ Response 422(application/json; charset=utf-8)
     Application cannot be cancelled
     
     + Attributes (Errors)
@@ -290,17 +290,17 @@ Change order. Used to change order items, total amount, billing details etc.
         Reason for change.
 
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (Order)
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
         Order was changed
 
     + Attributes (Order)
 
 
-+ Response 422(application/json)
++ Response 422(application/json; charset=utf-8)
     Order cannot be changed.
         
     + Attributes (Errors)    
@@ -321,18 +321,18 @@ Mark order items as cancelled
 System notification. Some or all of the order items were cancelled. Based on application type and partner setting, credit note may be issued.
 
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (OrderItemsChangeRequest)
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
         Some order items or the whole order was cancelled
         
 
     + Attributes (Order)
 
 
-+ Response 422(application/json)
++ Response 422(application/json; charset=utf-8)
 
         Cannot cancel order items.
         
@@ -355,17 +355,17 @@ System notification. Some or all order items were delivered to customer.
 Based on application type and partner setting, application payment may be processed.
 
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (OrderItemsChangeRequest)
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as delivered.
         
     + Attributes (Order)
 
 
-+ Response 422(application/json)
++ Response 422(application/json; charset=utf-8)
         Cannot process state change.
         
     + Attributes (Errors)
@@ -386,17 +386,17 @@ System notification. Some or all order items were returned by customer back to e
 Based on application type and partner setting, credit note may be issued.
 
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (OrderItemsChangeRequest)
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as returned.
         
     + Attributes (Order)
 
 
-+ Response 422(application/json)
++ Response 422(application/json; charset=utf-8)
         Cannot process state change.
         
     + Attributes (Errors)
@@ -415,17 +415,17 @@ Mark order items as sent
 System notification. Some or all order items were shipped to customer. 
 Based on application type and partner setting, application payment may be processed.
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (OrderItemsChangeRequest)
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as shipped.
 
     + Attributes (Order)
 
 
-+ Response 422(application/json)
++ Response 422(application/json; charset=utf-8)
         Cannot process state change.
         
     + Attributes (Errors)
@@ -454,14 +454,14 @@ This resource supports [paging](#header-paging). As a value to `before` and `aft
 
 Collection is sorted by paymentId attribute.
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
         List of payments. May be empty if no payment was processed yet.
         
     + Attributes (array[Payment], fixed-type, required)
     
 
 
-+ Response 404(application/json)
++ Response 404(application/json; charset=utf-8)
 
         Application does not exists
         
@@ -478,19 +478,19 @@ Collection is sorted by paymentId attribute.
 ### Verify Application [POST]
 Verify application with OTP sent to customer by SMS.
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (number, required)
     
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Application was verified correctly.
 
     + Attributes (Application)
 
 
-+ Response 422(application/json)
++ Response 422(application/json; charset=utf-8)
 
         Application was not verified.
 
@@ -524,14 +524,14 @@ This should be used by partner before issuing an invoice, to include correct bil
         Date of issuing an invoice. Default value: today.
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Invoice info.
 
     + Attributes (InvoiceInfo)
 
 
-+ Response 404(application/json)
++ Response 404(application/json; charset=utf-8)
 
         Application was not found.
 
@@ -562,14 +562,14 @@ Parameters include variable symbol, order number or application number
         Application ID.
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Order data.
 
     + Attributes (Order)
 
 
-+ Response 404(application/json)
++ Response 404(application/json; charset=utf-8)
 
         Order not found.
 
@@ -585,11 +585,11 @@ Parameters include variable symbol, order number or application number
 ### InstallmentProgramsDownPayments [POST]
 Calculate installment programs down payments according to specified input
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (InstallmentProgramsDownPaymentsRequest)
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Down payments information. Minimal, maximal and steps between.
 
@@ -608,11 +608,11 @@ feature | supported by resource
 [sorting](#header-sorting) | no
 [filtering](#header-filtering) | no
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (array[InstallmentProgramsOffersRequest])
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Installment programs collection
 
@@ -627,18 +627,18 @@ Calculate installment program detailed information.
 
 It returns the installment program that most closely matches specified input.
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (InstallmentProgramsRequest)
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Detailed information about installment program.
 
     + Attributes (InstallmentProgram)
 
 
-+ Response 422(application/json)
++ Response 422(application/json; charset=utf-8)
 
         No installment program was found.
     
@@ -674,14 +674,14 @@ Get customer's information according to input
         Last name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word last name) before hashing.
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Customer data
 
     + Attributes (Customer)
 
 
-+ Response 404(application/json)
++ Response 404(application/json; charset=utf-8)
 
         Customer was not found
     
@@ -714,14 +714,14 @@ Get customer's limit information
         Last name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word last name) before hashing.
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Limits of customer
 
     + Attributes (Limits)
 
 
-+ Response 404(application/json)
++ Response 404(application/json; charset=utf-8)
 
         Customer was not found.
 
@@ -736,11 +736,11 @@ Prechecks application
 
 Returns probability of application's approval and limits of customer, if known to HC
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (PrecheckRequest)
 
 
-+ Response 200(application/json)
++ Response 200(application/json; charset=utf-8)
 
         Probability of approval
 
@@ -759,16 +759,16 @@ Order change request
 
 Asks partner to correct order data (billing information, order items etc.)
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (OrderChangeRequest)
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
 
         {
             "status": "OK"
         }
 
-+ Response 400 (application/json)
++ Response 400 (application/json; charset=utf-8)
 
         Can not process changes
 
@@ -781,11 +781,11 @@ Asks partner to correct order data (billing information, order items etc.)
 ### ApplicationNotification [POST]
 Notify partner about changes in application.
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (Application)
 
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
 
          {
             "status": "OK"
@@ -798,11 +798,11 @@ Notify partner about changes in application.
 ### PaymentNotification [POST]
 Notification about new payment.
 
-+ Request (application/json)
++ Request (application/json; charset=utf-8)
     + Attributes (Payment)
 
 
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
 
          {
             "status": "OK"
