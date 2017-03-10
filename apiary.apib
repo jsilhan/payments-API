@@ -525,31 +525,16 @@ Collection is sorted by paymentId attribute.
 
 
 
-## Invoices [/invoices/{?orderNumber,orderVariableSymbol,applicationId,billingDate}]
+## Invoices [/invoices/]
 
-### Get invoice info [GET]
-Get invoice info
+### Generate invoice info [POST]
+Generates invoice info
 
 Generates billing information to be included in invoice for specific date for specific order or delivery.
 This should be used by partner before issuing an invoice, to include correct billing information.
 
-+ Parameters
-    + orderNumber (string, optional)
-
-        Order number.
-
-    + orderVariableSymbol (string, optional)
-
-        Variable symbol.
-
-    + applicationId (string, optional)
-
-        Application identifier.
-
-    + billingDate (string, optional)
-
-        Date of issuing an invoice. Default value: today.
-
++ Request
+    + Attributes (InvoiceInfoRequest)
 
 + Response 200(application/json; charset=utf-8)
 
@@ -560,7 +545,7 @@ This should be used by partner before issuing an invoice, to include correct bil
 
 + Response 404(application/json; charset=utf-8)
 
-        Application was not found.
+        Invoice info cannot be generated.
 
     + Attributes (Errors)
 
@@ -1140,6 +1125,19 @@ Billing information, to be included in invoice.
 + `dueDate`: `2017-06-20` (string, optional) - Invoice due date. If not specified, default value will be used by partner.
 + `accountNumber` (AccountNumber, required) - Account number in format.
 
+## InvoiceInfoRequest (object)
+Request for generating invoice info.
+
+### Properties
+- One of
+    + customerDueDateCategory (enum, optional) - Category of the due date. See "precheck" method response.
+        + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
+        + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
+    + orderNumber (string, optional) Order number.
+    + orderVariableSymbol (string, optional) Variable symbol.
+    + applicationId (string, optional) Application identifier.
++ billingDate (string, optional) Date of issuing an invoice. Default value: today.
+
 ## AccountNumber (object)
 Account number with bank code.
 
@@ -1430,27 +1428,31 @@ Precheck result.
     
     
     
-    unknown -
+    UNKNOWN -
     
     Zákazníka neznáme.
     
     
     
-    firstOrder -
+    FIRST_ORDER -
     
     Zákazníka známe, ale zatím nezaplatil první objednávku.
     
     
     
-    full -
+    FULL -
     
     Zákazníka známe a již zaplatil alespoň jednu objednávku.
     
     
     
-    blocked -
+    BLOCKED -
     
     Zákazníka známe. Je zablokován.
+    
++ `customerDueDateCategory` (enum, required)
+    + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
+    + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
 
 + `message` (string, optional)
 
