@@ -1129,14 +1129,14 @@ Billing information, to be included in invoice.
 Request for generating invoice info.
 
 ### Properties
-- One of
-    + customerDueDateCategory (enum, optional) - Category of the due date. See "precheck" method response.
++ One of
+    + `customerDueDateCategory` (enum, optional) - Category of the due date. See "precheck" method response.
         + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
         + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
-    + orderNumber (string, optional) Order number.
-    + orderVariableSymbol (string, optional) Variable symbol.
-    + applicationId (string, optional) Application identifier.
-+ billingDate (string, optional) Date of issuing an invoice. Default value: today.
+    + `orderNumber` (string, optional) - Order number.
+    + `orderVariableSymbol` (string, optional) - Variable symbol.
+    + `applicationId` (string, optional) - Application identifier.
++ `billingDate` (string, optional) - Date of issuing an invoice. Default value: today.
 
 ## AccountNumber (object)
 Account number with bank code.
