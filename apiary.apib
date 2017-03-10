@@ -215,6 +215,62 @@ Get specific application detail by ID
     + Attributes (Errors)
 
 
+## Request Application OTP [/applications/{applicationId}/requestOTP]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### Request Application OTP [POST]
+Sends one time password to customer by SMS. This OTP is required to verify application. See 'Verify Application' method.
+
++ Request (application/json; charset=utf-8)
+    + Attributes (number, required)
+    
+
+
++ Response 200(application/json; charset=utf-8)
+
+        SMS with OTP was send to customer's primary phone number.
+
+    + Attributes (Application)
+
+
++ Response 422(application/json; charset=utf-8)
+
+        SMS with OTP was NOT send to customer.
+
+    + Attributes (Errors)
+
+
+
+## Verify Application  [/applications/{applicationId}/verify]
+
++ Parameters
+    + applicationId (string, required)
+
+
+### Verify Application [POST]
+Verify application with OTP sent to customer by SMS.
+
++ Request (application/json; charset=utf-8)
+    + Attributes (number, required)
+    
+
+
++ Response 200(application/json; charset=utf-8)
+
+        Application was verified correctly.
+
+    + Attributes (Application)
+
+
++ Response 422(application/json; charset=utf-8)
+
+        Application was not verified.
+
+    + Attributes (Errors)
+    
 
 
 ## Send Application Additional Data [/applications/{applicationId}/additionalData]
@@ -465,35 +521,6 @@ Collection is sorted by paymentId attribute.
 
         Application does not exists
         
-    + Attributes (Errors)
-
-
-
-## Verify Application  [/applications/{applicationId}/verify]
-
-+ Parameters
-    + applicationId (string, required)
-
-
-### Verify Application [POST]
-Verify application with OTP sent to customer by SMS.
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (number, required)
-    
-
-
-+ Response 200(application/json; charset=utf-8)
-
-        Application was verified correctly.
-
-    + Attributes (Application)
-
-
-+ Response 422(application/json; charset=utf-8)
-
-        Application was not verified.
-
     + Attributes (Errors)
 
 
