@@ -1018,6 +1018,12 @@ Order information, needed to create an application.
 Order information.
 
 ### Properties
++ `state` (enum, required) - Order state.
+    + `PROCESSING` - order is being processed by merchant
+    + `SENT` - all order items was sent to customer
+    + `DELIVERED` - all order items was delivered to customer
+    + `RETURNED` - all order items was returned to merchant
+    + `CANCELLED` - order was fully cancelled
 + `deliveryDate`: `2017-01-17` (string, optional) - date and time of delivery
 + `deliveryTrackingNumber`: `EX12221` (string, optional) - delivery tracking number
 + `sentDate`: `2017-01-12` (string, optional) - date and time of order shipping
@@ -1036,7 +1042,12 @@ Item on order
     + `GIFT_CARD`
     + `STORE_CREDIT`
     + `FEE`
-
++ `state` (enum, required) - Order state.
+    + `PROCESSING` - order item delivery is being processed by merchant
+    + `SENT` - items wa sent to customer
+    + `DELIVERED` - order item was delivered to customer
+    + `RETURNED` - order item was returned to merchant
+    + `CANCELLED` - order item was cancelled
 + `code`: `EXC4677-1a` (string, optional) - internal code for item (internal to e-shop). Used to better identify the item for future changes
 + `ean`: 888462064002 (string, optional) - EAN code.
 + `name`: `iPhone 6s 32GB SpaceGray` (string, required) - item name
