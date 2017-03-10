@@ -930,7 +930,7 @@ Financing application request
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
     + `settingsInstalment` (ApplicationSettingsInstalment, optional) - Settings for INSTALMENT Application type.
-    + `settingsSubscription` (ApplicationSubscriptionInstalment, optional) - Settings for SUBSCRIPTION Application type.
+    + `settingsSubscription` (ApplicatioSettingsSubscription, optional) - Settings for SUBSCRIPTION Application type.
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - flag indicating already approved personal data processing
 + `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
 + `gatewayRedirectURL` (string, required) - Gateway redirect URL 
@@ -945,7 +945,7 @@ Settings for INSTALMENT Application type.
 + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
 + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
 
-## ApplicationSubscriptionInstalment (object)
+## ApplicatioSettingsSubscription (object)
 Settings for SUBSCRIPTION Application type.
 
 ### Properties
@@ -1232,7 +1232,7 @@ Funding application
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
     + `settingsInstalment` (ApplicationSettingsInstalment, optional) - Settings for INSTALMENT Application type.
-    + `settingsSubscription` (ApplicationSubscriptionInstalment, optional) - Settings for SUBSCRIPTION Application type.
+    + `settingsSubscription` (ApplicatioSettingsSubscription, optional) - Settings for SUBSCRIPTION Application type.
 + `agreementPersonalDataProcessing`: `true` (boolean, required) - Personal data processing agreement
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See precheck operations and it's response (PrecheckResults).
@@ -1306,7 +1306,7 @@ Precheck data (has similar structure as `Application`).
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
     + `settingsInstalment` (ApplicationSettingsInstalment, optional) - Settings for INSTALMENT Application type.
-    + `settingsSubscription` (ApplicationSubscriptionInstalment, optional) - Settings for SUBSCRIPTION Application type.
+    + `settingsSubscription` (ApplicatioSettingsSubscription, optional) - Settings for SUBSCRIPTION Application type.
 
 
 ## PrecheckResult (object)
