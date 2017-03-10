@@ -252,7 +252,7 @@ Send additional data needed to complete the application.
 
 
 ### Cancel Application [PUT]
-Cancel application, or cancel repeated payment.
+Cancel application, or cancel recurring payment.
 
 + Parameters
     + reason (enum, required) - Reason of cancellation
@@ -442,7 +442,7 @@ Based on application type and partner setting, application payment may be proces
 ### ApplicationsPaymentsByApplicationId [GET]
 Get payments on specific application
 
-List of realized payments from HC to partner. In case of repeated payment, list may contain more items.
+List of realized payments from HC to partner. In case of recurring payment, list may contain more items.
 
 feature | supported by resource
 --- | ---
@@ -924,17 +924,18 @@ Financing application request
 + `customer` (Customer, optional) - Customer data
 + `order` (Order, optional) - Order data 
 + `type` (enum, optional) - Financing type 
-    + `DEFERRED_PAYMENT` - Pay later
-    + `INSTALMENT` - Pay in monthly instalments
+    + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+    + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
+    + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
+    + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
 + `preferredInstallment` (Amount, optional) - Preferred repayment amount
 + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
-+ `subscriptionFlag`: `false` (boolean, optional) - Flag indicating repeated payment (default is false)
-+ `subscriptionPaymentFrequency` (enum, optional) - payment frequency for repeated payment
++ `subscriptionPaymentFrequency` (enum, optional) - payment frequency for recurring payment
     + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
     + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
     + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
-+ `subscriptionPaymentFirstDate`: `2016-10-12` (string, optional) - first payment date for repeated payment
++ `subscriptionPaymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - flag indicating already approved personal data processing
 + `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
 + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
@@ -1212,16 +1213,18 @@ Funding application
 ### Properties
 + `customer` (Customer, required) - Customer information
 + `order` (ApplicationRequestOrder, required) - Order information
-+ `type` (enum, required) - Funding type
-    + `INSTALLMENT` - Funding by installments
-    + `DEFERRED_PAYMENT` - "Pay later"
++ `type` (enum, optional) - Financing type 
+    + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+    + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
+    + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
+    + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + `preferredMonths` (number, optional) - Preferred number of installments (in months)
 + `preferredInstallment` (Amount, optional) - Preferred installment amount
 + `preferredDownPayment` (Amount, optional) - Preferred down payment amount
-+ `subscriptionFlag` : `false` (boolean, optional)
-    Recurring payment flag
-    Default value - false
-+ `subscriptionPaymentFrequency` (string, optional) - Recurring payment frequency (monthly, weekly, ...)
++ `subscriptionPaymentFrequency` (enum, optional) - payment frequency for recurring payment
+    + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
+    + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
+    + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
 + `subscriptionPaymentFirstDate`: `2017-05-20` (string, optional) - First recurring payment date
 + `agreementPersonalDataProcessing`: `true` (boolean, required) - Personal data processing agreement
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
@@ -1291,14 +1294,18 @@ Precheck data (has similar structure as `Application`).
 + `fingerprintComponents` (array[string], optional) - Fingerprints components
 + `ipAddress` (string, optional) - IPv4 or IPv6 address of a customer
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
-+ `productType` (enum, optional) - Financing type 
-    + `DEFERRED_PAYMENT` - Pay after delivery
-    + `INSTALMENT` - Pay in monthly instalments
++ `type` (enum, optional) - Financing type 
+    + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+    + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
+    + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
+    + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
 + `preferredInstallment` (Amount, optional) - Preferred repayment amount
 + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
-+ `subscriptionFlag`: `false` (boolean, optional) - Flag indicating repeated payment (default is false)
-+ `subscriptionPaymentFrequency` (string, optional) - Payment frequency for repeated payment
++ `subscriptionPaymentFrequency` (enum, optional) - payment frequency for recurring payment
+    + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
+    + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
+    + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
 + `subscriptionPaymentFirstDate`: `2016-10-12` (string, optional) - First payment date for repeated payment
 
 
@@ -1307,8 +1314,10 @@ Precheck result.
 
 ### Properties
 + `type` (enum, required) - Precheck result type for Funding type.
-    + `DEFERRED_PAYMENT` - Pay after delivery ("zaplať později")
+    + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+    + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
     + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
+    + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 
 + `recommendation` (boolean, required)
 
