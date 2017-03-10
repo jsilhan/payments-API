@@ -848,15 +848,15 @@ Address.
 
 ### Properties
 + `name`: `John Doe` (string, optional) - name on address
-+ `country`: `CZ` (string, optional)
++ `country`: `CZ` (string, required)
 
     Country. 
     
     (see ISO 3166 alpha-2)
 
-+ `city`: `Prague` (string, optional) - city.
-+ `streetAddress`: `Letenská` (string, optional) - street/city part.
-+ `streetNumber`: `22` (number, optional) - street number
++ `city`: `Prague` (string, required) - city.
++ `streetAddress`: `Letenská` (string, required) - street/city part.
++ `streetNumber`: `22` (number, required) - street number
 + `zip`: `14000` (number, required) - postal code
 + `addressType` (enum, required) - type of the address. Only some of the types are allowed in each context.
     + `PERMANENT` - permanent residential address
