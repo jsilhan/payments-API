@@ -869,7 +869,7 @@ Address.
 Financial amount
 
 ### Properties
-+ `value`: `125.90` (number, required)
++ `amount`: `125.90` (number, required)
 
     Amount in decimal format 
     
@@ -924,7 +924,7 @@ Financing application request
 + `customer` (Customer, optional) - Customer data
 + `order` (Order, optional) - Order data 
 + `type` (enum, optional) - Financing type 
-    + `DEFERRED_PAYMENT` - Pay after delivery
+    + `DEFERRED_PAYMENT` - Pay later
     + `INSTALMENT` - Pay in monthly instalments
 + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
 + `preferredInstallment` (Amount, optional) - Preferred repayment amount
@@ -1191,7 +1191,7 @@ Payment information
 + `paymentId` (string, required) - Payment identifier
 + `date`: `2017-05-20` (string, required) - Payment date
 + `applicationId` (string, required) - Application ID that this payment belongs to
-+ `amount` (Amount, required) - Payment amount
++ `value` (Amount, required) - Payment amount
 + `invoice` (InvoiceInfo, required) - Invoice data.
 
 
@@ -1261,7 +1261,7 @@ Dodatečná data o zákazníkovi.
 
 ### Properties
 + `productCode`: `a122ax` (string, required) - Product code, this indicates previous calculation result
-+ `amount` (Amount, required) - Goods price
++ `price` (Amount, required) - Goods price
 + `downPayment` (Amount, optional) - Down payment amount (default is 0)
 
 
@@ -1270,7 +1270,7 @@ Dodatečná data o zákazníkovi.
 
 ### Properties
 + `productSetCode`: `bc11523` (string, required) - Product set code, this will limit further calculations
-+ `amount` (Amount, required) - Goods price
++ `price` (Amount, required) - Goods price
 + `downPayment` (Amount, optional) - Down payment amount (default is 0)
 
 
@@ -1279,7 +1279,7 @@ Dodatečná data o zákazníkovi.
 
 ### Properties
 + `productSetCode`: `bc11523` (string, required) - Product set code, this will limit further calculations
-+ `amount` (Amount, required) - Goods price
++ `price` (Amount, required) - Goods price
 
 
 ## PrecheckRequest (object)
