@@ -84,7 +84,7 @@ GET /general/contracts?filter=contractDate|gt|2016-02-10;contractDate|lteq|2016-
 | in       | value in list |
 
 ## API calls limits
-When limit is reached, you receive HTTP error 429. To inform you about limits we use following headers:
+When you reach API calls limit (you call our API more times than is your quota), you receive HTTP error 429. To inform you about limits we use following response headers:
 - `X-Rate-Limit-Limit` - The number of allowed requests in the current period
 - `X-Rate-Limit-Remaining` - The number of remaining requests in the current period
 - `X-Rate-Limit-Reset` - The number of seconds left in the current period
@@ -103,9 +103,9 @@ We use following status codes throughout the API, except for OAuth flow when res
 - 404 `Not Found` - resource could not be found
 - 405 `Method Not Allowed` - specified method is not allowed for resource
 - 422 `Unprocessable Entity` -  business (semantic) errors. Request is well-formed, but cannot be processed (e.g. payment due date is in past). Errors are specified in response body (see below)
-- 429 `Too Many Requests` - you exceeded the rate limit (see X-Rate-Limit headers)
+- 429 `Too Many Requests` - you exceeded the rate limit (see section "API calls limit" above)
 - 500 `Internal Server Error` - something went wrong on our side
-- 503 `Service Unavailable` - there is planned service outage (TODO: should specify response headers with more details on service outage)
+- 503 `Service Unavailable` - there is planned service outage 
 
 ## Error handling
 Besides HTTP status codes, which are the main indication if something goes wrong, we also use `errors` object to report more details about errors.
