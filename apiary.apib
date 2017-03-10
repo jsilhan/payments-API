@@ -929,31 +929,21 @@ Financing application request
     + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
-    + `settingsInstalment` (ApplicationSettingsInstalment, optional) - Settings for INSTALMENT Application type.
-    + `settingsSubscription` (ApplicatioSettingsSubscription, optional) - Settings for SUBSCRIPTION Application type.
+    - Properties Settings for INSTALMENT Application type.
+        + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
+        + `preferredInstallment` (Amount, optional) - Preferred repayment amount
+        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
+        + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
+        + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
+    - Properties Settings for SUBSCRIPTION Application type.
+        + `paymentFrequency` (enum, optional) - payment frequency for recurring payment
+            + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
+            + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
+            + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
+        + `paymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - flag indicating already approved personal data processing
 + `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
 + `gatewayRedirectURL` (string, required) - Gateway redirect URL 
-
-## ApplicationSettingsInstalment (object)
-Settings for INSTALMENT Application type.
-
-### Properties
-+ `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
-+ `preferredInstallment` (Amount, optional) - Preferred repayment amount
-+ `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
-+ `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
-+ `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
-
-## ApplicatioSettingsSubscription (object)
-Settings for SUBSCRIPTION Application type.
-
-### Properties
-+ `paymentFrequency` (enum, optional) - payment frequency for recurring payment
-    + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
-    + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
-    + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
-+ `paymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
 
 ## Customer (object)
 Customer data
@@ -1231,8 +1221,18 @@ Funding application
     + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
-    + `settingsInstalment` (ApplicationSettingsInstalment, optional) - Settings for INSTALMENT Application type.
-    + `settingsSubscription` (ApplicatioSettingsSubscription, optional) - Settings for SUBSCRIPTION Application type.
+    - Properties Settings for INSTALMENT Application type.
+        + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
+        + `preferredInstallment` (Amount, optional) - Preferred repayment amount
+        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
+        + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
+        + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
+    - Properties Settings for SUBSCRIPTION Application type.
+        + `paymentFrequency` (enum, optional) - payment frequency for recurring payment
+            + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
+            + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
+            + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
+        + `paymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
 + `agreementPersonalDataProcessing`: `true` (boolean, required) - Personal data processing agreement
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See precheck operations and it's response (PrecheckResults).
@@ -1305,8 +1305,18 @@ Precheck data (has similar structure as `Application`).
     + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
-    + `settingsInstalment` (ApplicationSettingsInstalment, optional) - Settings for INSTALMENT Application type.
-    + `settingsSubscription` (ApplicatioSettingsSubscription, optional) - Settings for SUBSCRIPTION Application type.
+    - Properties Settings for INSTALMENT Application type.
+        + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
+        + `preferredInstallment` (Amount, optional) - Preferred repayment amount
+        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
+        + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
+        + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
+    - Properties Settings for SUBSCRIPTION Application type.
+        + `paymentFrequency` (enum, optional) - payment frequency for recurring payment
+            + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
+            + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
+            + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
+        + `paymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
 
 
 ## PrecheckResult (object)
