@@ -1276,7 +1276,7 @@ Funding application response
 + `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL.
 
 ## AdditionalDataRequest (object)
-Dodatečná data o zákazníkovi.
+Additional data about the customer.
 
 ### Properties
 + `personalId`: 720320/1234 (string, optional) - Personal identification number (format XXXXXX/YYYY)
@@ -1357,140 +1357,38 @@ Precheck result.
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
     + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
-
-+ `recommendation` (boolean, required)
-
-    Doporučení, zda objednávku předat do služby. 
++ `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the HCO.
+    true = Application is going to be likely approved.
+    false = Application is going to be likely rejected.
++ `probabilityOfApproval` (number, required) - Probability of approval.
+    0 = 0% to be approved
+    1 = 100% to be approved
     
-    
-    
-    true = Žádost bude pravděpodobně schválena.
-    
-    
-    
-    false = Žádost nebude pravděpodobně schválena.
-
-+ `probabilityOfApproval` (number, required)
-
-    Pravděpodobnost schválení objednávky v intervalu <0, 1>. 
-    
-    
-    
-    0 = 0% šance na schválení
-    
-    
-    
-    1 = 100% šance na schválení
-    
-    
-    
-    Partner (e-shop) může vytvořit vlastní logiku a neřídit se podle doporučení (být přísnější, nebo naopak být benevolentnější).
-
+    Partner can create custom logic not to follow the recommendation (be more strict or benevolent).
 + `completeness` (number, optional) - Completness of the result. <0, 1> The lower is the value, the lower accuracy of the result.
-
-+ `code` (string, required)
-
-    Kód výsledku prechecku. Možné hodnoty:
-    
-    
-    
-    ok
-    
-    
-    
-    additionalDataSecurity -
-    
-    Zákazník bude doptán na další osobní údaje z důvodu bezpečnosti.
-    
-    
-    
-    additionalDataLimit -
-    
-    Zákazníka známe, ale nemá dostatečný limit. Zákazník bude doptán na další osobní údaje z důvodu navýšení limitu (má nedostatečný).
-    
-    
-    
-    insufficientLimit -
-    
-    Zákazníka známe, ale nemá dostatečný limit a není možnost si ho navýšit.
-    
-    
-    
-    insufficientLimitOpportunity -
-    
-    Zákazníka známe, ale nemá dostatečný limit. Existuje ale možnost si ho navýšit zaplacením aktuálních objednávek.
-    
-    
-    
-    detailsNotMatching -
-    
-    Zákazníka známe, ale nesedí údaje. Zákazník bude vyzván k opravě dat.
-
-+ `customerType` (string, required)
-
-    Typ zákazníka. Možné hodnoty:
-    
-    
-    
-    UNKNOWN -
-    
-    Zákazníka neznáme.
-    
-    
-    
-    FIRST_ORDER -
-    
-    Zákazníka známe, ale zatím nezaplatil první objednávku.
-    
-    
-    
-    FULL -
-    
-    Zákazníka známe a již zaplatil alespoň jednu objednávku.
-    
-    
-    
-    BLOCKED -
-    
-    Zákazníka známe. Je zablokován.
-    
++ `code` (enum, required) - Result code.
+    + `OK`
+    + `UNKNOWN`
+    + `ADDITIONAL_DATA_SECURITY` - The customer will be ask to send additional data for security reasons.
+    + `ADDITIONAL_DATA_LIMIT` - The customer has insufficient limit and will be ask to send additional data to increase limit.
+    + `INSUFFICIENT_LIMIT` - The customer has insufficient limit and there is no way to increase it.
+    + `INSUFFICIENT_LIMIT_OPPORTUNITY` - The customer has insufficient limit and can increase it by paying previous not paid orders.
+    + `DETAILS_NOT_MATCHING` - We know do customer, but hit personal details does not match with details in his HCO account. Customer will be asked for correcting not matching details.
++ `customerType` (enum, required) - Customer type.
+    + `UNKNOWN` - Customer is uknown for HCO.
+    + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
+    + `FULL` -  HCO knows the customer. Customer has at least one paid order.
+    + `BLOCKED` - HCO knows the customer. Customer is blocked.
 + `customerDueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
-
-+ `message` (string, optional)
-
-    Zpráva pro zákazníka.
-    
-    
-    
-    Např.: 
-    
++ `message` (string, optional) - Custom message for customer.
+    Examples:
     “V HCO peněžence nemáte dostatečný limit.”
-    
-    
-    
     “Uveďte do objednávky jméno a příjmení, které používáte ve službě HCO.”
-    
-    
-    
-    a další...
-
-+ `additionalData` (array[string], optional)
-
-    Seznam dodatečných informací, na které bude zákazník doptán.
-    
-    
-    
-    Možné hodnoty:
-    
-    personalId,
-    
-    idCard,
-    
-    idCardExpiryDate,
-    
-    idCardScan
+    etc.
++ `additionalData` (array[string], optional) - List of additional data that customer has to send to 
+    Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`.
 
 ## PrecheckResults (object)
 Precheck results.
