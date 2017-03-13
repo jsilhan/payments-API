@@ -920,7 +920,7 @@ Financing application request
 + `stateReason`: `PROCESSING_APPROVED` (enum, optional) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
     + `INCOMPLETE_ADDITIONAL_DATA` - Additional data needed (redirect to HC or send Application additional data)
     + `INCOMPLETE_VERIFICATION` - Verification needed (redirect to HC or send Application verification)
-    + `INCOMPLETE_REDIRECT_NEEDED` - Redirect to HC is needed. Redirect user to gatewayRedirectURL.
+    + `INCOMPLETE_REDIRECT_NEEDED` - Redirect to HC is needed. Redirect user to gatewayRedirectUrl.
     + `PROCESSING_NEW` - New application created
     + `PROCESSING_PREAPPROVED` - Preliminary approval by HC
     + `REJECTED` - Rejected by HC
@@ -959,7 +959,7 @@ Financing application request
         + `paymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - flag indicating already approved personal data processing
 + `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
-+ `gatewayRedirectURL` (string, required) - Gateway redirect URL 
++ `gatewayRedirectUrl` (string, required) - Gateway redirect URL 
 
 ## Customer (object)
 Customer data
@@ -1080,7 +1080,7 @@ Item on order
 + `totalPrice` (Amount, required) - total price for all pieces, VAT inclusive
 + `totalVat` (VatAmount, required) - total VAT amount for all pieces
 + `image` (File, optional) - item image
-+ `productURL`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
++ `productUrl`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
 + `sendDate`: `2017-01-10` (string, optional) - date when item was sent. Only when the whole order was NOT sent at once.
 + `deliveryDate`: `2017-01-12` (string, optional) - date when item was delivered. Only when the whole order was NOT sent at once.
 + `deliveryTrackingNumber: `EX21121` (string, optional) - Tracking number for the item. Only when the whole order was NOT sent at once.
@@ -1227,7 +1227,7 @@ Payment information
 + `invoice` (InvoiceInfo, required) - Invoice data.
 
 
-## MerchantURLs (object)
+## MerchantUrls (object)
 Collection of URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
 ### Properties
@@ -1265,7 +1265,7 @@ Funding application
 + `agreementPersonalDataProcessing`: `true` (boolean, required) - Personal data processing agreement
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See precheck operations and it's response (PrecheckResults).
-+ `merchantURLs` (MerchantURLs, optional) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
++ `merchantUrls` (MerchantUrls, optional) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
 ## ApplicationRequestResult (object)
 Funding application response
@@ -1273,7 +1273,7 @@ Funding application response
 ### Properties
 + `id` (string, required) - Unique ID of the application
 + `state` (string, required) - State of the application
-+ `gatewayRedirectURL` (string, required) - Gateway redirect URL
++ `gatewayRedirectUrl` (string, required) - Gateway redirect URL
 
 ## AdditionalDataRequest (object)
 Dodatečná data o zákazníkovi.
