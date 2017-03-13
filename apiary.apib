@@ -162,6 +162,10 @@ There are 3 levels of error severity:
 - **numbers format** number format is defined by [JSON standard](http://www.json.org), e.g. decimals are separated by `.`
 
 
+## Documentation principles
+- attributes in request/response object are optional, unless stated otherwise (`required` flag under attribute name)
+- required attribute in optional object means, that if optional object is specified, it must contain required attribute.
+- all values in request/response attributes are just examples, except for enum values - these are the only possible values for given attribute.
 
 # Group Application operations
 
