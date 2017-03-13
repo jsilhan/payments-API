@@ -918,9 +918,9 @@ Financing application request
     + `REJECTED` - application was rejected
     + `CANCELLED` - application was cancelled by client, either before approval or after delivery
 + `stateReason`: `PROCESSING_APPROVED` (enum, optional) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
-    + `INCOMPLETE_ADDITIONAL_DATA` - Additional data needed (redirect to HC or send Application additional data)
-    + `INCOMPLETE_VERIFICATION` - Verification needed (redirect to HC or send Application verification)
-    + `INCOMPLETE_REDIRECT_NEEDED` - Redirect to HC is needed. Redirect user to gatewayRedirectUrl.
+    + `PROCESSING_ADDITIONAL_DATA` - Additional data needed (redirect to HC or send Application additional data)
+    + `PROCESSING_VERIFICATION` - Verification needed (redirect to HC or send Application verification)
+    + `PROCESSING_REDIRECT_NEEDED` - Redirect to HC is needed. Redirect user to gatewayRedirectUrl.
     + `PROCESSING_NEW` - New application created
     + `PROCESSING_PREAPPROVED` - Preliminary approval by HC
     + `REJECTED` - Rejected by HC
