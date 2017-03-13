@@ -959,7 +959,7 @@ Financing application request
         + `paymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - flag indicating already approved personal data processing
 + `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
-+ `gatewayRedirectUrl` (string, required) - Gateway redirect URL 
++ `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is PROCESSING and stateReason is PROCESSING_ADDITIONAL_DATA or PROCESSING_VERIFICATION or PROCESSING_REDIRECT_NEEDED.
 
 ## Customer (object)
 Customer data
@@ -1273,7 +1273,7 @@ Funding application response
 ### Properties
 + `id` (string, required) - Unique ID of the application
 + `state` (string, required) - State of the application
-+ `gatewayRedirectUrl` (string, required) - Gateway redirect URL
++ `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL.
 
 ## AdditionalDataRequest (object)
 Dodatečná data o zákazníkovi.
