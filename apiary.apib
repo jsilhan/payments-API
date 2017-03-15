@@ -169,9 +169,9 @@ There are 3 levels of error severity:
 
 # Group Application operations
 
-## Create Application [/applications/]
+## Create application [/applications/]
 
-### Create Application [POST]
+### Create application [POST]
 Create new application of particular financing type
 
 + Request (application/json; charset=utf-8)
@@ -202,7 +202,7 @@ Operations on specific application
     + applicationId (string, required)
 
 
-### Get Application Detail [GET]
+### Get application detail [GET]
 Get specific application detail by ID
 
 + Response 200(application/json; charset=utf-8)
@@ -219,13 +219,13 @@ Get specific application detail by ID
     + Attributes (Errors)
 
 
-## Request Application OTP [/applications/{applicationId}/requestOTP]
+## Request application OTP [/applications/{applicationId}/requestOTP]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Request Application OTP [POST]
+### Request application OTP [POST]
 Sends one time password to customer by SMS. This OTP is required to verify application. See 'Verify Application' method.
 
 + Request (application/json; charset=utf-8)
@@ -247,13 +247,13 @@ Sends one time password to customer by SMS. This OTP is required to verify appli
 
 
 
-## Verify Application  [/applications/{applicationId}/verify]
+## Verify application  [/applications/{applicationId}/verify]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Verify Application [POST]
+### Verify application [POST]
 Verify application with OTP sent to customer by SMS.
 
 + Request (application/json; charset=utf-8)
@@ -276,13 +276,13 @@ Verify application with OTP sent to customer by SMS.
     
 
 
-## Send Application Additional Data [/applications/{applicationId}/additionalData]
+## Send application additional data [/applications/{applicationId}/additionalData]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Send Application Additional Data [POST]
+### Send application additional data [POST]
 Send additional data needed to complete the application.
 
 + Request (application/json; charset=utf-8)
@@ -304,13 +304,13 @@ Send additional data needed to complete the application.
 
 
 
-## Cancel Application [/applications/{applicationId}/cancel{?reason}]
+## Cancel application [/applications/{applicationId}/cancel{?reason}]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Cancel Application [PUT]
+### Cancel application [PUT]
 Cancel application, or cancel recurring payment.
 
 + Parameters
@@ -334,13 +334,13 @@ Cancel application, or cancel recurring payment.
     + Attributes (Errors)
 
 
-## Change Application Order [/applications/{applicationId}/order{?reason}]
+## Change application order [/applications/{applicationId}/order{?reason}]
 
 + Parameters
     + applicationId (string, required)
 
 
-### Change Application Order [PUT]
+### Change application order [PUT]
 Change order. Used to change order items, total amount, billing details etc.
 
 + Parameters
@@ -492,13 +492,13 @@ Based on application type and partner setting, application payment may be proces
 
 
 
-## Applications Payments  [/applications/{applicationId}/payments]
+## Applications payments  [/applications/{applicationId}/payments]
 
 + Parameters
     + applicationId (string, required)
 
 
-### ApplicationsPaymentsByApplicationId [GET]
+### Get payments on specific application [GET]
 Get payments on specific application
 
 List of realized payments from HC to partner. In case of recurring payment, list may contain more items.
@@ -556,7 +556,7 @@ This should be used by partner before issuing an invoice, to include correct bil
 
 ## Orders [/orders/{?orderNumber,orderVariableSymbol,applicationId}]
 
-### Orders [GET]
+### Get order [GET]
 Get order
 
 Search for order using specified parameters.
@@ -595,9 +595,9 @@ Parameters include variable symbol, order number or application number
 
 # Group Offers operations
 
-## Installment Programs Down Payments [/installment-programs-down-payments/]
+## Installment programs down payments [/installment-programs-down-payments/]
 
-### InstallmentProgramsDownPayments [POST]
+### Calculate installment programs down payments [POST]
 Calculate installment programs down payments according to specified input
 
 + Request (application/json; charset=utf-8)
@@ -612,9 +612,9 @@ Calculate installment programs down payments according to specified input
 
 
 
-## Installment Programs Offers [/installment-programs-offers/]
+## Installment programs offers [/installment-programs-offers/]
 
-### InstallmentProgramsOffers [POST]
+### Calculate installment programs offer  [POST]
 Calculate installment programs offer according to specified input
 
 feature | supported by resource
@@ -635,9 +635,9 @@ feature | supported by resource
 
 
 
-## Installment Programs [/installment-programs/]
+## Installment programs [/installment-programs/]
 
-### InstallmentPrograms [POST]
+### Calculate installment program detail [POST]
 Calculate installment program detailed information.
 
 It returns the installment program that most closely matches specified input.
@@ -662,9 +662,9 @@ It returns the installment program that most closely matches specified input.
 
 # Group Precheck operations
 
-## Customer Information [/customer-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
+## Customer information [/customer-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
 
-### CustomerInformation [GET]
+### Get customer information [GET]
 Get customer's information according to input
 
 + Parameters
@@ -702,9 +702,9 @@ Get customer's information according to input
     
     + Attributes (Errors)
 
-## Customer Limit Information [/customer-limit-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
+## Customer limit information [/customer-limit-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
 
-### CustomerLimitInformation [GET]
+### Get customer limit information [GET]
 Get customer's limit information
 
 + Parameters
@@ -767,9 +767,9 @@ Returns probability of application's approval and limits of customer, if known t
 # Group Merchantsite operations
 This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
-## OrderChangeRequest [/{application.merchantUrls.changeEndpoint}/]
+## Order change request [/{application.merchantUrls.changeEndpoint}/]
 
-### OrderChangeRequest [POST]
+### Order change request [POST]
 Order change request
 
 Asks partner to correct order data (billing information, order items etc.)
@@ -791,9 +791,9 @@ Asks partner to correct order data (billing information, order items etc.)
 
 
 
-## ApplicationNotification [/{application.merchantUrls.notificationEndpoint}/]
+## Application notification [/{application.merchantUrls.notificationEndpoint}/]
 
-### ApplicationNotification [POST]
+### Application notification [POST]
 Notify partner about changes in application.
 
 + Request (application/json; charset=utf-8)
@@ -808,9 +808,9 @@ Notify partner about changes in application.
 
 
 
-## PaymentNotification [/{application.merchantUrls.paymentEndpoint}/]
+## Payment notification [/{application.merchantUrls.paymentEndpoint}/]
 
-### PaymentNotification [POST]
+### Payment notification [POST]
 Notification about new payment.
 
 + Request (application/json; charset=utf-8)
