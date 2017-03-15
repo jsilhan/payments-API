@@ -1028,7 +1028,7 @@ Order information, needed to create an application.
 
    After this date, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
     
-+ `items` (array[OrderItem], required) - order items
++ `items` (array[ApplicationRequestOrderItem], required) - order items
 + `documents` (array[Document], optional) - attached documents (invoices etc.)
 
 
@@ -1042,13 +1042,14 @@ Order information.
     + `DELIVERED` - all order items was delivered to customer
     + `RETURNED` - all order items was returned to merchant
     + `CANCELLED` - order was fully cancelled
++ `items` (array[OrderItem], required) - order items
 + `deliveryDate`: `2017-01-17` (string, optional) - date and time of delivery
 + `deliveryTrackingNumber`: `EX12221` (string, optional) - delivery tracking number
 + `sentDate`: `2017-01-12` (string, optional) - date and time of order shipping
 
 
-## OrderItem (object)
-Item on order
+## ApplicationRequestOrderItem (object)
+Order item information, needed to create an application.
 
 ### Properties
 + `type` (enum, optional) - item type
@@ -1060,12 +1061,6 @@ Item on order
     + `GIFT_CARD`
     + `STORE_CREDIT`
     + `FEE`
-+ `state` (enum, required) - Order state.
-    + `PROCESSING` - order item delivery is being processed by merchant
-    + `SENT` - items wa sent to customer
-    + `DELIVERED` - order item was delivered to customer
-    + `RETURNED` - order item was returned to merchant
-    + `CANCELLED` - order item was cancelled
 + `code`: `EXC4677-1a` (string, optional) - internal code for item (internal to e-shop). Used to better identify the item for future changes
 + `ean`: 888462064002 (string, optional) - EAN code.
 + `name`: `iPhone 6s 32GB SpaceGray` (string, required) - item name
@@ -1080,6 +1075,18 @@ Item on order
 + `totalVat` (VatAmount, required) - total VAT amount for all pieces
 + `image` (File, optional) - item image
 + `productUrl`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
+
+
+## OrderItem (ApplicationRequestOrderItem)
+Order item information.
+
+### Properties
++ `state` (enum, required) - Order state.
+    + `PROCESSING` - order item delivery is being processed by merchant
+    + `SENT` - items wa sent to customer
+    + `DELIVERED` - order item was delivered to customer
+    + `RETURNED` - order item was returned to merchant
+    + `CANCELLED` - order item was cancelled
 + `sendDate`: `2017-01-10` (string, optional) - date when item was sent. Only when the whole order was NOT sent at once.
 + `deliveryDate`: `2017-01-12` (string, optional) - date when item was delivered. Only when the whole order was NOT sent at once.
 + `deliveryTrackingNumber: `EX21121` (string, optional) - Tracking number for the item. Only when the whole order was NOT sent at once.
