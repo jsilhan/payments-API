@@ -174,16 +174,14 @@ There are 3 levels of error severity:
 ### Login partner [POST]
 Partner authenticate himself and obtain acces token 
 
-    + Request (application/json; charset=utf-8)
-
-        + username: `mall` (string, required)
-        + password: `MallSecretPassword` (string, required)
++ Request (application/json; charset=utf-8)
+    + Attributes (PartnerLogin)
 
 
-    + Response 200(application/json; charset=utf-8)
++ Response 200(application/json; charset=utf-8)
 
         Partner acces token issued
-
+        
         + token: `TokenForPartnerTokenForPartnerTokenForPartnerTokenForPartner` (string)
 
 
@@ -851,6 +849,13 @@ Notification about new payment.
 
 # Data Structures
 
+## PartnerLogin (object)
+Partner login credentials
+
+### Properties
++ `username`: `mall` (string, required) - Partner username
++ `password`: `MallSecretPassword` (string, required) - Partner secret password
+
 ## DeliveryCarrier (object) 
 Delivery carrier
 
@@ -875,16 +880,19 @@ Delivery carrier
     + carrierCustom: `my custom carrier` (string, required) - for carriers not found in enumeration of customer ID, specify value as text
 
 ## PhoneNumber (object)
-+ phoneType: `PRIMARY_MOBILE` (enum, required) - type of phone
+Phone number
+
+### Properties
++ `phoneType`: `PRIMARY_MOBILE` (enum, required) - type of phone
     + `PRIMARY_MOBILE`
     + `SECONDARY_MOBILE`
     + `HOME_PHONE`
     + `EMPLOYMENT_PHONE`
-+ countryCode: `+420` (string, optional) - country code, including leading `+`
-+ number: `123456789` (string, required) - phone number
++ `countryCode`: `+420` (string, optional) - country code, including leading `+`
++ `number`: `123456789` (string, required) - phone number
 
 ## Address (object)
-Address.
+Address
 
 ### Properties
 + `name`: `John Doe` (string, optional) - name on address
