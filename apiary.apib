@@ -977,7 +977,7 @@ Financing application request
     + `CANCELLED_RETURNED` - Cancelled after delivery, goods returned to merchant
 + `customer` (Customer, optional) - Customer data
 + `order` (Order, optional) - Order data 
-+ `type` (enum, required) - Financing type 
++ `type` (enum, optional) - Financing type 
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
     + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
@@ -1289,7 +1289,7 @@ Funding application
 ### Properties
 + `customer` (Customer, required) - Customer information
 + `order` (ApplicationRequestOrder, required) - Order information
-+ `type` (enum, optional) - Financing type 
++ `type` (enum, required) - Financing type 
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
     + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
