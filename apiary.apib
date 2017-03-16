@@ -366,7 +366,7 @@ Send additional data needed to complete the application.
 
 
 
-## Cancel application [/applications/{applicationId}/cancel{?reason}]
+## Cancel application [/applications/{applicationId}/cancel]
 
 + Parameters
     + applicationId (string, required)
@@ -375,13 +375,9 @@ Send additional data needed to complete the application.
 ### Cancel application [PUT]
 Cancel application, or cancel recurring payment.
 
-+ Parameters
-    + reason (enum, required) - Reason of cancellation
-        + `ORDER_CANCELLED_CUSTOMER` - customer cancelled the application
-        + `ORDER_CANCELLED_ITEMS` - application was cancelled because some items were unavailable
-        + `ORDER_CANCELLED_OTHER` - other reason
-        + `TODO`
-    
++ Request (application/json; charset=utf-8)
+    + Attributes (ApplicationCancelRequest)
+
 + Response 200(application/json; charset=utf-8)
 
         Application was cancelled.
@@ -395,7 +391,7 @@ Cancel application, or cancel recurring payment.
     + Attributes (Errors)
 
 
-## Change application order [/applications/{applicationId}/order{?reason}]
+## Change application order [/applications/{applicationId}/order]
 
 + Parameters
     + applicationId (string, required)
@@ -404,14 +400,8 @@ Cancel application, or cancel recurring payment.
 ### Change application order [PUT]
 Change order. Used to change order items, total amount, billing details etc.
 
-+ Parameters
-    + reason (string, optional)
-
-        Reason for change.
-
-
 + Request (application/json; charset=utf-8)
-    + Attributes (Order)
+    + Attributes (OrderChangeRequest)
 
 
 + Response 200(application/json; charset=utf-8)
@@ -423,10 +413,7 @@ Change order. Used to change order items, total amount, billing details etc.
 + Response 422(application/json; charset=utf-8)
     Order cannot be changed.
         
-    + Attributes (Errors)    
-
-
-
+    + Attributes (Errors)
 
 
 ## Mark order items as cancelled  [/applications/{applicationId}/order/cancel]
@@ -836,7 +823,7 @@ Order change request
 Asks partner to correct order data (billing information, order items etc.)
 
 + Request (application/json; charset=utf-8)
-    + Attributes (OrderChangeRequest)
+    + Attributes (OrderChangeNotification)
 
 + Response 200 (application/json; charset=utf-8)
 
@@ -1070,6 +1057,21 @@ Customer data
 + `cartItemsRemoved`: 2 (number, optional) - Total count of removed items form shopping basket during current shopping
 + `itemsViewed`: 10 (number, optional) - Number of viewed pages with products
 
+## OrderChangeRequest (object)
+Object used to change order information.
+
+### Properties
++ reason (string, optional) - Reason of change.
++ order (Order, required) - Changed order data.
+
+## ApplicationCancelRequest (object)
+Object used to cancel application.
+
+### Properties
++ reason (enum, optional): `ORDER_CANCELLED_OTHER` - Reason of cancellation. Default ORDER_CANCELLED_OTHER.
+    + `ORDER_CANCELLED_CUSTOMER` - customer cancelled the application
+    + `ORDER_CANCELLED_ITEMS` - application was cancelled because some items were unavailable
+    + `ORDER_CANCELLED_OTHER` - other reason
 
 ## OrderItemsChangeRequest (object)
 Object used to change order items.
@@ -1505,7 +1507,7 @@ Precheck results.
     
     Pokud zákazníka známe, jedná se o aktuální limity. Pokud zákazník dal souhlas o předávání limitů. TODO legal.
 
-## OrderChangeRequest (object)
+## OrderChangeNotification (object)
 Order change request data (HC asks partner to correct order data).
 
 ### Properties
