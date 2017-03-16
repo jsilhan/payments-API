@@ -167,6 +167,32 @@ There are 3 levels of error severity:
 - required attribute in optional object means, that if optional object is specified, it must contain required attribute.
 - all values in request/response attributes are just examples, except for enum values - these are the only possible values for given attribute.
 
+# Group Authentication operation
+
+## Login partner [/authentication/login-partner]
+
+### Login partner [POST]
+Partner authenticate himself and obtain acces token 
+
+    + Request (application/json; charset=utf-8)
+
+        + username: `mall` (string, required)
+        + password: `MallSecretPassword` (string, required)
+
+
+    + Response 200(application/json; charset=utf-8)
+
+        Partner acces token issued
+
+        + token: `TokenForPartnerTokenForPartnerTokenForPartnerTokenForPartner` (string)
+
+
++ Response 400(application/json; charset=utf-8)
+
+        Unable to authenticate partner
+        
+    + Attributes (Errors)
+
 # Group Application operations
 
 ## Create application [/applications/]
