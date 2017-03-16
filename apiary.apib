@@ -182,7 +182,7 @@ Partner authenticate himself and obtain acces token
 
         Partner acces token issued
         
-        + token: `TokenForPartnerTokenForPartnerTokenForPartnerTokenForPartner` (string)
+    + Attributes (PartnerLoginResult)
 
 
 + Response 400(application/json; charset=utf-8)
@@ -853,8 +853,14 @@ Notification about new payment.
 Partner login credentials
 
 ### Properties
-+ `username`: `mall` (string, required) - Partner username
-+ `password`: `MallSecretPassword` (string, required) - Partner secret password
++ `username`: `eShop` (string, required) - Partner username
++ `password`: `eShopSecretPassword` (string, required) - Partner secret password
+
+## PartnerLoginResult (object)
+Authenticated partner access token
+
+### Properties
++ `token`: `TokenForPartnerTokenForPartnerTokenForPartnerTokenForPartner` (string) - Access token
 
 ## DeliveryCarrier (object) 
 Delivery carrier
