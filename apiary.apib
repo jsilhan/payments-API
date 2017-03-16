@@ -442,7 +442,7 @@ System notification. Some or all of the order items were cancelled. Based on app
 
 
 + Request (application/json; charset=utf-8)
-    + Attributes (OrderItemsChangeRequest)
+    + Attributes (OrderItemsCancelRequest)
 
 
 + Response 200(application/json; charset=utf-8)
@@ -476,7 +476,7 @@ Based on application type and partner setting, application payment may be proces
 
 
 + Request (application/json; charset=utf-8)
-    + Attributes (OrderItemsChangeRequest)
+    + Attributes (OrderItemsDeliverRequest)
 
 
 + Response 200(application/json; charset=utf-8)
@@ -507,7 +507,7 @@ Based on application type and partner setting, credit note may be issued.
 
 
 + Request (application/json; charset=utf-8)
-    + Attributes (OrderItemsChangeRequest)
+    + Attributes (OrderItemsReturnRequest)
 
 
 + Response 200(application/json; charset=utf-8)
@@ -536,7 +536,7 @@ System notification. Some or all order items were shipped to customer.
 Based on application type and partner setting, application payment may be processed.
 
 + Request (application/json; charset=utf-8)
-    + Attributes (OrderItemsChangeRequest)
+    + Attributes (OrderItemsSendRequest)
 
 
 + Response 200(application/json; charset=utf-8)
@@ -1072,19 +1072,36 @@ Customer data
 
 
 ## OrderItemsChangeRequest (object)
-Object used to change order.
+Object used to change order items.
 
 ### Properties
-+ `orderItems` (array[OrderItem], optional) - List of changed items. All items are considered when empty
++ `items` (array[OrderItem], optional) - List of changed items. All items are considered when empty.
++ `totalPrice` (Amount, optional) - Total amount of items (from orderItems array), including VAT.
++ `totalVat` (array[VatAmount], optional) - Total VAT amounts of items (from orderItems array) split by their VAT rates.
+
+## OrderItemsReturnRequest (OrderItemsChangeRequest)
+Object used to mark order items as returned.
+
+### Properties
 + `invoice` (Document, optional) - Attached file (invoice, proforma invoice, credit note, ...)
 + `variableSymbol`: `122a111` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, credit note,...)
-+ `sendDate`: `2017-01-12` (string, optional) - Shipping date
-+ `deliveryCarrier` (DeliveryCarrier, optional) - Carrier 
-+ `deliveryDate`: `2017-01-15` (string, optional) - Delivery date
-+ `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number
-+ `totalPrice` (Amount, optional) - Total amount of items (from orderItems array), including VAT - required when invoice is attached
-+ `totalVat` (VatAmount, optional) - New total VAT amount for all items (from orderItems array) - required when invoice is attached
 
+## OrderItemsSendRequest (OrderItemsReturnRequest)
+Object used to mark order items as sent.
+
+### Properties
++ `sendDate`: `2017-01-12` (string, optional) - Shipping date.
++ `deliveryCarrier` (DeliveryCarrier, optional) - Carrier.
++ `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number.
+
+## OrderItemsDeliverRequest (OrderItemsSendRequest)
+Object used to mark order items as delivered.
+
+### Properties
++ `deliveryDate`: `2017-01-15` (string, optional) - Delivery date
+
+## OrderItemsCancelRequest (OrderItemsChangeRequest)
+Object used to mark order items as cancelled.
 
 ## ApplicationRequestOrder (object)
 Order information, needed to create an application.
