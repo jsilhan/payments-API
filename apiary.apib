@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: http://example.com/api
+HOST: https://api.homecredit.cz
 
 # HC OneClick API
 API documentation for Home Credit One-Click API.
@@ -167,7 +167,45 @@ There are 3 levels of error severity:
 - required attribute in optional object means, that if optional object is specified, it must contain required attribute.
 - all values in request/response attributes are just examples, except for enum values - these are the only possible values for given attribute.
 
-# Group Authentication operation
+# Group Security
+To access our API, you have to obtain *access token* first; this token is a string of arbitrary length (30+ chars) and it has to be included in HTTP header to every request to API. This section describes way to obtain valid access token and use it to access protected resources.
+
+- to obtain access token, use `/authentication/login-partner` resource with appropriate parameters (see the /authentication/login-partner resource documentation)
+
+- access token should be present in every request using request header `Authorization`, with type `Bearer`. If your access token has value `secret_token`, it should be specified as follows:
+
+`Authorization: Bearer secret_token`
+
+So the real example using curl will look like:
+
+```
+curl -H "Authorization: Bearer secret_token" https://apiendpoint/applications
+```
+
+- access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/login-partner` resource.
+
+- if you fail to specify access token, you will receive `401 Unauthorized` error and following response body:
+
+```
+{
+   "error_description": "The access token is missing",
+   "error": "invalid_request"
+}
+```
+
+- if you provide invalid access token, you will receive `401 Unauthorized` error and following response body:
+
+```
+{
+    "error_description":"The access token is invalid or has expired",
+    "error":"invalid_token"
+}
+```
+
+> IMPORTANT NOTE: You must keep your access token and login credentials safe. NEVER put login credentials into client page.
+
+> NEVER transfer access token nor login credentials over plain HTTP. Such requests will be refused.
+
 
 ## Login partner [/authentication/login-partner]
 
@@ -860,7 +898,8 @@ Partner login credentials
 Authenticated partner access token
 
 ### Properties
-+ `token`: `TokenForPartnerTokenForPartnerTokenForPartnerTokenForPartner` (string) - Access token
++ `access_token`: `TokenForPartnerTokenForPartnerTokenForPartnerTokenForPartner` (string) - Access token
++ `expires_in`: 7200 (number) - token validity remaining time (in seconds)
 
 ## DeliveryCarrier (object) 
 Delivery carrier
