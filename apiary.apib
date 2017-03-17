@@ -915,13 +915,12 @@ Delivery carrier
 Phone number
 
 ### Properties
-+ `phoneType`: `PRIMARY_MOBILE` (enum, required) - type of phone
++ `type`: `PRIMARY_MOBILE` (enum, required) - type of phone
     + `PRIMARY_MOBILE`
     + `SECONDARY_MOBILE`
     + `HOME_PHONE`
     + `EMPLOYMENT_PHONE`
-+ `countryCode`: `+420` (string, optional) - country code, including leading `+`
-+ `number`: `123456789` (string, required) - phone number
++ `number`: `+420123456789` (string, required) - phone number with country code (including leading `+`)
 
 ## Address (object)
 Address
@@ -1035,7 +1034,7 @@ Customer data
 + `titleBefore`: `Ing.` (string, optional) - academical degree, in front of the name
 + `titleAfter`: `CSc.` (string, optional) - academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
-+ `phoneNumber` (PhoneNumber, required) - phone number
++ `phone` (PhoneNumber, required) - phone number
 + `addresses` (array[Address], optional) - addresses. Only `PERMANENT` and `CONTACT` types are allowed.
 + `tin`: `12333321` (string, optional) - tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
