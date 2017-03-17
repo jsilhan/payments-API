@@ -1006,10 +1006,10 @@ Financing application request
 + `type` (enum, optional) - Financing type 
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
+    + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
-    - `settingsInstalment` - Settings for INSTALMENT Application type.
+    - `settingsInstallment` - Settings for INSTALLMENT Application type.
         + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
         + `preferredInstallment` (Amount, optional) - Preferred repayment amount
         + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
@@ -1350,10 +1350,10 @@ Funding application
 + `type` (enum, required) - Financing type 
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
+    + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
-    - `settingsInstalment` - Settings for INSTALMENT Application type.
+    - `settingsInstallment` - Settings for INSTALLMENT Application type.
         + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
         + `preferredInstallment` (Amount, optional) - Preferred repayment amount
         + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
@@ -1434,10 +1434,10 @@ Precheck data (has similar structure as `Application`).
 + `type` (enum, optional) - Financing type 
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
+    + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
-    - `settingsInstalment` - Settings for INSTALMENT Application type.
+    - `settingsInstallment` - Settings for INSTALLMENT Application type.
         + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
         + `preferredInstallment` (Amount, optional) - Preferred repayment amount
         + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
@@ -1458,7 +1458,7 @@ Precheck result.
 + `type` (enum, required) - Precheck result type for Funding type.
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `INSTALMENT` - Pay in monthly instalments ("nákup na splátky")
+    + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the HCO.
     true = Application is going to be likely approved.
