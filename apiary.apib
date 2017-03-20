@@ -244,7 +244,7 @@ Create new application of particular financing type
 
         Application was created
 
-    + Attributes (ApplicationRequestResult)
+    + Attributes (Application)
 
 
 + Response 400(application/json; charset=utf-8)
@@ -1369,13 +1369,6 @@ Funding application
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See precheck operations and it's response (PrecheckResults).
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
-## ApplicationRequestResult (object)
-Funding application response
-
-### Properties
-+ `id` (string, required) - Unique ID of the application
-+ `state` (string, required) - State of the application
-+ `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL.
 
 ## AdditionalDataRequest (object)
 Additional data about the customer.
