@@ -891,7 +891,7 @@ Authenticated partner access token
 
 ### Properties
 + `accessToken`: `TokenForPartnerTokenForPartnerTokenForPartnerTokenForPartner` (string) - Access token
-+ `expiresIn`: 7200 (number) - token validity remaining time (in seconds)
++ `expiresIn`: 7200 (number) - Token validity remaining time (in seconds)
 
 ## DeliveryCarrier (object) 
 Delivery carrier
@@ -914,39 +914,39 @@ Delivery carrier
         + HDS_COMFORT
         + HDS_STANDARD
 
-    + carrierCustom: `my custom carrier` (string, required) - for carriers not found in enumeration of customer ID, specify value as text
+    + carrierCustom: `my custom carrier` (string, required) - For carriers not found in enumeration of customer ID, specify value as text
 
 ## PhoneNumber (object)
 Phone number
 
 ### Properties
-+ `type`: `PRIMARY_MOBILE` (enum, required) - type of phone
++ `type`: `PRIMARY_MOBILE` (enum, required) - Type of phone
     + `PRIMARY_MOBILE`
     + `SECONDARY_MOBILE`
     + `HOME_PHONE`
     + `EMPLOYMENT_PHONE`
-+ `number`: `+420123456789` (string, required) - phone number with country code (including leading `+`)
++ `number`: `+420123456789` (string, required) - Phone number with country code (including leading `+`)
 
 ## Address (object)
 Address
 
 ### Properties
-+ `name`: `John Doe` (string, optional) - name on address
++ `name`: `John Doe` (string, optional) - Name on address
 + `country`: `CZ` (string, required)
 
     Country. 
     
     (see ISO 3166 alpha-2)
 
-+ `city`: `Prague` (string, required) - city.
-+ `streetAddress`: `Letenská` (string, required) - street/city part.
-+ `streetNumber`: `22` (string, required) - street number
-+ `zip`: `140 00` (string, required) - postal code
-+ `addressType` (enum, required) - type of the address. Only some of the types are allowed in each context.
-    + `PERMANENT` - permanent residential address
-    + `CONTACT` - contact address
-    + `DELIVERY` - delivery address
-    + `BILLING` - billing address
++ `city`: `Prague` (string, required) - City.
++ `streetAddress`: `Letenská` (string, required) - Street/city part.
++ `streetNumber`: `22` (string, required) - Street number
++ `zip`: `140 00` (string, required) - Postal code
++ `addressType` (enum, required) - Type of the address. Only some of the types are allowed in each context.
+    + `PERMANENT` - Permanent residential address
+    + `CONTACT` - Contact address
+    + `DELIVERY` - Delivery address
+    + `BILLING` - Billing address
 
 
 ## Amount (object)
@@ -980,10 +980,10 @@ Financing application base information
 ### Properties
 + `id`: `01-11200a0ee1` (string, required) - Unique identifier in HCO
 + `state` (enum, required) - Application state.
-    + `PROCESSING` - application is being processed by HC
-    + `READY` - application was approved and is ready for financing
-    + `REJECTED` - application was rejected
-    + `CANCELLED` - application was cancelled by client, either before approval or after delivery
+    + `PROCESSING` - Application is being processed by HC
+    + `READY` - Application was approved and is ready for financing
+    + `REJECTED` - Application was rejected
+    + `CANCELLED` - Application was cancelled by client, either before approval or after delivery
 + `stateReason`: `PROCESSING_APPROVED` (enum, optional) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
     + `PROCESSING_ADDITIONAL_DATA` - Additional data needed (redirect to HC or send Application additional data)
     + `PROCESSING_VERIFICATION` - Verification needed (redirect to HC or send Application verification)
@@ -1028,9 +1028,9 @@ Financing application
             + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
             + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
             + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
-        + `paymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
-+ `agreementPersonalDataProcessing`: `true` (boolean, optional) - flag indicating already approved personal data processing
-+ `agreementTermsAndConditions`: `true` (boolean, optional) - flag indicating already approved terms and conditions
+        + `paymentFirstDate`: `2016-10-12` (string, optional) - First payment date for recurring payment
++ `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
++ `agreementTermsAndConditions`: `true` (boolean, optional) - Flag indicating already approved terms and conditions
 + `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is PROCESSING and stateReason is PROCESSING_ADDITIONAL_DATA or PROCESSING_VERIFICATION or PROCESSING_REDIRECT_NEEDED.
 
 ## Customer (object)
@@ -1040,14 +1040,14 @@ Customer data
 + `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation.
 + `firstName`: `John` (string, optional) -  Customer first (given) name
 + `lastName`: `Newborn` (string, optional) - Customer last (family) name
-+ `titleBefore`: `Ing.` (string, optional) - academical degree, in front of the name
-+ `titleAfter`: `CSc.` (string, optional) - academical degree, behind name
++ `titleBefore`: `Ing.` (string, optional) - Academical degree, in front of the name
++ `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
-+ `phone` (PhoneNumber, required) - phone number
-+ `addresses` (array[Address], optional) - addresses. Only `PERMANENT` and `CONTACT` types are allowed.
-+ `tin`: `12333321` (string, optional) - tax identification number (ICO)
++ `phone` (PhoneNumber, required) - Phone number
++ `addresses` (array[Address], optional) - Addresses. Only `PERMANENT` and `CONTACT` types are allowed.
++ `tin`: `12333321` (string, optional) - Tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
-+ `extraData` (CustomerExtraData, optional) - additional data, that may improve the approval probability
++ `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability
 
 
 ## CustomerExtraData (object)
@@ -1058,8 +1058,8 @@ Customer data
 + `cashlessTransactionsNumber`: 5 (number, optional) - Historical count of customer's cashless transactions made in partner's e-shop
 + `transactionsSum` (Amount, optional) - Sum of all cash transactions made in partner's e-shop
 + `cashlessTransactionsSum` (Amount, optional) - Sum of all cashless transactions made in partner's e-shop 
-+ `latestTransactionDate`: `2017-01-10` (string, optional) - newest transaction date on partner e-shop.
-+ `earliestTransactionDate`: `2015-10-12` (string, optional) - oldest transaction date on partner e-shop
++ `latestTransactionDate`: `2017-01-10` (string, optional) - Newest transaction date on partner e-shop.
++ `earliestTransactionDate`: `2015-10-12` (string, optional) - Oldest transaction date on partner e-shop
 + `pageTotalTime`: 250 (number, optional) - Total time spent on partners website (in seconds)
 + `pageReviewsTime`: 100 (number, optional) - Total time spent on partners website in review and comments sections (in seconds)
 + `cartItemsRemoved`: 2 (number, optional) - Total count of removed items form shopping basket during current shopping
@@ -1077,9 +1077,9 @@ Object used to cancel application.
 
 ### Properties
 + reason (enum, optional): `ORDER_CANCELLED_OTHER` - Reason of cancellation. Default ORDER_CANCELLED_OTHER.
-    + `ORDER_CANCELLED_CUSTOMER` - customer cancelled the application
-    + `ORDER_CANCELLED_ITEMS` - application was cancelled because some items were unavailable
-    + `ORDER_CANCELLED_OTHER` - other reason
+    + `ORDER_CANCELLED_CUSTOMER` - Customer cancelled the application
+    + `ORDER_CANCELLED_ITEMS` - Application was cancelled because some items were unavailable
+    + `ORDER_CANCELLED_OTHER` - Other reason
 
 ## OrderItemsChangeRequest (object)
 Object used to change order items.
@@ -1117,24 +1117,24 @@ Object used to mark order items as cancelled.
 Order information, needed to create an application.
 
 ### Properties
-+ `number`: `AA234` (string, required) - order number (internal for e-shop)
-+ `variableSymbols` (array[string], optional) - variable symbols (internal for e-shop)
-+ `totalPrice` (Amount, required) - total order amount, including VAT
-+ `totalVat` (array[VatAmount], required) - total VAT amounts split by their VAT rates
-+ `addresses` (array[Address], required) - addresses. Only `BILLING` and `DELIVERY` types are allowed.
-+ `deliveryType` (enum, optional) - delivery type, for `DELIVERY_CARRIER` type can be further specified by DeliveryCarrier attribute.Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
-    + `PERSONAL_BRANCH` - personal collection at branch
-    + `PERSONAL_PARTNER` - personal collection at partner network
-    + `ONLINE` - online delivery (e.g. for intangible assets)
-+ `deliveryCarrier` (DeliveryCarrier, optional) - delivery carrier, when applicable.
++ `number`: `AA234` (string, required) - Order number (internal for e-shop)
++ `variableSymbols` (array[string], optional) - Variable symbols (internal for e-shop)
++ `totalPrice` (Amount, required) - Total order amount, including VAT
++ `totalVat` (array[VatAmount], required) - Total VAT amounts split by their VAT rates
++ `addresses` (array[Address], required) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
++ `deliveryType` (enum, optional) - Delivery type, for `DELIVERY_CARRIER` type can be further specified by DeliveryCarrier attribute.Typ doručení. Dopravcem, osobní převzetí, online doručení atd.
+    + `PERSONAL_BRANCH` - Personal collection at branch
+    + `PERSONAL_PARTNER` - Personal collection at partner network
+    + `ONLINE` - Online delivery (e.g. for intangible assets)
++ `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
 + `reservationDate`: `2017-01-20` (string, optional)
 
    Date and time until order is reserved. 
 
    After this date, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
     
-+ `items` (array[ApplicationRequestOrderItem], required) - order items
-+ `documents` (array[Document], optional) - attached documents (invoices etc.)
++ `items` (array[ApplicationRequestOrderItem], required) - Order items
++ `documents` (array[Document], optional) - Attached documents (invoices etc.)
 
 
 ## Order (ApplicationRequestOrder)
@@ -1142,23 +1142,23 @@ Order information.
 
 ### Properties
 + `state` (enum, required) - Order state.
-    + `PROCESSING` - order is being processed by merchant
-    + `SENT` - all order items was sent to customer
-    + `DELIVERED` - all order items was delivered to customer
-    + `RETURNED` - all order items was returned to merchant
-    + `CANCELLED` - order was fully cancelled
-+ `items` (array[OrderItem], required) - order items
-+ `deliveryDate`: `2017-01-17` (string, optional) - date and time of delivery
-+ `deliveryTrackingNumber`: `EX12221` (string, optional) - delivery tracking number
-+ `sentDate`: `2017-01-12` (string, optional) - date and time of order shipping
-+ `applicationInfo` (ApplicationBase, required) - base information about respective application
+    + `PROCESSING` - Order is being processed by merchant
+    + `SENT` - All order items was sent to customer
+    + `DELIVERED` - All order items was delivered to customer
+    + `RETURNED` - All order items was returned to merchant
+    + `CANCELLED` - Order was fully cancelled
++ `items` (array[OrderItem], required) - Order items
++ `deliveryDate`: `2017-01-17` (string, optional) - Date and time of delivery
++ `deliveryTrackingNumber`: `EX12221` (string, optional) - Delivery tracking number
++ `sentDate`: `2017-01-12` (string, optional) - Date and time of order shipping
++ `applicationInfo` (ApplicationBase, required) - Base information about respective application
 
 
 ## ApplicationRequestOrderItem (object)
 Order item information, needed to create an application.
 
 ### Properties
-+ `type` (enum, optional) - item type
++ `type` (enum, optional) - Item type
     + `PHYSICAL`
     + `DISCOUNT` 
     + `SHIPPING_FEE`
@@ -1167,19 +1167,19 @@ Order item information, needed to create an application.
     + `GIFT_CARD`
     + `STORE_CREDIT`
     + `FEE`
-+ `code`: `EXC4677-1a` (string, optional) - internal code for item (internal to e-shop). Used to better identify the item for future changes
++ `code`: `EXC4677-1a` (string, optional) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
 + `ean`: 888462064002 (string, optional) - EAN code.
-+ `name`: `iPhone 6s 32GB SpaceGray` (string, required) - item name
-+ `variant`: `32GB SpaceGray` (string, optional) - item variant
++ `name`: `iPhone 6s 32GB SpaceGray` (string, required) - Item name
++ `variant`: `32GB SpaceGray` (string, optional) - Item variant
 + `description`: `Mobile phone with 32GB of RAM` (string, optional)
 + `producer`: `Apple` (string, optional)
-+ `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - list of item categories
-+ `quantity`: 1 (number, optional) - item quantity
-+ `unitPrice` (Amount, optional) - price per one piece
++ `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - List of item categories
++ `quantity`: 1 (number, optional) - Item quantity
++ `unitPrice` (Amount, optional) - Price per one piece
 + `unitVat` (VatAmount, optional) - VAT amount per one piece
-+ `totalPrice` (Amount, required) - total price for all pieces, VAT inclusive
-+ `totalVat` (VatAmount, required) - total VAT amount for all pieces
-+ `image` (File, optional) - item image
++ `totalPrice` (Amount, required) - Total price for all pieces, VAT inclusive
++ `totalVat` (VatAmount, required) - Total VAT amount for all pieces
++ `image` (File, optional) - Item image
 + `productUrl`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
 
 
@@ -1188,13 +1188,13 @@ Order item information.
 
 ### Properties
 + `state` (enum, required) - Order state.
-    + `PROCESSING` - order item delivery is being processed by merchant
-    + `SENT` - items wa sent to customer
-    + `DELIVERED` - order item was delivered to customer
-    + `RETURNED` - order item was returned to merchant
-    + `CANCELLED` - order item was cancelled
-+ `sendDate`: `2017-01-10` (string, optional) - date when item was sent. Only when the whole order was NOT sent at once.
-+ `deliveryDate`: `2017-01-12` (string, optional) - date when item was delivered. Only when the whole order was NOT sent at once.
+    + `PROCESSING` - Oorder item delivery is being processed by merchant
+    + `SENT` - Items wa sent to customer
+    + `DELIVERED` - Order item was delivered to customer
+    + `RETURNED` - Order item was returned to merchant
+    + `CANCELLED` - Order item was cancelled
++ `sendDate`: `2017-01-10` (string, optional) - Date when item was sent. Only when the whole order was NOT sent at once.
++ `deliveryDate`: `2017-01-12` (string, optional) - Date when item was delivered. Only when the whole order was NOT sent at once.
 + `deliveryTrackingNumber: `EX21121` (string, optional) - Tracking number for the item. Only when the whole order was NOT sent at once.
 
 
@@ -1247,8 +1247,8 @@ Request for generating invoice info.
 ### Properties
 + One of
     + `customerDueDateCategory` (enum, optional) - Category of the due date. See "precheck" method response.
-        + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
-        + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
+        + `CATEGORY_CLASSIC` - Customer with classic due date (14 days, with the exception of events (Christmas, etc.))
+        + `CATEGORY_EXTENDED` - Customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
     + `orderNumber` (string, optional) - Order number.
     + `orderVariableSymbol` (string, optional) - Variable symbol.
     + `applicationId` (string, optional) - Application identifier.
@@ -1450,7 +1450,7 @@ Precheck data (has similar structure as `Application`).
             + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
             + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
             + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
-        + `paymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
+        + `paymentFirstDate`: `2016-10-12` (string, optional) - First payment date for recurring payment
 
 
 ## PrecheckResult (object)
@@ -1521,19 +1521,19 @@ Order change request data (HC asks partner to correct order data).
 + `order` (Order, required) - Corrected order data.
 
 ## Error (object)
-+ code: `ERR_1000_SOME_ERROR_CODE` (string, required) - unique internal error code
-+ message: `Some error/validation message description` (string, required) - human readable error description (non-localized)
++ code: `ERR_1000_SOME_ERROR_CODE` (string, required) - Unique internal error code
++ message: `Some error/validation message description` (string, required) - Human readable error description (non-localized)
 + severity (enum, required)
-    + ERROR - critical error, execution cannot continue. This MUST be indicated also by appropriate HTTP status code
-    + WARN - non-critical error, execution can continue but further user interaction is advisable. This MIGHT be indicated also by appropriate HTTP status code
-    + INFO - information only, execution can continue without user interaction
-+ attribute: `personalBirthNumber` (string, optional) - json path of request attribute that caused the error (if applicable)    
-+ ticketId: `UAT1:AMS:20160516-091658.450:45e4` (string, optional) - internal ticket ID, used for error backtracking
+    + ERROR - Critical error, execution cannot continue. This MUST be indicated also by appropriate HTTP status code
+    + WARN - Non-critical error, execution can continue but further user interaction is advisable. This MIGHT be indicated also by appropriate HTTP status code
+    + INFO - Information only, execution can continue without user interaction
++ attribute: `personalBirthNumber` (string, optional) - JSON path of request attribute that caused the error (if applicable)    
++ ticketId: `UAT1:AMS:20160516-091658.450:45e4` (string, optional) - Internal ticket ID, used for error backtracking
 
 ## Errors (object)
 + errors: `` (array[Error], fixed-type, required) - array with errors
 
 ## PagingInfo (object)
 + itemsPerPage: 10 (number, required) - number of items per page
-+ nextPage: `transactions?sort=category&limit=10&after=25` (string, optional) - request to retrieve next page, if it exists and can be unambiguously specified
-+ prevPage: `transactions?sort=category&limit=10&before=25` (string, optional) - request to retrieve previous page, if it exists and can be unambiguously specified
++ nextPage: `transactions?sort=category&limit=10&after=25` (string, optional) - Request to retrieve next page, if it exists and can be unambiguously specified
++ prevPage: `transactions?sort=category&limit=10&before=25` (string, optional) - Request to retrieve previous page, if it exists and can be unambiguously specified
