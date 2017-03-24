@@ -6,7 +6,7 @@ API documentation for Home Credit One-Click API.
 
 ## In general
 ### Something
-![ApplicationInitiation.png](/unified-entry-point/images/ApplicationInitiation.png)
+![imageName](URL)
 ### Something 2
 
 ## Naming conventions
@@ -974,9 +974,8 @@ Financial amount with VAT rate.
 
     VAT rate in decimal format 
 
-
-## Application (object)
-Financing application request
+## ApplicationBase (object)
+Financing application base information
 
 ### Properties
 + `id`: `01-11200a0ee1` (string, required) - Unique identifier in HCO
@@ -1005,6 +1004,11 @@ Financing application request
     + `READY_PAID` - Paid to merchant
     + `CANCELLED_TO_RETURN` - Cancelled after delivery, goods to be returned (not implemented)
     + `CANCELLED_RETURNED` - Cancelled after delivery, goods returned to merchant
+    
+## Application (ApplicationBase)
+Financing application
+
+### Properties
 + `customer` (Customer, optional) - Customer data
 + `order` (Order, optional) - Order data 
 + `type` (enum, optional) - Financing type 
