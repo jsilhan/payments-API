@@ -616,7 +616,7 @@ Search for order using specified parameters.
 
 Parameters include variable symbol, order number or application number. 
 
-Note: At this moment, only application number is valid parametr for order processing within application of financing type INSTALLMENT.
+Note: At this moment, only [applicationId] is valid parametr for order processing within application of financing type [INSTALLMENT].
 
 + Parameters
     + orderNumber (string, optional)
@@ -722,6 +722,8 @@ It returns the installment program that most closely matches specified input.
 ### Get customer information [GET]
 Get customer's information according to input
 
+Note: At this moment available only for customers registered during processing of applications of financing types [DEFERRED_PAYMENT], [TRY_AND_PAY] and [SUBSCRIPTION].
+
 + Parameters
     + emailHash (string, optional)
        
@@ -761,6 +763,8 @@ Get customer's information according to input
 
 ### Get customer limit information [GET]
 Get customer's limit information
+
+Note: At this moment available only for customers registered during processing of applications of financing types [DEFERRED_PAYMENT], [TRY_AND_PAY] and [SUBSCRIPTION].
 
 + Parameters
     + emailHash (string, optional)
