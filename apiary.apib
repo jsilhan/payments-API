@@ -287,7 +287,7 @@ Create new application of particular financing type
 Operations on specific application
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `01-11200a0ee1`)
 
 
 ### Get application detail [GET]
@@ -310,7 +310,7 @@ Get specific application detail by ID
 ## Request application OTP [/applications/{applicationId}/requestOTP]
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Request application OTP [POST]
@@ -338,7 +338,7 @@ Sends one time password to customer by SMS. This OTP is required to verify appli
 ## Verify application  [/applications/{applicationId}/verify]
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Verify application [POST]
@@ -367,7 +367,7 @@ Verify application with OTP sent to customer by SMS.
 ## Send application additional data [/applications/{applicationId}/additionalData]
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Send application additional data [POST]
@@ -395,7 +395,7 @@ Send additional data needed to complete the application.
 ## Cancel application [/applications/{applicationId}/cancel]
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Cancel application [PUT]
@@ -420,7 +420,7 @@ Cancel application, or cancel recurring payment.
 ## Change application order [/applications/{applicationId}/order]
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Change application order [PUT]
@@ -445,7 +445,7 @@ Change order. Used to change order items, total amount, billing details etc.
 ## Mark order items as cancelled  [/applications/{applicationId}/order/cancel]
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Mark order items as cancelled [PUT]
@@ -478,7 +478,7 @@ System notification. Some or all of the order items were cancelled. Based on app
 ## Mark order items as delivered [/applications/{applicationId}/order/deliver]
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Mark order items as delivered [PUT]
@@ -509,7 +509,7 @@ Based on application type and partner setting, application payment may be proces
 ## Mark order items as returned [/applications/{applicationId}/order/return]
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Mark order items as returned [PUT]
@@ -539,7 +539,7 @@ Based on application type and partner setting, credit note may be issued.
 ## Mark order items as sent [/applications/{applicationId}/order/send]
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Mark order items as sent [PUT]
@@ -569,7 +569,7 @@ Based on application type and partner setting, application payment may be proces
 ## Applications payments  [/applications/{applicationId}/payments]
 
 + Parameters
-    + applicationId (string, required)
+    + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Get payments on specific application [GET]
@@ -640,15 +640,15 @@ Parameters include variable symbol, order number or application number.
 > Note: At this moment, only `applicationId` is valid parametr for order processing within application of financing type `INSTALLMENT`.
 
 + Parameters
-    + orderNumber (string, optional)
+    + orderNumber (string, optional, `1234567890`)
 
         Order number
 
-    + orderVariableSymbol (string, optional)
+    + orderVariableSymbol (string, optional, `1234567890`)
 
         Order variable symbol
 
-    + applicationId (string, optional)
+    + applicationId (string, optional, `02-11b00a1ef1`)
 
         Application ID.
 
@@ -748,22 +748,22 @@ Get customer's information according to input
 > Note: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
 
 + Parameters
-    + emailHash (string, optional)
+    + emailHash (string, optional, `858c4deb8d9cf78b1a46b89f775a8bf8820e38d731d4d9bbc730753c87dd8bf8`)
        
         E-mail hashed by SHA-256
         E-mail address has to be transformed to lowercase only before hashing.
         
-    + phoneHash (string, optional)
+    + phoneHash (string, optional, `5c49329c48a423e80de512a7bc256723564ea5e2def0aa96cf52f0216ee1a056`)
         
         Phone number hashed by SHA-256
         Phone number has to be transformed to international format +XXXYYYZZZZZZ before hashing.
 
-    + firstNameHash (string, optional)
+    + firstNameHash (string, optional, `bf4fccd616251b678c56b9cb7a46819b1266853c180637642f5bc7d6b01f5554`)
 
         First name hashed by SHA-256.
         First name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word first name) before hashing.
         
-    + lastNameHash (string, optional)
+    + lastNameHash (string, optional, `93867376569f67a41458f51874185000c8e91d5d392b713945a9937b10a704c9`)
 
         Last name hashed by SHA-256.
         Last name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word last name) before hashing.
@@ -790,22 +790,22 @@ Get customer's limit information
 > Note: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
 
 + Parameters
-    + emailHash (string, optional)
+    + emailHash (string, optional, `858c4deb8d9cf78b1a46b89f775a8bf8820e38d731d4d9bbc730753c87dd8bf8`)
        
         E-mail hashed by SHA-256
         E-mail address has to be transformed to lowercase only before hashing.
         
-    + phoneHash (string, optional)
+    + phoneHash (string, optional, `5c49329c48a423e80de512a7bc256723564ea5e2def0aa96cf52f0216ee1a056`)
         
         Phone number hashed by SHA-256
         Phone number has to be transformed to international format +XXXYYYZZZZZZ before hashing.
 
-    + firstNameHash (string, optional)
+    + firstNameHash (string, optional, `bf4fccd616251b678c56b9cb7a46819b1266853c180637642f5bc7d6b01f5554`)
 
         First name hashed by SHA-256.
         First name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word first name) before hashing.
         
-    + lastNameHash (string, optional)
+    + lastNameHash (string, optional, `93867376569f67a41458f51874185000c8e91d5d392b713945a9937b10a704c9`)
 
         Last name hashed by SHA-256.
         Last name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word last name) before hashing.
