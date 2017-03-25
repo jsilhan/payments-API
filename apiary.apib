@@ -15,7 +15,7 @@ The aim of here described services is to allow customers the smooth running thro
 | Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle |
 | Offers operations       | Services that allow partner e-shops to implement an installment calculator on their websites |
 | Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC |
-| Merchansite operations  | Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
+| Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
  
 ![imageName](URL)
 ### Something 2
@@ -255,6 +255,7 @@ Partner authenticate himself and obtain acces token
     + Attributes (Errors)
 
 # Group Application operations
+Services that allows processing of *application* and *order* during their whole lifecycle
 
 ## Create application [/applications/]
 
@@ -636,7 +637,7 @@ Search for order using specified parameters.
 
 Parameters include variable symbol, order number or application number. 
 
-Note: At this moment, only [applicationId] is valid parametr for order processing within application of financing type `INSTALLMENT`.
+> Note: At this moment, only `applicationId` is valid parametr for order processing within application of financing type `INSTALLMENT`.
 
 + Parameters
     + orderNumber (string, optional)
@@ -669,6 +670,7 @@ Note: At this moment, only [applicationId] is valid parametr for order processin
 
 
 # Group Offers operations
+Services that allow partner e-shops to implement an installment calculator on their websites
 
 ## Installment programs down payments [/installment-programs-down-payments/]
 
@@ -736,13 +738,14 @@ It returns the installment program that most closely matches specified input.
 
 
 # Group Precheck operations
+Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC
 
 ## Customer information [/customer-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
 
 ### Get customer information [GET]
 Get customer's information according to input
 
-Note: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
+> Note: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
 
 + Parameters
     + emailHash (string, optional)
@@ -784,7 +787,7 @@ Note: At this moment available only for customers registered during processing o
 ### Get customer limit information [GET]
 Get customer's limit information
 
-Note: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
+> Note: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
 
 + Parameters
     + emailHash (string, optional)
@@ -844,7 +847,9 @@ Returns probability of application's approval and limits of customer, if known t
 
 
 # Group Merchantsite operations
-This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
+Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders*
+
+> Note: This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
 ## Order change request [/{application.merchantUrls.changeEndpoint}/]
 
