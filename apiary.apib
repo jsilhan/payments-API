@@ -100,7 +100,6 @@ GET /general/contracts?filter=contractDate|gt|2016-02-10;contractDate|lteq|2016-
 | in       | value in list |
 
 ## API calls limits
-<a name="API_calls_limits" />
 When you reach API calls limit (you call our API more times than is your quota), you receive HTTP error 429. To inform you about limits we use following response headers:
 - `X-Rate-Limit-Limit` - The number of allowed requests in the current period
 - `X-Rate-Limit-Remaining` - The number of remaining requests in the current period
@@ -113,14 +112,14 @@ Unless stated otherwise, all responses are sent as `Content-Type: application/js
 We use following status codes throughout the API, except for OAuth flow when response codes are prescribed in RFC
 - 200 `OK` - request was successful
 - 201 `Created` - request was successfull and resource was created
-- 204 `No content` - we accepted your request but there is nothing to return (e.g. response is empty)
+- 204 `No Content` - we accepted your request but there is nothing to return (e.g. response is empty)
 - 400 `Bad Request` - syntax error, e.g. request is missing required parameters/attributes or parameter values are of incorrect type
 - 401 `Unauthorized` - your API key is wrong or user not authorized (not logged in)
 - 403 `Forbidden` - access denied (e.g. user / application is not allowed to use the resource)
 - 404 `Not Found` - resource could not be found
 - 405 `Method Not Allowed` - specified method is not allowed for resource
 - 422 `Unprocessable Entity` -  business (semantic) errors. Request is well-formed, but cannot be processed (e.g. payment due date is in past). Errors are specified in response body (see below)
-- 429 `Too Many Requests` - you exceeded the rate limit (see section <a href="API_calls_limits">"API calls limit"</a> above)
+- 429 `Too Many Requests` - you exceeded the rate limit (see section "API calls limit" above)
 - 500 `Internal Server Error` - something went wrong on our side
 - 503 `Service Unavailable` - there is planned service outage 
 
