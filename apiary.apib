@@ -5,7 +5,7 @@ HOST: https://api.homecredit.cz
 API documentation for Home Credit One-Click API.
 
 ## In general
-This online document describes Home Credit One-Click API - means for partner e-shops through which they can offer their customers the benefits of payment method HCPay.
+This online document describes Home Credit One-Click API - the means for partner e-shops through which they can offer their customers the benefits of payment method HCPay.
 
 The aim of here described services is to allow customers the smooth running through the process of an online purchase. The services that allow achieving this goal are divided into the following groups:
 
@@ -14,8 +14,8 @@ The aim of here described services is to allow customers the smooth running thro
 | Security                | Security rules and principles |
 | Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle |
 | Offers operations       | Services that allow partner e-shops to implement an installment calculator on their websites |
-| Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of *customer*, if known to HC |
-| Merchansite operations  | Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important information regarding particular *applications* and *orders* |
+| Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC |
+| Merchansite operations  | Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
  
 ![imageName](URL)
 ### Something 2
@@ -171,9 +171,9 @@ There are 3 levels of error severity:
 ### Errors overview
 | Code | Message | Severity |
 | --- | --- | --- |
-| ERR_100 | CZ/SK: Not supported for the financing type INSTALLMENT. Contact your sales rep. | ERROR |
-| ERR_101 | Not supported for the financing type INSTALLMENT and Application.state REJECTED or CANCELLED | ERROR |
-| ERR_102 | CZ: Not supported for the financing type INSTALLMENT. Contact Home Credit: (CZ) smlouvy@homecredit.cz or +420 541 598 598, (SK) kompletace@homecredit.cz or +421 337 767 157| ERROR|
+| ERR_100 | Not supported for the financing type `INSTALLMENT`. Contact your sales rep. | ERROR |
+| ERR_101 | Not supported for the financing type `INSTALLMENT` and `Application.state` `REJECTED` or `CANCELLED` | ERROR |
+| ERR_102 | Not supported for the financing type `INSTALLMENT`. Contact Home Credit: (CZ) smlouvy@homecredit.cz or +420 541 598 598, (SK) kompletace@homecredit.cz or +421 337 767 157| ERROR |
 ||||
 ||||
 
