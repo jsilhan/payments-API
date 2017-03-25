@@ -4,6 +4,8 @@ HOST: https://api.homecredit.cz
 # WIP -- HC OneClick API
 API documentation for Home Credit One-Click API.
 
+In case of any question, please contact Tomáš Bárta (Tomas.Barta@homecredit.cz)
+
 ## In general
 This online document describes Home Credit One-Click API - the means for partner e-shops through which they can offer their customers the benefits of payment method HCPay.
 
@@ -17,8 +19,9 @@ The aim of here described services is to allow customers the smooth running thro
 | Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC |
 | Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
  
+### Base flow
 ![imageName](URL)
-### Something 2
+
 
 ## Naming conventions
 - we use camelCase for all object and attribute names
@@ -183,7 +186,7 @@ There are 3 levels of error severity:
   - time is represented as `Thh:mm:ss`. Timezone is added when necessary.
   - day of week is represented as number 1..7, with 1 being Monday
   - week no. 1 is the week with the year's first Thursday in it
-- **phone numbers** uses international format starting with '+' and including country code
+- **phone numbers** uses international format starting with '+' and including country code (example of valid number: `+420739111222`)
 - **numbers format** number format is defined by [JSON standard](http://www.json.org), e.g. decimals are separated by `.`
 
 
@@ -255,9 +258,20 @@ Partner authenticate himself and obtain acces token
     + Attributes (Errors)
 
 # Group Application operations
-Services that allows processing of *application* and *order* during their whole lifecycle
+Services that allows processing of *application* and *order* during their whole lifecycle.
 
 ## Create application [/applications/]
+Elementary flow starts when customer wants to use one of Home Credit's paying method for financing his purchase made in partner e-shop.
+
+Partner e-shop use [/applications/] resource with properly filled request that contains at least following data
+- Customer information
+- Order details
+- Financing type
+- Details of selected financing type
+- Personal data processing agreement
+- Additional information necessary for the continuation and completion of the process
+
+As a response, ...
 
 ### Create application [POST]
 Create new application of particular financing type
