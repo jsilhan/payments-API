@@ -604,7 +604,9 @@ Collection is sorted by paymentId attribute.
 + Response 200(application/json; charset=utf-8)
         List of payments. May be empty if no payment was processed yet.
         
-    + Attributes (array[Payment], fixed-type, required)
+    + Attributes (object)
+        + data (array[Payment], fixed-type, required)
+        + pagingInfo (PagingInfo, optional)
     
 
 
@@ -1303,8 +1305,8 @@ Request for generating invoice info.
 Account number with bank code.
 
 ### Properties
-+ `accountNumber` `123-123456789` (string, required) - Account number (IBAN, BIC, etc.).
-+ `bankCode` `1234` (string, required) - Bank code (SWIFT, etc.).
++ `accountNumber`: `123-123456789` (string, required) - Account number (IBAN, BIC, etc.).
++ `bankCode`: `0100` (string, required) - Bank code (SWIFT, etc.).
 
 ## InstallmentProgram (object)
 Installment programs
@@ -1377,7 +1379,7 @@ Customer's limits
 Payment information
 
 ### Properties
-+ `paymentId` (string, required) - Payment identifier
++ `paymentId`: `1a12` (string, required) - unique payment identifier
 + `date`: `2017-05-20` (string, required) - Payment date
 + `applicationId`: `02-11200a0ee1` (string, required) - Application ID that this payment belongs to
 + `value` (Amount, required) - Payment amount
