@@ -849,6 +849,8 @@ Prechecks application
 
 Returns probability of application's approval and limits of customer, if known to HC
 
+It has to be called with valid access token (see Security section) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call HC API - NEVER put access token directly to client side.  
+
 + Request (application/json; charset=utf-8)
     + Attributes (PrecheckRequest)
 
@@ -1478,7 +1480,8 @@ Precheck data (has similar structure as `Application`).
 + `customer` (Customer, optional) - Customer data
 + `order` (Order, optional) - Order data 
 + `fingerprintComponents` (array[string], optional) - Fingerprints components
-+ `ipAddress` (string, optional) - IPv4 or IPv6 address of a customer
++ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer
++ `userAgent`: `Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0` (string, optional) - user agent used by customer
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
 + `type` (enum, optional) - Financing type 
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
