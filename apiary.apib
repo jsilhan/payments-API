@@ -1285,10 +1285,10 @@ Attached document (e.g. invoice, credit note etc.)
 Billing information, to be included in invoice.
 
 ### Properties
-+ `fullName`: `Ing. Jan Novák, Csc.` (string, required) - Customer full name, including academical degrees and salutation (Mr./Mrs./..).
-+ `address` (Address, required) - Address. Only `BILLING` address type is allowed.
-+ `dueDate`: `2017-06-20` (string, optional) - Invoice due date. If not specified, default value will be used by partner.
-+ `accountNumber` (AccountNumber, required) - Account number in format.
++ `fullName`: `Ing. Jan Novák, Csc.` (string, optional) - Customer full name, including academical degrees and salutation (Mr./Mrs./..). Empty if requested via customerDueDateCategory.
++ `address` (Address, optional) - Billing address. Empty if requested via customerDueDateCategory.
++ `dueDate`: `2017-06-20` (string, required) - Invoice due date. If not specified, default value will be used by partner.
++ `accountNumber` (AccountNumber, required) - Invoice account number.
 
 ## InvoiceInfoRequest (object)
 Request for generating invoice info.
