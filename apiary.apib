@@ -6,7 +6,7 @@ API documentation for Home Credit One-Click API.
 
 In case of any question, please contact Tomáš Bárta (Tomas.Barta@homecredit.cz)
 
-## In general
+## Getting started
 This online document describes Home Credit One-Click API - the means for partner e-shops through which they can offer their customers the benefits of payment method HCPay.
 
 The aim of here described services is to allow customers the smooth running through the process of an online purchase. The services that allow achieving this goal are divided into the following groups:
@@ -174,7 +174,7 @@ There are 3 levels of error severity:
 ### Errors overview
 | Status code | Code | Message |
 | --- | --- | --- |
-| 422 | NOT_SUPPORTED | (Various message possible) Not supported for the financing type `INSTALLMENT`. Contact your sales rep. |
+| 422 | NOT_SUPPORTED | (Various messages possible) Not supported for the financing type `INSTALLMENT`. Contact your sales rep. |
 ||||
 ||||
 
@@ -259,17 +259,58 @@ Partner authenticate himself and obtain acces token
 Services that allows processing of *application* and *order* during their whole lifecycle.
 
 ## Create application [/v1/applications/]
-Elementary flow starts when customer wants to use one of Home Credit's paying method for financing his purchase made in partner e-shop.
+Elementary flow starts when customer wants to use one of Home Credit's payment method for financing his purchase made in partner e-shop.
 
-Partner e-shop use `/applications/` resource with properly filled request that contains at least following data
+| Financing type     | Supported |
+| ---                | ---       |
+| `INSTALLMENT`      | YES |
+| `TRY_AND_PAY`      | YES |
+| `DEFERRED_PAYMENT` | YES |
+| `SUBSCRIPTION`     | YES |
+
+Use `/applications/` resource with properly filled request that contains at least following data
 - Customer information
+-- E-mail
+-- Phone
+--- Type of phone
+--- Number
 - Order details
+-- Number
+-- Total Price (including VAT)
+-- Total VAT (array of total amounts split by VAT rates)
+-- Addresses (array)
+--- Country
+--- City
+--- Street
+--- Street number
+--- ZIP
+--- Address type
+-- Order items (array, at least one item is required)
+--- Order item name
+--- Total price (all pieces, including VAT)
+--- Total VAT
 - Financing type
 - Details of selected financing type
 - Personal data processing agreement
 - Additional information necessary for the continuation and completion of the process
+-- Your URL where the customer should be redirected after application approval
+-- Your URL where the customer should be redirected after application rejection
+-- Notification suffix
 
-As a response, ...
+If the request was successfully processed, you receive HTTP status code 201 and Application object with at least following information in the response:
+- Application unique ID
+- Application state
+- Gateway redirect URL where you should redirect a customer after processing of the response
+
+If the request was recognized as duplication, you receive HTTP status code 200 and the Application object created during the first related successful request.
+
+In other cases, you can receive following errors:
+| Status code | Code | Message |
+| --- | --- | --- |
+| 400	| INVALID_REQUEST | - Various messages possible - |
+| 500	| INTERNAL_SERVER_ERROR | - Various messages possible - |
+
+
 
 ### Create application [POST]
 Create new application of particular financing type
