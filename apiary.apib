@@ -230,7 +230,7 @@ curl -H "Authorization: Bearer secret_token" https://apiendpoint/applications
 }
 ```
 
-> IMPORTANT NOTE: You must keep your access token and login credentials safe. NEVER put login credentials into client page.
+> IMPORTANT NOTE: You must keep your access token and login credentials safe. NEVER put login credentials nor access token into client page. If you plan to integrate API calls in client flow without submitting the page to server, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call HC API.
 
 > NEVER transfer access token nor login credentials over plain HTTP. Such requests will be refused.
 
