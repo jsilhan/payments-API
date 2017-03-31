@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://api.homecredit.cz
+HOST: https://api.homecredit.cz/financing
 
 # WIP -- HC OneClick API
 API documentation for Home Credit One-Click API.
@@ -18,7 +18,7 @@ The aim of here described services is to allow customers the smooth running thro
 | Offers operations       | Services that allow partner e-shops to implement an installment calculator on their websites |
 | Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC |
 | Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
- 
+
 ### Base flow
 ![imageName](URL)
 
@@ -38,14 +38,14 @@ The aim of here described services is to allow customers the smooth running thro
   - items in collection are always sorted accoridng to attribute which could be passed in after/before parameters. Even if you specify different sorting order, this attribute will be last sorting criterion; if you do not specify sorting order, result collection will be sorted according to this attribute.
 - on response:
   - `pagingInfo` object is returned as part of response body with following attributes:
-    - _nextPage_ - request to retrieve next page. Either nextPage or previousPage is returned, depending whether you specify `after` or `before` parameter. If you specify neither `before` nor `after` parameter, these attributes will be omitted from response. 
+    - _nextPage_ - request to retrieve next page. Either nextPage or previousPage is returned, depending whether you specify `after` or `before` parameter. If you specify neither `before` nor `after` parameter, these attributes will be omitted from response.
     - _prevPage_ - request to retrieve previous page (see `nextPage` attribute description above).
     - _itemsPerPage_ - number of items per page
 
 
 Example request:
 ```
-curl -X GET https://api.homecredit.eu/customer/v1/my/contracts?sort=category&limit=10&after=15
+curl -X GET https://api.homecredit.eu/financing/v1/my/contracts?sort=category&limit=10&after=15
 ```
 
 Example response pagingInfo:
@@ -124,7 +124,7 @@ We use following status codes throughout the API, except for OAuth flow when res
 - 422 `Unprocessable Entity` -  business (semantic) errors. Request is well-formed, but cannot be processed (e.g. payment due date is in past). Errors are specified in response body (see below)
 - 429 `Too Many Requests` - you exceeded the rate limit (see section "API calls limit" above)
 - 500 `Internal Server Error` - something went wrong on our side
-- 503 `Service Unavailable` - there is planned service outage 
+- 503 `Service Unavailable` - there is planned service outage
 
 ## Error handling
 Besides HTTP status codes, which are the main indication if something goes wrong, we also use `errors` object to report more details about errors.
@@ -172,11 +172,9 @@ There are 3 levels of error severity:
 - INFO - information only, execution can continue without user interaction.
 
 ### Errors overview
-| Code | Message | Severity |
+| Status code | Code | Message |
 | --- | --- | --- |
-| ERR_100 | Not supported for the financing type `INSTALLMENT`. Contact your sales rep. | ERROR |
-| ERR_101 | Not supported for the financing type `INSTALLMENT` and `Application.state` `REJECTED` or `CANCELLED` | ERROR |
-| ERR_102 | Not supported for the financing type `INSTALLMENT`. Contact Home Credit: (CZ) smlouvy@homecredit.cz or +420 541 598 598, (SK) kompletace@homecredit.cz or +421 337 767 157| ERROR |
+| 422 | NOT_SUPPORTED | (Various message possible) Not supported for the financing type `INSTALLMENT`. Contact your sales rep. |
 ||||
 ||||
 
@@ -207,7 +205,7 @@ To access our API, you have to obtain *access token* first; this token is a stri
 So the real example using curl will look like:
 
 ```
-curl -H "Authorization: Bearer secret_token" https://apiendpoint/applications
+curl -H "Authorization: Bearer secret_token" https://apiendpoint/v1/applications
 ```
 
 - access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/login-partner` resource.
@@ -235,10 +233,10 @@ curl -H "Authorization: Bearer secret_token" https://apiendpoint/applications
 > NEVER transfer access token nor login credentials over plain HTTP. Such requests will be refused.
 
 
-## Login partner [/authentication/login-partner]
+## Login partner [/v1/authentication/login-partner]
 
 ### Login partner [POST]
-Partner authenticate himself and obtain acces token 
+Partner authenticate himself and obtain acces token
 
 + Request (application/json; charset=utf-8)
     + Attributes (PartnerLogin)
@@ -247,20 +245,20 @@ Partner authenticate himself and obtain acces token
 + Response 200(application/json; charset=utf-8)
 
         Partner acces token issued
-        
+
     + Attributes (PartnerLoginResult)
 
 
 + Response 400(application/json; charset=utf-8)
 
         Unable to authenticate partner
-        
+
     + Attributes (Errors)
 
 # Group Application operations
 Services that allows processing of *application* and *order* during their whole lifecycle.
 
-## Create application [/applications/]
+## Create application [/v1/applications/]
 Elementary flow starts when customer wants to use one of Home Credit's paying method for financing his purchase made in partner e-shop.
 
 Partner e-shop use `/applications/` resource with properly filled request that contains at least following data
@@ -290,14 +288,14 @@ Create new application of particular financing type
 + Response 400(application/json; charset=utf-8)
 
         There was an error processing request
-        
+
     + Attributes (Errors)    
 
 
 
 
 
-## Application detail [/applications/{applicationId}]
+## Application detail [/v1/applications/{applicationId}]
 Operations on specific application
 
 + Parameters
@@ -317,11 +315,11 @@ Get specific application detail by ID
 + Response 404(application/json; charset=utf-8)
 
         Application does not exist
-        
+
     + Attributes (Errors)
 
 
-## Request application OTP [/applications/{applicationId}/requestOTP]
+## Request application OTP [/v1/applications/{applicationId}/requestOTP]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -331,7 +329,7 @@ Get specific application detail by ID
 Sends one time password to customer by SMS. This OTP is required to verify application. See 'Verify Application' method.
 
 + Request (application/json; charset=utf-8)
-    
+
 
 
 + Response 200(application/json; charset=utf-8)
@@ -349,7 +347,7 @@ Sends one time password to customer by SMS. This OTP is required to verify appli
 
 
 
-## Verify application  [/applications/{applicationId}/verify]
+## Verify application  [/v1/applications/{applicationId}/verify]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -360,7 +358,7 @@ Verify application with OTP sent to customer by SMS.
 
 + Request (application/json; charset=utf-8)
     + Attributes (number, required)
-    
+
 
 
 + Response 200(application/json; charset=utf-8)
@@ -375,10 +373,10 @@ Verify application with OTP sent to customer by SMS.
         Application was not verified.
 
     + Attributes (Errors)
-    
 
 
-## Send application additional data [/applications/{applicationId}/additionalData]
+
+## Send application additional data [/v1/applications/{applicationId}/additionalData]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -406,7 +404,7 @@ Send additional data needed to complete the application.
 
 
 
-## Cancel application [/applications/{applicationId}/cancel]
+## Cancel application [/v1/applications/{applicationId}/cancel]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -421,17 +419,17 @@ Cancel application, or cancel recurring payment.
 + Response 200(application/json; charset=utf-8)
 
         Application was cancelled.
-    
+
     + Attributes (Order)
 
 
 + Response 422(application/json; charset=utf-8)
     Application cannot be cancelled
-    
+
     + Attributes (Errors)
 
 
-## Change application order [/applications/{applicationId}/order]
+## Change application order [/v1/applications/{applicationId}/order]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -452,11 +450,11 @@ Change order. Used to change order items, total amount, billing details etc.
 
 + Response 422(application/json; charset=utf-8)
     Order cannot be changed.
-        
+
     + Attributes (Errors)
 
 
-## Mark order items as cancelled  [/applications/{applicationId}/order/cancel]
+## Mark order items as cancelled  [/v1/applications/{applicationId}/order/cancel]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -474,7 +472,7 @@ System notification. Some or all of the order items were cancelled. Based on app
 
 + Response 200(application/json; charset=utf-8)
         Some order items or the whole order was cancelled
-        
+
 
     + Attributes (Order)
 
@@ -482,14 +480,14 @@ System notification. Some or all of the order items were cancelled. Based on app
 + Response 422(application/json; charset=utf-8)
 
         Cannot cancel order items.
-        
+
     + Attributes (Errors)    
 
 
 
 
 
-## Mark order items as delivered [/applications/{applicationId}/order/deliver]
+## Mark order items as delivered [/v1/applications/{applicationId}/order/deliver]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -498,7 +496,7 @@ System notification. Some or all of the order items were cancelled. Based on app
 ### Mark order items as delivered [PUT]
 Mark order items as delivered.
 
-System notification. Some or all order items were delivered to customer. 
+System notification. Some or all order items were delivered to customer.
 Based on application type and partner setting, application payment may be processed.
 
 
@@ -508,19 +506,19 @@ Based on application type and partner setting, application payment may be proces
 
 + Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as delivered.
-        
+
     + Attributes (Order)
 
 
 + Response 422(application/json; charset=utf-8)
         Cannot process state change.
-        
+
     + Attributes (Errors)
 
 
 
 
-## Mark order items as returned [/applications/{applicationId}/order/return]
+## Mark order items as returned [/v1/applications/{applicationId}/order/return]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -539,18 +537,18 @@ Based on application type and partner setting, credit note may be issued.
 
 + Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as returned.
-        
+
     + Attributes (Order)
 
 
 + Response 422(application/json; charset=utf-8)
         Cannot process state change.
-        
+
     + Attributes (Errors)
 
 
 
-## Mark order items as sent [/applications/{applicationId}/order/send]
+## Mark order items as sent [/v1/applications/{applicationId}/order/send]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -559,7 +557,7 @@ Based on application type and partner setting, credit note may be issued.
 ### Mark order items as sent [PUT]
 Mark order items as sent
 
-System notification. Some or all order items were shipped to customer. 
+System notification. Some or all order items were shipped to customer.
 Based on application type and partner setting, application payment may be processed.
 
 + Request (application/json; charset=utf-8)
@@ -574,13 +572,13 @@ Based on application type and partner setting, application payment may be proces
 
 + Response 422(application/json; charset=utf-8)
         Cannot process state change.
-        
+
     + Attributes (Errors)
 
 
 
 
-## Applications payments  [/applications/{applicationId}/payments]
+## Applications payments  [/v1/applications/{applicationId}/payments]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -603,22 +601,22 @@ Collection is sorted by paymentId attribute.
 
 + Response 200(application/json; charset=utf-8)
         List of payments. May be empty if no payment was processed yet.
-        
+
     + Attributes (object)
         + data (array[Payment], fixed-type, required)
         + pagingInfo (PagingInfo, optional)
-    
+
 
 
 + Response 404(application/json; charset=utf-8)
 
         Application does not exists
-        
+
     + Attributes (Errors)
 
 
 
-## Invoices [/invoices/]
+## Invoices [/v1/invoices/]
 
 ### Generate invoice info [POST]
 Generates invoice info
@@ -644,14 +642,14 @@ This should be used by partner before issuing an invoice, to include correct bil
 
 
 
-## Orders [/orders/{?orderNumber,orderVariableSymbol,applicationId}]
+## Orders [/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}]
 
 ### Get order [GET]
 Get order
 
 Search for order using specified parameters.
 
-Parameters include variable symbol, order number or application number. 
+Parameters include variable symbol, order number or application number.
 
 > Note: At this moment, only `applicationId` is valid parametr for order processing within application of financing type `INSTALLMENT`.
 
@@ -688,7 +686,7 @@ Parameters include variable symbol, order number or application number.
 # Group Offers operations
 Services that allow partner e-shops to implement an installment calculator on their websites
 
-## Installment programs down payments [/installment-programs-down-payments/]
+## Installment programs down payments [/v1/installment-programs-down-payments/]
 
 ### Calculate installment programs down payments [POST]
 Calculate installment programs down payments according to specified input
@@ -705,7 +703,7 @@ Calculate installment programs down payments according to specified input
 
 
 
-## Installment programs offers [/installment-programs-offers/]
+## Installment programs offers [/v1/installment-programs-offers/]
 
 ### Calculate installment programs offer  [POST]
 Calculate installment programs offer according to specified input
@@ -728,7 +726,7 @@ feature | supported by resource
 
 
 
-## Installment programs [/installment-programs/]
+## Installment programs [/v1/installment-programs/]
 
 ### Calculate installment program detail [POST]
 Calculate installment program detailed information.
@@ -749,14 +747,14 @@ It returns the installment program that most closely matches specified input.
 + Response 422(application/json; charset=utf-8)
 
         No installment program was found.
-    
+
     + Attributes (Errors)
 
 
 # Group Precheck operations
 Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC
 
-## Customer information [/customer-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
+## Customer information [/v1/customer-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
 
 ### Get customer information [GET]
 Get customer's information according to input
@@ -765,12 +763,12 @@ Get customer's information according to input
 
 + Parameters
     + emailHash (string, optional, `858c4deb8d9cf78b1a46b89f775a8bf8820e38d731d4d9bbc730753c87dd8bf8`)
-       
+
         E-mail hashed by SHA-256
         E-mail address has to be transformed to lowercase only before hashing.
-        
+
     + phoneHash (string, optional, `5c49329c48a423e80de512a7bc256723564ea5e2def0aa96cf52f0216ee1a056`)
-        
+
         Phone number hashed by SHA-256
         Phone number has to be transformed to international format +XXXYYYZZZZZZ before hashing.
 
@@ -778,7 +776,7 @@ Get customer's information according to input
 
         First name hashed by SHA-256.
         First name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word first name) before hashing.
-        
+
     + lastNameHash (string, optional, `93867376569f67a41458f51874185000c8e91d5d392b713945a9937b10a704c9`)
 
         Last name hashed by SHA-256.
@@ -795,10 +793,10 @@ Get customer's information according to input
 + Response 404(application/json; charset=utf-8)
 
         Customer was not found
-    
+
     + Attributes (Errors)
 
-## Customer limit information [/customer-limit-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
+## Customer limit information [/v1/customer-limit-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
 
 ### Get customer limit information [GET]
 Get customer's limit information
@@ -807,12 +805,12 @@ Get customer's limit information
 
 + Parameters
     + emailHash (string, optional, `858c4deb8d9cf78b1a46b89f775a8bf8820e38d731d4d9bbc730753c87dd8bf8`)
-       
+
         E-mail hashed by SHA-256
         E-mail address has to be transformed to lowercase only before hashing.
-        
+
     + phoneHash (string, optional, `5c49329c48a423e80de512a7bc256723564ea5e2def0aa96cf52f0216ee1a056`)
-        
+
         Phone number hashed by SHA-256
         Phone number has to be transformed to international format +XXXYYYZZZZZZ before hashing.
 
@@ -820,7 +818,7 @@ Get customer's limit information
 
         First name hashed by SHA-256.
         First name has to be transformed first (remove diacritics, all letters to lowercase, remove leading + trailing whitespace, only one space is permitted between particular names within multi-word first name) before hashing.
-        
+
     + lastNameHash (string, optional, `93867376569f67a41458f51874185000c8e91d5d392b713945a9937b10a704c9`)
 
         Last name hashed by SHA-256.
@@ -842,7 +840,7 @@ Get customer's limit information
 
 
 
-## Precheck [/precheck/]
+## Precheck [/v1/precheck/]
 
 ### Precheck [POST]
 Prechecks application
@@ -869,7 +867,7 @@ Services that should be developed and exposed by partner e-shops to allow HC asy
 
 > Note: This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
-## Order change request [/{application.merchantUrls.changeEndpoint}/]
+## Order change request [/v1/{application.merchantUrls.changeEndpoint}/]
 
 ### Order change request [POST]
 Order change request
@@ -893,7 +891,7 @@ Asks partner to correct order data (billing information, order items etc.)
 
 
 
-## Application notification [/{application.merchantUrls.notificationEndpoint}/]
+## Application notification [/v1/{application.merchantUrls.notificationEndpoint}/]
 
 ### Application notification [POST]
 Notify partner about changes in application.
@@ -910,7 +908,7 @@ Notify partner about changes in application.
 
 
 
-## Payment notification [/{application.merchantUrls.paymentEndpoint}/]
+## Payment notification [/v1/{application.merchantUrls.paymentEndpoint}/]
 
 ### Payment notification [POST]
 Notification about new payment.
@@ -942,7 +940,7 @@ Authenticated partner access token
 + `accessToken`: `TokenForPartnerTokenForPartnerTokenForPartnerTokenForPartner` (string) - Access token
 + `expiresIn`: 7200 (number) - Token validity remaining time (in seconds)
 
-## DeliveryCarrier (object) 
+## DeliveryCarrier (object)
 Delivery carrier
 
 ### Properties
@@ -983,8 +981,8 @@ Address
 + `name`: `John Doe` (string, optional) - Name on address
 + `country`: `CZ` (string, required)
 
-    Country. 
-    
+    Country.
+
     (see ISO 3166 alpha-2)
 
 + `city`: `Prague` (string, required) - City.
@@ -1004,15 +1002,15 @@ Financial amount
 ### Properties
 + `amount`: `125.90` (number, required)
 
-    Amount in decimal format 
-    
+    Amount in decimal format
+
 
 + `currency`: `CZK` (string, required)
 
     Amount currency. ISO 4217
 
 + `formatted`: `125,90 Kč` (string, optional)
-    
+
     Formatted interpretation, localized.
 
 ## VatAmount (Amount)
@@ -1021,7 +1019,7 @@ Financial amount with VAT rate.
 ### Properties
 + `vatRate`: `0.15` (number, required)
 
-    VAT rate in decimal format 
+    VAT rate in decimal format
 
 ## ApplicationBase (object)
 Financing application base information
@@ -1053,14 +1051,14 @@ Financing application base information
     + `READY_PAID` - Paid to merchant
     + `CANCELLED_TO_RETURN` - Cancelled after delivery, goods to be returned (not implemented)
     + `CANCELLED_RETURNED` - Cancelled after delivery, goods returned to merchant
-    
+
 ## Application (ApplicationBase)
 Financing application
 
 ### Properties
 + `customer` (Customer, optional) - Customer data
-+ `order` (Order, optional) - Order data 
-+ `type` (enum, optional) - Financing type 
++ `order` (Order, optional) - Order data
++ `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
     + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
@@ -1106,7 +1104,7 @@ Customer data
 + `transactionsNumber`: 10 (number, optional) - Historical count of customer's cash transactions made in partner's e-shop
 + `cashlessTransactionsNumber`: 5 (number, optional) - Historical count of customer's cashless transactions made in partner's e-shop
 + `transactionsSum` (Amount, optional) - Sum of all cash transactions made in partner's e-shop
-+ `cashlessTransactionsSum` (Amount, optional) - Sum of all cashless transactions made in partner's e-shop 
++ `cashlessTransactionsSum` (Amount, optional) - Sum of all cashless transactions made in partner's e-shop
 + `latestTransactionDate`: `2017-01-10` (string, optional) - Newest transaction date on partner e-shop.
 + `earliestTransactionDate`: `2015-10-12` (string, optional) - Oldest transaction date on partner e-shop
 + `pageTotalTime`: 250 (number, optional) - Total time spent on partners website (in seconds)
@@ -1178,10 +1176,10 @@ Order information, needed to create an application.
 + `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
 + `reservationDate`: `2017-01-20` (string, optional)
 
-   Date and time until order is reserved. 
+   Date and time until order is reserved.
 
    After this date, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
-    
+
 + `items` (array[ApplicationRequestOrderItem], required) - Order items
 + `documents` (array[Document], optional) - Attached documents (invoices etc.)
 
@@ -1209,7 +1207,7 @@ Order item information, needed to create an application.
 ### Properties
 + `type` (enum, optional) - Item type
     + `PHYSICAL`
-    + `DISCOUNT` 
+    + `DISCOUNT`
     + `SHIPPING_FEE`
     + `SALES_TAX`
     + `DIGITAL`
@@ -1256,7 +1254,7 @@ Order item information.
     + `content`: `RmlsZSBjb250ZW50cy4gwq9cXyjjg4QpXy/Crw==` (string, required)
 
         File content - Base64 encoded, maximum size is 500kB
-    
+
     + `url`: `https://www.partner.com/file?id=12345` (string, required) - File URL.
 
 
@@ -1323,7 +1321,7 @@ Installment programs
 + `detail` (Detail, optional)
     Calculation detailed information.
     Only available for calculations received by calling `POST /installment-programs`
-    Not available for `POST /installment-programs-offers/` 
+    Not available for `POST /installment-programs-offers/`
 
 
 ## Detail (object)
@@ -1331,23 +1329,23 @@ Installment programs
 ### Properties
 + `installmentDay`: 20 (number, optional)
     Installment date (day in month)
-    
+
 + `installmentFirstDate`: `2017-05-20` (string, optional)
     Date of the first installment
-    
+
 + `installmentLastDate`: `2018-03-20` (string, optional)
     Date of the last installment
-    
+
 + `annualInterestRate`: 0.17 (number, optional)
     Annual interest rate
-    
+
 + `predictedProvisionDate`: `2017-05-20` (string, optional)
     Predicted provision date
-    
+
 + `paidBack` (Amount, optional) - Total amount paid by customer
 + `rpsn`: 0.23 (number, optional)
     RPSN
-    
+
 + `legalline`: "Uvedené hodnoty jsou spočítány k datu poskytnutí 18.1.2017, datu 1. splátky 20.1.2017 a se splatností všech dalších splátek k 20. dni v měsíci počítaje 20.1.2017. Nejedná se o nabídku či veřejnou nabídku. Platí při splnění podmínek Home Credit...." (string, optional)
     Text interpretation of the offer
 
@@ -1367,7 +1365,7 @@ Down payments information - the lowest down payment possible, the maximum down p
     e.g. 500 (500 Kč)
     Available down payments could be (min 0, max 2500):
     0, 500, 1000, 1500, 2000, 2500
-    
+
 
 ## Limits (object)
 Customer's limits
@@ -1405,7 +1403,7 @@ Financing application request
 ### Properties
 + `customer` (Customer, required) - Customer information
 + `order` (ApplicationRequestOrder, required) - Order information
-+ `type` (enum, required) - Financing type 
++ `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
     + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
@@ -1478,12 +1476,12 @@ Precheck data (has similar structure as `Application`).
 
 ### Properties
 + `customer` (Customer, optional) - Customer data
-+ `order` (Order, optional) - Order data 
++ `order` (Order, optional) - Order data
 + `fingerprintComponents` (array[string], optional) - Fingerprints components
 + `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer
 + `userAgent`: `Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0` (string, optional) - user agent used by customer
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
-+ `type` (enum, optional) - Financing type 
++ `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
     + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
@@ -1518,7 +1516,7 @@ Precheck result.
 + `probabilityOfApproval` (number, required) - Probability of approval.
     0 = 0% to be approved
     1 = 100% to be approved
-    
+
     Partner can create custom logic not to follow the recommendation (be more strict or benevolent).
 + `completeness` (number, optional) - Completness of the result. <0, 1> The lower is the value, the lower accuracy of the result.
 + `code` (enum, required) - Result code.
@@ -1542,7 +1540,7 @@ Precheck result.
     “V HCO peněžence nemáte dostatečný limit.”
     “Uveďte do objednávky jméno a příjmení, které používáte ve službě HCO.”
     etc.
-+ `additionalData` (array[string], optional) - List of additional data that customer has to send to 
++ `additionalData` (array[string], optional) - List of additional data that customer has to send to
     Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`.
 
 ## PrecheckResults (object)
@@ -1553,10 +1551,10 @@ Precheck results.
 + `results` (array[PrecheckResult], required) - Precheck results for each type of product.
 + `limits` (Limits, optional)
 
-    Limity zákazníka. 
-    
+    Limity zákazníka.
+
     Pokud zákazníka neznáme, jsou výše limitů odhadnuty.
-    
+
     Pokud zákazníka známe, jedná se o aktuální limity. Pokud zákazník dal souhlas o předávání limitů. TODO legal.
 
 ## OrderChangeNotification (object)
