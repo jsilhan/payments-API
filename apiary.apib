@@ -1235,7 +1235,7 @@ Services that allow partner e-shops find out a probability of *application's* ap
 ### Get customer information [GET]
 Get customer's information according to input
 
-> Note: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
+> ATTENTION: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
 
 + Parameters
     + emailHash (string, optional, `858c4deb8d9cf78b1a46b89f775a8bf8820e38d731d4d9bbc730753c87dd8bf8`)
@@ -1277,7 +1277,7 @@ Get customer's information according to input
 ### Get customer limit information [GET]
 Get customer's limit information
 
-> Note: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
+> ATTENTION: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
 
 + Parameters
     + emailHash (string, optional, `858c4deb8d9cf78b1a46b89f775a8bf8820e38d731d4d9bbc730753c87dd8bf8`)
@@ -1341,7 +1341,7 @@ It has to be called with valid access token (see Security section) from your ser
 # Group Merchantsite operations
 Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders*
 
-> Note: This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
+> ATTENTION: This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
 ## Order change request [/v1/{application.merchantUrls.changeEndpoint}/]
 
@@ -1365,6 +1365,23 @@ Asks partner to correct order data (billing information, order items etc.)
 
 
 ## Application notification [/v1/{application.merchantUrls.notificationEndpoint}/]
+We use this resource when there is need to let you know about important changes within particular *application*. Namely in following situations:
+
+| Trigger                   | Expected reaction                      |
+| ---                       | ---                                    |
+| Application was approved  | -                                      |
+| Application was rejected  | -                                      |
+| Application was cancelled | -                                      |
+| Order to dispatch         | You dispatch the order to the customer |
+| Application was paid out  | -                                      |
+
+We fill the request with at least following information:
+- Application unique ID
+- Application state
+- Application substate
+- Timestamp of the notification [TBD - not yet available]
+
+> USEFUL NOTE: If you think it takes us unusually long time to send you particular notification, do not hesitate to use `/v1/applications/{applicationId}` resource (where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation) to directly find out information you seek.
 
 ### Application notification [POST]
 Notify partner about changes in application.
