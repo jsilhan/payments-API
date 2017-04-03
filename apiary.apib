@@ -404,13 +404,30 @@ Get specific application detail by ID
 
 
 ## Request application OTP [/v1/applications/{applicationId}/requestOTP]
+If you want to integrate customer application authorisation into merchant's checkout, this methods is needed for sending the OTP to customer by SMS.
+OTP is required to verify application. See [Verify Application](#reference/application-operations/verify-application) method.
+
+| Financing type     | Supported |
+| ---                | ---       |
+| `INSTALLMENT`      | NO |
+| `TRY_AND_PAY`      | YES |
+| `DEFERRED_PAYMENT` | YES |
+| `SUBSCRIPTION`     | YES |
+
+| Application state | Availability |
+| ---               | ---          |
+| `PROCESSING`      | YES (`stateReason = PROCESSING_VERIFICATION`)|
+| `REJECTED`        | NO           |
+| `CANCELLED`       | NO           |
+| `READY`           | NO           |
+
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Request application OTP [POST]
-Sends one time password to customer by SMS. This OTP is required to verify application. See 'Verify Application' method.
+Requests sending of one time password to customer by SMS. This OTP is required to verify application. See [Verify Application](#reference/application-operations/verify-application) method.
 
 + Request (application/json; charset=utf-8)
 
@@ -432,13 +449,29 @@ Sends one time password to customer by SMS. This OTP is required to verify appli
 
 
 ## Verify application  [/v1/applications/{applicationId}/verify]
+If you want to integrate customer application authorisation into merchant's checkout, this methods is needed for verifying the application with the OTP sent to customer by SMS.
+To send OTP to customer see [Request application OTP](#reference/application-operations/request-application-otp) method.
+
+| Financing type     | Supported |
+| ---                | ---       |
+| `INSTALLMENT`      | NO |
+| `TRY_AND_PAY`      | YES |
+| `DEFERRED_PAYMENT` | YES |
+| `SUBSCRIPTION`     | YES |
+
+| Application state | Availability |
+| ---               | ---          |
+| `PROCESSING`      | YES (`stateReason = PROCESSING_VERIFICATION`)|
+| `REJECTED`        | NO           |
+| `CANCELLED`       | NO           |
+| `READY`           | NO           |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
 
 
 ### Verify application [POST]
-Verify application with OTP sent to customer by SMS.
+Verify application with OTP sent to customer by SMS. To send OTP to customer see [Request application OTP](#reference/application-operations/request-application-otp) method.
 
 + Request (application/json; charset=utf-8)
     + Attributes (number, required)
@@ -1271,7 +1304,7 @@ Services that allow partner e-shops find out a probability of *application's* ap
 ### Get customer information [GET]
 Get customer's information according to input
 
-> ATTENTION: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
+> Note: At this moment available only for customers registered during processing of applications of financing types `DEFERRED_PAYMENT`, `TRY_AND_PAY` and `SUBSCRIPTION`.
 
 + Parameters
     + emailHash (string, optional, `858c4deb8d9cf78b1a46b89f775a8bf8820e38d731d4d9bbc730753c87dd8bf8`)
