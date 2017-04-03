@@ -649,7 +649,6 @@ Use `/v1/applications/{applicationId}/order/cancel` resource with properly fille
   - Order item name
   - Total price (all pieces, including VAT)
   - Total VAT
-  - Order item state (should be `CANCELLED`)
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
 - Order number
@@ -735,7 +734,6 @@ Use `/v1/applications/{applicationId}/order/deliver` resource with properly fill
   - Order item name
   - Total price (all pieces, including VAT)
   - Total VAT
-  - Order item state (should be `DELIVERED`)
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
 - Order number
@@ -819,7 +817,6 @@ Use `/v1/applications/{applicationId}/order/return` resource with properly fille
   - Order item name
   - Total price (all pieces, including VAT)
   - Total VAT
-  - Order item state (should be `RETURNED`)
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
 - Order number
@@ -903,7 +900,6 @@ Use `/v1/applications/{applicationId}/order/send` resource with properly filled 
   - Order item name
   - Total price (all pieces, including VAT)
   - Total VAT
-  - Order item state (should be `CANCELLED`)
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
 - Order number
@@ -1638,7 +1634,7 @@ Object used to cancel application.
 Object used to change order items.
 
 ### Properties
-+ `items` (array[OrderItem], optional) - List of changed items. All items are considered when empty.
++ `items` (array[ApplicationRequestOrderItem], optional) - List of changed items. All items are considered when empty.
 + `totalPrice` (Amount, optional) - Total amount of items (from orderItems array), including VAT.
 + `totalVat` (array[VatAmount], optional) - Total VAT amounts of items (from orderItems array) split by their VAT rates.
 
