@@ -19,9 +19,33 @@ The aim of here described services is to allow customers the smooth running thro
 | Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC |
 | Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
 
-### Base flow
-![imageName](URL)
+### Basic implementation
+The most basic and minimum way how to implement HCO API is to at least implement:
+1. [Login](#reference/security/login-partner)
+    - Needed for all operations.
+1. [Create application](#reference/application-operations/create-application)
+    - Called with all order and customer data after finishing the order.
+1. Redirect handlers.
+    - Special URLs for customers that shows payment success or rejection.
+1. [Application notification](#reference/merchantsite-operations/application-notification)
+1. [Generate invoice info](#reference/application-operations/invoices/generate-invoice-info)
+    - To put all the necessary information to invoices (correct due date, bank number...). Not needed for `INSTALLMENT` financing type.
+1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent) or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
+    - HCO won't send money if the order (order items) is not marked as send / delivered.
 
+[![Sequence diagram of minimum implementation](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramMinimum.png)](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramMinimum.png)
+
+### Advanced implementation
+You can use advanced operations to improve customer experience. 
+
+1. [Precheck](#reference/security/login-partner)
+    - Merchant can prevent customer to be redirected to HCO gateway if he customer is not suitable for HCO by precheck operation.
+1. Operations to integrate HCO better in merchant checkout:
+    - [Request application OTP](#reference/application-operations/request-application-otp)
+    - [Verify application](#reference/application-operations/verify-application)
+    - [Send application additional data](#reference/application-operations/send-application-additional-data)
+
+[![Sequence diagram of advanced implementation](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramAdvanced.png)](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramAdvanced.png)
 
 ## Naming conventions
 - we use camelCase for all object and attribute names
