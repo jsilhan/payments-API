@@ -1023,10 +1023,22 @@ Collection is sorted by paymentId attribute.
 ## Invoices [/v1/invoices/]
 
 ### Generate invoice info [POST]
-Generates invoice info
-
 Generates billing information to be included in invoice for specific date for specific order or delivery.
 This should be used by partner before issuing an invoice, to include correct billing information.
+
+| Financing type     | Supported |
+| ---                | ---       |
+| `INSTALLMENT`      | NO |
+| `TRY_AND_PAY`      | YES  |
+| `DEFERRED_PAYMENT` | YES  |
+| `SUBSCRIPTION`     | YES  |
+
+| Application state | Availability |
+| ---               | ---          |
+| `PROCESSING`      | NO           |
+| `REJECTED`        | NO           |
+| `CANCELLED`       | NO           |
+| `READY`           | YES          |
 
 + Request
     + Attributes (InvoiceInfoRequest)
