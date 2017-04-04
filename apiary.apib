@@ -30,16 +30,16 @@ The most basic and minimum way how to implement HCO API is to at least implement
 1. [Application notification](#reference/merchantsite-operations/application-notification)
 1. [Generate invoice info](#reference/application-operations/invoices/generate-invoice-info)
     - To put all the necessary information to invoices (correct due date, bank number...). Not needed for `INSTALLMENT` financing type.
-1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent) or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
-    - HCO won't send money if the order (order items) is not marked as send / delivered.
+1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent) (necessary for financing type `INSTALLMENT`) or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
+    - HCO won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
 
 [![Sequence diagram of minimum implementation](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramMinimum.png)](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramMinimum.png)
 
 ### Advanced implementation
-You can use advanced operations to improve customer experience. 
+You can use advanced operations to improve customer experience.
 
-1. [Precheck](#reference/security/login-partner)
-    - Merchant can prevent customer to be redirected to HCO gateway if he customer is not suitable for HCO by precheck operation.
+1. [Precheck](#reference/precheck-operations/precheck)
+    - Merchant can prevent customer to be redirected to HCO gateway if the customer is not suitable for HCO by precheck operation.
 1. Operations to integrate HCO better in merchant checkout:
     - [Request application OTP](#reference/application-operations/request-application-otp)
     - [Verify application](#reference/application-operations/verify-application)
@@ -120,9 +120,9 @@ GET /general/contracts?filter=contractDate|gt|2016-02-10;contractDate|lteq|2016-
 | operator | meaning |
 | ---      | ---     |
 | lt       | less than |
-| lteq       | less than or equals |
+| lteq     | less than or equals |
 | eq       | equals    |
-| gteq       | greater than or equals    |
+| gteq     | greater than or equals    |
 | gt       | greater than |
 | in       | value in list |
 
@@ -146,7 +146,7 @@ We use following status codes throughout the API, except for OAuth flow when res
 - 404 `Not Found` - resource could not be found
 - 405 `Method Not Allowed` - specified method is not allowed for resource
 - 422 `Unprocessable Entity` -  business (semantic) errors. Request is well-formed, but cannot be processed (e.g. payment due date is in past). Errors are specified in response body (see below)
-- 429 `Too Many Requests` - you exceeded the rate limit (see section "API calls limit" above)
+- 429 `Too Many Requests` - you exceeded the rate limit (see section [API calls limit](#introduction/api-calls-limits) above)
 - 500 `Internal Server Error` - something went wrong on our side
 - 503 `Service Unavailable` - there is planned service outage
 
@@ -185,22 +185,23 @@ Error object attributes
 | --- | --- |
 | code | unique error code |
 | message | human readable error description (non-localized) |
-| severity | error severity (see below) |
+| severity | error severity ([see below](#error-severity)) |
 | attribute | json path of request attribute that caused the error (optional) |
 | ticketId | internal ticket ID, used for error backtracking |
 
+<a name="error-severity"></a>
 There are 3 levels of error severity:
-
-- ERROR - critical error, execution cannot continue. This MUST be indicated also by appropriate HTTP status code (`422 Unprocessable Entity`)
-- WARN - non-critical error, execution can continue but further user interaction is advisable (for request to proceed, you MUST specify this error code in `override` request attribute). This MIGHT be indicated also by appropriate HTTP status code.
-- INFO - information only, execution can continue without user interaction.
+- `ERROR` - critical error, execution cannot continue. This MUST be indicated also by appropriate HTTP status code (`422 Unprocessable Entity`)
+- `WARN` - non-critical error, execution can continue but further user interaction is advisable (for request to proceed, you MUST specify this error code in `override` request attribute). This MIGHT be indicated also by appropriate HTTP status code.
+- `INFO` - information only, execution can continue without user interaction.
 
 ### Errors overview
 | Status code | Code | Message |
-| --- | --- | --- |
-| 422 | NOT_SUPPORTED | (Various messages possible) Not supported for the financing type `INSTALLMENT`. Contact your sales rep. |
-||||
-||||
+| ---         | ---  | ---     |
+| 400 | INVALID_REQUEST | (*Various messages possible*) e.g. Unsupported combination of application state and order state |
+| 404 | OBJECT_NOT_FOUND | (*Various messages possible*) e.g. Specified object was not found |
+| 422 | NOT_SUPPORTED | (*Various messages possible*) e.g. Not supported for the financing type `INSTALLMENT`. Contact your sales rep. |
+| 500 | INTERNAL_SERVER_ERROR | (*Various messages possible*) e.g. Failed to parse given JSON  |
 
 ## Formats
 - **date** and **time** uses [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) formatting, e.g.:
@@ -220,7 +221,7 @@ There are 3 levels of error severity:
 # Group Security
 To access our API, you have to obtain *access token* first; this token is a string of arbitrary length (30+ chars) and it has to be included in HTTP header to every request to API. This section describes way to obtain valid access token and use it to access protected resources.
 
-- to obtain access token, use `/authentication/login-partner` resource with appropriate parameters (see the /authentication/login-partner resource documentation)
+- to obtain access token, use `/authentication/login-partner` resource with appropriate parameters (see the [`/authentication/login-partner` resource documentation](#reference/security/login-partner))
 
 - access token should be present in every request using request header `Authorization`, with type `Bearer`. If your access token has value `secret_token`, it should be specified as follows:
 
@@ -279,6 +280,7 @@ Partner authenticate himself and obtain acces token
 
     + Attributes (Errors)
 
+
 # Group Application operations
 Services that allows processing of *application* and *order* during their whole lifecycle.
 
@@ -321,13 +323,13 @@ Use `/v1/applications/` resource with properly filled request that contains at l
   - Your URL where the customer should be redirected after application rejection
   - Notification suffix
 
-If the request was successfully processed, you receive HTTP status code 201 and Application object with at least following information in the response:
+If the request was successfully processed, you receive HTTP status code 201 and *application* object with at least following information in the response:
 - Application unique ID
 - Application state
 - Application substate
 - Gateway redirect URL where you should redirect a customer after processing of the response
 
-If the request was recognized as duplication, you receive HTTP status code 200 and the Application object created during the first related successful request.
+If the request was recognized as duplication, you receive HTTP status code 200 and the *application* object created during the first related successful request.
 
 In other cases, you receive one of the following errors:
 | Status code | Code | Message |
@@ -336,9 +338,8 @@ In other cases, you receive one of the following errors:
 | 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
 
 
-
 ### Create application [POST]
-Create new application of particular financing type
+Create new *application* of particular financing type
 
 + Request (application/json; charset=utf-8)
     + Attributes (ApplicationRequest)
@@ -358,11 +359,8 @@ Create new application of particular financing type
     + Attributes (Errors)    
 
 
-
-
-
 ## Application detail [/v1/applications/{applicationId}]
-If you need to find out current information about particular application - primarily its state and other details - use `/v1/applications/{applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+If you need to find out current information about particular *application* - primarily its state and other details - use `/v1/applications/{applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -371,7 +369,7 @@ If you need to find out current information about particular application - prima
 | `DEFERRED_PAYMENT` | YES |
 | `SUBSCRIPTION`     | YES |
 
-If the request was successfully processed, you receive HTTP status code 200 and Application object with at least following information in the response:
+If the request was successfully processed, you receive HTTP status code 200 and *application* object with at least following information in the response:
 - Application unique ID
 - Application state
 - Application substate
@@ -387,7 +385,7 @@ In other cases, you receive one of the following errors:
 
 
 ### Get application detail [GET]
-Get specific application detail by ID
+Get specific *application* detail by ID
 
 + Response 200(application/json; charset=utf-8)
 
@@ -404,8 +402,8 @@ Get specific application detail by ID
 
 
 ## Request application OTP [/v1/applications/{applicationId}/requestOTP]
-If you want to integrate customer application authorisation into merchant's checkout, this methods is needed for sending the OTP to customer by SMS.
-OTP is required to verify application. See [Verify Application](#reference/application-operations/verify-application) method.
+If you want to integrate customer *application* authorisation into merchant's checkout, this method is needed for sending the OTP to customer by SMS.
+OTP is required to verify *application*. See [Verify Application](#reference/application-operations/verify-application) method.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -427,7 +425,7 @@ OTP is required to verify application. See [Verify Application](#reference/appli
 
 
 ### Request application OTP [POST]
-Requests sending of one time password to customer by SMS. This OTP is required to verify application. See [Verify Application](#reference/application-operations/verify-application) method.
+Request sending of one-time password to customer by SMS. This OTP is required to verify *application*. See [Verify Application](#reference/application-operations/verify-application) method.
 
 + Request (application/json; charset=utf-8)
 
@@ -449,12 +447,12 @@ Requests sending of one time password to customer by SMS. This OTP is required t
 
 
 ## Verify application  [/v1/applications/{applicationId}/verify]
-If you want to integrate customer application authorisation into merchant's checkout, this methods is needed for verifying the application with the OTP sent to customer by SMS.
+If you want to integrate customer *application authorisation* into merchant's checkout, this method is needed for verifying the *application* with the OTP sent to customer by SMS.
 To send OTP to customer see [Request application OTP](#reference/application-operations/request-application-otp) method.
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO |
+| `INSTALLMENT`      | NO  |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
 | `SUBSCRIPTION`     | YES |
@@ -471,7 +469,7 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 
 
 ### Verify application [POST]
-Verify application with OTP sent to customer by SMS. To send OTP to customer see [Request application OTP](#reference/application-operations/request-application-otp) method.
+Verify *application* with OTP sent to customer by SMS. To send OTP to customer see [Request application OTP](#reference/application-operations/request-application-otp) method.
 
 + Request (application/json; charset=utf-8)
     + Attributes (number, required)
@@ -500,7 +498,7 @@ Verify application with OTP sent to customer by SMS. To send OTP to customer see
 
 
 ### Send application additional data [POST]
-Send additional data needed to complete the application.
+Send additional data needed to complete the *application*.
 
 + Request (application/json; charset=utf-8)
     + Attributes (AdditionalDataRequest)
@@ -522,7 +520,7 @@ Send additional data needed to complete the application.
 
 
 ## Cancel application [/v1/applications/{applicationId}/cancel]
-If there is need to completely cancel customer's order, it is necessary to cancel respective application. For this purpose use `/v1/applications/{applicationId}/cancel` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+If there is need to completely cancel customer's *order*, it is necessary to cancel respective *application*. For this purpose use `/v1/applications/{applicationId}/cancel` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -535,10 +533,11 @@ If there is need to completely cancel customer's order, it is necessary to cance
 | ---               | ---          |
 | `REJECTED`        | NO           |
 | `CANCELLED`       | NO           |
-| *Other states*    | YES          |
+| `PROCESSING`      | YES          |
+| `READY`           | YES          |
 
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled Order plus basic information about respective Application (ID, state) with at least following information in the response:
+If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
 - Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
@@ -572,7 +571,7 @@ In other cases, you receive one of the following errors:
 
 
 ### Cancel application [PUT]
-Cancel application, or cancel recurring payment.
+Cancel *application*, or cancel recurring payment.
 
 + Request (application/json; charset=utf-8)
     + Attributes (ApplicationCancelRequest)
@@ -591,7 +590,7 @@ Cancel application, or cancel recurring payment.
 
 
 ## Change application order [/v1/applications/{applicationId}/order]
-When there's some changes within Order that may have an importatnt impact on the approval process (e.g. change in order items that impacts the total price of the order or other billing information) after its submission, use `/v1/applications/{applicationId}/order` resource in order we can adjust everything properly. `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+When there's some changes within *order* that may have an importatnt impact on the approval process (e.g. change in order items that impacts the total price of the *order* or other billing information) after its submission, use `/v1/applications/{applicationId}/order` resource in order we can adjust everything properly. `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -604,7 +603,8 @@ When there's some changes within Order that may have an importatnt impact on the
 | ---               | ---          |
 | `REJECTED`        | NO           |
 | `CANCELLED`       | NO           |
-| *Other states*    | YES          |
+| `PROCESSING`      | YES          |
+| `READY`           | YES          |
 
 Use `/v1/applications/{applicationId}/order` resource with properly filled request that contains at least following data:
 - Order number
@@ -629,7 +629,7 @@ Use `/v1/applications/{applicationId}/order` resource with properly filled reque
   - Application substate
 
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
 - Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
@@ -664,7 +664,7 @@ In other cases, you receive one of the following errors:
 
 
 ### Change application order [PUT]
-Change order. Used to change order items, total amount, billing details etc.
+Change *order*. Used to change order items, total amount, billing details etc.
 
 + Request (application/json; charset=utf-8)
     + Attributes (OrderChangeRequest)
@@ -699,7 +699,7 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 | `CANCELLED`       | NO           |
 | `READY`           | YES          |
 
-Use `/v1/applications/{applicationId}/order/cancel` resource with an empty request to cancel all order items (the whole Order) at once.
+Use `/v1/applications/{applicationId}/order/cancel` resource with an empty request to cancel all order items (the whole *order*) at once.
 
 Use `/v1/applications/{applicationId}/order/cancel` resource with properly filled request that contains cancelled order items info. In this case request should contain at least following data:
 - Order items (array of cancelled order items)
@@ -707,7 +707,7 @@ Use `/v1/applications/{applicationId}/order/cancel` resource with properly fille
   - Total price (all pieces, including VAT)
   - Total VAT
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
 - Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
@@ -743,7 +743,7 @@ In other cases, you receive one of the following errors:
 ### Mark order items as cancelled [PUT]
 Mark order items as cancelled
 
-System notification. Some or all of the order items were cancelled. Based on application financing type and partner setting, credit note may be issued.
+System notification. Some or all of the order items were cancelled. Based on *application* financing type and partner setting, credit note may be issued.
 
 
 + Request (application/json; charset=utf-8)
@@ -784,7 +784,7 @@ When some or all order items were delivered to the customer, use `/v1/applicatio
 | `CANCELLED`       | NO           |
 | `READY`           | YES          |
 
-Use `/v1/applications/{applicationId}/order/deliver` resource with an empty request to mark all order items (the whole Order) as delivered at once.
+Use `/v1/applications/{applicationId}/order/deliver` resource with an empty request to mark all order items (the whole *order*) as delivered at once.
 
 Use `/v1/applications/{applicationId}/order/deliver` resource with properly filled request that contains delivered order items info. In this case request should contain at least following data:
 - Order items (array of delivered order items)
@@ -792,7 +792,7 @@ Use `/v1/applications/{applicationId}/order/deliver` resource with properly fill
   - Total price (all pieces, including VAT)
   - Total VAT
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
 - Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
@@ -829,7 +829,7 @@ In other cases, you receive one of the following errors:
 Mark order items as delivered.
 
 System notification. Some or all order items were delivered to customer.
-Based on application type and partner setting, application payment may be processed.
+Based on *application* financing type and partner setting, application payment may be processed.
 
 
 + Request (application/json; charset=utf-8)
@@ -867,7 +867,7 @@ When some or all order items were returned by the customer to you, use `/v1/appl
 | `CANCELLED`       | NO           |
 | `READY`           | YES          |
 
-Use `/v1/applications/{applicationId}/order/return` resource with an empty request to mark all order items (the whole Order) as returned at once.
+Use `/v1/applications/{applicationId}/order/return` resource with an empty request to mark all order items (the whole *order*) as returned at once.
 
 Use `/v1/applications/{applicationId}/order/return` resource with properly filled request that contains returned order items info. In this case request should contain at least following data:
 - Order items (array of returned order items)
@@ -875,7 +875,7 @@ Use `/v1/applications/{applicationId}/order/return` resource with properly fille
   - Total price (all pieces, including VAT)
   - Total VAT
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
 - Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
@@ -912,7 +912,7 @@ In other cases, you receive one of the following errors:
 Mark order items as returned.
 
 System notification. Some or all order items were returned by customer back to e-shop.
-Based on application type and partner setting, credit note may be issued.
+Based on *application* financing type and partner setting, credit note may be issued.
 
 
 + Request (application/json; charset=utf-8)
@@ -937,7 +937,7 @@ When some or all order items were shipped to the customer, use `/v1/applications
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | YES* |
+| `INSTALLMENT`      | YES * |
 | `TRY_AND_PAY`      | YES  |
 | `DEFERRED_PAYMENT` | YES  |
 | `SUBSCRIPTION`     | YES  |
@@ -947,10 +947,10 @@ When some or all order items were shipped to the customer, use `/v1/applications
 | `PROCESSING`      | NO           |
 | `REJECTED`        | NO           |
 | `CANCELLED`       | NO           |
-| `READY`           | YES  (*for financing type `INSTALLMENT` available only when `Application.stateReason` = `READY_TO_SHIP`)        |
+| `READY`           | YES  (* for financing type `INSTALLMENT` available only when `Application.stateReason = READY_TO_SHIP`)        |
 
 Use `/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
-> ATTENTION: An empty request is the only valid way for financing type `INSTALLMENT`
+> * ATTENTION: An empty request is the only valid way for financing type `INSTALLMENT`
 
 Use `/v1/applications/{applicationId}/order/send` resource with properly filled request that contains sent order items info. In this case request should contain at least following data:
 - Order items (array of sent order items)
@@ -958,7 +958,7 @@ Use `/v1/applications/{applicationId}/order/send` resource with properly filled 
   - Total price (all pieces, including VAT)
   - Total VAT
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
 - Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
@@ -995,7 +995,7 @@ In other cases, you receive one of the following errors:
 Mark order items as sent
 
 System notification. Some or all order items were shipped to customer.
-Based on application type and partner setting, application payment may be processed.
+Based on *application* financing type and partner setting, application payment may be processed.
 
 + Request (application/json; charset=utf-8)
     + Attributes (OrderItemsSendRequest)
@@ -1022,7 +1022,7 @@ Based on application type and partner setting, application payment may be proces
 
 
 ### Get payments on specific application [GET]
-Get payments on specific application
+Get payments on specific *application*
 
 List of realized payments from HC to partner. In case of recurring payment, list may contain more items.
 
@@ -1092,21 +1092,24 @@ This should be used by partner before issuing an invoice, to include correct bil
 
 
 ## Orders [/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}]
-If you need to find out current information about particular Order - primarily its state (or its order items state) and other details - use `/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
+If you need to find out current information about particular *order* - primarily its state (or its order items' states) and other details - use `/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | YES* (see the parameters restriction bellow) |
+| `INSTALLMENT`      | YES* (see the [parameters restriction bellow](#orders-parameters-restriction)) |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
 | `SUBSCRIPTION`     | YES |
 
 | Application state | Availability |
 | ---               | ---          |
-| *all states*      | YES          |
+| `PROCESSING`      | YES          |
+| `REJECTED`        | YES          |
+| `CANCELLED`       | YES          |
+| `READY`           | YES          |
 
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about specified Order plus basic information about respective Application (ID, state) with at least following information in the response:
+If the request was successfully processed, you receive HTTP status code 200 and object of information about specified *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
 - Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
@@ -1139,10 +1142,11 @@ In other cases, you receive one of the following errors:
 ### Get order [GET]
 Get order
 
-Search for order using specified parameters.
+Search for *order* using specified parameters.
 
 Parameters include variable symbol, order number or application number.
 
+<a name="orders-parameters-restriction"></a>
 > ATTENTION: At this moment, only `applicationId` is valid parametr for order processing within application of financing type `INSTALLMENT`.
 
 + Parameters
@@ -1178,9 +1182,9 @@ Parameters include variable symbol, order number or application number.
 # Group Offers operations
 When a customer wants to pay for a purchase by a loan and you want to provide him an option to choose from available offers while still being on your website, you should achieve this by implementing your installment calculatior that uses following resources:
 
-- `/v1/installment-programs-offers/` - to find out available installment programs offer and their details
+- `/v1/installment-programs-offers/` - to find out available installment programs offers and their details
 - `/v1/installment-programs/` - to find out details of a chosen installment program
-- `/v1/installment-programs-down-payments/` - to find out down payment options within available installment programs offer
+- `/v1/installment-programs-down-payments/` - to find out down payment options within available installment programs offers
 
 > NOTE: Implementation of installment calculator is optional, customers can always use the installment calculator embedded in Home Credit's front end
 
@@ -1297,7 +1301,7 @@ It returns the installment program that most closely matches specified input.
 
 
 # Group Precheck operations
-Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC
+Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to HC
 
 ## Customer information [/v1/customer-information/{?emailHash,phoneHash,firstNameHash,lastNameHash}]
 
@@ -1388,11 +1392,11 @@ Get customer's limit information
 ## Precheck [/v1/precheck/]
 
 ### Precheck [POST]
-Prechecks application
+Precheck *application*
 
-Returns probability of application's approval and limits of customer, if known to HC
+Returns probability of *application's* approval and limits of particular customer, if known to HC
 
-It has to be called with valid access token (see Security section) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call HC API - NEVER put access token directly to client side.  
+It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call HC API - **NEVER put access token directly to client side**.  
 
 + Request (application/json; charset=utf-8)
     + Attributes (PrecheckRequest)
@@ -1417,7 +1421,7 @@ Services that should be developed and exposed by partner e-shops to allow HC asy
 ### Order change request [POST]
 Order change request
 
-Asks partner to correct order data (billing information, order items etc.)
+We use this resource when there is need to correct *order* data (billing information, order items etc.) stored at your side.
 
 + Request (application/json; charset=utf-8)
     + Attributes (OrderChangeNotification)
@@ -1542,7 +1546,7 @@ Address
 
     Country.
 
-    (see ISO 3166 alpha-2)
+    (see [ISO 3166 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))
 
 + `city`: `Prague` (string, required) - City.
 + `streetAddress`: `Letenská` (string, required) - Street/city part.
@@ -1566,7 +1570,7 @@ Financial amount
 
 + `currency`: `CZK` (string, required)
 
-    Amount currency. ISO 4217
+    Amount currency. [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217)
 
 + `formatted`: `125,90 Kč` (string, optional)
 
@@ -1830,7 +1834,7 @@ Order item information.
     + `CANCELLED` - Order item was cancelled
 + `sendDate`: `2017-01-10` (string, optional) - Date when item was sent. Only when the whole order was NOT sent at once.
 + `deliveryDate`: `2017-01-12` (string, optional) - Date when item was delivered. Only when the whole order was NOT sent at once.
-+ `deliveryTrackingNumber: `EX21121` (string, optional) - Tracking number for the item. Only when the whole order was NOT sent at once.
++ `deliveryTrackingNumber`: `EX21121` (string, optional) - Tracking number for the item. Only when the whole order was NOT sent at once.
 
 
 ## File (object)
@@ -1880,7 +1884,7 @@ Request for generating invoice info.
 
 ### Properties
 + One of
-    + `customerDueDateCategory` (enum, optional) - Category of the due date. See "precheck" method response.
+    + `customerDueDateCategory` (enum, optional) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response.
         + `CATEGORY_CLASSIC` - Customer with classic due date (14 days, with the exception of events (Christmas, etc.))
         + `CATEGORY_EXTENDED` - Customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
     + `orderNumber` (string, optional) - Order number.
@@ -2010,7 +2014,7 @@ Financing application request
         + `paymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
 + `agreementPersonalDataProcessing`: `true` (boolean, required) - Personal data processing agreement
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
-+ `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See precheck operations and it's response (PrecheckResults).
++ `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResults).
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
 
