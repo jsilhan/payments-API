@@ -766,87 +766,6 @@ System notification. Some or all of the order items were cancelled. Based on app
 
 
 
-## Mark order items as sent [/v1/applications/{applicationId}/order/send]
-When some or all order items were shipped to the customer, use `/v1/applications/{applicationId}/order/send` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
-
-| Financing type     | Supported |
-| ---                | ---       |
-| `INSTALLMENT`      | YES* |
-| `TRY_AND_PAY`      | YES  |
-| `DEFERRED_PAYMENT` | YES  |
-| `SUBSCRIPTION`     | YES  |
-
-| Application state | Availability |
-| ---               | ---          |
-| `PROCESSING`      | NO           |
-| `REJECTED`        | NO           |
-| `CANCELLED`       | NO           |
-| `READY`           | YES  (*for financing type `INSTALLMENT` available only when `Application.stateReason` = `READY_TO_SHIP`)        |
-
-Use `/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
-> ATTENTION: An empty request is the only valid way for financing type `INSTALLMENT`
-
-Use `/v1/applications/{applicationId}/order/send` resource with properly filled request that contains sent order items info. In this case request should contain at least following data:
-- Order items (array of sent order items)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
-- Order number
-- Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
-- Addresses (array)
-  - Country
-  - City
-  - Street
-  - Street number
-  - ZIP
-  - Address type
-- Order items (array)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-  - Order item state
-- Order state
-- Application basic information
-  - ID
-  - Application state
-  - Application substate
-
-In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST | *Various messages possible* |
-| 422 | NOT_SUPPORTED | CZ: Not supported for the financing type INSTALLMENT. Contact Home Credit: (CZ) smlouvy@homecredit.cz or +420 541 598 598, (SK) kompletace@homecredit.cz or +421 337 767 157 |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
-
-+ Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
-
-
-### Mark order items as sent [PUT]
-Mark order items as sent
-
-System notification. Some or all order items were shipped to customer.
-Based on application type and partner setting, application payment may be processed.
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (OrderItemsSendRequest)
-
-
-+ Response 200(application/json; charset=utf-8)
-        Order items or whole order is marked as shipped.
-
-    + Attributes (Order)
-
-
-+ Response 422(application/json; charset=utf-8)
-        Cannot process state change.
-
-    + Attributes (Errors)
-
-
 
 ## Mark order items as delivered [/v1/applications/{applicationId}/order/deliver]
 When some or all order items were delivered to the customer, use `/v1/applications/{applicationId}/order/deliver` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
@@ -1010,6 +929,89 @@ Based on application type and partner setting, credit note may be issued.
         Cannot process state change.
 
     + Attributes (Errors)
+
+
+
+## Mark order items as sent [/v1/applications/{applicationId}/order/send]
+When some or all order items were shipped to the customer, use `/v1/applications/{applicationId}/order/send` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+
+| Financing type     | Supported |
+| ---                | ---       |
+| `INSTALLMENT`      | YES* |
+| `TRY_AND_PAY`      | YES  |
+| `DEFERRED_PAYMENT` | YES  |
+| `SUBSCRIPTION`     | YES  |
+
+| Application state | Availability |
+| ---               | ---          |
+| `PROCESSING`      | NO           |
+| `REJECTED`        | NO           |
+| `CANCELLED`       | NO           |
+| `READY`           | YES  (*for financing type `INSTALLMENT` available only when `Application.stateReason` = `READY_TO_SHIP`)        |
+
+Use `/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
+> ATTENTION: An empty request is the only valid way for financing type `INSTALLMENT`
+
+Use `/v1/applications/{applicationId}/order/send` resource with properly filled request that contains sent order items info. In this case request should contain at least following data:
+- Order items (array of sent order items)
+  - Order item name
+  - Total price (all pieces, including VAT)
+  - Total VAT
+
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed Order plus basic information about respective Application (ID, state) with at least following information in the response:
+- Order number
+- Order total price (including VAT)
+- Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
+- Addresses (array)
+  - Country
+  - City
+  - Street
+  - Street number
+  - ZIP
+  - Address type
+- Order items (array)
+  - Order item name
+  - Total price (all pieces, including VAT)
+  - Total VAT
+  - Order item state
+- Order state
+- Application basic information
+  - ID
+  - Application state
+  - Application substate
+
+In other cases, you receive one of the following errors:
+| Status code | Code | Message |
+| --- | --- | --- |
+| 400 | INVALID_REQUEST | *Various messages possible* |
+| 422 | NOT_SUPPORTED | CZ: Not supported for the financing type INSTALLMENT. Contact Home Credit: (CZ) smlouvy@homecredit.cz or +420 541 598 598, (SK) kompletace@homecredit.cz or +421 337 767 157 |
+| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+
++ Parameters
+    + applicationId (string, required, `02-11b00a1ef1`)
+
+
+### Mark order items as sent [PUT]
+Mark order items as sent
+
+System notification. Some or all order items were shipped to customer.
+Based on application type and partner setting, application payment may be processed.
+
++ Request (application/json; charset=utf-8)
+    + Attributes (OrderItemsSendRequest)
+
+
++ Response 200(application/json; charset=utf-8)
+        Order items or whole order is marked as shipped.
+
+    + Attributes (Order)
+
+
++ Response 422(application/json; charset=utf-8)
+        Cannot process state change.
+
+    + Attributes (Errors)
+
 
 
 
