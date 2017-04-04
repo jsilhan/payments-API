@@ -44,6 +44,8 @@ You can use advanced operations to improve customer experience.
     - [Request application OTP](#reference/application-operations/request-application-otp)
     - [Verify application](#reference/application-operations/verify-application)
     - [Send application additional data](#reference/application-operations/send-application-additional-data)
+    
+    > IMPORTANT NOTE: Despite the usage of these operations it's always necessary to check *application* `stateReason`. If `stateReason == PROCESSING_REDIRECT_NEEDED` there is no way how to complete *application* throught API calls and you have to redirect customer to `gatewayRedirectUrl`.
 
 [![Sequence diagram of advanced implementation](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramAdvanced.png)](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramAdvanced.png)
 
@@ -492,6 +494,29 @@ Verify *application* with OTP sent to customer by SMS. To send OTP to customer s
 
 
 ## Send application additional data [/v1/applications/{applicationId}/additionalData]
+If you want to integrate gathering customer additional data needed for completing the *application* into merchant's checkout, this method is needed for completing the *application* with the additional data.
+
+To determine what additional data is needed see `additionalData` array on *application* ([Application detail](#reference/application-operations/application-detail)).
+
+| Financing type     | Supported |
+| ---                | ---       |
+| `INSTALLMENT`      | NO  |
+| `TRY_AND_PAY`      | YES |
+| `DEFERRED_PAYMENT` | YES |
+| `SUBSCRIPTION`     | YES |
+
+| Application state | Availability |
+| ---               | ---          |
+| `PROCESSING`      | YES (`stateReason = PROCESSING_ADDITIONAL_DATA`)|
+| `REJECTED`        | NO           |
+| `CANCELLED`       | NO           |
+| `READY`           | NO           |
+
+Possible *application* `state` and `stateReason` after calling this operation:
+1. Application state `READY` or `REJECTED` if sent application data are processed and checked so *application* is completed.
+1. Application state `PROCESSING` with state reason `PROCESSING_ADDITIONAL_DATA` if there are more additional data needed.
+1. Application state `PROCESSING` with state reason `PROCESSING_REVIEW` if the manual review of application is needed. There is no way how to complete *application* in this state throught API calls or via redirection to `gatewayRedirectUrl`.
+1. Application state `PROCESSING` with state reason `PROCESSING_REDIRECT_NEEDED` if there is no way how to complete *application* throught API calls and you have to redirect customer to `gatewayRedirectUrl`.
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -1597,7 +1622,7 @@ Financing application base information
 + `stateReason`: `PROCESSING_APPROVED` (enum, required) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
     + `PROCESSING_ADDITIONAL_DATA` - Additional data needed (redirect to HC or send Application additional data)
     + `PROCESSING_VERIFICATION` - Verification needed (redirect to HC or send Application verification)
-    + `PROCESSING_REDIRECT_NEEDED` - Redirect to HC is needed. Redirect user to gatewayRedirectUrl.
+    + `PROCESSING_REDIRECT_NEEDED` - Redirect to HC is needed. Redirect user to `gatewayRedirectUrl`.
     + `PROCESSING_NEW` - New application created
     + `PROCESSING_PREAPPROVED` - Preliminary approval by HC
     + `REJECTED` - Rejected by HC
@@ -1669,7 +1694,9 @@ Financing application
         + `paymentFirstDate`: `2016-10-12` (string, optional) - First payment date for recurring payment
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Flag indicating already approved terms and conditions
-+ `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is PROCESSING and stateReason is PROCESSING_ADDITIONAL_DATA or PROCESSING_VERIFICATION or PROCESSING_REDIRECT_NEEDED.
++ `additionalData` (array[string], optional) - List of additional data that customer has to add to complete the application if stateReason is `PROCESSING_ADDITIONAL_DATA`.
+    Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`.
++ `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is `PROCESSING` and stateReason is `PROCESSING_ADDITIONAL_DATA` or `PROCESSING_VERIFICATION` or `PROCESSING_REDIRECT_NEEDED`.
 
 
 ## Customer (object)
