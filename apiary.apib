@@ -515,6 +515,7 @@ To determine what additional data is needed see `additionalData` array on *appli
 Possible *application* `state` and `stateReason` after calling this operation:
 1. Application state `READY` or `REJECTED` if sent application data are processed and checked so *application* is completed.
 1. Application state `PROCESSING` with state reason `PROCESSING_ADDITIONAL_DATA` if there are more additional data needed.
+    * For example: customer is firstly asked to add `PERSONAL_ID`. After sending personal id via this operation system evaluate that it's not enough and customer is asked to add `ID_CARD_NO`.
 1. Application state `PROCESSING` with state reason `PROCESSING_REVIEW` if the manual review of application is needed. There is no way how to complete *application* in this state throught API calls or via redirection to `gatewayRedirectUrl`.
 1. Application state `PROCESSING` with state reason `PROCESSING_REDIRECT_NEEDED` if there is no way how to complete *application* throught API calls and you have to redirect customer to `gatewayRedirectUrl`.
 
