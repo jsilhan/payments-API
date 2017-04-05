@@ -44,7 +44,7 @@ You can use advanced operations to improve customer experience.
     - [Request application OTP](#reference/application-operations/request-application-otp)
     - [Verify application](#reference/application-operations/verify-application)
     - [Send application additional data](#reference/application-operations/send-application-additional-data)
-    
+
     > IMPORTANT NOTE: Despite the usage of these operations it's always necessary to check *application* `stateReason`. If `stateReason == PROCESSING_REDIRECT_NEEDED` there is no way how to complete *application* throught API calls and you have to redirect customer to `gatewayRedirectUrl`.
 
 [![Sequence diagram of advanced implementation](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramAdvanced.png)](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramAdvanced.png)
@@ -2169,12 +2169,9 @@ Precheck results.
 + `id` (string, required) - Unique identificator of precheck. Send this identificator in ApplicationRequest for better approval rate.
 + `results` (array[PrecheckResult], required) - Precheck results for each type of product.
 + `limits` (Limits, optional)
-
-    Limity zákazníka.
-
-    Pokud zákazníka neznáme, jsou výše limitů odhadnuty.
-
-    Pokud zákazníka známe, jedná se o aktuální limity. Pokud zákazník dal souhlas o předávání limitů. TODO legal.
+    Customer limits.
+    Estimated in case we don!t know the customer.
+    Current customer's limits in case we know him and customer give us an approval for their usage [TODO legal].
 
 ## OrderChangeNotification (object)
 Order change request data (HC asks partner to correct order data).
