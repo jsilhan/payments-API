@@ -1466,13 +1466,13 @@ We use this resource when there is need to correct *order* data (billing informa
 ## Application notification [/v1/{application.merchantUrls.notificationEndpoint}/]
 We use this resource when there is need to let you know about important changes within particular *application*. Namely in following situations:
 
-| Trigger                   | Expected reaction                      |
-| ---                       | ---                                    |
-| Application was approved  | -                                      |
-| Application was rejected  | -                                      |
-| Application was cancelled | -                                      |
-| Order to dispatch         | You dispatch the order to the customer |
-| Application was paid out  | -                                      |
+| Trigger                                                             | Expected reaction                                                      |
+| ---                                                                 | ---                                                                    |
+| Application was approved (approval process is proceeding correctly) | Do not cancel customer's order prematurely                             |
+| Application was rejected                                            | You should probably cancel respective order and release reserved goods |
+| Application was cancelled                                           | You should probably cancel respective order and release reserved goods |
+| Order to dispatch (we commit to finance customer's order)           | Dispatch the order to the customer                                     |
+| Application is going to be paid out                                 | Wait for us processing financial compensation with you                 |
 
 We fill the request with at least following information:
 - Application unique ID
