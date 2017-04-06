@@ -845,6 +845,8 @@ Use `/v1/applications/{applicationId}/order/send` resource with properly filled 
   - Total price (all pieces, including VAT)
   - Total VAT
 
+> * ATTENTION: Specifying **Order items** is currently not supported. HCO currently can't handle partial delivery. HCO always consider all items as sent if calling this operation.
+
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
@@ -927,6 +929,8 @@ Use `/v1/applications/{applicationId}/order/deliver` resource with properly fill
   - Order item name
   - Total price (all pieces, including VAT)
   - Total VAT
+
+> * ATTENTION: Specifying **Order items** is currently not supported. HCO currently can't handle partial delivery. HCO always consider all items as delivered if calling this operation.
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
@@ -1781,6 +1785,7 @@ Object used to change order items.
 
 ### Properties
 + `items` (array[ApplicationRequestOrderItem], optional) - List of changed items. All items are considered when empty.
+    > * ATTENTION: Ignored if marking order items as sent or delivered (HCO currently can't handle partial delivery).
 + `totalPrice` (Amount, optional) - Total amount of items (from orderItems array), including VAT.
 + `totalVat` (array[VatAmount], optional) - Total VAT amounts of items (from orderItems array) split by their VAT rates.
 
