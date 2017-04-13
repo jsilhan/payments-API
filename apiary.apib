@@ -1784,7 +1784,7 @@ Object used to cancel application.
 Object used to change order items.
 
 ### Properties
-+ `items` (array[ApplicationRequestOrderItem], optional) - List of changed items. All items are considered when empty.
++ `items` (array[OrderItemBase], optional) - List of changed items. All items are considered when empty.
     > * ATTENTION: Ignored if marking order items as sent or delivered (HCO currently can't handle partial delivery).
 + `totalPrice` (Amount, optional) - Total amount of items (from orderItems array), including VAT.
 + `totalVat` (array[VatAmount], optional) - Total VAT amounts of items (from orderItems array) split by their VAT rates.
@@ -1853,8 +1853,17 @@ Order information.
 + `sentDate`: `2017-01-12` (string, optional) - Date and time of order shipping
 + `applicationInfo` (ApplicationBase, required) - Base information about respective application
 
+## OrderItemBase (object)
+Order item base information, needed to identify order item
 
-## ApplicationRequestOrderItem (object)
+### Properties
++ `code`: `EXC4677-1a` (string, optional) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
++ `ean`: 888462064002 (string, optional) - EAN code.
++ `name`: `iPhone 6s 32GB SpaceGray` (string, required) - Item name
++ `quantity`: 1 (number, optional) - Item quantity
+
+
+## ApplicationRequestOrderItem (OrderItemBase)
 Order item information, needed to create an application.
 
 ### Properties
@@ -1867,14 +1876,10 @@ Order item information, needed to create an application.
     + `GIFT_CARD`
     + `STORE_CREDIT`
     + `FEE`
-+ `code`: `EXC4677-1a` (string, optional) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
-+ `ean`: 888462064002 (string, optional) - EAN code.
-+ `name`: `iPhone 6s 32GB SpaceGray` (string, required) - Item name
 + `variant`: `32GB SpaceGray` (string, optional) - Item variant
 + `description`: `Mobile phone with 32GB of RAM` (string, optional)
 + `producer`: `Apple` (string, optional)
 + `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - List of item categories
-+ `quantity`: 1 (number, optional) - Item quantity
 + `unitPrice` (Amount, optional) - Price per one piece
 + `unitVat` (VatAmount, optional) - VAT amount per one piece
 + `totalPrice` (Amount, required) - Total price for all pieces, VAT inclusive
