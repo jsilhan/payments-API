@@ -327,9 +327,7 @@ Elementary flow starts when customer wants to use one of Home Credit's payment m
 Use `/v1/applications/` resource with properly filled request that contains at least following data
 - Customer information
   - E-mail
-  - Phone
-    - Type of phone
-    - Number
+  - Phone number
 - Order details
   - Number
   - Total Price (including VAT)
@@ -351,7 +349,7 @@ Use `/v1/applications/` resource with properly filled request that contains at l
 - Additional information necessary for the continuation and completion of the process
   - Your URL where the customer should be redirected after application approval
   - Your URL where the customer should be redirected after application rejection
-  - Notification suffix
+  - URL of your notification endpoint you want us to send you notifications about particular application updates
 
 If the request was successfully processed, you receive HTTP status code 201 and *application* object with at least following information in the response:
 - Application unique ID
@@ -1584,16 +1582,6 @@ Delivery carrier
 
     + carrierCustom: `my custom carrier` (string, required) - For carriers not found in enumeration of customer ID, specify value as text
 
-## PhoneNumber (object)
-Phone number
-
-### Properties
-+ `type`: `PRIMARY_MOBILE` (enum, required) - Type of phone
-    + `PRIMARY_MOBILE`
-    + `SECONDARY_MOBILE`
-    + `HOME_PHONE`
-    + `EMPLOYMENT_PHONE`
-+ `number`: `+420123456789` (string, required) - Phone number with country code (including leading `+`)
 
 ## Address (object)
 Address
@@ -1621,24 +1609,14 @@ Address
 Financial amount
 
 ### Properties
-+ `amount`: `125.90` (string, required) Amount in decimal format
-
-
-+ `currency`: `CZK` (string, required)
-
-    Amount currency. [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217)
-
-+ `formatted`: `125,90 Kč` (string, optional)
-
-    Formatted interpretation, localized.
++ `amount`: `125.90` (string, required) - Amount in decimal format
++ `currency`: `CZK` (string, required) - Amount currency. [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217)
 
 ## VatAmount (Amount)
 Financial amount with VAT rate.
 
 ### Properties
-+ `vatRate`: `0.15` (number, required)
-
-    VAT rate in decimal format
++ `vatRate`: `0.15` (number, required) - VAT rate in decimal format
 
 ## ApplicationBase (object)
 Financing application base information
@@ -1686,7 +1664,7 @@ Notification form of financing application
     - `settingsInstallment` - Settings for INSTALLMENT Application type.
         + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
         + `preferredInstallment` (Amount, optional) - Preferred repayment amount
-        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
+        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount (amount should be rounded to hundreds)
         + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
         + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
     - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
@@ -1714,7 +1692,7 @@ Financing application
     - `settingsInstallment` - Settings for INSTALLMENT Application type.
         + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
         + `preferredInstallment` (Amount, optional) - Preferred repayment amount
-        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
+        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount (amount should be rounded to hundreds)
         + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
         + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
     - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
@@ -1740,7 +1718,7 @@ Customer data
 + `titleBefore`: `Ing.` (string, optional) - Academical degree, in front of the name
 + `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
-+ `phone` (PhoneNumber, required) - Phone number
++ `phone`: `+420123456789` (string, required) - Phone number with country code (including leading `+`)
 + `addresses` (array[Address], optional) - Addresses. Only `PERMANENT` and `CONTACT` types are allowed.
 + `tin`: `12333321` (string, optional) - Tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
@@ -1906,10 +1884,7 @@ Order item information.
 ### Properties
 + `filename`: `invoice.pdf` (string, optional) - File name.
 + One Of
-    + `content`: `RmlsZSBjb250ZW50cy4gwq9cXyjjg4QpXy/Crw==` (string, required)
-
-        File content - Base64 encoded, maximum size is 500kB
-
+    + `content`: `RmlsZSBjb250ZW50cy4gwq9cXyjjg4QpXy/Crw==` (string, required) - File content (Base64 encoded, maximum size of encoded string is 500kB)
     + `url`: `https://www.partner.com/file?id=12345` (string, required) - File URL.
 
 
@@ -2067,7 +2042,7 @@ Financing application request
     - `settingsInstallment` - Settings for INSTALLMENT Application type.
         + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
         + `preferredInstallment` (Amount, optional) - Preferred repayment amount
-        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
+        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount (amount should be rounded to hundreds)
         + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
         + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
     - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
@@ -2094,7 +2069,6 @@ Additional data about the customer.
 
 ## IdCardScan (object)
 
-
 ### Properties
 + `front` (File, optional) - Front side
 + `back` (File, optional) - Back side
@@ -2102,24 +2076,21 @@ Additional data about the customer.
 
 ## InstallmentProgramsRequest (object)
 
-
 ### Properties
 + `productCode`: `a122ax` (string, required) - Product code, this indicates previous calculation result
 + `price` (Amount, required) - Goods price
-+ `downPayment` (Amount, optional) - Down payment amount (default is 0)
++ `downPayment` (Amount, optional) - Down payment amount (default is 0, amount should be rounded to hundreds)
 
 
 ## InstallmentProgramsOffersRequest (object)
 
-
 ### Properties
 + `productSetCode`: `bc11523` (string, required) - Product set code, this will limit further calculations
 + `price` (Amount, required) - Goods price
-+ `downPayment` (Amount, optional) - Down payment amount (default is 0)
++ `downPayment` (Amount, optional) - Down payment amount (default is 0, amount should be rounded to hundreds)
 
 
 ## InstallmentProgramsDownPaymentsRequest (object)
-
 
 ### Properties
 + `productSetCode`: `bc11523` (string, required) - Product set code, this will limit further calculations
@@ -2146,7 +2117,7 @@ Precheck data (has similar structure as `Application`).
     - `settingsInstallment` - Settings for INSTALLMENT Application type.
         + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
         + `preferredInstallment` (Amount, optional) - Preferred repayment amount
-        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount
+        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount (amount should be rounded to hundreds)
         + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
         + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
     - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
