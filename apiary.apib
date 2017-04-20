@@ -1609,14 +1609,14 @@ Address
 Financial amount
 
 ### Properties
-+ `amount`: `125.90` (string, required) - Amount in decimal format
++ `amount`: 12590 (number, required) - Amount in minor units (12590 represents 125,90)
 + `currency`: `CZK` (string, required) - Amount currency. [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217)
 
 ## VatAmount (Amount)
 Financial amount with VAT rate.
 
 ### Properties
-+ `vatRate`: `0.15` (string, required) - VAT rate in decimal format
++ `vatRate`: 15 (number, required) - VAT rate as natural number (15 represents 15% rate)
 
 ## ApplicationBase (object)
 Financing application base information
