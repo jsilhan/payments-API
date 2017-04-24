@@ -2103,7 +2103,7 @@ Precheck data (has similar structure as `Application`).
 ### Properties
 + `customer` (Customer, optional) - Customer data
 + `order` (Order, optional) - Order data
-+ `fingerprintComponents` (array[string], optional) - Fingerprints components
++ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components
 + `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer
 + `cookie`: `_ga=GA1.2.1487328853; __zlcmid=fdgjkhn0SQiqdo` (string, optional) - String containing a semicolon-separated list of all customer cookies (i.e. key=value pairs)
 + `userAgent`: `Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0` (string, optional) - user agent used by customer
@@ -2127,6 +2127,11 @@ Precheck data (has similar structure as `Application`).
             + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
         + `paymentFirstDate`: `2016-10-12` (string, optional) - First payment date for recurring payment
 
+## KeyValue (object)
+
+### Properties
++ `key`: `property` (string, required) - Key
++ `value`: `value` (string, required) - Value
 
 ## PrecheckResult (object)
 Precheck result.
