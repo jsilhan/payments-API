@@ -659,27 +659,20 @@ When there's some changes within *order* that may have an importatnt impact on t
 | `READY`           | YES          |
 
 Use `/v1/applications/{applicationId}/order` resource with properly filled request that contains at least following data:
-- Order number
-- Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates)
-- Addresses (array)
-  - Country
-  - City
-  - Street
-  - Street number
-  - ZIP
-  - Address type
-- Order items (array)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-  - Order item state
-- Order state
-- Application basic information
-  - ID
-  - Application state
-  - Application substate
-
+- Order details
+  - Total Price (including VAT)
+  - Total VAT (array of total amounts split by VAT rates)
+  - Addresses (array)
+    - Country
+    - City
+    - Street
+    - Street number
+    - ZIP
+    - Address type
+  - Order items (array, at least one item is required)
+    - Order item name
+    - Total price (all pieces, including VAT)
+    - Total VAT
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
