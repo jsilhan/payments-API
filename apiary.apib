@@ -746,6 +746,8 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 
 Use `/v1/applications/{applicationId}/order/cancel` resource with an empty request to cancel all order items (the whole *order*) at once.
 
+> * TIP: Use an empty request if marking last item on order as cancelled.
+
 Use `/v1/applications/{applicationId}/order/cancel` resource with properly filled request that contains cancelled order items info. In this case request should contain at least following data:
 - Order items (array of cancelled order items)
   - Order item name
@@ -828,6 +830,9 @@ When some or all order items were shipped to the customer, use `/v1/applications
 | `READY`           | YES  (* for financing type `INSTALLMENT` available only when `Application.stateReason = READY_TO_SHIP`)        |
 
 Use `/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
+
+> * TIP: Use an empty request if marking last item on order as sent.
+
 > * ATTENTION: An empty request is the only valid way for financing type `INSTALLMENT`
 
 Use `/v1/applications/{applicationId}/order/send` resource with properly filled request that contains sent order items info. In this case request should contain at least following data:
@@ -915,6 +920,8 @@ When some or all order items were delivered to the customer, use `/v1/applicatio
 
 Use `/v1/applications/{applicationId}/order/deliver` resource with an empty request to mark all order items (the whole *order*) as delivered at once.
 
+> * TIP: Use an empty request if marking last item on order as delivered.
+
 Use `/v1/applications/{applicationId}/order/deliver` resource with properly filled request that contains delivered order items info. In this case request should contain at least following data:
 - Order items (array of delivered order items)
   - Order item name
@@ -999,6 +1006,8 @@ When some or all order items were returned by the customer to you, use `/v1/appl
 | `READY`           | YES          |
 
 Use `/v1/applications/{applicationId}/order/return` resource with an empty request to mark all order items (the whole *order*) as returned at once.
+
+> * TIP: Use an empty request if marking last item on order as returned.
 
 Use `/v1/applications/{applicationId}/order/return` resource with properly filled request that contains returned order items info. In this case request should contain at least following data:
 - Order items (array of returned order items)
