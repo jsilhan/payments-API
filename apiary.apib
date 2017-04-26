@@ -1738,7 +1738,7 @@ Object used to mark order items as returned.
 
 ### Properties
 + `invoice` (Document, optional) - Attached file (invoice, proforma invoice, credit note, ...)
-+ `variableSymbol`: `122a111` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, credit note,...)
++ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, credit note,...)
 
 ## OrderItemsSendRequest (OrderItemsReturnRequest)
 Object used to mark order items as sent.
@@ -1874,7 +1874,7 @@ Attached document (e.g. invoice, credit note etc.)
 
 
 ### Properties
-+ `variableSymbol`: `112254asdf` (string, optional) - variable symbol (internal for e-shop)
++ `variableSymbol`: `1234567890` (string, optional) - variable symbol (internal for e-shop)
 
 
 ## InvoiceInfo (object)
@@ -1981,8 +1981,8 @@ Payment information
 + `date`: `2017-05-20` (string, required) - Payment date
 + `applicationId`: `02-11200a0ee1` (string, required) - Application ID that this payment belongs to
 + `value` (Amount, required) - Payment amount
++ `variableSymbol`: `1234567890` (string, optional) - Payment variable symbol
 + `invoice` (InvoiceInfo, optional) - Invoice data.
-
 
 ## MerchantUrls (object)
 Collection of URLs used for redirection of a customer back to a partner website or as a notification endpoint
