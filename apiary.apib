@@ -1645,31 +1645,6 @@ Financing application base information
 ## ApplicationNotification (ApplicationBase)
 Notification form of financing application
 
-### Properties
-+ `customer` (Customer, optional) - Customer data
-+ `order` (Order, optional) - Order data
-+ `type` (enum, optional) - Financing type
-    + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-    + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
-    + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
-+ One Of
-    - `settingsInstallment` - Settings for INSTALLMENT Application type.
-        + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
-        + `preferredInstallment` (Amount, optional) - Preferred repayment amount
-        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount (amount should be rounded to hundreds)
-        + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
-        + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
-    - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
-        + `paymentFrequency` (enum, optional) - payment frequency for recurring payment
-            + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
-            + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
-            + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
-        + `paymentFirstDate`: `2016-10-12` (string, optional) - First payment date for recurring payment
-+ `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
-+ `agreementTermsAndConditions`: `true` (boolean, optional) - Flag indicating already approved terms and conditions
-
-
 ## Application (ApplicationBase)
 Financing application
 
