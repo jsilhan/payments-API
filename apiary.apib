@@ -341,6 +341,7 @@ Use `/v1/applications/` resource with properly filled request that contains at l
     - ZIP
     - Address type
   - Order items (array, at least one item is required)
+    - Code
     - Order item name
     - Total price (all pieces, including VAT)
     - Total VAT
@@ -678,7 +679,7 @@ Use `/v1/applications/{applicationId}/order` resource with properly filled reque
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
+- Order total VAT (array of VAT amounts split by VAT rates)
 - Addresses (array)
   - Country
   - City
@@ -1736,6 +1737,7 @@ Order item base information, needed to identify order item
 Order item information, needed to create an application.
 
 ### Properties
++ `code`: `EXC4677-1a` (string, required) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
 + `type` (enum, optional) - Item type
     + `PHYSICAL`
     + `DISCOUNT`
