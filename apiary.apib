@@ -1715,7 +1715,7 @@ Order information.
 Order item base information, needed to identify order item
 
 ### Properties
-+ `code`: `EXC4677-1a` (string, optional) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
++ `code`: `EXC4677-1a` (string, required) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
 + `ean`: 888462064002 (string, optional) - EAN code.
 + `name`: `iPhone 6s 32GB SpaceGray` (string, required) - Item name
 + `quantity`: 1 (number, optional) - Item quantity
@@ -1725,7 +1725,6 @@ Order item base information, needed to identify order item
 Order item information, needed to create an application.
 
 ### Properties
-+ `code`: `EXC4677-1a` (string, required) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
 + `type` (enum, optional) - Item type
     + `PHYSICAL`
     + `DISCOUNT`
