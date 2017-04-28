@@ -322,17 +322,18 @@ Elementary flow starts when customer wants to use one of Home Credit's payment m
 | `INSTALLMENT`      | YES |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 Use `/v1/applications/` resource with properly filled request that contains at least following data
 - Customer information
+  - Name (full name or fist name and last name)
   - E-mail
   - Phone number
 - Order details
   - Number
   - Total Price (including VAT)
   - Total VAT (array of total amounts split by VAT rates)
-  - Addresses (array)
+  - Addresses (array, at least one item is required - type BILLING)
     - Country
     - City
     - Street
@@ -344,7 +345,7 @@ Use `/v1/applications/` resource with properly filled request that contains at l
     - Total price (all pieces, including VAT)
     - Total VAT
 - Financing type
-- Details of selected financing type
+- Details of selected financing type (if required depends on selected financing type)
 - Personal data processing agreement
 - Additional information necessary for the continuation and completion of the process
   - Your URL where the customer should be redirected after application approval
