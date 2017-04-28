@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://api.homecredit.cz/financing
+HOST: https://api.homecredit.cz
 
 # WIP -- HC OneClick API
 API documentation for Home Credit One-Click API.
@@ -71,14 +71,14 @@ You can use advanced operations to improve customer experience.
 
 Example request:
 ```
-curl -X GET https://api.homecredit.eu/financing/v1/my/contracts?sort=category&limit=10&after=15
+curl -X GET https://api.homecredit.cz/financing/v1/examples?sort=category&limit=10&after=15
 ```
 
 Example response pagingInfo:
 
 ```javascript
 "pagingInfo": {
-    "nextPage": "/my/contracts?sort=category&limit=10&after=25"
+    "nextPage": "/examples?sort=category&limit=10&after=15"
     "itemsPerPage": 10,
 }
 ```
@@ -260,7 +260,7 @@ To access our API, you have to obtain *access token* first; this token is a stri
 So the real example using curl will look like:
 
 ```
-curl -H "Authorization: Bearer secret_token" https://apiendpoint/v1/applications
+curl -H "Authorization: Bearer secret_token" https://api.homecredit.cz/financing/v1/applications
 ```
 
 - access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/login-partner` resource.
@@ -288,7 +288,7 @@ curl -H "Authorization: Bearer secret_token" https://apiendpoint/v1/applications
 > NEVER transfer access token nor login credentials over plain HTTP. Such requests will be refused.
 
 
-## Login partner [/v1/authentication/login-partner]
+## Login partner [/authentication/v1/login-partner]
 
 ### Login partner [POST]
 Partner authenticate himself and obtain acces token
@@ -314,7 +314,7 @@ Partner authenticate himself and obtain acces token
 # Group Application operations
 Services that allows processing of *application* and *order* during their whole lifecycle.
 
-## Create application [/v1/applications/]
+## Create application [/financing/v1/applications/]
 Elementary flow starts when customer wants to use one of Home Credit's payment method for financing his purchase made in partner e-shop.
 
 | Financing type     | Supported |
@@ -324,7 +324,7 @@ Elementary flow starts when customer wants to use one of Home Credit's payment m
 | `DEFERRED_PAYMENT` | YES |
 | `SUBSCRIPTION`     | NO |
 
-Use `/v1/applications/` resource with properly filled request that contains at least following data
+Use `/financing/v1/applications/` resource with properly filled request that contains at least following data
 - Customer information
   - Name (full name or fist name and last name)
   - E-mail
@@ -389,8 +389,8 @@ Create new *application* of particular financing type
     + Attributes (Errors)    
 
 
-## Application detail [/v1/applications/{applicationId}]
-If you need to find out current information about particular *application* - primarily its state and other details - use `/v1/applications/{applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+## Application detail [/financing/v1/applications/{applicationId}]
+If you need to find out current information about particular *application* - primarily its state and other details - use `/financing/v1/applications/{applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications/` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -433,7 +433,7 @@ Get specific *application* detail by ID
     + Attributes (Errors)
 
 
-## Request application OTP [/v1/applications/{applicationId}/requestOTP]
+## Request application OTP [/financing/v1/applications/{applicationId}/requestOTP]
 If you want to integrate customer *application* authorisation into merchant's checkout, this method is needed for sending the OTP to customer by SMS.
 OTP is required to verify *application*. See [Verify Application](#reference/application-operations/verify-application) method.
 
@@ -478,7 +478,7 @@ Request sending of one-time password to customer by SMS. This OTP is required to
 
 
 
-## Verify application  [/v1/applications/{applicationId}/verify]
+## Verify application  [/financing/v1/applications/{applicationId}/verify]
 If you want to integrate customer *application authorisation* into merchant's checkout, this method is needed for verifying the *application* with the OTP sent to customer by SMS.
 To send OTP to customer see [Request application OTP](#reference/application-operations/request-application-otp) method.
 
@@ -523,7 +523,7 @@ Verify *application* with OTP sent to customer by SMS. To send OTP to customer s
 
 
 
-## Send application additional data [/v1/applications/{applicationId}/additionalData]
+## Send application additional data [/financing/v1/applications/{applicationId}/additionalData]
 If you want to integrate gathering customer additional data needed for completing the *application* into merchant's checkout, this method is needed for completing the *application* with the additional data.
 
 To determine what additional data is needed see `additionalData` array on *application* ([Application detail](#reference/application-operations/application-detail)).
@@ -575,8 +575,8 @@ Send additional data needed to complete the *application*.
 
 
 
-## Cancel application [/v1/applications/{applicationId}/cancel]
-If there is need to completely cancel customer's *order*, it is necessary to cancel respective *application*. For this purpose use `/v1/applications/{applicationId}/cancel` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+## Cancel application [/financing/v1/applications/{applicationId}/cancel]
+If there is need to completely cancel customer's *order*, it is necessary to cancel respective *application*. For this purpose use `/financing/v1/applications/{applicationId}/cancel` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications/` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -629,8 +629,8 @@ Cancel *application*, or cancel recurring payment.
     + Attributes (Errors)
 
 
-## Change application order [/v1/applications/{applicationId}/order]
-When there's some changes within *order* that may have an importatnt impact on the approval process (e.g. change in order items that impacts the total price of the *order* or other billing information) after its submission, use `/v1/applications/{applicationId}/order` resource in order we can adjust everything properly. `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+## Change application order [/financing/v1/applications/{applicationId}/order]
+When there's some changes within *order* that may have an importatnt impact on the approval process (e.g. change in order items that impacts the total price of the *order* or other billing information) after its submission, use `/financing/v1/applications/{applicationId}/order` resource in order we can adjust everything properly. `{applicationId}` is the application ID you received in the response of `/financing/v1/applications/` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -646,7 +646,7 @@ When there's some changes within *order* that may have an importatnt impact on t
 | `PROCESSING`      | YES          |
 | `READY`           | YES          |
 
-Use `/v1/applications/{applicationId}/order` resource with properly filled request that contains at least following data:
+Use `/financing/v1/applications/{applicationId}/order` resource with properly filled request that contains at least following data:
 - Order details
   - Total Price (including VAT)
   - Total VAT (array of total amounts split by VAT rates)
@@ -715,8 +715,8 @@ Change *order*. Used to change order items, total amount, billing details etc.
     + Attributes (Errors)
 
 
-## Mark order items as cancelled  [/v1/applications/{applicationId}/order/cancel]
-When some or all order items were cancelled (as a result of reclamation etc.), use `/v1/applications/{applicationId}/order/cancel` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+## Mark order items as cancelled  [/financing/v1/applications/{applicationId}/order/cancel]
+When some or all order items were cancelled (as a result of reclamation etc.), use `/financing/v1/applications/{applicationId}/order/cancel` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications/` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -732,11 +732,11 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 | `CANCELLED`       | NO           |
 | `READY`           | YES          |
 
-Use `/v1/applications/{applicationId}/order/cancel` resource with an empty request to cancel all order items (the whole *order*) at once.
+Use `/financing/v1/applications/{applicationId}/order/cancel` resource with an empty request to cancel all order items (the whole *order*) at once.
 
 > * TIP: Use an empty request if marking last item on order as cancelled.
 
-Use `/v1/applications/{applicationId}/order/cancel` resource with properly filled request that contains cancelled order items info. In this case request should contain at least following data:
+Use `/financing/v1/applications/{applicationId}/order/cancel` resource with properly filled request that contains cancelled order items info. In this case request should contain at least following data:
 - Order items (array of cancelled order items)
   - Order item name
   - Total price (all pieces, including VAT)
@@ -800,8 +800,8 @@ System notification. Some or all of the order items were cancelled. Based on *ap
 
 
 
-## Mark order items as sent [/v1/applications/{applicationId}/order/send]
-When some or all order items were shipped to the customer, use `/v1/applications/{applicationId}/order/send` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+## Mark order items as sent [/financing/v1/applications/{applicationId}/order/send]
+When some or all order items were shipped to the customer, use `/financing/v1/applications/{applicationId}/order/send` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications/` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -817,13 +817,13 @@ When some or all order items were shipped to the customer, use `/v1/applications
 | `CANCELLED`       | NO           |
 | `READY`           | YES  (* for financing type `INSTALLMENT` available only when `Application.stateReason = READY_TO_SHIP`)        |
 
-Use `/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
+Use `/financing/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
 
 > * TIP: Use an empty request if marking last item on order as sent.
 
 > * ATTENTION: An empty request is the only valid way for financing type `INSTALLMENT`
 
-Use `/v1/applications/{applicationId}/order/send` resource with properly filled request that contains sent order items info. In this case request should contain at least following data:
+Use `/financing/v1/applications/{applicationId}/order/send` resource with properly filled request that contains sent order items info. In this case request should contain at least following data:
 - Order items (array of sent order items)
   - Order item name
   - Total price (all pieces, including VAT)
@@ -889,8 +889,8 @@ Based on *application* financing type and partner setting, application payment m
 
 
 
-## Mark order items as delivered [/v1/applications/{applicationId}/order/deliver]
-When some or all order items were delivered to the customer, use `/v1/applications/{applicationId}/order/deliver` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+## Mark order items as delivered [/financing/v1/applications/{applicationId}/order/deliver]
+When some or all order items were delivered to the customer, use `/financing/v1/applications/{applicationId}/order/deliver` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications/` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -906,11 +906,11 @@ When some or all order items were delivered to the customer, use `/v1/applicatio
 | `CANCELLED`       | NO           |
 | `READY`           | YES          |
 
-Use `/v1/applications/{applicationId}/order/deliver` resource with an empty request to mark all order items (the whole *order*) as delivered at once.
+Use `/financing/v1/applications/{applicationId}/order/deliver` resource with an empty request to mark all order items (the whole *order*) as delivered at once.
 
 > * TIP: Use an empty request if marking last item on order as delivered.
 
-Use `/v1/applications/{applicationId}/order/deliver` resource with properly filled request that contains delivered order items info. In this case request should contain at least following data:
+Use `/financing/v1/applications/{applicationId}/order/deliver` resource with properly filled request that contains delivered order items info. In this case request should contain at least following data:
 - Order items (array of delivered order items)
   - Order item name
   - Total price (all pieces, including VAT)
@@ -976,8 +976,8 @@ Based on *application* financing type and partner setting, application payment m
 
 
 
-## Mark order items as returned [/v1/applications/{applicationId}/order/return]
-When some or all order items were returned by the customer to you, use `/v1/applications/{applicationId}/order/return` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation.
+## Mark order items as returned [/financing/v1/applications/{applicationId}/order/return]
+When some or all order items were returned by the customer to you, use `/financing/v1/applications/{applicationId}/order/return` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications/` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -993,11 +993,11 @@ When some or all order items were returned by the customer to you, use `/v1/appl
 | `CANCELLED`       | NO           |
 | `READY`           | YES          |
 
-Use `/v1/applications/{applicationId}/order/return` resource with an empty request to mark all order items (the whole *order*) as returned at once.
+Use `/financing/v1/applications/{applicationId}/order/return` resource with an empty request to mark all order items (the whole *order*) as returned at once.
 
 > * TIP: Use an empty request if marking last item on order as returned.
 
-Use `/v1/applications/{applicationId}/order/return` resource with properly filled request that contains returned order items info. In this case request should contain at least following data:
+Use `/financing/v1/applications/{applicationId}/order/return` resource with properly filled request that contains returned order items info. In this case request should contain at least following data:
 - Order items (array of returned order items)
   - Order item name
   - Total price (all pieces, including VAT)
@@ -1061,7 +1061,7 @@ Based on *application* financing type and partner setting, credit note may be is
 
 
 
-## Applications payments  [/v1/applications/{applicationId}/payments]
+## Applications payments  [/financing/v1/applications/{applicationId}/payments]
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -1099,7 +1099,7 @@ Collection is sorted by paymentId attribute.
 
 
 
-## Invoices [/v1/invoices/]
+## Invoices [/financing/v1/invoices/]
 
 ### Generate invoice info [POST]
 Generates billing information to be included in invoice for specific date for specific order or delivery.
@@ -1137,8 +1137,8 @@ This should be used by partner before issuing an invoice, to include correct bil
 
 
 
-## Orders [/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}]
-If you need to find out current information about particular *order* - primarily its state (or its order items' states) and other details - use `/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
+## Orders [/financing/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}]
+If you need to find out current information about particular *order* - primarily its state (or its order items' states) and other details - use `/financing/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications/` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -1228,14 +1228,14 @@ Parameters include variable symbol, order number or application number.
 # Group Offers operations
 When a customer wants to pay for a purchase by a loan and you want to provide him an option to choose from available offers while still being on your website, you should achieve this by implementing your installment calculatior that uses following resources:
 
-- `/v1/installment-programs-offers/` - to find out available installment programs offers and their details
-- `/v1/installment-programs/` - to find out details of a chosen installment program
-- `/v1/installment-programs-down-payments/` - to find out down payment options within available installment programs offers
+- `/financing/v1/installment-programs-offers/` - to find out available installment programs offers and their details
+- `/financing/v1/installment-programs/` - to find out details of a chosen installment program
+- `/financing/v1/installment-programs-down-payments/` - to find out down payment options within available installment programs offers
 
 > NOTE: Implementation of installment calculator is optional, customers can always use the installment calculator embedded in Home Credit's front end
 
-## Installment programs down payments [/v1/installment-programs-down-payments/]
-When a customer wants to pay for a purchase by a loan and also wants to choose own down payments settings within offered installment calendars, use `/v1/installment-programs-down-payments/` resource with properly filled request that contains at least following data:
+## Installment programs down payments [/financing/v1/installment-programs-down-payments/]
+When a customer wants to pay for a purchase by a loan and also wants to choose own down payments settings within offered installment calendars, use `/financing/v1/installment-programs-down-payments/` resource with properly filled request that contains at least following data:
 - Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
 - Price of customer's purchase
 
@@ -1266,8 +1266,8 @@ Calculate installment programs down payments according to specified input
 
 
 
-## Installment programs offers [/v1/installment-programs-offers/]
-When a customer wants to pay for a purchase by a loan and you want to show him an offer of available installment programs, use `/v1/installment-programs-down-payments/` resource with properly filled request that contains at least following data:
+## Installment programs offers [/financing/v1/installment-programs-offers/]
+When a customer wants to pay for a purchase by a loan and you want to show him an offer of available installment programs, use `/financing/v1/installment-programs-down-payments/` resource with properly filled request that contains at least following data:
 - Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
 - Price of customer's purchase
 
@@ -1305,8 +1305,8 @@ feature | supported by resource
 
 
 
-## Installment programs [/v1/installment-programs/]
-When a customer wants to know details of one of previously offered installment programs use `/v1/installment-programs/` resource with properly filled request that contains at least following data:
+## Installment programs [/financing/v1/installment-programs/]
+When a customer wants to know details of one of previously offered installment programs use `/financing/v1/installment-programs/` resource with properly filled request that contains at least following data:
 - Product code of given installment program
 - Price of customer's purchase
 
@@ -1350,7 +1350,7 @@ It returns the installment program that most closely matches specified input.
 Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to HC
 
 
-## Precheck [/v1/precheck/]
+## Precheck [/financing/v1/precheck/]
 
 ### Precheck [POST]
 Precheck *application*
@@ -1377,7 +1377,7 @@ Services that should be developed and exposed by partner e-shops to allow HC asy
 
 > ATTENTION: This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
-## Order change request [/v1/{application.merchantUrls.changeEndpoint}/]
+## Order change request [/financing/v1/{application.merchantUrls.changeEndpoint}/]
 
 ### Order change request [POST]
 Order change request
@@ -1398,7 +1398,7 @@ We use this resource when there is need to correct *order* data (billing informa
         Can not process changes
 
 
-## Application notification [/v1/{application.merchantUrls.notificationEndpoint}/]
+## Application notification [/financing/v1/{application.merchantUrls.notificationEndpoint}/]
 We use this resource when there is need to let you know about important changes within particular *application*. Namely in following situations:
 
 | Trigger                                                             | Expected reaction                                                      |
@@ -1415,7 +1415,7 @@ We fill the request with at least following information:
 - Application substate
 - Timestamp of the notification [TBD - not yet available]
 
-> USEFUL NOTE: If you think it takes us unusually long time to send you particular notification, do not hesitate to use `/v1/applications/{applicationId}` resource (where `{applicationId}` is the application ID you received in the response of `/v1/applications/` after its creation) to directly find out information you seek.
+> USEFUL NOTE: If you think it takes us unusually long time to send you particular notification, do not hesitate to use `/financing/v1/applications/{applicationId}` resource (where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications/` after its creation) to directly find out information you seek.
 
 ### Application notification [POST]
 Notify partner about changes in application.
@@ -1432,7 +1432,7 @@ Notify partner about changes in application.
 
 
 
-## Payment notification [/v1/{application.merchantUrls.paymentEndpoint}/]
+## Payment notification [/financing/v1/{application.merchantUrls.paymentEndpoint}/]
 
 ### Payment notification [POST]
 Notification about new payment.
@@ -1686,9 +1686,9 @@ Order information, needed to create an application.
 + `reservationDate`: `2017-01-20 23:30:00` (string, optional)
 
    Date and time until order is reserved.
-   
+
    Until 'reservationDate' HCO will try to notify partner with Application notification about approval or rejection.
-   
+
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 
 + `items` (array[ApplicationRequestOrderItem], required) - Order items
