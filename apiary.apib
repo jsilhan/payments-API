@@ -401,8 +401,10 @@ If you need to find out current information about particular *application* - pri
 
 If the request was successfully processed, you receive HTTP status code 200 and *application* object with at least following information in the response:
 - Application unique ID
+- Application type
 - Application state
 - Application substate
+- Gateway redirect URL
 
 In other cases, you receive one of the following errors:
 | Status code | Code | Message |
@@ -592,26 +594,10 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
-- Order number
-- Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
-- Addresses (array)
-  - Country
-  - City
-  - Street
-  - Street number
-  - ZIP
-  - Address type
-- Order items (array)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-  - Order item state
-- Order state
-- Application basic information
-  - ID
-  - Application state
-  - Application substate
+- Application unique ID
+- Application type
+- Application state
+- Application substate
 
 In other cases, you receive one of the following errors:
 | Status code | Code | Message |
