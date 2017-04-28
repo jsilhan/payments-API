@@ -396,7 +396,7 @@ If you need to find out current information about particular *application* - pri
 | `INSTALLMENT`      | YES (limited use) |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 If the request was successfully processed, you receive HTTP status code 200 and *application* object with at least following information in the response:
 - Application unique ID
@@ -439,7 +439,7 @@ OTP is required to verify *application*. See [Verify Application](#reference/app
 | `INSTALLMENT`      | NO |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -484,7 +484,7 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 | `INSTALLMENT`      | NO  |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -530,7 +530,7 @@ To determine what additional data is needed see `additionalData` array on *appli
 | `INSTALLMENT`      | NO  |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -580,7 +580,7 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 | `INSTALLMENT`      | YES |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -650,7 +650,7 @@ When there's some changes within *order* that may have an importatnt impact on t
 | `INSTALLMENT`      | NO |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -736,7 +736,7 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 | `INSTALLMENT`      | NO |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -910,7 +910,7 @@ When some or all order items were delivered to the customer, use `/v1/applicatio
 | `INSTALLMENT`      | NO |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -997,7 +997,7 @@ When some or all order items were returned by the customer to you, use `/v1/appl
 | `INSTALLMENT`      | NO |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -1158,7 +1158,7 @@ If you need to find out current information about particular *order* - primarily
 | `INSTALLMENT`      | YES* (see the [parameters restriction bellow](#orders-parameters-restriction)) |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
