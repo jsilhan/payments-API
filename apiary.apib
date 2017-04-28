@@ -1700,8 +1700,10 @@ Order information, needed to create an application.
 + `reservationDate`: `2017-01-20 23:30:00` (string, optional)
 
    Date and time until order is reserved.
-
-   After this date, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
+   
+   Until 'reservationDate' HCO will try to notify partner with Application notification about approval or rejection.
+   
+   After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 
 + `items` (array[ApplicationRequestOrderItem], required) - Order items
 + `documents` (array[Document], optional) - Attached documents (invoices etc.)
