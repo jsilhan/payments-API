@@ -1719,7 +1719,7 @@ Order item base information, needed to identify order item
 + `code`: `EXC4677-1a` (string, required) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
 + `ean`: 888462064002 (string, optional) - EAN code.
 + `name`: `iPhone 6s 32GB SpaceGray` (string, required) - Item name
-+ `quantity`: 1 (number, optional) - Item quantity
++ `quantity`: 1 (number, optional) - Item quantity. If empty, considered as 1.
 
 
 ## ApplicationRequestOrderItem (OrderItemBase)
@@ -1739,8 +1739,8 @@ Order item information, needed to create an application.
 + `description`: `Mobile phone with 32GB of RAM` (string, optional)
 + `producer`: `Apple` (string, optional)
 + `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - List of item categories
-+ `unitPrice` (Amount, optional) - Price per one piece
-+ `unitVat` (VatAmount, optional) - VAT amount per one piece
++ `unitPrice` (Amount, optional) - Price per one piece. If empty, automatically considered that `unitPrice` is `totalPrice` / `quantity`.
++ `unitVat` (VatAmount, optional) - VAT amount per one piece. If empty, automatically considered that `unitVat` is `totalVat` / `quantity`.
 + `totalPrice` (Amount, required) - Total price for all pieces, VAT inclusive
 + `totalVat` (VatAmount, required) - Total VAT amount for all pieces
 + `image` (File, optional) - Item image
