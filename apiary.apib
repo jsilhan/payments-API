@@ -503,6 +503,8 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 ### Verify application [POST]
 Verify *application* with OTP sent to customer by SMS. To send OTP to customer see [Request application OTP](#reference/application-operations/request-application-otp) method.
 
+Use `/financing/v1/applications/{applicationId}/verify` resource with properly filled request that contains customer's OTP in request.
+
 + Request (application/json; charset=utf-8)
     + Attributes (number, required)
 
