@@ -1602,11 +1602,19 @@ Customer data
 + `addresses` (array[Address], optional) - Addresses. Only `PERMANENT` and `CONTACT` types are allowed.
 + `tin`: `12333321` (string, optional) - Tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
-+ `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability
+
+## ApplicationRequestCustomer (Customer)
+Customer data
+
+### Properties
++ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. Required for [Advanced implementation](#introduction/getting-started/advanced-implementation).
++ `userAgent`: `Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0` (string, optional) - user agent used by customer.  Required for [Advanced implementation](#introduction/getting-started/advanced-implementation).
++ `cookie`: `_ga=GA1.2.1487328853; __zlcmid=fdgjkhn0SQiqdo` (string, optional) - String containing a semicolon-separated list of all customer cookies (i.e. key=value pairs). Required for [Advanced implementation](#introduction/getting-started/advanced-implementation).
++ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components.  Required for [Advanced implementation](#introduction/getting-started/advanced-implementation).
++ `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability.
 
 
 ## CustomerExtraData (object)
-
 
 ### Properties
 + `transactionsNumber`: 10 (number, optional) - Historical count of customer's cash transactions made in partner's e-shop
@@ -1914,7 +1922,7 @@ Collection of URLs used for redirection of a customer back to a partner website 
 Financing application request
 
 ### Properties
-+ `customer` (Customer, required) - Customer information
++ `customer` (ApplicationRequestCustomer, required) - Customer information
 + `order` (ApplicationRequestOrder, required) - Order information
 + `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
@@ -1984,12 +1992,8 @@ Additional data about the customer.
 Precheck data (has similar structure as `Application`).
 
 ### Properties
-+ `customer` (Customer, optional) - Customer data
++ `customer` (ApplicationRequestCustomer, optional) - Customer data
 + `order` (ApplicationRequestOrder, optional) - Order data
-+ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components
-+ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer
-+ `cookie`: `_ga=GA1.2.1487328853; __zlcmid=fdgjkhn0SQiqdo` (string, optional) - String containing a semicolon-separated list of all customer cookies (i.e. key=value pairs)
-+ `userAgent`: `Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:51.0) Gecko/20100101 Firefox/51.0` (string, optional) - user agent used by customer
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
