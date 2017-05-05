@@ -1610,6 +1610,9 @@ Customer data
 + `addresses` (array[Address], optional) - Addresses. Only `PERMANENT` and `CONTACT` types are allowed.
 + `tin`: `12333321` (string, optional) - Tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
++ `dueDateCategory` (enum, required)
+    + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
+    + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
 
 ## ApplicationRequestCustomer (Customer)
 Customer data
@@ -1822,7 +1825,7 @@ Request for generating invoice info.
 
 ### Properties
 + One of
-    + `customerDueDateCategory` (enum, optional) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response.
+    + `customerDueDateCategory` (enum, optional) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response or [Get application](#reference/application-operations/application-detail) response.
         + `CATEGORY_CLASSIC` - Customer with classic due date (14 days, with the exception of events (Christmas, etc.))
         + `CATEGORY_EXTENDED` - Customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
     + `orderNumber` (string, optional) - Order number.
