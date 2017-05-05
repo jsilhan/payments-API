@@ -531,7 +531,11 @@ Use `/financing/v1/applications/{applicationId}/verify` resource with properly f
 ## Send application additional data [/financing/v1/applications/{applicationId}/additionalData]
 If you want to integrate gathering customer additional data needed for completing the *application* into merchant's checkout, this method is needed for completing the *application* with the additional data.
 
-To determine what additional data is needed see `additionalData` array on *application* ([Application detail](#reference/application-operations/application-detail)).
+This operation is needed becouse of some customers' applications, that are not approved/rejected just with data send in *Create application*, but they are approved/rejected after additional data are sent.
+
+To determine what additional data is needed see `additionalData` array on *application* ([Application detail](#reference/application-operations/application-detail)). 
+
+ > IMPORTANT NOTE: It's always necessary to check *application* `stateReason`. If `stateReason` after sending additional data is still `stateReason == PROCESSING_ADDITIONAL_DATA` check `additionalData` for new data to send.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -1191,11 +1195,12 @@ In other cases, you receive one of the following errors:
 
 
 ### Get order [GET]
-Get order
-
 Search for *order* using specified parameters.
 
-Parameters include variable symbol, order number or application number.
+use `/financing/v1/orders/` with at least one of following parameter:
+- variable symbol, 
+- order number,
+- application number.
 
 <a name="orders-parameters-restriction"></a>
 > ATTENTION: At this moment, only `applicationId` is valid parametr for order processing within application of financing type `INSTALLMENT`.
@@ -1272,7 +1277,7 @@ Calculate installment programs down payments according to specified input
 
 
 ## Installment programs offers [/financing/v1/installment-programs-offers]
-When a customer wants to pay for a purchase by a loan and you want to show him an offer of available installment programs, use `/financing/v1/installment-programs-down-payments` resource with properly filled request that contains at least following data:
+When a customer wants to pay for a purchase by a loan and you want to show him an offer of available installment programs, use `/financing/v1/installment-programs-offers` resource with properly filled request that contains at least following data:
 - Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
 - Price of customer's purchase
 
