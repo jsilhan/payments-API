@@ -254,7 +254,7 @@ There are 3 levels of error severity:
 # Group Security
 To access our API, you have to obtain *access token* first; this token is a string of arbitrary length (30+ chars) and it has to be included in HTTP header to every request to API. This section describes way to obtain valid access token and use it to access protected resources.
 
-- to obtain access token, use `/authentication/login-partner` resource with appropriate parameters (see the [`/authentication/login-partner` resource documentation](#reference/security/login-partner))
+- to obtain access token, use `/authentication/loginPartner` resource with appropriate parameters (see the [`/authentication/loginPartner` resource documentation](#reference/security/login-partner))
 
 - access token should be present in every request using request header `Authorization`, with type `Bearer`. If your access token has value `secret_token`, it should be specified as follows:
 
@@ -266,7 +266,7 @@ So the real example using curl will look like:
 curl -H "Authorization: Bearer secret_token" https://api.homecredit.cz/financing/v1/applications
 ```
 
-- access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/login-partner` resource.
+- access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/loginPartner` resource.
 
 - if you fail to specify access token, you will receive `401 Unauthorized` error and following response body:
 
@@ -291,7 +291,7 @@ curl -H "Authorization: Bearer secret_token" https://api.homecredit.cz/financing
 > NEVER transfer access token nor login credentials over plain HTTP. Such requests will be refused.
 
 
-## Login partner [/authentication/v1/login-partner]
+## Login partner [/authentication/v1/loginPartner]
 
 ### Login partner [POST]
 Partner authenticate himself and obtain acces token
@@ -1238,14 +1238,14 @@ use `/financing/v1/orders/` with at least one of following parameter:
 # Group Offers operations
 When a customer wants to pay for a purchase by a loan and you want to provide him an option to choose from available offers while still being on your website, you should achieve this by implementing your installment calculatior that uses following resources:
 
-- `/financing/v1/installment-programs-offers` - to find out available installment programs offers and their details
-- `/financing/v1/installment-programs` - to find out details of a chosen installment program
-- `/financing/v1/installment-programs-down-payments` - to find out down payment options within available installment programs offers
+- `/financing/v1/installmentProgramsOffers` - to find out available installment programs offers and their details
+- `/financing/v1/installmentPrograms` - to find out details of a chosen installment program
+- `/financing/v1/installmentProgramsDownPayments` - to find out down payment options within available installment programs offers
 
 > NOTE: Implementation of installment calculator is optional, customers can always use the installment calculator embedded in Home Credit's front end
 
-## Installment programs down payments [/financing/v1/installment-programs-down-payments]
-When a customer wants to pay for a purchase by a loan and also wants to choose own down payments settings within offered installment calendars, use `/financing/v1/installment-programs-down-payments` resource with properly filled request that contains at least following data:
+## Installment programs down payments [/financing/v1/installmentProgramsDownPayments]
+When a customer wants to pay for a purchase by a loan and also wants to choose own down payments settings within offered installment calendars, use `/financing/v1/installmentProgramsDownPayments` resource with properly filled request that contains at least following data:
 - Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
 - Price of customer's purchase
 
@@ -1276,8 +1276,8 @@ Calculate installment programs down payments according to specified input
 
 
 
-## Installment programs offers [/financing/v1/installment-programs-offers]
-When a customer wants to pay for a purchase by a loan and you want to show him an offer of available installment programs, use `/financing/v1/installment-programs-offers` resource with properly filled request that contains at least following data:
+## Installment programs offers [/financing/v1/installmentProgramsOffers]
+When a customer wants to pay for a purchase by a loan and you want to show him an offer of available installment programs, use `/financing/v1/installmentProgramsOffers` resource with properly filled request that contains at least following data:
 - Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
 - Price of customer's purchase
 
@@ -1315,8 +1315,8 @@ feature | supported by resource
 
 
 
-## Installment programs [/financing/v1/installment-programs]
-When a customer wants to know details of one of previously offered installment programs use `/financing/v1/installment-programs` resource with properly filled request that contains at least following data:
+## Installment programs [/financing/v1/installmentPrograms]
+When a customer wants to know details of one of previously offered installment programs use `/financing/v1/installmentPrograms` resource with properly filled request that contains at least following data:
 - Product code of given installment program
 - Price of customer's purchase
 
@@ -1849,8 +1849,8 @@ Installment programs
 + `numberOfInstallments`: 10 (number, optional) - installment count
 + `detail` (Detail, optional)
     Calculation detailed information.
-    Only available for calculations received by calling `POST /installment-programs`
-    Not available for `POST /installment-programs-offers/`
+    Only available for calculations received by calling `POST /installmentPrograms`
+    Not available for `POST /installmentProgramsOffers/`
 
 
 ## Detail (object)
