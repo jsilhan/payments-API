@@ -329,7 +329,7 @@ Elementary flow starts when customer wants to use one of Home Credit's payment m
 
 Use `/financing/v1/applications` resource with properly filled request that contains at least following data
 - Customer information
-  - Name (full name or fist name and last name)
+  - Name (full name or first name and last name)
   - E-mail
   - Phone number
 - Order details
@@ -531,7 +531,7 @@ Use `/financing/v1/applications/{applicationId}/verify` resource with properly f
 ## Send application additional data [/financing/v1/applications/{applicationId}/additionalData]
 If you want to integrate gathering customer additional data needed for completing the *application* into merchant's checkout, this method is needed for completing the *application* with the additional data.
 
-This operation is needed becouse of some customers' applications, that are not approved/rejected just with data send in *Create application*, but they are approved/rejected after additional data are sent.
+This operation is needed because of some customers' applications, that are not approved/rejected just with data send in *Create application*, but they are approved/rejected after additional data are sent.
 
 To determine what additional data is needed see `additionalData` array on *application* ([Application detail](#reference/application-operations/application-detail)). 
 
