@@ -254,7 +254,7 @@ There are 3 levels of error severity:
 # Group Security
 To access our API, you have to obtain *access token* first; this token is a string of arbitrary length (30+ chars) and it has to be included in HTTP header to every request to API. This section describes way to obtain valid access token and use it to access protected resources.
 
-- to obtain access token, use `/authentication/loginPartner` resource with appropriate parameters (see the [`/authentication/loginPartner` resource documentation](#reference/security/login-partner))
+- to obtain access token, use `/authentication/v1/partner` resource with appropriate parameters (see the [`/authentication/v1/partner` resource documentation](#reference/security/login-partner))
 
 - access token should be present in every request using request header `Authorization`, with type `Bearer`. If your access token has value `secret_token`, it should be specified as follows:
 
@@ -266,7 +266,7 @@ So the real example using curl will look like:
 curl -H "Authorization: Bearer secret_token" https://api.homecredit.cz/financing/v1/applications
 ```
 
-- access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/loginPartner` resource.
+- access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/v1/partner` resource.
 
 - if you fail to specify access token, you will receive `401 Unauthorized` error and following response body:
 
@@ -291,7 +291,7 @@ curl -H "Authorization: Bearer secret_token" https://api.homecredit.cz/financing
 > NEVER transfer access token nor login credentials over plain HTTP. Such requests will be refused.
 
 
-## Login partner [/authentication/v1/loginPartner]
+## Login partner [/authentication/v1/partner]
 
 ### Login partner [POST]
 Partner authenticate himself and obtain acces token
@@ -533,7 +533,7 @@ If you want to integrate gathering customer additional data needed for completin
 
 This operation is needed because of some customers' applications, that are not approved/rejected just with data send in *Create application*, but they are approved/rejected after additional data are sent.
 
-To determine what additional data is needed see `additionalData` array on *application* ([Application detail](#reference/application-operations/application-detail)). 
+To determine what additional data is needed see `additionalData` array on *application* ([Application detail](#reference/application-operations/application-detail)).
 
  > IMPORTANT NOTE: It's always necessary to check *application* `stateReason`. If `stateReason` after sending additional data is still `stateReason == PROCESSING_ADDITIONAL_DATA` check `additionalData` for new data to send.
 
@@ -1198,7 +1198,7 @@ In other cases, you receive one of the following errors:
 Search for *order* using specified parameters.
 
 use `/financing/v1/orders/` with at least one of following parameter:
-- variable symbol, 
+- variable symbol,
 - order number,
 - application number.
 
