@@ -1244,37 +1244,6 @@ When a customer wants to pay for a purchase by a loan and you want to provide hi
 
 > NOTE: Implementation of installment calculator is optional, customers can always use the installment calculator embedded in Home Credit's front end
 
-## Installment programs down payments [/financing/v1/installmentProgramsDownPayments]
-When a customer wants to pay for a purchase by a loan and also wants to choose own down payments settings within offered installment calendars, use `/financing/v1/installmentProgramsDownPayments` resource with properly filled request that contains at least following data:
-- Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
-- Price of customer's purchase
-
-If the request was successfully processed, you receive HTTP status code 200 and object of information about available down payments settings with at least following information in the response:
-- Minimum down payment amount
-- Maximum down payment amount
-- Step between given minimum and maximum down payment amounts
-
-In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST | *Various messages possible* |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
-
-
-### Calculate installment programs down payments [POST]
-Calculate installment programs down payments according to specified input
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (InstallmentProgramsDownPaymentsRequest)
-
-
-+ Response 200(application/json; charset=utf-8)
-
-        Down payments information. Minimal, maximal and steps between.
-
-    + Attributes (InstallmentProgramsDownPayments)
-
-
 
 ## Installment programs offers [/financing/v1/installmentProgramsOffers]
 When a customer wants to pay for a purchase by a loan and you want to show him an offer of available installment programs, use `/financing/v1/installmentProgramsOffers` resource with properly filled request that contains at least following data:
@@ -1283,6 +1252,7 @@ When a customer wants to pay for a purchase by a loan and you want to show him a
 
 If the request was successfully processed, you receive HTTP status code 200 and array of objects of available installment programs with at least following information in the response:
 - Installment program (array)
+  - Installment program product code
   - Installment program type
   - Installment amount
   - Number of installments
@@ -1354,6 +1324,36 @@ It returns the installment program that most closely matches specified input.
         No installment program was found.
 
     + Attributes (Errors)
+
+## Installment programs down payments [/financing/v1/installmentProgramsDownPayments]
+When a customer wants to pay for a purchase by a loan and also wants to choose own down payments settings within offered installment calendars, use `/financing/v1/installmentProgramsDownPayments` resource with properly filled request that contains at least following data:
+- Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
+- Price of customer's purchase
+
+If the request was successfully processed, you receive HTTP status code 200 and object of information about available down payments settings with at least following information in the response:
+- Minimum down payment amount
+- Maximum down payment amount
+- Step between given minimum and maximum down payment amounts
+
+In other cases, you receive one of the following errors:
+| Status code | Code | Message |
+| --- | --- | --- |
+| 400 | INVALID_REQUEST | *Various messages possible* |
+| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+
+
+### Calculate installment programs down payments [POST]
+Calculate installment programs down payments according to specified input
+
++ Request (application/json; charset=utf-8)
+    + Attributes (InstallmentProgramsDownPaymentsRequest)
+
+
++ Response 200(application/json; charset=utf-8)
+
+        Down payments information. Minimal, maximal and steps between.
+
+    + Attributes (InstallmentProgramsDownPayments)
 
 
 # Group Precheck operations
@@ -1844,6 +1844,7 @@ Account number with bank code.
 Installment programs
 
 ### Properties
++ `productCode`: `a122ax` (string, required) - Installment program product code
 + `type` (enum, optional) - Program type
     + MINIMAL - Lowest installment
     + FAVOURITE - Recommended (favourite) installment program
