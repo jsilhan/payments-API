@@ -471,14 +471,14 @@ Request sending of one-time password to customer by SMS. This OTP is required to
 
 + Response 200(application/json; charset=utf-8)
 
-        SMS with OTP was send to customer's primary phone number.
+        SMS with OTP was send to customer's primary phone number
 
     + Attributes (Application)
 
 
 + Response 422(application/json; charset=utf-8)
 
-        SMS with OTP was NOT send to customer.
+        SMS with OTP was NOT send to customer
 
     + Attributes (Errors)
 
@@ -516,14 +516,14 @@ Use `/financing/v1/applications/{applicationId}/verify` resource with properly f
 
 + Response 200(application/json; charset=utf-8)
 
-        Application was verified correctly.
+        Application was verified correctly
 
     + Attributes (Application)
 
 
 + Response 422(application/json; charset=utf-8)
 
-        Application was not verified.
+        Application was not verified
 
     + Attributes (Errors)
 
@@ -578,7 +578,7 @@ Send additional data needed to complete the *application*.
 
 + Response 400(application/json; charset=utf-8)
 
-        Error in processing request.
+        Error in processing request
 
     + Attributes (Errors)
 
@@ -626,13 +626,13 @@ Cancel *application*, or cancel recurring payment.
 
 + Response 200(application/json; charset=utf-8)
 
-        Application was cancelled.
+        Application was cancelled
 
     + Attributes (Application)
 
 
 + Response 422(application/json; charset=utf-8)
-    Application cannot be cancelled
+    Application can not be cancelled
 
     + Attributes (Errors)
 
@@ -718,7 +718,7 @@ Change *order*. Used to change order items, total amount, billing details etc.
 
 
 + Response 422(application/json; charset=utf-8)
-    Order cannot be changed.
+    Order can not be changed.
 
     + Attributes (Errors)
 
@@ -802,7 +802,7 @@ System notification. Some or all of the order items were cancelled. Based on *ap
 
 + Response 422(application/json; charset=utf-8)
 
-        Cannot cancel order items.
+        Order items can not be canceled.
 
     + Attributes (Errors)
 
@@ -882,13 +882,13 @@ Based on *application* financing type and partner setting, application payment m
 
 
 + Response 200(application/json; charset=utf-8)
-        Order items or whole order is marked as shipped.
+        Order items or whole order is marked as shipped
 
     + Attributes (Order)
 
 
 + Response 422(application/json; charset=utf-8)
-        Cannot process state change.
+        State change can not be processed
 
     + Attributes (Errors)
 
@@ -967,13 +967,13 @@ Based on *application* financing type and partner setting, application payment m
 
 
 + Response 200(application/json; charset=utf-8)
-        Order items or whole order is marked as delivered.
+        Order items or whole order is marked as delivered
 
     + Attributes (Order)
 
 
 + Response 422(application/json; charset=utf-8)
-        Cannot process state change.
+        State change can not be processed
 
     + Attributes (Errors)
 
@@ -1050,13 +1050,13 @@ Based on *application* financing type and partner setting, credit note may be is
 
 
 + Response 200(application/json; charset=utf-8)
-        Order items or whole order is marked as returned.
+        Order items or whole order is marked as returned
 
     + Attributes (Order)
 
 
 + Response 422(application/json; charset=utf-8)
-        Cannot process state change.
+        State change can not be processed
 
     + Attributes (Errors)
 
@@ -1093,7 +1093,7 @@ Collection is sorted by paymentId attribute.
 
 + Response 404(application/json; charset=utf-8)
 
-        Application does not exists
+        Application does not exist
 
     + Attributes (Errors)
 
@@ -1123,14 +1123,14 @@ This should be used by partner before issuing an invoice, to include correct bil
 
 + Response 200(application/json; charset=utf-8)
 
-        Invoice info.
+        Invoice info
 
     + Attributes (InvoiceInfo)
 
 
 + Response 404(application/json; charset=utf-8)
 
-        Invoice info cannot be generated.
+        Invoice info can not be generated
 
     + Attributes (Errors)
 
@@ -1195,29 +1195,20 @@ use `/financing/v1/orders/` with at least one of following parameter:
 > ATTENTION: At this moment, only `applicationId` is valid parametr for order processing within application of financing type `INSTALLMENT`.
 
 + Parameters
-    + orderNumber (string, optional, `1234567890`)
-
-        Order number
-
-    + orderVariableSymbol (string, optional, `1234567890`)
-
-        Order variable symbol
-
-    + applicationId (string, optional, `02-11b00a1ef1`)
-
-        Application ID.
-
+    + orderNumber (string, optional, `1234567890`) Order number
+    + orderVariableSymbol (string, optional, `1234567890`) Order variable symbol
+    + applicationId (string, optional, `02-11b00a1ef1`) Application ID
 
 + Response 200(application/json; charset=utf-8)
 
-        Order data.
+        Order data
 
     + Attributes (Order)
 
 
 + Response 404(application/json; charset=utf-8)
 
-        Order not found.
+        Order not found
 
     + Attributes (Errors)
 
@@ -1261,14 +1252,19 @@ feature | supported by resource
 [filtering](#header-filtering) | no
 
 + Request (application/json; charset=utf-8)
-    + Attributes (array[InstallmentProgramsOffersRequest])
+    + Attributes (InstallmentProgramsOffersRequest)
 
 
 + Response 200(application/json; charset=utf-8)
 
         Installment programs collection
 
-    + Attributes (array[InstallmentProgram], fixed-type, required)
+    + Attributes (InstallmentPrograms, required)
+
++ Response 400(application/json; charset=utf-8)
+        Error in processing request
+
+    + Attributes (Errors)
 
 
 ## Installment programs [/financing/v1/installmentPrograms]
@@ -1300,14 +1296,14 @@ It returns the installment program that most closely matches specified input.
 
 + Response 200(application/json; charset=utf-8)
 
-        Detailed information about installment program.
+        Detailed information about installment program
 
     + Attributes (InstallmentProgram)
 
 
 + Response 422(application/json; charset=utf-8)
 
-        No installment program was found.
+        No installment program was found
 
     + Attributes (Errors)
 
@@ -1338,10 +1334,15 @@ Calculate installment programs down payments according to specified input
 
 + Response 200(application/json; charset=utf-8)
 
-        Down payments information. Minimal, maximal and steps between.
+        Down payments information - minimal, maximal and available step
 
     + Attributes (InstallmentProgramsDownPayments)
 
+
++ Response 400(application/json; charset=utf-8)
+        Error in processing request
+
+    + Attributes (Errors)
 
 # Group Precheck operations
 Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to HC
@@ -1365,6 +1366,12 @@ It has to be called with valid access token (see the [Security section](#referen
         Probability of approval
 
     + Attributes (PrecheckResults)
+
+
++ Response 400(application/json; charset=utf-8)
+        Error in processing request
+
+    + Attributes (Errors)
 
 
 # Group Merchantsite operations
@@ -1425,6 +1432,9 @@ Notify partner about changes in application.
             "status": "OK"
          }
 
++ Response 400 (application/json; charset=utf-8)
+
+        Can not process changes
 
 ## Payment notification [/financing/v1/{application.merchantUrls.paymentEndpoint}]
 
@@ -1440,6 +1450,10 @@ Notification about new payment.
          {
             "status": "OK"
          }
+
++ Response 400 (application/json; charset=utf-8)
+
+        Can not process changes
 
 
 # Data Structures
@@ -1824,6 +1838,7 @@ Account number with bank code.
 + `accountNumber`: `123-123456789` (string, required) - Account number (IBAN, BIC, etc.).
 + `bankCode`: `0100` (string, required) - Bank code (SWIFT, etc.).
 
+
 ## InstallmentProgram (object)
 Installment programs
 
@@ -1839,6 +1854,10 @@ Installment programs
     Calculation detailed information.
     Only available for calculations received by calling `POST /installmentPrograms`
     Not available for `POST /installmentProgramsOffers/`
+
+
+## InstallmentPrograms (object)
++ `installmentPrograms` (array[InstallmentProgram], fixed-type, required) - Array with installment programs offer
 
 
 ## Detail (object)
@@ -2091,9 +2110,9 @@ Order change request data (HC asks partner to correct order data).
 + ticketId: `UAT1:AMS:20160516-091658.450:45e4` (string, optional) - Internal ticket ID, used for error backtracking
 
 ## Errors (object)
-+ errors: `` (array[Error], fixed-type, required) - array with errors
++ errors (array[Error], fixed-type, required) - Array with errors
 
 ## PagingInfo (object)
-+ itemsPerPage: 10 (number, required) - number of items per page
++ itemsPerPage: 10 (number, required) - Number of items per page
 + nextPage: `transactions?sort=category&limit=10&after=25` (string, optional) - Request to retrieve next page, if it exists and can be unambiguously specified
 + prevPage: `transactions?sort=category&limit=10&before=25` (string, optional) - Request to retrieve previous page, if it exists and can be unambiguously specified
