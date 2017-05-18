@@ -1668,13 +1668,15 @@ Object used to change order items.
 Object used to mark order items as returned.
 
 ### Properties
-+ `invoice` (Document, optional) - Attached file (invoice, proforma invoice, credit note, ...)
-+ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, credit note,...)
++ `document` (Document, optional) - Attached document (credit note, ...)
++ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (credit note, ...)
 
-## OrderItemsSendRequest (OrderItemsReturnRequest)
+## OrderItemsSendRequest (OrderItemsChangeRequest)
 Object used to mark order items as sent.
 
 ### Properties
++ `document` (Document, optional) - Attached invoice (invoice, proforma invoice...)
++ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, ...)
 + `sentDate`: `2017-01-12` (string, optional) - Shipping date.
 + `deliveryCarrier` (DeliveryCarrier, optional) - Carrier.
 + `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number.
