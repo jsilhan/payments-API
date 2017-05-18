@@ -254,7 +254,7 @@ There are 3 levels of error severity:
 # Group Security
 To access our API, you have to obtain *access token* first; this token is a string of arbitrary length (30+ chars) and it has to be included in HTTP header to every request to API. This section describes way to obtain valid access token and use it to access protected resources.
 
-- to obtain access token, use `/authentication/loginPartner` resource with appropriate parameters (see the [`/authentication/loginPartner` resource documentation](#reference/security/login-partner))
+- to obtain access token, use `/authentication/v1/partner` resource with appropriate parameters (see the [`/authentication/v1/partner` resource documentation](#reference/security/login-partner))
 
 - access token should be present in every request using request header `Authorization`, with type `Bearer`. If your access token has value `secret_token`, it should be specified as follows:
 
@@ -266,7 +266,7 @@ So the real example using curl will look like:
 curl -H "Authorization: Bearer secret_token" https://api.homecredit.cz/financing/v1/applications
 ```
 
-- access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/loginPartner` resource.
+- access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/v1/partner` resource.
 
 - if you fail to specify access token, you will receive `401 Unauthorized` error and following response body:
 
@@ -291,7 +291,7 @@ curl -H "Authorization: Bearer secret_token" https://api.homecredit.cz/financing
 > NEVER transfer access token nor login credentials over plain HTTP. Such requests will be refused.
 
 
-## Login partner [/authentication/v1/loginPartner]
+## Login partner [/authentication/v1/partner]
 
 ### Login partner [POST]
 Partner authenticate himself and obtain acces token
@@ -329,7 +329,7 @@ Elementary flow starts when customer wants to use one of Home Credit's payment m
 
 Use `/financing/v1/applications` resource with properly filled request that contains at least following data
 - Customer information
-  - Name (full name or fist name and last name)
+  - Name (full name or first name and last name)
   - E-mail
   - Phone number
 - Order details
@@ -350,11 +350,15 @@ Use `/financing/v1/applications` resource with properly filled request that cont
     - Total VAT
 - Financing type
 - Details of selected financing type (if required depends on selected financing type)
+  - \*Installment settings - preferred installment amount
+  - \*Installment settings - preferred downpayment amount
+  - \*Installment settings - installment program product code
 - Personal data processing agreement
 - Additional information necessary for the continuation and completion of the process
   - Your URL where the customer should be redirected after application approval
   - Your URL where the customer should be redirected after application rejection
   - URL of your notification endpoint you want us to send you notifications about particular application updates
+> \* = Required for financing type `INSTALLMENT` in case customer has already used installment calculator embedded on your website and selected preffered installment program. See the [Offers operations section](#reference/offers-operations) for more details about possibility to embed installment calculator on your website.
 
 If the request was successfully processed, you receive HTTP status code 201 and *application* object with at least following information in the response:
 - Application unique ID
@@ -465,20 +469,18 @@ Request sending of one-time password to customer by SMS. This OTP is required to
 + Request (application/json; charset=utf-8)
 
 
-
 + Response 200(application/json; charset=utf-8)
 
-        SMS with OTP was send to customer's primary phone number.
+        SMS with OTP was send to customer's primary phone number
 
     + Attributes (Application)
 
 
 + Response 422(application/json; charset=utf-8)
 
-        SMS with OTP was NOT send to customer.
+        SMS with OTP was NOT send to customer
 
     + Attributes (Errors)
-
 
 
 ## Verify application  [/financing/v1/applications/{applicationId}/verify]
@@ -512,28 +514,26 @@ Use `/financing/v1/applications/{applicationId}/verify` resource with properly f
     + Attributes (number, required)
 
 
-
 + Response 200(application/json; charset=utf-8)
 
-        Application was verified correctly.
+        Application was verified correctly
 
     + Attributes (Application)
 
 
 + Response 422(application/json; charset=utf-8)
 
-        Application was not verified.
+        Application was not verified
 
     + Attributes (Errors)
-
 
 
 ## Send application additional data [/financing/v1/applications/{applicationId}/additionalData]
 If you want to integrate gathering customer additional data needed for completing the *application* into merchant's checkout, this method is needed for completing the *application* with the additional data.
 
-This operation is needed becouse of some customers' applications, that are not approved/rejected just with data send in *Create application*, but they are approved/rejected after additional data are sent.
+This operation is needed because of some customers' applications, that are not approved/rejected just with data send in *Create application*, but they are approved/rejected after additional data are sent.
 
-To determine what additional data is needed see `additionalData` array on *application* ([Application detail](#reference/application-operations/application-detail)). 
+To determine what additional data is needed see `additionalData` array on *application* ([Application detail](#reference/application-operations/application-detail)).
 
  > IMPORTANT NOTE: It's always necessary to check *application* `stateReason`. If `stateReason` after sending additional data is still `stateReason == PROCESSING_ADDITIONAL_DATA` check `additionalData` for new data to send.
 
@@ -578,10 +578,9 @@ Send additional data needed to complete the *application*.
 
 + Response 400(application/json; charset=utf-8)
 
-        Error in processing request.
+        Error in processing request
 
     + Attributes (Errors)
-
 
 
 ## Cancel application [/financing/v1/applications/{applicationId}/cancel]
@@ -627,13 +626,13 @@ Cancel *application*, or cancel recurring payment.
 
 + Response 200(application/json; charset=utf-8)
 
-        Application was cancelled.
+        Application was cancelled
 
     + Attributes (Application)
 
 
 + Response 422(application/json; charset=utf-8)
-    Application cannot be cancelled
+    Application can not be cancelled
 
     + Attributes (Errors)
 
@@ -719,7 +718,7 @@ Change *order*. Used to change order items, total amount, billing details etc.
 
 
 + Response 422(application/json; charset=utf-8)
-    Order cannot be changed.
+    Order can not be changed.
 
     + Attributes (Errors)
 
@@ -743,7 +742,7 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 
 Use `/financing/v1/applications/{applicationId}/order/cancel` resource with an empty request to cancel all order items (the whole *order*) at once.
 
-> * TIP: Use an empty request if marking last item on order as cancelled.
+> * TIP: Use an empty request if marking last item(s) on order as cancelled.
 
 Use `/financing/v1/applications/{applicationId}/order/cancel` resource with properly filled request that contains cancelled order items info. In this case request should contain at least following data:
 - Order items (array of cancelled order items)
@@ -754,7 +753,7 @@ Use `/financing/v1/applications/{applicationId}/order/cancel` resource with prop
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
+- Order total VAT (array of VAT amounts split by VAT rates)
 - Addresses (array)
   - Country
   - City
@@ -803,10 +802,9 @@ System notification. Some or all of the order items were cancelled. Based on *ap
 
 + Response 422(application/json; charset=utf-8)
 
-        Cannot cancel order items.
+        Order items can not be canceled.
 
     + Attributes (Errors)
-
 
 
 ## Mark order items as sent [/financing/v1/applications/{applicationId}/order/send]
@@ -828,7 +826,7 @@ When some or all order items were shipped to the customer, use `/financing/v1/ap
 
 Use `/financing/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
 
-> * TIP: Use an empty request if marking last item on order as sent.
+> * TIP: Use an empty request if marking last item(s) on order as sent.
 
 > * ATTENTION: An empty request is the only valid way for financing type `INSTALLMENT`
 
@@ -843,7 +841,7 @@ Use `/financing/v1/applications/{applicationId}/order/send` resource with proper
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
+- Order total VAT (array of VAT amounts split by VAT rates)
 - Addresses (array)
   - Country
   - City
@@ -884,18 +882,15 @@ Based on *application* financing type and partner setting, application payment m
 
 
 + Response 200(application/json; charset=utf-8)
-        Order items or whole order is marked as shipped.
+        Order items or whole order is marked as shipped
 
     + Attributes (Order)
 
 
 + Response 422(application/json; charset=utf-8)
-        Cannot process state change.
+        State change can not be processed
 
     + Attributes (Errors)
-
-
-
 
 
 ## Mark order items as delivered [/financing/v1/applications/{applicationId}/order/deliver]
@@ -903,7 +898,7 @@ When some or all order items were delivered to the customer, use `/financing/v1/
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO |
+| `INSTALLMENT`      | YES |
 | `TRY_AND_PAY`      | YES |
 | `DEFERRED_PAYMENT` | YES |
 | `SUBSCRIPTION`     | NO |
@@ -913,11 +908,11 @@ When some or all order items were delivered to the customer, use `/financing/v1/
 | `PROCESSING`      | NO           |
 | `REJECTED`        | NO           |
 | `CANCELLED`       | NO           |
-| `READY`           | YES          |
+| `READY`           | YES (* for financing type `INSTALLMENT` available only when `Application.stateReason = READY_TO_SHIP`)         |
 
 Use `/financing/v1/applications/{applicationId}/order/deliver` resource with an empty request to mark all order items (the whole *order*) as delivered at once.
 
-> * TIP: Use an empty request if marking last item on order as delivered.
+> * TIP: Use an empty request if marking last item(s) on order as delivered.
 
 Use `/financing/v1/applications/{applicationId}/order/deliver` resource with properly filled request that contains delivered order items info. In this case request should contain at least following data:
 - Order items (array of delivered order items)
@@ -930,7 +925,7 @@ Use `/financing/v1/applications/{applicationId}/order/deliver` resource with pro
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
+- Order total VAT (array of VAT amounts split by VAT rates)
 - Addresses (array)
   - Country
   - City
@@ -972,17 +967,15 @@ Based on *application* financing type and partner setting, application payment m
 
 
 + Response 200(application/json; charset=utf-8)
-        Order items or whole order is marked as delivered.
+        Order items or whole order is marked as delivered
 
     + Attributes (Order)
 
 
 + Response 422(application/json; charset=utf-8)
-        Cannot process state change.
+        State change can not be processed
 
     + Attributes (Errors)
-
-
 
 
 ## Mark order items as returned [/financing/v1/applications/{applicationId}/order/return]
@@ -1004,7 +997,7 @@ When some or all order items were returned by the customer to you, use `/financi
 
 Use `/financing/v1/applications/{applicationId}/order/return` resource with an empty request to mark all order items (the whole *order*) as returned at once.
 
-> * TIP: Use an empty request if marking last item on order as returned.
+> * TIP: Use an empty request if marking last item(s) on order as returned.
 
 Use `/financing/v1/applications/{applicationId}/order/return` resource with properly filled request that contains returned order items info. In this case request should contain at least following data:
 - Order items (array of returned order items)
@@ -1015,7 +1008,7 @@ Use `/financing/v1/applications/{applicationId}/order/return` resource with prop
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
+- Order total VAT (array of VAT amounts split by VAT rates)
 - Addresses (array)
   - Country
   - City
@@ -1057,17 +1050,15 @@ Based on *application* financing type and partner setting, credit note may be is
 
 
 + Response 200(application/json; charset=utf-8)
-        Order items or whole order is marked as returned.
+        Order items or whole order is marked as returned
 
     + Attributes (Order)
 
 
 + Response 422(application/json; charset=utf-8)
-        Cannot process state change.
+        State change can not be processed
 
     + Attributes (Errors)
-
-
 
 
 ## Applications payments  [/financing/v1/applications/{applicationId}/payments]
@@ -1102,10 +1093,9 @@ Collection is sorted by paymentId attribute.
 
 + Response 404(application/json; charset=utf-8)
 
-        Application does not exists
+        Application does not exist
 
     + Attributes (Errors)
-
 
 
 ## Invoices [/financing/v1/invoices]
@@ -1133,17 +1123,16 @@ This should be used by partner before issuing an invoice, to include correct bil
 
 + Response 200(application/json; charset=utf-8)
 
-        Invoice info.
+        Invoice info
 
     + Attributes (InvoiceInfo)
 
 
 + Response 404(application/json; charset=utf-8)
 
-        Invoice info cannot be generated.
+        Invoice info can not be generated
 
     + Attributes (Errors)
-
 
 
 ## Orders [/financing/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}]
@@ -1167,7 +1156,7 @@ If you need to find out current information about particular *order* - primarily
 If the request was successfully processed, you receive HTTP status code 200 and object of information about specified *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
 - Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates) - *Filled with zeros for the financing type `INSTALLMENT`*
+- Order total VAT (array of VAT amounts split by VAT rates)
 - Addresses (array)
   - Country
   - City
@@ -1198,7 +1187,7 @@ In other cases, you receive one of the following errors:
 Search for *order* using specified parameters.
 
 use `/financing/v1/orders/` with at least one of following parameter:
-- variable symbol, 
+- variable symbol,
 - order number,
 - application number.
 
@@ -1206,74 +1195,32 @@ use `/financing/v1/orders/` with at least one of following parameter:
 > ATTENTION: At this moment, only `applicationId` is valid parametr for order processing within application of financing type `INSTALLMENT`.
 
 + Parameters
-    + orderNumber (string, optional, `1234567890`)
-
-        Order number
-
-    + orderVariableSymbol (string, optional, `1234567890`)
-
-        Order variable symbol
-
-    + applicationId (string, optional, `02-11b00a1ef1`)
-
-        Application ID.
-
+    + orderNumber (string, optional, `1234567890`) Order number
+    + orderVariableSymbol (string, optional, `1234567890`) Order variable symbol
+    + applicationId (string, optional, `02-11b00a1ef1`) Application ID
 
 + Response 200(application/json; charset=utf-8)
 
-        Order data.
+        Order data
 
     + Attributes (Order)
 
 
 + Response 404(application/json; charset=utf-8)
 
-        Order not found.
+        Order not found
 
     + Attributes (Errors)
 
 
-
-
 # Group Offers operations
-When a customer wants to pay for a purchase by a loan and you want to provide him an option to choose from available offers while still being on your website, you should achieve this by implementing your installment calculatior that uses following resources:
+When a customer wants to pay for a purchase by a loan and you want to provide him an option to choose from available offers while still being on your website, you should achieve this by implementing your installment calculator that uses following resources:
 
 - `/financing/v1/installmentProgramsOffers` - to find out available installment programs offers and their details
 - `/financing/v1/installmentPrograms` - to find out details of a chosen installment program
 - `/financing/v1/installmentProgramsDownPayments` - to find out down payment options within available installment programs offers
 
 > NOTE: Implementation of installment calculator is optional, customers can always use the installment calculator embedded in Home Credit's front end
-
-## Installment programs down payments [/financing/v1/installmentProgramsDownPayments]
-When a customer wants to pay for a purchase by a loan and also wants to choose own down payments settings within offered installment calendars, use `/financing/v1/installmentProgramsDownPayments` resource with properly filled request that contains at least following data:
-- Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
-- Price of customer's purchase
-
-If the request was successfully processed, you receive HTTP status code 200 and object of information about available down payments settings with at least following information in the response:
-- Minimum down payment amount
-- Maximum down payment amount
-- Step between given minimum and maximum down payment amounts
-
-In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST | *Various messages possible* |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
-
-
-### Calculate installment programs down payments [POST]
-Calculate installment programs down payments according to specified input
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (InstallmentProgramsDownPaymentsRequest)
-
-
-+ Response 200(application/json; charset=utf-8)
-
-        Down payments information. Minimal, maximal and steps between.
-
-    + Attributes (InstallmentProgramsDownPayments)
-
 
 
 ## Installment programs offers [/financing/v1/installmentProgramsOffers]
@@ -1283,6 +1230,7 @@ When a customer wants to pay for a purchase by a loan and you want to show him a
 
 If the request was successfully processed, you receive HTTP status code 200 and array of objects of available installment programs with at least following information in the response:
 - Installment program (array)
+  - Installment program product code
   - Installment program type
   - Installment amount
   - Number of installments
@@ -1304,15 +1252,19 @@ feature | supported by resource
 [filtering](#header-filtering) | no
 
 + Request (application/json; charset=utf-8)
-    + Attributes (array[InstallmentProgramsOffersRequest])
+    + Attributes (InstallmentProgramsOffersRequest)
 
 
 + Response 200(application/json; charset=utf-8)
 
         Installment programs collection
 
-    + Attributes (array[InstallmentProgram], fixed-type, required)
+    + Attributes (InstallmentPrograms, required)
 
++ Response 400(application/json; charset=utf-8)
+        Error in processing request
+
+    + Attributes (Errors)
 
 
 ## Installment programs [/financing/v1/installmentPrograms]
@@ -1344,17 +1296,53 @@ It returns the installment program that most closely matches specified input.
 
 + Response 200(application/json; charset=utf-8)
 
-        Detailed information about installment program.
+        Detailed information about installment program
 
     + Attributes (InstallmentProgram)
 
 
 + Response 422(application/json; charset=utf-8)
 
-        No installment program was found.
+        No installment program was found
 
     + Attributes (Errors)
 
+
+## Installment programs down payments [/financing/v1/installmentProgramsDownPayments]
+When a customer wants to pay for a purchase by a loan and also wants to choose own down payments settings within offered installment calendars, use `/financing/v1/installmentProgramsDownPayments` resource with properly filled request that contains at least following data:
+- Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
+- Price of customer's purchase
+
+If the request was successfully processed, you receive HTTP status code 200 and object of information about available down payments settings with at least following information in the response:
+- Minimum down payment amount
+- Maximum down payment amount
+- Step between given minimum and maximum down payment amounts
+
+In other cases, you receive one of the following errors:
+| Status code | Code | Message |
+| --- | --- | --- |
+| 400 | INVALID_REQUEST | *Various messages possible* |
+| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+
+
+### Calculate installment programs down payments [POST]
+Calculate installment programs down payments according to specified input
+
++ Request (application/json; charset=utf-8)
+    + Attributes (InstallmentProgramsDownPaymentsRequest)
+
+
++ Response 200(application/json; charset=utf-8)
+
+        Down payments information - minimal, maximal and available step
+
+    + Attributes (InstallmentProgramsDownPayments)
+
+
++ Response 400(application/json; charset=utf-8)
+        Error in processing request
+
+    + Attributes (Errors)
 
 # Group Precheck operations
 Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to HC
@@ -1380,6 +1368,10 @@ It has to be called with valid access token (see the [Security section](#referen
     + Attributes (PrecheckResults)
 
 
++ Response 400(application/json; charset=utf-8)
+        Error in processing request
+
+    + Attributes (Errors)
 
 
 # Group Merchantsite operations
@@ -1411,13 +1403,13 @@ We use this resource when there is need to correct *order* data (billing informa
 ## Application notification [/financing/v1/{application.merchantUrls.notificationEndpoint}]
 We use this resource when there is need to let you know about important changes within particular *application*. Namely in following situations:
 
-| Trigger                                                             | Expected reaction                                                      |
-| ---                                                                 | ---                                                                    |
-| Application was approved (approval process is proceeding correctly) | Do not cancel customer's order prematurely                             |
-| Application was rejected                                            | You should probably cancel respective order and release reserved goods |
-| Application was cancelled                                           | You should probably cancel respective order and release reserved goods |
-| Order to dispatch (we commit to finance customer's order)           | Dispatch the order to the customer                                     |
-| Application is going to be paid out                                 | Wait for us processing financial compensation with you                 |
+| Trigger                                                             | Corresponding Application.stateReason | Expected reaction                                                      |
+| ---                                                                 | ---                                   |                                                                        |
+| Application was approved (approval process is proceeding correctly) | PROCESSING_APPROVED                   | Do not cancel customer's order prematurely                             |
+| Application was rejected                                            | REJECTED                              | You should probably cancel respective order and release reserved goods |
+| Application was cancelled                                           | CANCELLED_NOT_PAID                    | You should probably cancel respective order and release reserved goods |
+| Order to dispatch (we commit to finance customer's order)           | READY_TO_SHIP                         | Dispatch the order to the customer                                     |
+| Application is going to be paid out                                 | READY_PAID                            | Wait for us processing financial compensation with you                 |
 
 We fill the request with at least following information:
 - Application unique ID
@@ -1440,7 +1432,9 @@ Notify partner about changes in application.
             "status": "OK"
          }
 
++ Response 400 (application/json; charset=utf-8)
 
+        Can not process changes
 
 ## Payment notification [/financing/v1/{application.merchantUrls.paymentEndpoint}]
 
@@ -1456,6 +1450,10 @@ Notification about new payment.
          {
             "status": "OK"
          }
+
++ Response 400 (application/json; charset=utf-8)
+
+        Can not process changes
 
 
 # Data Structures
@@ -1842,10 +1840,12 @@ Account number with bank code.
 + `accountNumber`: `123-123456789` (string, required) - Account number (IBAN, BIC, etc.).
 + `bankCode`: `0100` (string, required) - Bank code (SWIFT, etc.).
 
+
 ## InstallmentProgram (object)
 Installment programs
 
 ### Properties
++ `productCode`: `a122ax` (string, required) - Installment program product code
 + `type` (enum, optional) - Program type
     + MINIMAL - Lowest installment
     + FAVOURITE - Recommended (favourite) installment program
@@ -1856,6 +1856,10 @@ Installment programs
     Calculation detailed information.
     Only available for calculations received by calling `POST /installmentPrograms`
     Not available for `POST /installmentProgramsOffers/`
+
+
+## InstallmentPrograms (object)
++ `installmentPrograms` (array[InstallmentProgram], fixed-type, required) - Array with installment programs offer
 
 
 ## Detail (object)
@@ -2108,9 +2112,9 @@ Order change request data (HC asks partner to correct order data).
 + ticketId: `UAT1:AMS:20160516-091658.450:45e4` (string, optional) - Internal ticket ID, used for error backtracking
 
 ## Errors (object)
-+ errors: `` (array[Error], fixed-type, required) - array with errors
++ errors (array[Error], fixed-type, required) - Array with errors
 
 ## PagingInfo (object)
-+ itemsPerPage: 10 (number, required) - number of items per page
++ itemsPerPage: 10 (number, required) - Number of items per page
 + nextPage: `transactions?sort=category&limit=10&after=25` (string, optional) - Request to retrieve next page, if it exists and can be unambiguously specified
 + prevPage: `transactions?sort=category&limit=10&before=25` (string, optional) - Request to retrieve previous page, if it exists and can be unambiguously specified
