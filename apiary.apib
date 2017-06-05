@@ -416,7 +416,8 @@ If the request was successfully processed, you receive HTTP status code 200 and 
 In other cases, you receive one of the following errors:
 | Status code | Code | Message |
 | --- | --- | --- |
-| 400 | INVALID_REQUEST | *Various messages possible* |
+| 400 | INVALID_REQUEST       | *Various messages possible* |
+| 404 | NOT_FOUND             | *Various messages possible* |
 | 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
 
 + Parameters
@@ -1404,7 +1405,7 @@ We use this resource when there is need to correct *order* data (billing informa
 We use this resource when there is need to let you know about important changes within particular *application*. Namely in following situations:
 
 | Trigger                                                             | Corresponding Application.stateReason | Expected reaction                                                      |
-| ---                                                                 | ---                                   |                                                                        |
+| ---                                                                 | ---                                   | ---                                                                    |
 | Application was approved (approval process is proceeding correctly) | PROCESSING_APPROVED                   | Do not cancel customer's order prematurely                             |
 | Application was rejected                                            | REJECTED                              | You should probably cancel respective order and release reserved goods |
 | Application was cancelled                                           | CANCELLED_NOT_PAID                    | You should probably cancel respective order and release reserved goods |
