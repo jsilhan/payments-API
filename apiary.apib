@@ -512,7 +512,7 @@ Verify *application* with OTP sent to customer by SMS. To send OTP to customer s
 Use `/financing/v1/applications/{applicationId}/verify` resource with properly filled request that contains customer's OTP in request.
 
 + Request (application/json; charset=utf-8)
-    + Attributes (number, required)
+    + Attributes (OTP, required)
 
 
 + Response 200(application/json; charset=utf-8)
@@ -2107,6 +2107,9 @@ Order change request data (HC asks partner to correct order data).
     + ORDER_ITEMS - HC received order items change proposal from customer.
     + DELIVER_ADDRESS - HC received delivery address change proposal from customer.
 + `order` (Order, required) - Corrected order data.
+
+## OTP (object)
++ `number`: `123456` (number, required)
 
 ## Error (object)
 + code: `ERR_1000_SOME_ERROR_CODE` (string, required) - Unique internal error code
