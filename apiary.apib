@@ -1583,6 +1583,10 @@ Financing application
     + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
+    - `settingsDeferredPayment` - Settings for DEFERRED_PAYMENT Application type.
+        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
+    - `settingsTryAndPayPayment` - Settings for TRY_AND_PAY Application type.
+        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
     - `settingsInstallment` - Settings for INSTALLMENT Application type.
         + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
         + `preferredInstallment` (Amount, optional) - Preferred repayment amount
@@ -1602,7 +1606,7 @@ Financing application
 + `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is `PROCESSING` and stateReason is `PROCESSING_ADDITIONAL_DATA` or `PROCESSING_VERIFICATION` or `PROCESSING_REDIRECT_NEEDED`.
 
 
-## Customer (object)
+## CustomerBase (object)
 Customer data
 
 ### Properties
@@ -1616,11 +1620,22 @@ Customer data
 + `addresses` (array[Address], optional) - Addresses. Only `PERMANENT` and `CONTACT` types are allowed.
 + `tin`: `12333321` (string, optional) - Tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
+
+## Customer (CustomerBase)
+Customer data
+
+### Properties
++ `type` (enum, required) - Customer type.
+    + `UNKNOWN` - Customer is uknown for HCO.
+    + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
+    + `FULL` -  HCO knows the customer. Customer has at least one paid order.
+    + `REVOLVING` -  HCO knows the customer. Customer has revolving account.
+    + `BLOCKED` - HCO knows the customer. Customer is blocked.
 + `dueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
 
-## ApplicationRequestCustomer (Customer)
+## ApplicationRequestCustomer (CustomerBase)
 Customer data
 
 ### Properties
@@ -1955,6 +1970,10 @@ Financing application request
     + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
+    - `settingsDeferredPayment` - Settings for DEFERRED_PAYMENT Application type.
+        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
+    - `settingsTryAndPayPayment` - Settings for TRY_AND_PAY Application type.
+        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
     - `settingsInstallment` - Settings for INSTALLMENT Application type.
         + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
         + `preferredInstallment` (Amount, optional) - Preferred repayment amount
@@ -2033,6 +2052,10 @@ Precheck data (has similar structure as `Application`).
     + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
+    - `settingsDeferredPayment` - Settings for DEFERRED_PAYMENT Application type.
+        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
+    - `settingsTryAndPayPayment` - Settings for TRY_AND_PAY Application type.
+        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
     - `settingsInstallment` - Settings for INSTALLMENT Application type.
         + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
         + `preferredInstallment` (Amount, optional) - Preferred repayment amount
@@ -2082,6 +2105,7 @@ Precheck result.
     + `UNKNOWN` - Customer is uknown for HCO.
     + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
     + `FULL` -  HCO knows the customer. Customer has at least one paid order.
+    + `REVOLVING` -  HCO knows the customer. Customer has revolving account.
     + `BLOCKED` - HCO knows the customer. Customer is blocked.
 + `customerDueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
