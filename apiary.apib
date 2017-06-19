@@ -469,6 +469,7 @@ Request sending of one-time password to customer by SMS. This OTP is required to
 
 + Request (application/json; charset=utf-8)
 
+    + Attributes (RequestApplicationOTPRequest)
 
 + Response 200(application/json; charset=utf-8)
 
@@ -1970,6 +1971,13 @@ Financing application request
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResults).
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
+
+## RequestApplicationOTPRequest (object)
+Data needed for requesting OTP.
+
+### Properties
++ `personalId`: 7203201234 (string, optional) - Personal identification number (format XXXXXXYYYY or XXXXXX/YYYY). 
+This field is required if `additionalData` array on *application* contains `PERSONAL_ID` ([Application detail](#reference/application-operations/application-detail)).
 
 
 ## AdditionalDataRequest (object)
