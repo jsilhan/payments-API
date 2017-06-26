@@ -1630,8 +1630,13 @@ Customer data
     + `UNKNOWN` - Customer is uknown for HCO.
     + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
     + `FULL` -  HCO knows the customer. Customer has at least one paid order.
-    + `REVOLVING` -  HCO knows the customer. Customer has revolving account.
     + `BLOCKED` - HCO knows the customer. Customer is blocked.
++ `revolvingStatus` (enum, required)
+    + `UNKNOWN` - Revolving loan status for customer is unknown.
+    + `NOT_AVAILABLE` - Revolving loan is not available for customer.
+    + `AVAILABLE` - Revolving loan is available for customer.
+    + `ACTIVE` - Customer has active revolving loan.
+    + `INACTIVE` - Customer has inactive revolving loan.
 + `dueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
@@ -2104,8 +2109,13 @@ Precheck result.
     + `UNKNOWN` - Customer is uknown for HCO.
     + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
     + `FULL` -  HCO knows the customer. Customer has at least one paid order.
-    + `REVOLVING` -  HCO knows the customer. Customer has revolving account.
     + `BLOCKED` - HCO knows the customer. Customer is blocked.
++ `revolvingStatus` (enum, required)
+    + `UNKNOWN` - Revolving loan status for customer is unknown.
+    + `NOT_AVAILABLE` - Revolving loan is not available for customer.
+    + `AVAILABLE` - Revolving loan is available for customer.
+    + `ACTIVE` - Customer has active revolving loan.
+    + `INACTIVE` - Customer has inactive revolving loan.
 + `customerDueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
