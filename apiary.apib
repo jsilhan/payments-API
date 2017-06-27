@@ -393,7 +393,7 @@ Create new *application* of particular financing type
 
         There was an error processing request
 
-    + Attributes (Errors)    
+    + Attributes (Errors)
 
 
 ## Application detail [/financing/v1/applications/{applicationId}]
@@ -475,7 +475,7 @@ Request sending of one-time password to customer by SMS. This OTP is required to
 
         SMS with OTP was send to customer's primary phone number
 
-    + Attributes (Application)
+    + Attributes (RequestApplicationOTPResponse)
 
 
 + Response 422(application/json; charset=utf-8)
@@ -685,7 +685,7 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - ZIP
   - Address type
 - Order items (array)
-  - Order item name  
+  - Order item name
   - Total price (all pieces, including VAT)
   - Total VAT
   - Order item state
@@ -1363,7 +1363,7 @@ Precheck *application*
 
 Returns probability of *application's* approval and limits of particular customer, if known to HC
 
-It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call HC API - **NEVER put access token directly to client side**.  
+It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call HC API - **NEVER put access token directly to client side**.
 
 + Request (application/json; charset=utf-8)
     + Attributes (PrecheckRequest)
@@ -1606,6 +1606,10 @@ Financing application
     Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`.
 + `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is `PROCESSING` and stateReason is `PROCESSING_ADDITIONAL_DATA` or `PROCESSING_VERIFICATION` or `PROCESSING_REDIRECT_NEEDED`.
 
+## RequestApplicationOTPResponse (Application)
+
+### Properties
++ `phoneNumber`: `+420123****89` (string, required) - OTP SMS was sent on this phone number
 
 ## CustomerBase (object)
 Customer data
@@ -1999,7 +2003,7 @@ Financing application request
 Data needed for requesting OTP.
 
 ### Properties
-+ `personalId`: 7203201234 (string, optional) - Personal identification number (format XXXXXXYYYY or XXXXXX/YYYY). 
++ `personalId`: 7203201234 (string, optional) - Personal identification number (format XXXXXXYYYY or XXXXXX/YYYY).
 This field is required if `additionalData` array on *application* contains `PERSONAL_ID` ([Application detail](#reference/application-operations/application-detail)).
 
 
@@ -2159,7 +2163,7 @@ Order change request data (HC asks partner to correct order data).
     + ERROR - Critical error, execution cannot continue. This MUST be indicated also by appropriate HTTP status code
     + WARN - Non-critical error, execution can continue but further user interaction is advisable. This MIGHT be indicated also by appropriate HTTP status code
     + INFO - Information only, execution can continue without user interaction
-+ attribute: `personalBirthNumber` (string, optional) - JSON path of request attribute that caused the error (if applicable)    
++ attribute: `personalBirthNumber` (string, optional) - JSON path of request attribute that caused the error (if applicable)
 + ticketId: `UAT1:AMS:20160516-091658.450:45e4` (string, optional) - Internal ticket ID, used for error backtracking
 
 ## Errors (object)
