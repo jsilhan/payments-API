@@ -1631,12 +1631,6 @@ Customer data
     + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
     + `FULL` -  HCO knows the customer. Customer has at least one paid order.
     + `BLOCKED` - HCO knows the customer. Customer is blocked.
-+ `revolvingStatus` (enum, required)
-    + `UNKNOWN` - Revolving loan status for customer is unknown.
-    + `NOT_AVAILABLE` - Revolving loan is not available for customer.
-    + `AVAILABLE` - Revolving loan is available for customer.
-    + `ACTIVE` - Customer has active revolving loan.
-    + `INACTIVE` - Customer has inactive revolving loan.
 + `dueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
@@ -2052,7 +2046,7 @@ Additional data about the customer.
 Precheck data (has similar structure as `Application`).
 
 ### Properties
-+ `customer` (ApplicationRequestCustomer, optional) - Customer data
++ `customer` (PrecheckRequestCustomer, optional) - Customer data
 + `order` (ApplicationRequestOrder, optional) - Order data
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
 + `type` (enum, optional) - Financing type
@@ -2078,6 +2072,10 @@ Precheck data (has similar structure as `Application`).
             + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
         + `paymentFirstDate`: `2016-10-12` (string, optional) - First payment date for recurring payment
 
+## PrecheckRequestCustomer (ApplicationRequestCustomer)
++ `additionalData` (AdditionalDataRequest, optional) - Additional data about the customer
+
+
 ## KeyValue (object)
 
 ### Properties
@@ -2102,25 +2100,27 @@ Precheck result.
 
     Partner can create custom logic not to follow the recommendation (be more strict or benevolent).
 + `completeness` (number, optional) - Completness of the result. <0, 1> The lower is the value, the lower accuracy of the result.
-+ `code` (enum, required) - Result code.
++ `code`: OK (enum, required) - Result code.
     + `OK`
     + `UNKNOWN`
-    + `ADDITIONAL_DATA_SECURITY` - The customer will be ask to send additional data for security reasons.
-    + `ADDITIONAL_DATA_LIMIT` - The customer has insufficient limit and will be ask to send additional data to increase limit.
+    + `ADDITIONAL_DATA_SECURITY` - The customer will be asked to send additional data for security reasons.
+    + `ADDITIONAL_DATA_LIMIT` - The customer has insufficient limit and will be asked to send additional data to increase limit.
     + `INSUFFICIENT_LIMIT` - The customer has insufficient limit and there is no way to increase it.
     + `INSUFFICIENT_LIMIT_OPPORTUNITY` - The customer has insufficient limit and can increase it by paying previous not paid orders.
-    + `DETAILS_NOT_MATCHING` - We know do customer, but hit personal details does not match with details in his HCO account. Customer will be asked for correcting not matching details.
+    + `DETAILS_NOT_MATCHING` - We know the customer, but his personal details does not match with details in his HCO account. Customer will be asked for correcting not matching details.
+    + `REVOLVING_REQUIRED` - The customer cannot continue without revolving contract. See revolvingCode for additional information.
 + `customerType` (enum, required) - Customer type.
     + `UNKNOWN` - Customer is uknown for HCO.
     + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
     + `FULL` -  HCO knows the customer. Customer has at least one paid order.
     + `BLOCKED` - HCO knows the customer. Customer is blocked.
-+ `revolvingStatus` (enum, required)
-    + `UNKNOWN` - Revolving loan status for customer is unknown.
++ `revolvingUsability`: true (boolean, optional) - Existing revolving account is usable for financing. For more detailed information see revolvingCode.
++ `revolvingCode`: OK (enum, optional)
+    + `OK`
+    + `ADDITIONAL_DATA_SECURITY` - The customer will be asked to send additional data for security reasons (see additionalData).
+    + `ADDITIONAL_ACTION` - The customer will be asked for further actions (increase of the global limit, to sign credit terms... )
+    + `NEW_REVOLVING` - New revolving loan is available for customer.
     + `NOT_AVAILABLE` - Revolving loan is not available for customer.
-    + `AVAILABLE` - Revolving loan is available for customer.
-    + `ACTIVE` - Customer has active revolving loan.
-    + `INACTIVE` - Customer has inactive revolving loan.
 + `customerDueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
@@ -2129,8 +2129,10 @@ Precheck result.
     “V HCO peněžence nemáte dostatečný limit.”
     “Uveďte do objednávky jméno a příjmení, které používáte ve službě HCO.”
     etc.
-+ `additionalData` (array[string], optional) - List of additional data that customer has to send to
++ `additionalData` (array[string], optional) - List of additional data that customer has to send to complete Precheck process.
     Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`.
++ `additionalActions` (array[string], optional) - List of additional actions required for finishing order.
+    Possible values in array: `MOBILE_REGISTRATION`, `ACCOUNT_REGISTRATION`, `LIMIT_INCREASE`, `CREDIT_TERM_SUPPLEMENT`.
 
 ## PrecheckResults (object)
 Precheck results.
