@@ -1849,10 +1849,10 @@ Request for generating invoice info.
     + `customerDueDateCategory` (enum, optional) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response or [Get application](#reference/application-operations/application-detail) response.
         + `CATEGORY_CLASSIC` - Customer with classic due date (14 days, with the exception of events (Christmas, etc.))
         + `CATEGORY_EXTENDED` - Customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
-    + `orderNumber` (string, optional) - Order number.
-    + `orderVariableSymbol` (string, optional) - Variable symbol.
-    + `applicationId` (string, optional) - Application identifier.
-+ `billingDate` (string, optional) - Date of issuing an invoice. Default value: today.
+    + `orderNumber`: `12345678` (string, optional) - Order number.
+    + `orderVariableSymbol`: `12345678` (string, optional) - Variable symbol.
+    + `applicationId`: `02-11200a0ee1` (string, optional) - Application identifier.
++ `billingDate`: `2017-06-20` (string, optional) - Date of issuing an invoice. Default value: today.
 
 ## AccountNumber (object)
 Account number with bank code.
@@ -2149,7 +2149,7 @@ Precheck results.
 Order change request data (HC asks partner to correct order data).
 
 ### Properties
-+ `applicationId` (string, required) - Application identifier.
++ `applicationId`: `02-11200a0ee1` (string, required) - Application identifier.
 + `type` (enum, required) - Change type.
     + PERSONAL_INFO - HC is trying correct customer's personal info (typos in name, surname... etc.).
     + ORDER_ITEMS - HC received order items change proposal from customer.
