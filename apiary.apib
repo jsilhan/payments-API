@@ -1996,10 +1996,10 @@ Data needed for requesting OTP.
 + `personalId`: 7203201234 (string, optional) - Personal identification number (format XXXXXXYYYY or XXXXXX/YYYY).
 This field is required if `additionalData` array on *application* contains `PERSONAL_ID` ([Application detail](#reference/application-operations/application-detail)).
 
-## RequestApplicationOTPResponse (Application)
+## RequestApplicationOTPResponse (object)
 
 ### Properties
-+ `phoneNumber`: `+420123****89` (string, required) - OTP SMS was sent on this phone number
++ `phone`: `+420123****89` (string, required) - OTP SMS was sent on this phone number. Number is obfuscated.
 
 
 ## AdditionalDataRequest (object)
