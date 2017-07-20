@@ -448,9 +448,7 @@ OTP is required to verify *application*. See [Verify Application](#reference/app
 | Financing type     | Supported |
 | ---                | ---       |
 | `INSTALLMENT`      | NO |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `BALANCE`          | YES |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -459,6 +457,15 @@ OTP is required to verify *application*. See [Verify Application](#reference/app
 | `CANCELLED`       | NO           |
 | `READY`           | NO           |
 
+Possible error codes explanation:
+| Error status code | Code | Explanation |
+| ---               | ---  | ---         |
+| 404 | APPLICATION_NOT_FOUND             | Unknown application                                                                   |
+| 422 | EXPLOITED_MAX_SMS_SENT     | Number of available SMS for time unit exceeded                                             |
+| 422 | REPEATED_REQUEST_TOO_EARLY | Repeated request violated security time span                                               |
+| 422 | NOT_ALLOWED                | Not allowed (other reasons)|
+| 422 | NO_VERIF_MOBILE            | Customer has not verified mobile                                                           |
+| 500 | FAILURE                    | Internal failure                                                                           |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -466,10 +473,6 @@ OTP is required to verify *application*. See [Verify Application](#reference/app
 
 ### Request application OTP [POST]
 Request sending of one-time password to customer by SMS. This OTP is required to verify *application*. See [Verify Application](#reference/application-operations/verify-application) method.
-
-+ Request (application/json; charset=utf-8)
-
-    + Attributes (RequestApplicationOTPRequest)
 
 + Response 200(application/json; charset=utf-8)
 
@@ -492,9 +495,7 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 | Financing type     | Supported |
 | ---                | ---       |
 | `INSTALLMENT`      | NO  |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `BALANCE`          | YES |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -502,6 +503,15 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 | `REJECTED`        | NO           |
 | `CANCELLED`       | NO           |
 | `READY`           | NO           |
+
+Possible error codes explanation:
+| Error status code | Code | Explanation |
+| ---               | ---  | ---         |
+| 422 | INCORRECT_OTP         | Incorrect OTP code                                                                                              |
+| 422 | NOT_AUTHORIZED_BLOCKED | Limit of attempts for OTP verification exceeded - optionaly extended for authorization attribute `blockedUntil` |
+| 422 | SMS_CODE_EXPIRED       | Validity of OTP code expired                                                                                    |
+| 422 | NOT_AUTHORIZED         | Verification was not authorized (other reasons)                                                                      |
+| 500 | FAILURE                | Internal failure          |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -1989,13 +1999,6 @@ Financing application request
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResults).
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
-## RequestApplicationOTPRequest (object)
-Data needed for requesting OTP.
-
-### Properties
-+ `personalId`: 7203201234 (string, optional) - Personal identification number (format XXXXXXYYYY or XXXXXX/YYYY).
-This field is required if `additionalData` array on *application* contains `PERSONAL_ID` ([Application detail](#reference/application-operations/application-detail)).
-
 ## RequestApplicationOTPResponse (object)
 
 ### Properties
@@ -2129,10 +2132,10 @@ Precheck result.
     “V HCO peněžence nemáte dostatečný limit.”
     “Uveďte do objednávky jméno a příjmení, které používáte ve službě HCO.”
     etc.
-+ `additionalData` (array[string], optional) - List of additional data that customer has to send to complete Precheck process.
++ `additionalData` (array[string], optional) - List of additional data that customer has to send.
     Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`.
-+ `additionalActions` (array[string], optional) - List of additional actions required for finishing order.
-    Possible values in array: `MOBILE_REGISTRATION`, `ACCOUNT_REGISTRATION`, `LIMIT_INCREASE`, `CREDIT_TERM_SUPPLEMENT`.
++ `additionalActions` (array[string], optional) - List of additional actions which will be required to finish application.
+    Possible values in array: `MOBILE_VERIFICATION`, `ACCOUNT_REGISTRATION`, `LIMIT_INCREASE`, `CREDIT_TERM_SUPPLEMENT`.
 
 ## PrecheckResults (object)
 Precheck results.
