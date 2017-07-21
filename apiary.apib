@@ -575,6 +575,7 @@ Possible *application* `state` and `stateReason` after calling this operation:
 1. Application state `PROCESSING` with state reason `PROCESSING_ADDITIONAL_DATA` if there are more additional data needed.
     * For example: customer is firstly asked to add `PERSONAL_ID`. After sending personal id via this operation system evaluate that it's not enough and customer is asked to add `ID_CARD_NO`.
 1. Application state `PROCESSING` with state reason `PROCESSING_REVIEW` if the manual review of application is needed. There is no way how to complete *application* in this state throught API calls or via redirection to `gatewayRedirectUrl`.
+1. Application state `PROCESSING` with state reason `PROCESSING_VERIFICATION` if additional data was processed and checked so *application* can be completed by verify application process (see [Verify application](#reference/application-operations/verify-application) method). Other way how to complete *application* is to redirect customer to `gatewayRedirectUrl`.
 1. Application state `PROCESSING` with state reason `PROCESSING_REDIRECT_NEEDED` if there is no way how to complete *application* throught API calls and you have to redirect customer to `gatewayRedirectUrl`.
 
 Possible error codes explanation:
@@ -1391,7 +1392,9 @@ It has to be called with valid access token (see the [Security section](#referen
 Possible error codes explanation:
 | Error status code | Code | Explanation |
 | ---               | ---  | ---         |
+| 400 | INVALID_REQUEST       | *Various messages possible* |
 | 422 | PERSONAL_ID_INVALID  | PersonalId is not valid        |
+| 500 | FAILURE                | Internal failure          |
 
 ### Precheck [POST]
 Returns probability of *application's* approval and limits of particular customer, if known to HC
