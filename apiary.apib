@@ -448,7 +448,9 @@ OTP is required to verify *application*. See [Verify Application](#reference/app
 | Financing type     | Supported |
 | ---                | ---       |
 | `INSTALLMENT`      | NO |
-| `BALANCE`          | YES |
+| `TRY_AND_PAY`      | YES |
+| `DEFERRED_PAYMENT` | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -460,7 +462,8 @@ OTP is required to verify *application*. See [Verify Application](#reference/app
 Possible error codes explanation:
 | Error status code | Code | Explanation |
 | ---               | ---  | ---         |
-| 404 | APPLICATION_NOT_FOUND             | Unknown application                                                                   |
+| 400 | INVALID_REQUEST       | *Various messages possible* |
+| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
 | 422 | EXPLOITED_MAX_SMS_SENT     | Number of available SMS for time unit exceeded                                             |
 | 422 | REPEATED_REQUEST_TOO_EARLY | Repeated request violated security time span                                               |
 | 422 | NOT_ALLOWED                | Not allowed (other reasons)|
@@ -495,7 +498,9 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 | Financing type     | Supported |
 | ---                | ---       |
 | `INSTALLMENT`      | NO  |
-| `BALANCE`          | YES |
+| `TRY_AND_PAY`      | YES |
+| `DEFERRED_PAYMENT` | YES |
+| `SUBSCRIPTION`     | NO |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -507,10 +512,12 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 Possible error codes explanation:
 | Error status code | Code | Explanation |
 | ---               | ---  | ---         |
-| 422 | INCORRECT_OTP         | Incorrect OTP code                                                                                              |
-| 422 | NOT_AUTHORIZED_BLOCKED | Limit of attempts for OTP verification exceeded - optionaly extended for authorization attribute `blockedUntil` |
-| 422 | SMS_CODE_EXPIRED       | Validity of OTP code expired                                                                                    |
-| 422 | NOT_AUTHORIZED         | Verification was not authorized (other reasons)                                                                      |
+| 400 | INVALID_REQUEST       | *Various messages possible* |
+| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
+| 422 | NOT_AUTHORIZED        | Incorrect OTP code                 |
+| 422 | NOT_AUTHORIZED_BLOCKED | Limit of attempts for OTP verification exceeded - optionaly extended by authorization attribute `blockedUntil` |
+| 422 | SMS_CODE_EXPIRED       | Validity of OTP code expired                                                      |
+| 422 | NOT_ALLOWED         | Verification is not allowed                                                                       |
 | 500 | FAILURE                | Internal failure          |
 
 + Parameters
@@ -569,6 +576,14 @@ Possible *application* `state` and `stateReason` after calling this operation:
     * For example: customer is firstly asked to add `PERSONAL_ID`. After sending personal id via this operation system evaluate that it's not enough and customer is asked to add `ID_CARD_NO`.
 1. Application state `PROCESSING` with state reason `PROCESSING_REVIEW` if the manual review of application is needed. There is no way how to complete *application* in this state throught API calls or via redirection to `gatewayRedirectUrl`.
 1. Application state `PROCESSING` with state reason `PROCESSING_REDIRECT_NEEDED` if there is no way how to complete *application* throught API calls and you have to redirect customer to `gatewayRedirectUrl`.
+
+Possible error codes explanation:
+| Error status code | Code | Explanation |
+| ---               | ---  | ---         |
+| 400 | INVALID_REQUEST       | *Various messages possible* |
+| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
+| 422 | PERSONAL_ID_INVALID  | PersonalId is not valid        |
+| 500 | FAILURE                | Internal failure          |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -1367,13 +1382,19 @@ Services that allow partner e-shops find out a probability of *application's* ap
 
 
 ## Precheck [/financing/v1/precheck]
-
-### Precheck [POST]
 Precheck *application*
 
 Returns probability of *application's* approval and limits of particular customer, if known to HC
 
 It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call HC API - **NEVER put access token directly to client side**.
+
+Possible error codes explanation:
+| Error status code | Code | Explanation |
+| ---               | ---  | ---         |
+| 422 | PERSONAL_ID_INVALID  | PersonalId is not valid        |
+
+### Precheck [POST]
+Returns probability of *application's* approval and limits of particular customer, if known to HC
 
 + Request (application/json; charset=utf-8)
     + Attributes (PrecheckRequest)
@@ -1398,11 +1419,12 @@ Services that should be developed and exposed by partner e-shops to allow HC asy
 > ATTENTION: This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
 ## Order change request [/financing/v1/{application.merchantUrls.changeEndpoint}]
-
-### Order change request [POST]
 Order change request
 
 We use this resource when there is need to correct *order* data (billing information, order items etc.) stored at your side.
+
+### Order change request [POST]
+Order change request
 
 + Request (application/json; charset=utf-8)
     + Attributes (OrderChangeNotification)
@@ -2050,7 +2072,7 @@ Precheck data (has similar structure as `Application`).
 
 ### Properties
 + `customer` (PrecheckRequestCustomer, optional) - Customer data
-+ `order` (ApplicationRequestOrder, optional) - Order data
++ `order` (PrecheckRequestOrder, optional) - Order data
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
@@ -2077,6 +2099,14 @@ Precheck data (has similar structure as `Application`).
 
 ## PrecheckRequestCustomer (ApplicationRequestCustomer)
 + `additionalData` (AdditionalDataRequest, optional) - Additional data about the customer
+
+## PrecheckRequestOrder (object)
+Order information, needed to create an application.
+
+### Properties
++ `totalPrice` (Amount, required) - Total order amount, including VAT
++ `totalVat` (array[VatAmount], optional) - Total VAT amounts split by their VAT rates
++ `items` (array[ApplicationRequestOrderItem], optional) - Order items
 
 
 ## KeyValue (object)
