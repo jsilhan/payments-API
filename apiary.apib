@@ -1669,6 +1669,8 @@ Customer data
 + `dueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
++ `ordersCountLimit`: 4 (number, optional) - The maximum orders count that the customer can make. Not set if there is no limit.
++ `ordersCountRemaining`: 2 (number, optional) - The remaining orders count that the customer can make. Not set if there is no limit.
 
 ## ApplicationRequestCustomer (CustomerBase)
 Customer data
@@ -2167,6 +2169,11 @@ Precheck result.
     + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
     + `FULL` -  HCO knows the customer. Customer has at least one paid order.
     + `BLOCKED` - HCO knows the customer. Customer is blocked.
++ `customerDueDateCategory` (enum, required)
+    + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
+    + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
++ `customerOrdersCountLimit`: 4 (number, optional) - The maximum orders count that the customer can make. Not set if there is no limit.
++ `customerOrdersCountRemaining`: 2 (number, optional) - The remaining orders count that the customer can make. Not set if there is no limit.
 + `revolvingUsability`: true (boolean, optional) - Existing revolving account is usable for financing. For more detailed information see revolvingCode.
 + `revolvingCode`: OK (enum, optional)
     + `OK`
@@ -2174,9 +2181,6 @@ Precheck result.
     + `ADDITIONAL_ACTION` - The customer will be asked for further actions (increase of the global limit, to sign credit terms... )
     + `NEW_REVOLVING` - New revolving loan is available for customer.
     + `NOT_AVAILABLE` - Revolving loan is not available for customer.
-+ `customerDueDateCategory` (enum, required)
-    + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
-    + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
 + `message` (string, optional) - Custom message for customer.
     Examples:
     “V HCO peněžence nemáte dostatečný limit.”
