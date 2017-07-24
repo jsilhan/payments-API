@@ -2107,9 +2107,26 @@ Precheck data (has similar structure as `Application`).
 Order information, needed to create an application.
 
 ### Properties
-+ `totalPrice` (Amount, required) - Total order amount, including VAT
++ `number`: `AA234` (string, optional) - Order number (internal for e-shop)
++ `variableSymbols` (array[string], optional) - Variable symbols (internal for e-shop)
++ `totalPrice` (Amount, optional) - Total order amount, including VAT
 + `totalVat` (array[VatAmount], optional) - Total VAT amounts split by their VAT rates
++ `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
++ `deliveryType` (enum, optional) - Delivery type, for `DELIVERY_CARRIER` type can be further specified by `deliveryCarrier` attribute.
+    + `DELIVERY_CARRIER` - If delivered by carrier - use `deliveryCarrier` for further specification.
+    + `PERSONAL_BRANCH` - Personal collection at branch
+    + `PERSONAL_PARTNER` - Personal collection at partner network
+    + `ONLINE` - Online delivery (e.g. for intangible assets)
++ `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
++ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional)
+
+   Date and time until order is reserved.
+
+   Until 'reservationDate' HCO will try to notify partner with Application notification about approval or rejection.
+
+   After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 + `items` (array[ApplicationRequestOrderItem], optional) - Order items
++ `documents` (array[Document], optional) - Attached documents (invoices etc.)
 
 
 ## KeyValue (object)
