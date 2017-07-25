@@ -2163,7 +2163,8 @@ Precheck result.
     + `INSUFFICIENT_LIMIT` - The customer has insufficient limit and there is no way to increase it.
     + `INSUFFICIENT_LIMIT_OPPORTUNITY` - The customer has insufficient limit and can increase it by paying previous not paid orders.
     + `DETAILS_NOT_MATCHING` - We know the customer, but his personal details does not match with details in his HCO account. Customer will be asked for correcting not matching details.
-    + `REVOLVING_REQUIRED` - The customer cannot continue without revolving contract. See revolvingCode for additional information.
+    + `REVOLVING_REQUIRED` - The customer cannot continue without revolving contract. See `revolvingCode` and `revolvingUsability` for additional information.
+    + `NOT_AVAILABLE` - Funding type is not available.
 + `customerType` (enum, required) - Customer type.
     + `UNKNOWN` - Customer is uknown for HCO.
     + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
@@ -2174,7 +2175,7 @@ Precheck result.
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
 + `customerOrdersCountLimit`: 4 (number, optional) - The maximum orders count that the customer can make. Not set if there is no limit.
 + `customerOrdersCountRemaining`: 2 (number, optional) - The remaining orders count that the customer can make. Not set if there is no limit.
-+ `revolvingUsability`: true (boolean, optional) - Existing revolving account is usable for financing. For more detailed information see revolvingCode.
++ `revolvingUsability`: true (boolean, optional) - Existing revolving account is usable for financing. For more detailed information see `revolvingCode`.
 + `revolvingCode`: OK (enum, optional)
     + `OK`
     + `ADDITIONAL_DATA_SECURITY` - The customer will be asked to send additional data for security reasons (see additionalData).
