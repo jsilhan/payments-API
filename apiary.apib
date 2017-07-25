@@ -468,7 +468,7 @@ Possible error codes explanation:
 | 422 | REPEATED_REQUEST_TOO_EARLY | Repeated request violated security time span                                               |
 | 422 | NOT_ALLOWED                | Not allowed (other reasons)|
 | 422 | NO_VERIF_MOBILE            | Customer has not verified mobile                                                           |
-| 500 | FAILURE                    | Internal failure                                                                           |
+| 500 | FAILURE                    | Internal failure                    |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -476,6 +476,9 @@ Possible error codes explanation:
 
 ### Request application OTP [POST]
 Request sending of one-time password to customer by SMS. This OTP is required to verify *application*. See [Verify Application](#reference/application-operations/verify-application) method.
+
++ Request (application/json; charset=utf-8)
+    + Attributes (RequestApplicationOTPRequest)
 
 + Response 200(application/json; charset=utf-8)
 
@@ -516,7 +519,7 @@ Possible error codes explanation:
 | 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
 | 422 | NOT_AUTHORIZED        | Incorrect OTP code                 |
 | 422 | NOT_AUTHORIZED_BLOCKED | Limit of attempts for OTP verification exceeded - optionaly extended by authorization attribute `blockedUntil` |
-| 422 | SMS_CODE_EXPIRED       | Validity of OTP code expired                                                      |
+| 422 | OTP_EXPIRED       | Validity of OTP code expired                                                      |
 | 422 | NOT_ALLOWED         | Verification is not allowed                                                                       |
 | 500 | FAILURE                | Internal failure          |
 
@@ -583,7 +586,9 @@ Possible error codes explanation:
 | ---               | ---  | ---         |
 | 400 | INVALID_REQUEST       | *Various messages possible* |
 | 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | PERSONAL_ID_INVALID  | PersonalId is not valid        |
+| 422 | PERSONAL_ID_INVALID  | PersonalId is not valid, please send valid PersonalId        |
+| 422 | ADDITIONAL_DATA_NOT_REQUIRED  | Application is not in state which allows use of this method. See stateReason for recommended next step.      |
+| 422 | ADDITIONAL_DATA_NOT_MATCHING  | Additional data does not match with client details. See stateReason for recommended next step.      |
 | 500 | FAILURE                | Internal failure          |
 
 + Parameters
@@ -1700,7 +1705,7 @@ Object used to change order information.
 
 ### Properties
 + reason (string, optional) - Reason of change.
-+ order (ApplicationRequestOrder, required) - Changed order data.
++ order (OrderBase, required) - Changed order data.
 
 ## ApplicationCancelRequest (object)
 Object used to cancel application.
@@ -1746,7 +1751,7 @@ Object used to mark order items as delivered.
 ## OrderItemsCancelRequest (OrderItemsChangeRequest)
 Object used to mark order items as cancelled.
 
-## ApplicationRequestOrder (object)
+## OrderBase (object)
 Order information, needed to create an application.
 
 ### Properties
@@ -1773,7 +1778,7 @@ Order information, needed to create an application.
 + `documents` (array[Document], optional) - Attached documents (invoices etc.)
 
 
-## Order (ApplicationRequestOrder)
+## Order (OrderBase)
 Order information.
 
 ### Properties
@@ -1998,7 +2003,7 @@ Financing application request
 
 ### Properties
 + `customer` (ApplicationRequestCustomer, required) - Customer information
-+ `order` (ApplicationRequestOrder, required) - Order information
++ `order` (OrderBase, required) - Order information
 + `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
@@ -2026,10 +2031,15 @@ Financing application request
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResults).
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
-## RequestApplicationOTPResponse (object)
+## RequestApplicationOTPRequest (object)
++ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. Required for `DEFFERED_PAYMENT` and `TRY_AND_PAY` with `revolving` ("Odklad na RU").
 
-### Properties
+## RequestApplicationOTPResponse (object)
 + `phone`: `+420123****89` (string, required) - OTP SMS was sent on this phone number. Number is obfuscated.
+
+## OTP (object)
++ `number`: `123456` (number, required)
++ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. Required for `DEFFERED_PAYMENT` and `TRY_AND_PAY` with `revolving` ("Odklad na RU").
 
 
 ## AdditionalDataRequest (object)
@@ -2040,7 +2050,6 @@ Additional data about the customer.
 + `idCard`: 123456789 (string, optional) - ID card number
 + `idCardExpiryDate`: `2020-05-19` (string, optional) - ID card expiration date
 + `idCardScan` (IdCardScan, optional) - ID card scan
-
 
 ## IdCardScan (object)
 
@@ -2212,9 +2221,6 @@ Order change request data (HC asks partner to correct order data).
     + ORDER_ITEMS - HC received order items change proposal from customer.
     + DELIVER_ADDRESS - HC received delivery address change proposal from customer.
 + `order` (Order, required) - Corrected order data.
-
-## OTP (object)
-+ `number`: `123456` (number, required)
 
 ## Error (object)
 + code: `ERR_1000_SOME_ERROR_CODE` (string, required) - Unique internal error code
