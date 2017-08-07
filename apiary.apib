@@ -1174,8 +1174,8 @@ This should be used by partner before issuing an invoice, to include correct bil
     + Attributes (Errors)
 
 
-## Orders [/financing/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}]
-If you need to find out current information about particular *order* - primarily its state (or its order items' states) and other details - use `/financing/v1/orders/{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
+## Orders [/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}]
+If you need to find out current information about particular *order* - primarily its state (or its order items' states) and other details - use `/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -1225,7 +1225,7 @@ In other cases, you receive one of the following errors:
 ### Get order [GET]
 Search for *order* using specified parameters.
 
-use `/financing/v1/orders/` with at least one of following parameter:
+use `/financing/v1/orders` with at least one of following parameter:
 - variable symbol,
 - order number,
 - application number.
