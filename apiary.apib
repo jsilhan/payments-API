@@ -1738,6 +1738,7 @@ Object used to mark order items as sent.
 ### Properties
 + `document` (Document, optional) - Attached invoice (invoice, proforma invoice...)
 + `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, ...)
++ `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Shipping date and time (fill just the date if you can't specify a shipping time).
 + `deliveryCarrier` (DeliveryCarrier, optional) - Carrier.
 + `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number.
 
@@ -1745,6 +1746,7 @@ Object used to mark order items as sent.
 Object used to mark order items as delivered.
 
 ### Properties
++ `deliveryDate`: `2017-01-15T00:00:00+02:00` (string, optional) - Delivery date and time (fill just the date if you can't specify a time of delivery)
 
 ## OrderItemsCancelRequest (OrderItemsChangeRequest)
 Object used to mark order items as cancelled.
