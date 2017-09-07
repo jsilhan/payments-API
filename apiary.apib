@@ -1270,7 +1270,7 @@ When a customer wants to pay for a purchase by a loan and you want to show him a
 If the request was successfully processed, you receive HTTP status code 200 and array of objects of available installment programs with at least following information in the response:
 - Installment program (array)
   - Installment program product code
-  - Installment program type
+  - Installment program type (in case of only one installment program offer in response it is of type `FAVOURITE`)
   - Installment amount
   - Number of installments
 
