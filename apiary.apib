@@ -689,21 +689,7 @@ When there's some changes within *order* that may have an importatnt impact on t
 | `PROCESSING`      | YES          |
 | `READY`           | YES          |
 
-Use `/financing/v1/applications/{applicationId}/order` resource with properly filled request that contains at least following data:
-- Order details
-  - Total Price (including VAT)
-  - Total VAT (array of total amounts split by VAT rates)
-  - Addresses (array)
-    - Country
-    - City
-    - Street
-    - Street number
-    - ZIP
-    - Address type
-  - Order items (array, at least one item is required)
-    - Order item name
-    - Total price (all pieces, including VAT)
-    - Total VAT
+Use `/financing/v1/applications/{applicationId}/order` resource with properly filled request that contains (only) changed data (resource allows partial put).
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
@@ -750,7 +736,7 @@ Change *order*. Used to change order items, total amount, billing details etc.
 + Response 200(application/json; charset=utf-8)
         Order was changed
 
-    + Attributes (Order)
+    + Attributes (OrderExtended)
 
 
 + Response 422(application/json; charset=utf-8)
@@ -834,7 +820,7 @@ System notification. Some or all of the order items were cancelled. Based on *ap
         Some order items or the whole order was cancelled
 
 
-    + Attributes (Order)
+    + Attributes (OrderExtended)
 
 
 + Response 422(application/json; charset=utf-8)
@@ -922,7 +908,7 @@ Based on *application* financing type and partner setting, application payment m
 + Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as shipped
 
-    + Attributes (Order)
+    + Attributes (OrderExtended)
 
 
 + Response 422(application/json; charset=utf-8)
@@ -1008,7 +994,7 @@ Based on *application* financing type and partner setting, application payment m
 + Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as delivered
 
-    + Attributes (Order)
+    + Attributes (OrderExtended)
 
 
 + Response 422(application/json; charset=utf-8)
@@ -1092,7 +1078,7 @@ Based on *application* financing type and partner setting, credit note may be is
 + Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as returned
 
-    + Attributes (Order)
+    + Attributes (OrderExtended)
 
 
 + Response 422(application/json; charset=utf-8)
@@ -1243,7 +1229,7 @@ use `/financing/v1/orders` with at least one of following parameter:
 
         Order data
 
-    + Attributes (Order)
+    + Attributes (OrderExtended)
 
 
 + Response 404(application/json; charset=utf-8)
@@ -1709,7 +1695,31 @@ Object used to change order information.
 
 ### Properties
 + reason (string, optional) - Reason of change.
-+ order (OrderBase, required) - Changed order data.
++ order (OrderChange, required) - Changed order data.
+
+## OrderChange (object)
++ `number`: `AA234` (string, optional) - Order number (internal for e-shop)
++ `variableSymbols` (array[string], optional) - Variable symbols (internal for e-shop)
++ `totalPrice` (Amount, optional) - Total order amount, including VAT
++ `totalVat` (array[VatAmount], optional) - Total VAT amounts split by their VAT rates
++ `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
++ `deliveryType` (enum, optional) - Delivery type, for `DELIVERY_CARRIER` type can be further specified by `deliveryCarrier` attribute.
+    + `DELIVERY_CARRIER` - If delivered by carrier - use `deliveryCarrier` for further specification.
+    + `PERSONAL_BRANCH` - Personal collection at branch
+    + `PERSONAL_PARTNER` - Personal collection at partner network
+    + `ONLINE` - Online delivery (e.g. for intangible assets)
++ `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
++ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional)
+
+   Date and time until order is reserved.
+
+   Until 'reservationDate' HCO will try to notify partner with Application notification about approval or rejection.
+
+   After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
+
++ `items` (array[ApplicationRequestOrderItem], optional) - Order items
++ `documents` (array[Document], optional) - Attached documents (invoices etc.)
+
 
 ## ApplicationCancelRequest (object)
 Object used to cancel application.
@@ -1796,6 +1806,11 @@ Order information.
 + `deliveryDate`: `2017-01-17T00:00:00+02:00` (string, optional) - Date and time of delivery
 + `deliveryTrackingNumber`: `EX12221` (string, optional) - Delivery tracking number
 + `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Date and time of order shipping
+
+## OrderExtended (Order)
+Additional information about Application.
+
+### Properties
 + `applicationInfo` (ApplicationBase, required) - Base information about respective application
 
 ## OrderItemBase (object)
@@ -2225,7 +2240,7 @@ Order change request data (HC asks partner to correct order data).
     + PERSONAL_INFO - HC is trying correct customer's personal info (typos in name, surname... etc.).
     + ORDER_ITEMS - HC received order items change proposal from customer.
     + DELIVER_ADDRESS - HC received delivery address change proposal from customer.
-+ `order` (Order, required) - Corrected order data.
++ `order` (OrderExtended, required) - Corrected order data.
 
 ## Error (object)
 + code: `ERR_1000_SOME_ERROR_CODE` (string, required) - Unique internal error code
