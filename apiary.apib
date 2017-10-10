@@ -330,7 +330,7 @@ Elementary flow starts when customer wants to use one of Home Credit's payment m
 
 Use `/financing/v1/applications` resource with properly filled request that contains at least following data
 - Customer information
-  - Name (full name or first name and last name)
+  - Name (first name and last name - if possible, otherwise full name)
   - E-mail
   - Phone number
 - Order details
@@ -1642,9 +1642,9 @@ Financing application
 Customer data
 
 ### Properties
-+ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation. Required if `firstName` or `lastName` are empty.
-+ `firstName`: `John` (string, optional) -  Customer first (given) name
-+ `lastName`: `Newborn` (string, optional) - Customer last (family) name
++ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
++ `firstName`: `John` (string, optional) -  Customer first (given) name. Must be paired with `lastName`.
++ `lastName`: `Newborn` (string, optional) - Customer last (family) name. Must be paired with `firstName`.
 + `titleBefore`: `Ing.` (string, optional) - Academical degree, in front of the name
 + `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
