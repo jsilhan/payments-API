@@ -401,12 +401,12 @@ Create new *application* of particular financing type
 ## Application detail [/financing/v1/applications/{applicationId}]
 If you need to find out current information about particular *application* - primarily its state and other details - use `/financing/v1/applications/{applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
 
-| Financing type     | Supported |
-| ---                | ---       |
+| Financing type     | Supported         |
+| ---                | ---               |
 | `INSTALLMENT`      | YES (limited use) |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `TRY_AND_PAY`      | YES               |
+| `DEFERRED_PAYMENT` | YES               |
+| `SUBSCRIPTION`     | NO                |
 
 If the request was successfully processed, you receive HTTP status code 200 and *application* object with at least following information in the response:
 - Application unique ID
@@ -450,10 +450,10 @@ OTP is required to verify *application*. See [Verify Application](#reference/app
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `INSTALLMENT`      | NO        |
+| `TRY_AND_PAY`      | YES       |
+| `DEFERRED_PAYMENT` | YES       |
+| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -503,10 +503,10 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO  |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `INSTALLMENT`      | NO        |
+| `TRY_AND_PAY`      | YES       |
+| `DEFERRED_PAYMENT` | YES       |
+| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -564,10 +564,10 @@ To determine what additional data is needed see `additionalData` array on *appli
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO  |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `INSTALLMENT`      | NO        |
+| `TRY_AND_PAY`      | YES       |
+| `DEFERRED_PAYMENT` | YES       |
+| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -624,10 +624,10 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | YES |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `INSTALLMENT`      | YES       |
+| `TRY_AND_PAY`      | YES       |
+| `DEFERRED_PAYMENT` | YES       |
+| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -680,10 +680,10 @@ When there's some changes within *order* that may have an importatnt impact on t
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `INSTALLMENT`      | NO        |
+| `TRY_AND_PAY`      | YES       |
+| `DEFERRED_PAYMENT` | YES       |
+| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -753,10 +753,10 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `INSTALLMENT`      | NO        |
+| `TRY_AND_PAY`      | YES       |
+| `DEFERRED_PAYMENT` | YES       |
+| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -836,10 +836,10 @@ When some or all order items were shipped to the customer, use `/financing/v1/ap
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | YES * |
-| `TRY_AND_PAY`      | YES  |
-| `DEFERRED_PAYMENT` | YES  |
-| `SUBSCRIPTION`     | YES  |
+| `INSTALLMENT`      | YES *     |
+| `TRY_AND_PAY`      | YES       |
+| `DEFERRED_PAYMENT` | YES       |
+| `SUBSCRIPTION`     | YES       |
 
 | Application state | Availability |
 | ---               | ---          |
