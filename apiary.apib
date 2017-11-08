@@ -769,11 +769,9 @@ Use `/financing/v1/applications/{applicationId}/order/cancel` resource with an e
 
 > * TIP: Use an empty request if marking last item(s) on order as cancelled.
 
-Use `/financing/v1/applications/{applicationId}/order/cancel` resource with properly filled request that contains cancelled order items info. In this case request should contain at least following data:
+If you want to cancel specific order item/s, use `/financing/v1/applications/{applicationId}/order/cancel` resource with properly filled request that contains cancelled order items info. In this case request should contain at least following data:
 - Order items (array of cancelled order items)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
+  - *one or more particular order item identificators (code/EAN/name)*
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
@@ -852,17 +850,13 @@ When some or all order items were shipped to the customer, use `/financing/v1/ap
 
 Use `/financing/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
 
-> * TIP: Use an empty request if marking last item(s) on order as sent.
+> TIP: Use an empty request if marking last item(s) on order as sent.
 
-> * ATTENTION: An empty request is the only valid way for financing type `INSTALLMENT`
+> **ATTENTION:** An empty request is the only valid way for financing type `INSTALLMENT`
 
-Use `/financing/v1/applications/{applicationId}/order/send` resource with properly filled request that contains sent order items info. In this case request should contain at least following data:
+If you want to mark specific order item/s as sent, use `/financing/v1/applications/{applicationId}/order/send` resource with properly filled request that contains sent order items info. In this case request should contain at least following data:
 - Order items (array of sent order items)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-
-> * ATTENTION: Specifying **Order items** is currently not supported. HCO currently can't handle partial delivery. HCO always consider all items as sent if calling this operation.
+  - *one or more particular order item identificators (code/EAN/name)*
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
@@ -941,13 +935,9 @@ Use `/financing/v1/applications/{applicationId}/order/deliver` resource with an 
 
 > * TIP: Use an empty request if marking last item(s) on order as delivered.
 
-Use `/financing/v1/applications/{applicationId}/order/deliver` resource with properly filled request that contains delivered order items info. In this case request should contain at least following data:
+If you want to mark specific order item/s as delivered, use `/financing/v1/applications/{applicationId}/order/deliver` resource with properly filled request that contains delivered order items info. In this case request should contain at least following data:
 - Order items (array of delivered order items)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-
-> * ATTENTION: Specifying **Order items** is currently not supported. HCO currently can't handle partial delivery. HCO always consider all items as delivered if calling this operation.
+  - *one or more particular order item identificators (code/EAN/name)*
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
@@ -1011,10 +1001,10 @@ When some or all order items were returned by the customer to you, use `/financi
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `INSTALLMENT`      | NO        |
+| `TRY_AND_PAY`      | YES       |
+| `DEFERRED_PAYMENT` | YES       |
+| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -1027,11 +1017,9 @@ Use `/financing/v1/applications/{applicationId}/order/return` resource with an e
 
 > * TIP: Use an empty request if marking last item(s) on order as returned.
 
-Use `/financing/v1/applications/{applicationId}/order/return` resource with properly filled request that contains returned order items info. In this case request should contain at least following data:
+If you want to mark specific order item/s as returned, use `/financing/v1/applications/{applicationId}/order/return` resource with properly filled request that contains returned order items info. In this case request should contain at least following data:
 - Order items (array of returned order items)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
+  - *one or more particular order item identificators (code/EAN/name)*
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
@@ -1737,7 +1725,7 @@ Object used to cancel application.
 Object used to change order items.
 
 ### Properties
-+ `items` (array[OrderItemBase], optional) - List of changed items. All items are considered when empty.
++ `items` (array[OrderItemChangeRequest], optional) - List of changed items. All items are considered when empty.
     > * ATTENTION: Ignored if marking order items as sent or delivered (HCO currently can't handle partial delivery).
 + `totalPrice` (Amount, optional) - Total amount of items (from orderItems array), including VAT.
 + `totalVat` (array[VatAmount], optional) - Total VAT amounts of items (from orderItems array) split by their VAT rates.
@@ -1864,6 +1852,16 @@ Order item information.
 + `sentDate`: `2017-01-10` (string, optional) - Date when item was sent. Only when the whole order was NOT sent at once.
 + `deliveryDate`: `2017-01-12` (string, optional) - Date when item was delivered. Only when the whole order was NOT sent at once.
 + `deliveryTrackingNumber`: `EX21121` (string, optional) - Tracking number for the item. Only when the whole order was NOT sent at once.
+
+
+## OrderItemChangeRequest (object)
+Order item base information
+
+### Properties
++ `code`: `EXC4677-1a` (string, optional) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
++ `ean`: 888462064002 (string, optional) - EAN code.
++ `name`: `iPhone 6s 32GB SpaceGray` (string, optional) - Item name
++ `quantity`: 1 (number, optional) - Item quantity. If empty, considered as 1.
 
 
 ## File (object)
