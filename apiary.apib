@@ -1596,6 +1596,7 @@ Financing application base information
     + `READY_SHIPPED` - Goods shipped to client
     + `READY_DELIVERING` - Verification of goods delivery
     + `READY_DELIVERED` - Goods delivered to client
+    + `READY_TO_PAY` - Ready to pay to merchant
     + `READY_PAID` - Paid to merchant
     + `CANCELLED_TO_RETURN` - Cancelled after delivery, goods to be returned (not implemented)
     + `CANCELLED_RETURNED` - Cancelled after delivery, goods returned to merchant
@@ -1647,7 +1648,7 @@ Customer data
 + `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
 + `phone`: `+420123456789` (string, required) - Phone number with country code (including leading `+`)
-+ `addresses` (array[Address], optional) - Addresses. Only `PERMANENT` and `CONTACT` types are allowed.
++ `addresses` (array[Address], optional) - Addresses. All types are allowed.
 + `tin`: `12333321` (string, optional) - Tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
 
@@ -2098,8 +2099,8 @@ Additional data about the customer.
 ## InstallmentProgramsOffersRequest (object)
 
 ### Properties
-+ `productSetCode`: `bc11523` (string, required) - Product set code, this will limit further calculations
-+ `price` (Amount, required) - Goods price
++ `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations. If not provided, default productSet will be used.
++ `price` (Amount, required) - Order price
 + `downPayment` (Amount, optional) - Down payment amount (default is 0, amount should be rounded to hundreds)
 
 
