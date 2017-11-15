@@ -1641,9 +1641,12 @@ Financing application
 Customer data
 
 ### Properties
-+ `firstName`: `John` (string, optional) -  Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty. For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression `^[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž]$`.
-+ `lastName`: `Newborn` (string, optional) - Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty. For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression `^[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž]$`.
-+ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty. Without academical degrees should be matched by following regular expression `^(?P<firstname>[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž])\s(?P<lastname>[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž])$` for [advanced implementation](#introduction/getting-started/advanced-implementation).
++ `firstName`: `John` (string, optional) -  Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
+For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression `^[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž]$`.
++ `lastName`: `Newborn` (string, optional) - Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
+For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression `^[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž]$`.
++ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
+For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression (just the name without academical degrees) `^(?P<firstname>[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž])\s(?P<lastname>[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž])$` .
 + `titleBefore`: `Ing.` (string, optional) - Academical degree, in front of the name
 + `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
