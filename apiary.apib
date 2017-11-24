@@ -14,6 +14,7 @@ The aim of here described services is to allow customers the smooth running thro
 | Group of services | Purpose |
 | ---      | ---     |
 | Security                | Security rules and principles |
+| Health check            | Health check usage description |
 | Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle |
 | Offers operations       | Services that allow partner e-shops to implement an installment calculator on their websites |
 | Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC |
@@ -251,6 +252,32 @@ There are 3 levels of error severity:
 - required attribute in optional object means, that if optional object is specified, it must contain required attribute.
 - all values in request/response attributes are just examples, except for enum values - these are the only possible values for given attribute.
 
+
+# Group Health check
+To easily find out current API state and availability use the [health check resource](#reference/health-check/health-check).
+
+## Health check [/info]
+Possible errors:
+| Status code | Code        | Message                     |
+| --- | ---                 | ---                         |
+| 406 | NOT_ACCEPTABLE      | *Various messages possible* |
+| 503 | SERVICE_UNAVAILABLE | *Various messages possible* |
+
+### Health check [GET]
+Get current state of the API
+
++ Response 200(application/json; charset=utf-8)
+
+        API is up and running
+
+    + Attributes (ApiInfo)
+
+
++ Response 503(application/json; charset=utf-8)
+
+        API is unavailable at the moment
+
+    + Attributes (Errors)
 
 # Group Security
 To access our API, you have to obtain *access token* first; this token is a string of arbitrary length (30+ chars) and it has to be included in HTTP header to every request to API. This section describes way to obtain valid access token and use it to access protected resources.
@@ -1494,6 +1521,17 @@ Notification about new payment.
 
 
 # Data Structures
+
+## ApiInfo (object)
+API information
+
+### Properties
++ `build` (object, required)
+    + `version`: `38.3.0-0-SNAPSHOT` (string, required)
+    + `artifact`: `atl-cs-app` (string, required)
+    + `name`: `ATL CS - App` (string, required)
+    + `group`: `eu.homecredit.openapi-cs` (string, required)
+    + `time`: 1510739838000 (number, required)
 
 ## PartnerLogin (object)
 Partner login credentials
