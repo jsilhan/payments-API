@@ -1495,9 +1495,10 @@ Notification about new payment.
 
 
 # Group Health check
-To easily find out current API state and availability use the [health check resource](#reference/health-check/health-check).
+To easily find out current API state use the [API state check resource](#reference/api-status-check/api-status-check).
+To check the availability of back-end services use the [health check resource](#reference/health-check/health-check).
 
-## Health check [/info]
+## API status check [/info]
 If the API is up and runing, you receive HTTP status code 200 and object of information about it.
 
 In other cases, you receive one of the following errors:
@@ -1506,7 +1507,9 @@ In other cases, you receive one of the following errors:
 | 406 | NOT_ACCEPTABLE      | *Various messages possible* |
 | 503 | SERVICE_UNAVAILABLE | *Various messages possible* |
 
-### Health check [GET]
+> Note: resource DOES NOT require valid *access_token* in the HTTP header of the request
+
+### API status check [GET]
 Get current state of the API
 
 + Response 200(application/json; charset=utf-8)
@@ -1515,12 +1518,33 @@ Get current state of the API
 
     + Attributes (ApiInfo)
 
-
 + Response 503(application/json; charset=utf-8)
 
         API is unavailable at the moment
 
     + Attributes (Errors)
+
+
+## API health check [/health]
+If the API back-end services is up and runing, you receive HTTP status code 200.
+
+In other cases, you receive one of the following errors:
+| Status code | Code        | Message                     |
+| --- | ---                 | ---                         |
+| 503 | SERVICE_UNAVAILABLE | *Various messages possible* |
+
+> Note: resource DOES require valid *access_token* in the HTTP header of the request
+
+### API health chceck [GET]
+Get current state of the API
+
++ Response 200(application/json; charset=utf-8)
+
+        API back-end services is up and running
+
++ Response 503(application/json; charset=utf-8)
+
+        API back-end services is unavailable at the moment
 
 
 # Data Structures
