@@ -1499,20 +1499,20 @@ To easily find out current API state use the [API state check resource](#referen
 To check the availability of back-end services use the [health check resource](#reference/health-check/health-check).
 
 ## API status check [/info]
-If the API is up and runing, you receive HTTP status code 200 and object of information about it.
+If the API is up and runing, you receive HTTP status code 204 and object of information about it.
 
 In other cases, you receive one of the following errors:
-| Status code | Code        | Message                     |
-| --- | ---                 | ---                         |
-| 406 | NOT_ACCEPTABLE      | *Various messages possible* |
-| 503 | SERVICE_UNAVAILABLE | *Various messages possible* |
+| Status code | Code        |
+| --- | ---                 |
+| 406 | NOT_ACCEPTABLE      |
+| 503 | SERVICE_UNAVAILABLE |
 
 > Note: resource DOES NOT require valid *access_token* in the HTTP header of the request
 
 ### API status check [GET]
 Get current state of the API
 
-+ Response 200(application/json; charset=utf-8)
++ Response 204(application/json; charset=utf-8)
 
         API is up and running
 
@@ -1522,23 +1522,25 @@ Get current state of the API
 
         API is unavailable at the moment
 
-    + Attributes (Errors)
 
-
-## API health check [/health]
-If the API back-end services is up and runing, you receive HTTP status code 200.
+## API health check [/health?timeout=2000]
+If the API back-end services is up and runing, you receive HTTP status code 204.
 
 In other cases, you receive one of the following errors:
-| Status code | Code        | Message                     |
-| --- | ---                 | ---                         |
-| 503 | SERVICE_UNAVAILABLE | *Various messages possible* |
+| Status code | Code        |
+| --- | ---                 |
+| 503 | SERVICE_UNAVAILABLE |
+| 504 | GATEWAY_TIMEOUT     |
 
 > Note: resource DOES require valid *access_token* in the HTTP header of the request
 
 ### API health chceck [GET]
 Get current state of the API
 
-+ Response 200(application/json; charset=utf-8)
++ Parameters
+    + timeout (string, optional, `2000`) Optional timeout (in miliseconds) for completition of the request (504 is returned when not fulfilled)
+
++ Response 204(application/json; charset=utf-8)
 
         API back-end services is up and running
 
