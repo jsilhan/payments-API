@@ -1251,7 +1251,7 @@ When a customer wants to pay for a purchase by a loan and you want to provide hi
 
 ## Installment programs offers [/financing/v1/installmentProgramsOffers]
 When a customer wants to pay for a purchase by a loan and you want to show him an offer of available installment programs, use `/financing/v1/installmentProgramsOffers` resource with properly filled request that contains at least following data:
-- Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
+- Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source; if you don't provide product set code, your default product set will be used)
 - Price of customer's purchase
 
 If the request was successfully processed, you receive HTTP status code 200 and array of objects of available installment programs with at least following information in the response:
