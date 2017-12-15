@@ -324,10 +324,10 @@ Elementary flow starts when customer wants to use one of Home Credit's payment m
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | YES |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `INSTALLMENT`      | YES       |
+| `TRY_AND_PAY`      | YES       |
+| `DEFERRED_PAYMENT` | YES       |
+| `SUBSCRIPTION`     | NO        |
 
 Use `/financing/v1/applications` resource with properly filled request that contains at least following data
 - Customer information
@@ -1116,7 +1116,6 @@ Collection is sorted by paymentId attribute.
         + pagingInfo (PagingInfo, optional)
 
 
-
 + Response 404(application/json; charset=utf-8)
 
         Application does not exist
@@ -1218,7 +1217,7 @@ use `/financing/v1/orders` with at least one of following parameter:
 - application number.
 
 <a name="orders-parameters-restriction"></a>
-> ATTENTION: At this moment, only `applicationId` is valid parametr for order processing within application of financing type `INSTALLMENT`.
+> **ATTENTION:** At this moment, only `applicationId` is valid parametr for order processing within application of financing type `INSTALLMENT`.
 
 + Parameters
     + orderNumber (string, optional, `1234567890`) Order number
@@ -1388,8 +1387,8 @@ Possible error codes explanation:
 | Error status code | Code | Explanation |
 | ---               | ---  | ---         |
 | 400 | INVALID_REQUEST       | *Various messages possible* |
-| 422 | PERSONAL_ID_INVALID  | PersonalId is not valid        |
-| 500 | FAILURE                | Internal failure          |
+| 422 | PERSONAL_ID_INVALID   | PersonalId is not valid     |
+| 500 | FAILURE               | Internal failure            |
 
 ### Precheck [POST]
 Returns probability of *application's* approval and limits of particular customer, if known to HC
@@ -1414,7 +1413,7 @@ Returns probability of *application's* approval and limits of particular custome
 # Group Merchantsite operations
 Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders*
 
-> ATTENTION: This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
+> **ATTENTION:** This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
 
 ## Order change request [/financing/v1/{application.merchantUrls.changeEndpoint}]
 Order change request
@@ -1518,6 +1517,7 @@ Get current state of the API
 
     + Attributes (ApiInfo)
 
+
 + Response 503(application/json; charset=utf-8)
 
         API is unavailable at the moment
@@ -1561,6 +1561,7 @@ API information
     + `name`: `ATL CS - App` (string, required) - Official artifact name (human readable)
     + `group`: `eu.homecredit.openapi-cs` (string, required) - Artifact group name
     + `time`: 1510739838000 (number, required) - Artifact creation time (timestamp)
+
 
 ## PartnerLogin (object)
 Partner login credentials
@@ -1821,9 +1822,9 @@ Object used to mark order items as sent.
 ### Properties
 + `document` (Document, optional) - Attached invoice (invoice, proforma invoice...)
 + `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, ...)
-+ `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Shipping date and time (fill just the date if you can't specify a shipping time).
-+ `deliveryCarrier` (DeliveryCarrier, optional) - Carrier.
-+ `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number.
++ `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Shipping date and time (fill just the date if you can't specify a shipping time)
++ `deliveryCarrier` (DeliveryCarrier, optional) - Carrier
++ `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number
 
 ## OrderItemsDeliverRequest (OrderItemsSendRequest)
 Object used to mark order items as delivered.
@@ -1967,7 +1968,6 @@ Attached document (e.g. invoice, credit note etc.)
 
 
 ## DocumentExtraData (object)
-
 
 ### Properties
 + `variableSymbol`: `1234567890` (string, optional) - variable symbol (internal for e-shop)
