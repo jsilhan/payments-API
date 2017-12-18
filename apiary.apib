@@ -1791,14 +1791,20 @@ Object used to change order information.
 + `documents` (array[Document], optional) - Attached documents (invoices etc.)
 
 
+## CancelReason (object)
++ `reason`: `ORDER_CANCELLED_OTHER` (enum, optional) - Reason of cancellation. Default is `ORDER_CANCELLED_OTHER`.
+    + `ORDER_CANCELLED_CUSTOMER` - Customer cancelled the application
+    + `ORDER_CANCELLED_ITEMS` - Application was cancelled because some items were unavailable
+    + `ORDER_CANCELLED_OTHER` - Other reason
++ `otherReason` (string, optional) - Other cancellation reason (for `ORDER_CANCELLED_OTHER`)
+
+
 ## ApplicationCancelRequest (object)
 Object used to cancel application.
 
 ### Properties
-+ reason (enum, optional): `ORDER_CANCELLED_OTHER` - Reason of cancellation. Default ORDER_CANCELLED_OTHER.
-    + `ORDER_CANCELLED_CUSTOMER` - Customer cancelled the application
-    + `ORDER_CANCELLED_ITEMS` - Application was cancelled because some items were unavailable
-    + `ORDER_CANCELLED_OTHER` - Other reason
++ reasons (array[CancelReason], fixed-type, optional) - Reasons of cancellation. Considered as `ORDER_CANCELLED_OTHER` if not set.
+
 
 ## OrderItemsChangeRequest (object)
 Object used to change order items.
