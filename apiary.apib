@@ -1803,8 +1803,12 @@ Object used to change order information.
 Object used to cancel application.
 
 ### Properties
-+ reasons (array[CancelReason], fixed-type, optional) - Reasons of cancellation. Considered as `ORDER_CANCELLED_OTHER` if not set.
-
++ `reasons` (array[CancelReason], fixed-type, optional) - Reasons of cancellation. Considered as `ORDER_CANCELLED_OTHER` if not set.
++ `reason`: `ORDER_CANCELLED_OTHER` (enum, optional) - Reason of cancellation. Default ORDER_CANCELLED_OTHER. 
+**ATTENTION - OBSOLETE since CS39 release (6.2.2018), NOT SUPPORTED since CS40 release (13.3.2018)!**
+    + `ORDER_CANCELLED_CUSTOMER` - Customer cancelled the application
+    + `ORDER_CANCELLED_ITEMS` - Application was cancelled because some items were unavailable
+    + `ORDER_CANCELLED_OTHER` - Other reason
 
 ## OrderItemsChangeRequest (object)
 Object used to change order items.
