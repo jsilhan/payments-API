@@ -239,7 +239,7 @@ There are 3 levels of error severity:
 ## Formats
 - **date** and **time** uses [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) formatting, e.g.:
   - date is represented as `YYYY-mm-dd`. Timezone (local) is added when necessary.
-  - time is represented as `Thh:mm:ss`. Timezone (local) is added when necessary.
+    - time is represented as `Thh:mm:ss`. Timezone is added when necessary. Time with arbitrary number of digits respresenting miliseconds is also accepted (when [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format criteria is met) but the time without miliseconds is always returned.
   - day of week is represented as number 1..7, with 1 being Monday
   - week no. 1 is the week with the year's first Thursday in it
 - **phone numbers** uses international format starting with '+' and including country code (example of valid number: `+420739111222`)
@@ -1804,7 +1804,7 @@ Object used to cancel application.
 
 ### Properties
 + `reasons` (array[CancelReason], fixed-type, optional) - Reasons of cancellation. Considered as `ORDER_CANCELLED_OTHER` if not set.
-+ `reason`: `ORDER_CANCELLED_OTHER` (enum, optional) - Reason of cancellation. Default ORDER_CANCELLED_OTHER. 
++ `reason`: `ORDER_CANCELLED_OTHER` (enum, optional) - Reason of cancellation. Default ORDER_CANCELLED_OTHER.
 **ATTENTION - OBSOLETE since CS39 release (6.2.2018), NOT SUPPORTED since CS40 release (13.3.2018)!**
     + `ORDER_CANCELLED_CUSTOMER` - Customer cancelled the application
     + `ORDER_CANCELLED_ITEMS` - Application was cancelled because some items were unavailable
