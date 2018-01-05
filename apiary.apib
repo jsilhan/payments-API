@@ -1791,24 +1791,20 @@ Object used to change order information.
 + `documents` (array[Document], optional) - Attached documents (invoices etc.)
 
 
-## CancelReason (object)
-+ `reason`: `ORDER_CANCELLED_OTHER` (enum, optional) - Reason of cancellation. Default is `ORDER_CANCELLED_OTHER`.
-    + `ORDER_CANCELLED_CUSTOMER` - Customer cancelled the application
-    + `ORDER_CANCELLED_ITEMS` - Application was cancelled because some items were unavailable
-    + `ORDER_CANCELLED_OTHER` - Other reason
-+ `otherReason` (string, optional) - Other cancellation reason (for `ORDER_CANCELLED_OTHER`)
-
-
 ## ApplicationCancelRequest (object)
-Object used to cancel application.
+Specification of the reason why the application is cancelled.
 
 ### Properties
-+ `reasons` (array[CancelReason], fixed-type, optional) - Reasons of cancellation. Considered as `ORDER_CANCELLED_OTHER` if not set.
-+ `reason`: `ORDER_CANCELLED_OTHER` (enum, optional) - Reason of cancellation. Default ORDER_CANCELLED_OTHER.
-**ATTENTION - OBSOLETE since CS39 release (6.2.2018), NOT SUPPORTED since CS40 release (13.3.2018)!**
-    + `ORDER_CANCELLED_CUSTOMER` - Customer cancelled the application
-    + `ORDER_CANCELLED_ITEMS` - Application was cancelled because some items were unavailable
-    + `ORDER_CANCELLED_OTHER` - Other reason
++ `reason`: `APPLICATION_CANCELLED_BY_CUSTOMER` (enum, optional) - Reason of cancellation. Considered as `APPLICATION_CANCELLED_OTHER` if not set.
+    +	`APPLICATION_CANCELLED_CARRIER_CHANGED` - Order carrier changed
+    +	`APPLICATION_CANCELLED_CART_CONTENT_CHANGED` - Cart content changed or customer returned from the cart
+    +	`APPLICATION_CANCELLED_BY_CUSTOMER` - Customer cancelled order (in his profile or through customer center)
+    +	`APPLICATION_CANCELLED_BY_ERP` - Cancelled by e-shop's back-office process (e.g. some items unavailable)
+    +	`APPLICATION_CANCELLED_EXPIRED` - Application expired (too long waiting time for response from HC)
+    +	`APPLICATION_CANCELLED_UNFINISHED` - Customer did not finish order
+    +	`APPLICATION_CANCELLED_BY_ESHOP_RULES` - Internal e-shop rules breached (e.g. problem with customer's additional data)
+    + `APPLICATION_CANCELLED_OTHER` - Other reason - specified in `customReason`
++ `customReason` (string, optional) - Specification of `APPLICATION_CANCELLED_OTHER` reason
 
 ## OrderItemsChangeRequest (object)
 Object used to change order items.
