@@ -922,6 +922,8 @@ Based on *application* financing type and partner setting, application payment m
 ## Mark order items as delivered [/financing/v1/applications/{applicationId}/order/deliver]
 When some or all order items were delivered to the customer, use `/financing/v1/applications/{applicationId}/order/deliver` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
 
+Undeliverable items (all except PHYSICAL and DIGITAL) will be marked to `DELIVERED`, if there are no more deliverable items, which are not `DELIVERED`.
+
 | Financing type     | Supported |
 | ---                | ---       |
 | `INSTALLMENT`      | YES *     |
