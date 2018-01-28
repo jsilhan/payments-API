@@ -760,10 +760,10 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 
 | Application state | Availability |
 | ---               | ---          |
-| `PROCESSING`      | NO           |
+| `PROCESSING`      | YES           |
 | `REJECTED`        | NO           |
 | `CANCELLED`       | NO           |
-| `READY`           | YES          |
+| `READY`           | NO          |
 
 Use `/financing/v1/applications/{applicationId}/order/cancel` resource with an empty request to cancel all order items (the whole *order*) at once.
 
