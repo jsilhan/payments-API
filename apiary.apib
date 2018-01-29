@@ -1512,7 +1512,7 @@ In other cases, you receive one of the following errors:
 ### API status check [GET]
 Get current state of the API
 
-+ Response 204(application/json; charset=utf-8)
++ Response 200(application/json; charset=utf-8)
 
         API is up and running
 
@@ -1523,8 +1523,10 @@ Get current state of the API
 
         API is unavailable at the moment
 
+    + Attributes (Errors)
 
-## API health check [/health?timeout=2000]
+
+## API health check [/health{?timeout}]
 If the API back-end services is up and runing, you receive HTTP status code 204.
 
 In other cases, you receive one of the following errors:
@@ -1535,20 +1537,20 @@ In other cases, you receive one of the following errors:
 
 > Note: resource DOES require valid *access_token* in the HTTP header of the request
 
++ Parameters
+    + `timeout`: `2000` (string, optional) Optional timeout (in miliseconds) for completition of the request (504 is returned when not fulfilled)
+
 ### API health chceck [GET]
 Get current state of the API
 
-+ Parameters
-    + timeout (string, optional, `2000`) Optional timeout (in miliseconds) for completition of the request (504 is returned when not fulfilled)
-
-+ Response 204(application/json; charset=utf-8)
-
-        API back-end services is up and running
++ Response 204
 
 + Response 503(application/json; charset=utf-8)
 
         API back-end services is unavailable at the moment
 
+    + Attributes (Errors)
+    
 
 # Data Structures
 
