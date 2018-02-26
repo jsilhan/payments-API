@@ -1502,10 +1502,10 @@ To check the availability of back-end services use the [health check resource](#
 If the API is up and runing, you receive HTTP status code 204 and object of information about it.
 
 In other cases, you receive one of the following errors:
-| Status code | Code        |
-| --- | ---                 |
-| 406 | NOT_ACCEPTABLE      |
-| 503 | SERVICE_UNAVAILABLE |
+| Status code | Code                  |
+| ---         | ---                   |
+| 406         | NOT_ACCEPTABLE        |
+| 500         | INTERNAL_SERVER_ERROR |
 
 > Note: resource DOES NOT require valid *access_token* in the HTTP header of the request
 
@@ -1519,17 +1519,20 @@ Get current state of the API
     + Attributes (ApiInfo)
 
 
-+ Response 503
++ Response 500(application/json; charset=utf-8)
+        Error in processing request
+
+    + Attributes (Errors)
 
 
 ## API health check [/financing/v1//health{?timeout}]
 If the API back-end services is up and runing, you receive HTTP status code 204.
 
 In other cases, you receive one of the following errors:
-| Status code | Code        |
-| --- | ---                 |
-| 503 | SERVICE_UNAVAILABLE |
-| 504 | GATEWAY_TIMEOUT     |
+| Status code | Code                  |
+| ---         | ---                   |
+| 500         | INTERNAL_SERVER_ERROR |
+| 504         | GATEWAY_TIMEOUT       |
 
 > Note: resource DOES require valid *access_token* in the HTTP header of the request
 
@@ -1541,7 +1544,10 @@ Get current state of the API
 
 + Response 204
 
-+ Response 503
++ Response 500(application/json; charset=utf-8)
+        Error in processing request
+
+    + Attributes (Errors)
 
 
 # Data Structures
