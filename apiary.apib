@@ -11,14 +11,14 @@ This online document describes Home Credit One-Click API - the means for partner
 
 The aim of here described services is to allow customers the smooth running through the process of an online purchase. The services that allow achieving this goal are divided into the following groups:
 
-| Group of services | Purpose |
-| ---      | ---     |
-| Security                | Security rules and principles |
-| Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle |
-| Offers operations       | Services that allow partner e-shops to implement an installment calculator on their websites |
-| Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC |
+| Group of services       | Purpose                                                                                                                                                                                           |
+| ---                     | ---                                                                                                                                                                                               |
+| Security                | Security rules and principles                                                                                                                                                                     |
+| Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle                                                                                                         |
+| Offers operations       | Services that allow partner e-shops to implement an installment calculator on their websites                                                                                                      |
+| Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC                                                        |
 | Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
-| Health check            | Health check usage description |
+| Health check            | Health check usage description                                                                                                                                                                    |
 
 ### Basic implementation
 The most basic and minimum way how to implement HCO API is to at least implement:
@@ -124,14 +124,14 @@ GET /general/contracts?filter=contractDate|gt|2016-02-10;contractDate|lteq|2016-
 
 
 ### List of operators
-| operator | meaning |
-| ---      | ---     |
-| lt       | less than |
-| lteq     | less than or equals |
-| eq       | equals    |
-| gteq     | greater than or equals    |
-| gt       | greater than |
-| in       | value in list |
+| Operator | Meaning                |
+| ---      | ---                    |
+| lt       | less than              |
+| lteq     | less than or equals    |
+| eq       | equals                 |
+| gteq     | greater than or equals |
+| gt       | greater than           |
+| in       | value in list          |
 
 
 ## Request restrictions
@@ -213,13 +213,13 @@ Errors object example:
 ```
 
 Error object attributes
-| attribute name | description |
-| --- | --- |
-| code | unique error code |
-| message | human readable error description (non-localized) |
-| severity | error severity ([see below](#error-severity)) |
-| attribute | json path of request attribute that caused the error (optional) |
-| ticketId | internal ticket ID, used for error backtracking |
+| Attribute name | Description                                                     |
+| ---            | ---                                                             |
+| code           | unique error code                                               |
+| message        | human readable error description (non-localized)                |
+| severity       | error severity ([see below](#error-severity))                   |
+| attribute      | json path of request attribute that caused the error (optional) |
+| ticketId       | internal ticket ID, used for error backtracking                 |
 
 <a name="error-severity"></a>
 There are 3 levels of error severity:
@@ -228,12 +228,12 @@ There are 3 levels of error severity:
 - `INFO` - information only, execution can continue without user interaction.
 
 ### Errors overview
-| Status code | Code | Message |
-| ---         | ---  | ---     |
-| 400 | INVALID_REQUEST | (*Various messages possible*) e.g. Unsupported combination of application state and order state |
-| 404 | OBJECT_NOT_FOUND | (*Various messages possible*) e.g. Specified object was not found |
-| 422 | NOT_SUPPORTED | (*Various messages possible*) e.g. Not supported for the financing type `INSTALLMENT`. Contact your sales rep. |
-| 500 | INTERNAL_SERVER_ERROR | (*Various messages possible*) e.g. Failed to parse given JSON  |
+| Status code | Code                  | Explanation                                                                     | Message                                                                                                        |
+| ---         | ---                   | ---                                                                             | ---                                                                                                            |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.) | (*Various messages possible*) e.g. Unsupported combination of application state and order state                |
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                       | (*Various messages possible*) e.g. Specified object was not found                                              |
+| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                              | (*Various messages possible*) e.g. Not supported for the financing type `INSTALLMENT`. Contact your sales rep. |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.  | (*Various messages possible*) e.g. Failed to parse given JSON                                                  |
 
 
 ## Formats
@@ -371,11 +371,11 @@ If the request was successfully processed, you receive HTTP status code 201 and 
 If the request was recognized as duplication, you receive HTTP status code 200 and the *application* object created during the first related successful request.
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 422 | UNPROCESSABLE         | *Various messages possible* |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                      |
+| ---         | ---                   | ---                                                                              |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 422         | UNPROCESSABLE         | Request was well-formed but was unable to be followed due to semantic errors     |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 
 ### Create application [POST]
@@ -417,12 +417,12 @@ If the request was successfully processed, you receive HTTP status code 200 and 
 - Gateway redirect URL
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 404 | APPLICATION_NOT_FOUND | *Various messages possible* |
-| 422 | UNPROCESSABLE         | *Various messages possible* |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Message                                                                          |
+| ---         | ---                   | ---                                                                              |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | APPLICATION_NOT_FOUND | The requested resource could not be found                                        |
+| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
     + applicationId (string, required, `01-11200a0ee1`)
@@ -456,23 +456,23 @@ OTP is required to verify *application*. See [Verify Application](#reference/app
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
 
-| Application state | Availability |
-| ---               | ---          |
-| `PROCESSING`      | YES (`stateReason = PROCESSING_VERIFICATION`)|
-| `REJECTED`        | NO           |
-| `CANCELLED`       | NO           |
-| `READY`           | NO           |
+| Application state | Availability                                  |
+| ---               | ---                                           |
+| `PROCESSING`      | YES (`stateReason = PROCESSING_VERIFICATION`) |
+| `REJECTED`        | NO                                            |
+| `CANCELLED`       | NO                                            |
+| `READY`           | NO                                            |
 
 Possible error codes explanation:
-| Error status code | Code | Explanation |
-| ---               | ---  | ---         |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | EXPLOITED_MAX_SMS_SENT     | Number of available SMS for time unit exceeded                                             |
-| 422 | REPEATED_REQUEST_TOO_EARLY | Repeated request violated security time span                                               |
-| 422 | NOT_ALLOWED                | Not allowed (other reasons)|
-| 422 | NO_VERIF_MOBILE            | Customer has not verified mobile                                                           |
-| 500 | FAILURE                    | Internal failure                    |
+| Status code | Code                       | Explanation                                                                     |
+| ---         | ---                        | ---                                                                             |
+| 400         | INVALID_REQUEST            | Request was not well formatted (malformed request syntax, size too large, etc.) |
+| 404         | OBJECT_NOT_FOUND           | The requested resource could not be found                                       |
+| 422         | EXPLOITED_MAX_SMS_SENT     | Number of available SMS for time unit exceeded                                  |
+| 422         | REPEATED_REQUEST_TOO_EARLY | Repeated request violated security time span                                    |
+| 422         | NOT_ALLOWED                | Not allowed (other reasons)                                                     |
+| 422         | NO_VERIF_MOBILE            | Customer has not verified mobile                                                |
+| 500         | FAILURE                    | Unexpected condition was encountered and no more specific message is suitable.  |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -509,23 +509,23 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
 
-| Application state | Availability |
-| ---               | ---          |
-| `PROCESSING`      | YES (`stateReason = PROCESSING_VERIFICATION`)|
-| `REJECTED`        | NO           |
-| `CANCELLED`       | NO           |
-| `READY`           | NO           |
+| Application state | Availability                                  |
+| ---               | ---                                           |
+| `PROCESSING`      | YES (`stateReason = PROCESSING_VERIFICATION`) |
+| `REJECTED`        | NO                                            |
+| `CANCELLED`       | NO                                            |
+| `READY`           | NO                                            |
 
 Possible error codes explanation:
-| Error status code | Code | Explanation |
-| ---               | ---  | ---         |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | NOT_AUTHORIZED        | Incorrect OTP code                 |
-| 422 | NOT_AUTHORIZED_BLOCKED | Limit of attempts for OTP verification exceeded |
-| 422 | OTP_EXPIRED       | Validity of OTP code expired                                                      |
-| 422 | NOT_ALLOWED         | Verification is not allowed                                                                       |
-| 500 | FAILURE                | Internal failure          |
+| Status code | Code                   | Explanation                                                                     |
+| ---         | ---                    | ---                                                                             |
+| 400         | INVALID_REQUEST        | Request was not well formatted (malformed request syntax, size too large, etc.) |
+| 404         | OBJECT_NOT_FOUND       | The requested resource could not be found                                       |
+| 422         | NOT_AUTHORIZED         | Incorrect OTP code                                                              |
+| 422         | NOT_AUTHORIZED_BLOCKED | Limit of attempts for OTP verification exceeded                                 |
+| 422         | OTP_EXPIRED            | Validity of OTP code expired                                                    |
+| 422         | NOT_ALLOWED            | Verification is not allowed                                                     |
+| 500         | FAILURE                | Unexpected condition was encountered and no more specific message is suitable.  |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -570,12 +570,12 @@ To determine what additional data is needed see `additionalData` array on *appli
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
 
-| Application state | Availability |
-| ---               | ---          |
-| `PROCESSING`      | YES (`stateReason = PROCESSING_ADDITIONAL_DATA`)|
-| `REJECTED`        | NO           |
-| `CANCELLED`       | NO           |
-| `READY`           | NO           |
+| Application state | Availability                                     |
+| ---               | ---                                              |
+| `PROCESSING`      | YES (`stateReason = PROCESSING_ADDITIONAL_DATA`) |
+| `REJECTED`        | NO                                               |
+| `CANCELLED`       | NO                                               |
+| `READY`           | NO                                               |
 
 Possible *application* `state` and `stateReason` after calling this operation:
 1. Application state `READY` or `REJECTED` if sent application data are processed and checked so *application* is completed.
@@ -586,14 +586,14 @@ Possible *application* `state` and `stateReason` after calling this operation:
 1. Application state `PROCESSING` with state reason `PROCESSING_REDIRECT_NEEDED` if there is no way how to complete *application* throught API calls and you have to redirect customer to `gatewayRedirectUrl`.
 
 Possible error codes explanation:
-| Error status code | Code | Explanation |
-| ---               | ---  | ---         |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | PERSONAL_ID_INVALID  | PersonalId is not valid, please send valid PersonalId        |
-| 422 | ADDITIONAL_DATA_NOT_REQUIRED  | Application is not in state which allows use of this method. See stateReason for recommended next step.      |
-| 422 | ADDITIONAL_DATA_NOT_MATCHING  | Additional data does not match with client details. See stateReason for recommended next step.      |
-| 500 | FAILURE                | Internal failure          |
+| Status code | Code                          | Explanation                                                                                             |
+| ---         | ---                           | ---                                                                                                     |
+| 400         | INVALID_REQUEST               | Request was not well formatted (malformed request syntax, size too large, etc.)                         |
+| 404         | OBJECT_NOT_FOUND              | The requested resource could not be found                                                               |
+| 422         | PERSONAL_ID_INVALID           | PersonalId is not valid, please send valid PersonalId                                                   |
+| 422         | ADDITIONAL_DATA_NOT_REQUIRED  | Application is not in state which allows use of this method. See stateReason for recommended next step. |
+| 422         | ADDITIONAL_DATA_NOT_MATCHING  | Additional data does not match with client details. See stateReason for recommended next step.          |
+| 500         | FAILURE                       | Unexpected condition was encountered and no more specific message is suitable.                          |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -630,12 +630,12 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
 
-| Application state | Availability |
-| ---               | ---          |
-| `REJECTED`        | NO           |
-| `CANCELLED`       | YES          |
-| `PROCESSING`      | YES          |
-| `READY`           | YES *(for financing types `TRY_AND_PAY` and `DEFERRED_PAYMENT` available only when `Application.stateReason = READY_TO_SHIP`)|
+| Application state | Availability                                                                                                                  |
+| ---               | ---                                                                                                                           |
+| `REJECTED`        | NO                                                                                                                            |
+| `CANCELLED`       | YES                                                                                                                           |
+| `PROCESSING`      | YES                                                                                                                           |
+| `READY`           | YES *(for financing types `TRY_AND_PAY` and `DEFERRED_PAYMENT` available only when `Application.stateReason = READY_TO_SHIP`) |
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Application unique ID
@@ -644,13 +644,13 @@ If the request was successfully processed, you receive HTTP status code 200 and 
 - Application substate
 
 In other cases, you receive one of the following errors:
-| Status code | Code          | Message                     |
-| --- | ---                   | ---                         |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | UNPROCESSABLE         | *Various messages possible* |
-| 422 | APPLICATION_REJECTED  | *Various messages possible* |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                      |
+| ---         | ---                   | ---                                                                              |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
+| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
+| 422         | APPLICATION_REJECTED  | When you try to cancel already `REJECTED` `Application`, which is not allowed    |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 
 + Parameters
@@ -718,12 +718,12 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application substate
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | ---                   | ---                         |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | NOT_SUPPORTED         | CZ: Not supported for the financing type INSTALLMENT. Contact Home Credit: (CZ) smlouvy@homecredit.cz or +420 541 598 598, (SK) kompletace@homecredit.cz or +421 337 767 157 |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                     |
+| ---         | ---                   | ---                                                                             |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.) |
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                       |
+| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                              |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.  |
 
 
 + Parameters
@@ -761,10 +761,10 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 
 | Application state | Availability |
 | ---               | ---          |
-| `PROCESSING`      | YES           |
+| `PROCESSING`      | YES          |
 | `REJECTED`        | NO           |
 | `CANCELLED`       | NO           |
-| `READY`           | NO          |
+| `READY`           | NO           |
 
 Use `/financing/v1/applications/{applicationId}/order/cancel` resource with an empty request to cancel all order items (the whole *order*) at once.
 
@@ -799,12 +799,12 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application substate
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | NOT_SUPPORTED | CZ: Not supported for the financing type INSTALLMENT. Contact Home Credit: (CZ) smlouvy@homecredit.cz or +420 541 598 598, (SK) kompletace@homecredit.cz or +421 337 767 157 |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                      |
+| ---         | ---                   | ---                                                                              |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
+| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -844,12 +844,12 @@ When some or all order items were shipped to the customer, use `/financing/v1/ap
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | YES       |
 
-| Application state | Availability |
-| ---               | ---          |
-| `PROCESSING`      | NO           |
-| `REJECTED`        | NO           |
-| `CANCELLED`       | NO           |
-| `READY`           | YES  (* for financing type `INSTALLMENT` available only when `Application.stateReason = READY_TO_SHIP`)        |
+| Application state | Availability                                                                                            |
+| ---               | ---                                                                                                     |
+| `PROCESSING`      | NO                                                                                                      |
+| `REJECTED`        | NO                                                                                                      |
+| `CANCELLED`       | NO                                                                                                      |
+| `READY`           | YES  (* for financing type `INSTALLMENT` available only when `Application.stateReason = READY_TO_SHIP`) |
 
 Use `/financing/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
 
@@ -886,12 +886,12 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application substate
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | NOT_SUPPORTED | CZ: Not supported for the financing type INSTALLMENT. Contact Home Credit: (CZ) smlouvy@homecredit.cz or +420 541 598 598, (SK) kompletace@homecredit.cz or +421 337 767 157 |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                      |
+| ---         | ---                   | ---                                                                              |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
+| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -931,12 +931,12 @@ Undeliverable items (all except `PHYSICAL` and `DIGITAL`) and items with `order.
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
 
-| Application state | Availability |
-| ---               | ---          |
-| `PROCESSING`      | NO           |
-| `REJECTED`        | NO           |
-| `CANCELLED`       | NO           |
-| `READY`           | YES (* for financing type `INSTALLMENT` available only when `Application.stateReason = READY_TO_SHIP`)         |
+| Application state | Availability                                                                                           |
+| ---               | ---                                                                                                    |
+| `PROCESSING`      | NO                                                                                                     |
+| `REJECTED`        | NO                                                                                                     |
+| `CANCELLED`       | NO                                                                                                     |
+| `READY`           | YES (* for financing type `INSTALLMENT` available only when `Application.stateReason = READY_TO_SHIP`) |
 
 Use `/financing/v1/applications/{applicationId}/order/deliver` resource with an empty request to mark all order items (the whole *order*) as delivered at once.
 
@@ -971,12 +971,12 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application substate
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | NOT_SUPPORTED | CZ: Not supported for the financing type INSTALLMENT. Contact Home Credit: (CZ) smlouvy@homecredit.cz or +420 541 598 598, (SK) kompletace@homecredit.cz or +421 337 767 157 |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                      |
+| ---         | ---                   | ---                                                                              |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
+| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -1055,12 +1055,12 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application substate
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | NOT_SUPPORTED | CZ: Not supported for the financing type INSTALLMENT. Contact Home Credit: (CZ) smlouvy@homecredit.cz or +420 541 598 598, (SK) kompletace@homecredit.cz or +421 337 767 157 |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                      |
+| ---         | ---                   | ---                                                                              |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
+| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
     + applicationId (string, required, `02-11b00a1ef1`)
@@ -1133,10 +1133,10 @@ This should be used by partner before issuing an invoice, to include correct bil
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO |
-| `TRY_AND_PAY`      | YES  |
-| `DEFERRED_PAYMENT` | YES  |
-| `SUBSCRIPTION`     | YES  |
+| `INSTALLMENT`      | NO        |
+| `TRY_AND_PAY`      | YES       |
+| `DEFERRED_PAYMENT` | YES       |
+| `SUBSCRIPTION`     | YES       |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -1165,12 +1165,12 @@ This should be used by partner before issuing an invoice, to include correct bil
 ## Orders [/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}]
 If you need to find out current information about particular *order* - primarily its state (or its order items' states) and other details - use `/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
 
-| Financing type     | Supported |
-| ---                | ---       |
+| Financing type     | Supported                                                                      |
+| ---                | ---                                                                            |
 | `INSTALLMENT`      | YES* (see the [parameters restriction bellow](#orders-parameters-restriction)) |
-| `TRY_AND_PAY`      | YES |
-| `DEFERRED_PAYMENT` | YES |
-| `SUBSCRIPTION`     | NO |
+| `TRY_AND_PAY`      | YES                                                                            |
+| `DEFERRED_PAYMENT` | YES                                                                            |
+| `SUBSCRIPTION`     | NO                                                                             |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -1203,11 +1203,11 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application substate
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 404 | OBJECT_NOT_FOUND      | *Various messages possible* |
-| 422 | UNPROCESSABLE         | *Various messages possible* |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                      |
+| ---         | ---                   | ---                                                                              |
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
+| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 
 ### Get order [GET]
@@ -1263,11 +1263,11 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Number of installments
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 422 | UNPROCESSABLE         | *Various messages possible* |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                      |
+| ---         | ---                   | ---                                                                              |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 
 ### Calculate installment programs offer  [POST]
@@ -1307,11 +1307,11 @@ If the request was successfully processed, you receive HTTP status code 200 and 
 - Installment program details
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 422 | UNPROCESSABLE         | *Various messages possible* |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                      |
+| ---         | ---                   | ---                                                                              |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 
 ### Calculate installment program detail [POST]
@@ -1348,11 +1348,11 @@ If the request was successfully processed, you receive HTTP status code 200 and 
 - Step between given minimum and maximum down payment amounts
 
 In other cases, you receive one of the following errors:
-| Status code | Code | Message |
-| --- | --- | --- |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 422 | UNPROCESSABLE         | *Various messages possible* |
-| 500 | INTERNAL_SERVER_ERROR | *Various messages possible* |
+| Status code | Code                  | Explanation                                                                      |
+| ---         | ---                   | ---                                                                              |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 
 ### Calculate installment programs down payments [POST]
@@ -1386,11 +1386,11 @@ Returns probability of *application's* approval and limits of particular custome
 It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call HC API - **NEVER put access token directly to client side**.
 
 Possible error codes explanation:
-| Error status code | Code | Explanation |
-| ---               | ---  | ---         |
-| 400 | INVALID_REQUEST       | *Various messages possible* |
-| 422 | PERSONAL_ID_INVALID   | PersonalId is not valid     |
-| 500 | FAILURE               | Internal failure            |
+| Status code | Code                | Explanation                                                                     |
+| ---         | ---                 | ---                                                                             |
+| 400         | INVALID_REQUEST     | Request was not well formatted (malformed request syntax, size too large, etc.) |
+| 422         | PERSONAL_ID_INVALID | PersonalId is not valid                                                         |
+| 500         | FAILURE             | Internal failure                                                                |
 
 ### Precheck [POST]
 Returns probability of *application's* approval and limits of particular customer, if known to HC
