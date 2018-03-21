@@ -14,8 +14,7 @@ The aim of here described services is to allow customers the smooth running thro
 | Group of services       | Purpose                                                                                                                                                                                           |
 | ---                     | ---                                                                                                                                                                                               |
 | Security                | Security rules and principles                                                                                                                                                                     |
-| Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle                                                                                                         |
-| Offers operations       | Services that allow partner e-shops to implement an installment calculator on their websites                                                                                                      |
+| Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle                                                                                                                                                                                                           |
 | Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC                                                        |
 | Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
 | Health check            | Health check usage description                                                                                                                                                                    |
@@ -30,8 +29,8 @@ The most basic and minimum way how to implement HCO API is to at least implement
     - Special URLs for customers that shows payment success or rejection.
 1. [Application notification](#reference/merchantsite-operations/application-notification)
 1. [Generate invoice info](#reference/application-operations/invoices/generate-invoice-info)
-    - To put all the necessary information to invoices (correct due date, bank number...). Not needed for `INSTALLMENT` financing type.
-1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent) (necessary for financing type `INSTALLMENT`) or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
+    - To put all the necessary information to invoices (correct due date, bank number...). 
+1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent)  or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
     - HCO won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
 
 [![Sequence diagram of minimum implementation](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramMinimum.png)](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramMinimum.png)
@@ -231,8 +230,8 @@ There are 3 levels of error severity:
 | Status code | Code                  | Explanation                                                                     | Message                                                                                                        |
 | ---         | ---                   | ---                                                                             | ---                                                                                                            |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.) | (*Various messages possible*) e.g. Unsupported combination of application state and order state                |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                       | (*Various messages possible*) e.g. Specified object was not found                                              |
-| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                              | (*Various messages possible*) e.g. Not supported for the financing type `INSTALLMENT`. Contact your sales rep. |
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                       | (*Various messages possible*) e.g. Specified object was not found        
+|                                      
 | 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.  | (*Various messages possible*) e.g. Failed to parse given JSON                                                  |
 
 
@@ -324,7 +323,6 @@ Elementary flow starts when customer wants to use one of Home Credit's payment m
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | YES       |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
@@ -352,15 +350,11 @@ Use `/financing/v1/applications` resource with properly filled request that cont
     - Total VAT
 - Financing type
 - Details of selected financing type (if required depends on selected financing type)
-  - \*Installment settings - preferred installment amount
-  - \*Installment settings - preferred downpayment amount
-  - \*Installment settings - installment program product code
 - Personal data processing agreement
 - Additional information necessary for the continuation and completion of the process
   - Your URL where the customer should be redirected after application approval
   - Your URL where the customer should be redirected after application rejection
   - URL of your notification endpoint you want us to send you notifications about particular application updates
-> \* = Required for financing type `INSTALLMENT` in case customer has already used installment calculator embedded on your website and selected preffered installment program. See the [Offers operations section](#reference/offers-operations) for more details about possibility to embed installment calculator on your website.
 
 If the request was successfully processed, you receive HTTP status code 201 and *application* object with at least following information in the response:
 - Application unique ID
@@ -404,7 +398,6 @@ If you need to find out current information about particular *application* - pri
 
 | Financing type     | Supported         |
 | ---                | ---               |
-| `INSTALLMENT`      | YES (limited use) |
 | `TRY_AND_PAY`      | YES               |
 | `DEFERRED_PAYMENT` | YES               |
 | `SUBSCRIPTION`     | NO                |
@@ -451,7 +444,6 @@ OTP is required to verify *application*. See [Verify Application](#reference/app
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO        |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
@@ -504,7 +496,6 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO        |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
@@ -565,7 +556,6 @@ To determine what additional data is needed see `additionalData` array on *appli
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO        |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
@@ -625,7 +615,6 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | YES       |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
@@ -681,7 +670,6 @@ When there's some changes within *order* that may have an importatnt impact on t
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO        |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
@@ -754,7 +742,6 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO        |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
@@ -839,7 +826,6 @@ When some or all order items were shipped to the customer, use `/financing/v1/ap
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | YES *     |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | YES       |
@@ -849,7 +835,7 @@ When some or all order items were shipped to the customer, use `/financing/v1/ap
 | `PROCESSING`      | NO                                                                                                      |
 | `REJECTED`        | NO                                                                                                      |
 | `CANCELLED`       | NO                                                                                                      |
-| `READY`           | YES  (* for financing type `INSTALLMENT` available only when `Application.stateReason = READY_TO_SHIP`) |
+| `READY`           | YES   |
 
 Use `/financing/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
 
@@ -926,7 +912,6 @@ Undeliverable items (all except `PHYSICAL` and `DIGITAL`) and items with `order.
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | YES *     |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
@@ -936,7 +921,7 @@ Undeliverable items (all except `PHYSICAL` and `DIGITAL`) and items with `order.
 | `PROCESSING`      | NO                                                                                                     |
 | `REJECTED`        | NO                                                                                                     |
 | `CANCELLED`       | NO                                                                                                     |
-| `READY`           | YES (* for financing type `INSTALLMENT` available only when `Application.stateReason = READY_TO_SHIP`) |
+| `READY`           | YES  |
 
 Use `/financing/v1/applications/{applicationId}/order/deliver` resource with an empty request to mark all order items (the whole *order*) as delivered at once.
 
@@ -1010,7 +995,6 @@ When some or all order items were returned by the customer to you, use `/financi
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO        |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | NO        |
@@ -1133,7 +1117,6 @@ This should be used by partner before issuing an invoice, to include correct bil
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `INSTALLMENT`      | NO        |
 | `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
 | `SUBSCRIPTION`     | YES       |
@@ -1167,7 +1150,6 @@ If you need to find out current information about particular *order* - primarily
 
 | Financing type     | Supported                                                                      |
 | ---                | ---                                                                            |
-| `INSTALLMENT`      | YES* (see the [parameters restriction bellow](#orders-parameters-restriction)) |
 | `TRY_AND_PAY`      | YES                                                                            |
 | `DEFERRED_PAYMENT` | YES                                                                            |
 | `SUBSCRIPTION`     | NO                                                                             |
@@ -1239,144 +1221,8 @@ use `/financing/v1/orders` with at least one of following parameter:
 
     + Attributes (Errors)
 
-
-# Group Offers operations
-When a customer wants to pay for a purchase by a loan and you want to provide him an option to choose from available offers while still being on your website, you should achieve this by implementing your installment calculator that uses following resources:
-
-- `/financing/v1/installmentProgramsOffers` - to find out available installment programs offers and their details
-- `/financing/v1/installmentPrograms` - to find out details of a chosen installment program
-- `/financing/v1/installmentProgramsDownPayments` - to find out down payment options within available installment programs offers
-
-> NOTE: Implementation of installment calculator is optional, customers can always use the installment calculator embedded in Home Credit's front end
-
-
-## Installment programs offers [/financing/v1/installmentProgramsOffers]
-When a customer wants to pay for a purchase by a loan and you want to show him an offer of available installment programs, use `/financing/v1/installmentProgramsOffers` resource with properly filled request that contains at least following data:
-- Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source; if you don't provide product set code, your default product set will be used)
-- Price of customer's purchase
-
-If the request was successfully processed, you receive HTTP status code 200 and array of objects of available installment programs with at least following information in the response:
-- Installment program (array)
-  - Installment program product code
-  - Installment program type (in case of only one installment program offer in response it is of type `FAVOURITE`)
-  - Installment amount
-  - Number of installments
-
-In other cases, you receive one of the following errors:
-| Status code | Code                  | Explanation                                                                      |
-| ---         | ---                   | ---                                                                              |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
-| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
-
-
-### Calculate installment programs offer  [POST]
-Calculate installment programs offer according to specified input
-
-feature | supported by resource
---- | ---
-[paging](#header-paging) | no
-[sorting](#header-sorting) | no
-[filtering](#header-filtering) | no
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (InstallmentProgramsOffersRequest)
-
-
-+ Response 200(application/json; charset=utf-8)
-
-        Installment programs collection
-
-    + Attributes (InstallmentPrograms, required)
-
-+ Response 400(application/json; charset=utf-8)
-        Error in processing request
-
-    + Attributes (Errors)
-
-
-## Installment programs [/financing/v1/installmentPrograms]
-When a customer wants to know details of one of previously offered installment programs use `/financing/v1/installmentPrograms` resource with properly filled request that contains at least following data:
-- Product code of given installment program
-- Price of customer's purchase
-
-If the request was successfully processed, you receive HTTP status code 200 and object of information about specified installment program with at least following information in the response:
-- Installment program type
-- Installment amount
-- Number of installments
-- Installment program details
-
-In other cases, you receive one of the following errors:
-| Status code | Code                  | Explanation                                                                      |
-| ---         | ---                   | ---                                                                              |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
-| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
-
-
-### Calculate installment program detail [POST]
-Calculate installment program detailed information.
-
-It returns the installment program that most closely matches specified input.
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (InstallmentProgramsRequest)
-
-
-+ Response 200(application/json; charset=utf-8)
-
-        Detailed information about installment program
-
-    + Attributes (InstallmentProgram)
-
-
-+ Response 422(application/json; charset=utf-8)
-
-        No installment program was found
-
-    + Attributes (Errors)
-
-
-## Installment programs down payments [/financing/v1/installmentProgramsDownPayments]
-When a customer wants to pay for a purchase by a loan and also wants to choose own down payments settings within offered installment calendars, use `/financing/v1/installmentProgramsDownPayments` resource with properly filled request that contains at least following data:
-- Product set code (you should know the proper product set code from Home Credit's sales representative or other similar source)
-- Price of customer's purchase
-
-If the request was successfully processed, you receive HTTP status code 200 and object of information about available down payments settings with at least following information in the response:
-- Minimum down payment amount
-- Maximum down payment amount
-- Step between given minimum and maximum down payment amounts
-
-In other cases, you receive one of the following errors:
-| Status code | Code                  | Explanation                                                                      |
-| ---         | ---                   | ---                                                                              |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
-| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
-
-
-### Calculate installment programs down payments [POST]
-Calculate installment programs down payments according to specified input
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (InstallmentProgramsDownPaymentsRequest)
-
-
-+ Response 200(application/json; charset=utf-8)
-
-        Down payments information - minimal, maximal and available step
-
-    + Attributes (InstallmentProgramsDownPayments)
-
-
-+ Response 400(application/json; charset=utf-8)
-        Error in processing request
-
-    + Attributes (Errors)
-
 # Group Precheck operations
 Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to HC
-
 
 ## Precheck [/financing/v1/precheck]
 Precheck *application*
@@ -1680,20 +1526,9 @@ Financing application
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
-    - `settingsDeferredPayment` - Settings for DEFERRED_PAYMENT Application type.
-        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
-    - `settingsTryAndPayPayment` - Settings for TRY_AND_PAY Application type.
-        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
-    - `settingsInstallment` - Settings for INSTALLMENT Application type.
-        + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
-        + `preferredInstallment` (Amount, optional) - Preferred repayment amount
-        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount (amount should be rounded to hundreds)
-        + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
-        + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
-    - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
+       - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
         + `paymentFrequency` (enum, optional) - payment frequency for recurring payment
             + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
             + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
@@ -2011,70 +1846,6 @@ Account number with bank code.
 + `bankCode`: `0100` (string, required) - Bank code (SWIFT, etc.).
 
 
-## InstallmentProgram (object)
-Installment programs
-
-### Properties
-+ `productCode`: `a122ax` (string, required) - Installment program product code
-+ `type` (enum, optional) - Program type
-    + MINIMAL - Lowest installment
-    + FAVOURITE - Recommended (favourite) installment program
-    + OTHER - Other
-+ `installment` (Amount, optional) - monthly installment amount
-+ `numberOfInstallments`: 10 (number, optional) - installment count
-+ `detail` (Detail, optional)
-    Calculation detailed information.
-    Only available for calculations received by calling `POST /installmentPrograms`
-    Not available for `POST /installmentProgramsOffers/`
-
-
-## InstallmentPrograms (object)
-+ `installmentPrograms` (array[InstallmentProgram], fixed-type, required) - Array with installment programs offer
-
-
-## Detail (object)
-
-### Properties
-+ `installmentDay`: 20 (number, optional)
-    Installment date (day in month)
-
-+ `installmentFirstDate`: `2017-05-20` (string, optional)
-    Date of the first installment
-
-+ `installmentLastDate`: `2018-03-20` (string, optional)
-    Date of the last installment
-
-+ `annualInterestRate`: 0.17 (number, optional)
-    Annual interest rate
-
-+ `predictedProvisionDate`: `2017-05-20` (string, optional)
-    Predicted provision date
-
-+ `paidBack` (Amount, optional) - Total amount paid by customer
-+ `rpsn`: 0.23 (number, optional)
-    RPSN
-
-+ `legalline`: "Uvedené hodnoty jsou spočítány k datu poskytnutí 18.1.2017, datu 1. splátky 20.1.2017 a se splatností všech dalších splátek k 20. dni v měsíci počítaje 20.1.2017. Nejedná se o nabídku či veřejnou nabídku. Platí při splnění podmínek Home Credit...." (string, optional)
-    Text interpretation of the offer
-
-
-## InstallmentProgramsDownPayments (object)
-Down payments information - the lowest down payment possible, the maximum down payment possible and a size of one step between them.
-
-### Properties
-+ `minimum` (Amount, optional)
-    The lowest down payment amount
-    e.g. 0 (0 Kč)
-+ `maximum` (Amount, optional)
-    Maximum down payment amount
-    e.g. 2500 (2 500 Kč)
-+ `step` (Amount, optional)
-    Size of one step between the lowest and maximum down payment amounts
-    e.g. 500 (500 Kč)
-    Available down payments could be (min 0, max 2500):
-    0, 500, 1000, 1500, 2000, 2500
-
-
 ## Limits (object)
 Customer's limits
 
@@ -2114,20 +1885,9 @@ Financing application request
 + `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
-    - `settingsDeferredPayment` - Settings for DEFERRED_PAYMENT Application type.
-        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
-    - `settingsTryAndPayPayment` - Settings for TRY_AND_PAY Application type.
-        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
-    - `settingsInstallment` - Settings for INSTALLMENT Application type.
-        + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
-        + `preferredInstallment` (Amount, optional) - Preferred repayment amount
-        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount (amount should be rounded to hundreds)
-        + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
-        + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
-    - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
+       - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
         + `paymentFrequency` (enum, optional) - payment frequency for recurring payment
             + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
             + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
@@ -2139,14 +1899,13 @@ Financing application request
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
 ## RequestApplicationOTPRequest (object)
-+ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. Required for `DEFFERED_PAYMENT` and `TRY_AND_PAY` with `revolving` ("Odklad na RU").
-
++ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. 
 ## RequestApplicationOTPResponse (object)
 + `phone`: `+420123****89` (string, required) - OTP SMS was sent on this phone number. Number is obfuscated.
 
 ## VerifyRequest (object)
 + `otp`: `123456` (string, required)
-+ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. Required for `DEFFERED_PAYMENT` and `TRY_AND_PAY` with `revolving` ("Odklad na RU").
++ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. 
 
 
 ## AdditionalDataRequest (object)
@@ -2164,30 +1923,6 @@ Additional data about the customer.
 + `front` (File, optional) - Front side
 + `back` (File, optional) - Back side
 
-
-## InstallmentProgramsRequest (object)
-
-### Properties
-+ `productCode`: `a122ax` (string, required) - Product code, this indicates previous calculation result
-+ `price` (Amount, required) - Goods price
-+ `downPayment` (Amount, optional) - Down payment amount (default is 0, amount should be rounded to hundreds)
-
-
-## InstallmentProgramsOffersRequest (object)
-
-### Properties
-+ `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations. If not provided, default productSet will be used.
-+ `price` (Amount, required) - Order price
-+ `downPayment` (Amount, optional) - Down payment amount (default is 0, amount should be rounded to hundreds)
-
-
-## InstallmentProgramsDownPaymentsRequest (object)
-
-### Properties
-+ `productSetCode`: `bc11523` (string, required) - Product set code, this will limit further calculations
-+ `price` (Amount, required) - Goods price
-
-
 ## PrecheckRequest (object)
 Precheck data (has similar structure as `Application`).
 
@@ -2198,20 +1933,9 @@ Precheck data (has similar structure as `Application`).
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + One Of
-    - `settingsDeferredPayment` - Settings for DEFERRED_PAYMENT Application type.
-        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
-    - `settingsTryAndPayPayment` - Settings for TRY_AND_PAY Application type.
-        + `revolvingPreferred`: true (boolean, optional) - Flag if customer prefers to create revolving contract.
-    - `settingsInstallment` - Settings for INSTALLMENT Application type.
-        + `preferredMonths`: 10 (number, optional) - Preferred number of installments (in months)
-        + `preferredInstallment` (Amount, optional) - Preferred repayment amount
-        + `preferredDownPayment` (Amount, optional) - Preferred downpayment amount (amount should be rounded to hundreds)
-        + `productCode`: `a122ax` (string, optional) - Product code, this indicates previous calculation result
-        + `productSetCode`: `bc11523` (string, optional) - Product set code, this will limit further calculations
-    - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
+        - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
         + `paymentFrequency` (enum, optional) - payment frequency for recurring payment
             + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
             + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
@@ -2260,7 +1984,6 @@ Precheck result.
 + `type` (enum, required) - Precheck result type for Funding type.
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `INSTALLMENT` - Pay in monthly installments ("nákup na splátky")
     + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the HCO.
     true = Application is going to be likely approved.
@@ -2279,7 +2002,6 @@ Precheck result.
     + `INSUFFICIENT_LIMIT` - The customer has insufficient limit and there is no way to increase it.
     + `INSUFFICIENT_LIMIT_OPPORTUNITY` - The customer has insufficient limit and can increase it by paying previous not paid orders.
     + `DETAILS_NOT_MATCHING` - We know the customer, but his personal details does not match with details in his HCO account. Customer will be asked for correcting not matching details.
-    + `REVOLVING_REQUIRED` - The customer cannot continue without revolving contract. See `revolvingCode` and `revolvingUsability` for additional information.
     + `NOT_AVAILABLE` - Funding type is not available.
 + `customerType` (enum, required) - Customer type.
     + `UNKNOWN` - Customer is uknown for HCO.
@@ -2291,13 +2013,6 @@ Precheck result.
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
 + `customerOrdersCountLimit`: 4 (number, optional) - The maximum orders count that the customer can make. Not set if there is no limit.
 + `customerOrdersCountRemaining`: 2 (number, optional) - The remaining orders count that the customer can make. Not set if there is no limit.
-+ `revolvingUsability`: true (boolean, optional) - Existing revolving account is usable for financing. For more detailed information see `revolvingCode`.
-+ `revolvingCode`: OK (enum, optional)
-    + `OK`
-    + `ADDITIONAL_DATA_SECURITY` - The customer will be asked to send additional data for security reasons (see additionalData).
-    + `ADDITIONAL_ACTION` - The customer will be asked for further actions (increase of the global limit, to sign credit terms... )
-    + `NEW_REVOLVING` - New revolving loan is available for customer.
-    + `NOT_AVAILABLE` - Revolving loan is not available for customer.
 + `message` (string, optional) - Custom message for customer.
     Examples:
     “V HCO peněžence nemáte dostatečný limit.”
