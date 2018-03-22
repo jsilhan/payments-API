@@ -841,8 +841,6 @@ Use `/financing/v1/applications/{applicationId}/order/send` resource with an emp
 
 > TIP: Use an empty request if marking last item(s) on order as sent.
 
-> **ATTENTION:** An empty request is the only valid way for financing type `INSTALLMENT`
-
 If you want to mark specific order item/s as sent, use `/financing/v1/applications/{applicationId}/order/send` resource with properly filled request that contains sent order items info. In this case request should contain at least following data:
 - Order items (array of sent order items)
   - *one or more particular order item identificators (`code`/`EAN`/`name`)* - `code`, `ean` and `name` is used for identifying order item sent in `Create application`.
@@ -1201,7 +1199,6 @@ use `/financing/v1/orders` with at least one of following parameter:
 - application number.
 
 <a name="orders-parameters-restriction"></a>
-> **ATTENTION:** At this moment, only `applicationId` is valid parametr for order processing within application of financing type `INSTALLMENT`.
 
 + Parameters
     + orderNumber (string, optional, `1234567890`) - Order number
