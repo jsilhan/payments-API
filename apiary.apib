@@ -323,9 +323,7 @@ Elementary flow starts when customer wants to use one of Home Credit's payment m
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | NO        |
 
 Use `/financing/v1/applications` resource with properly filled request that contains at least following data
 - Customer information
@@ -398,9 +396,7 @@ If you need to find out current information about particular *application* - pri
 
 | Financing type     | Supported         |
 | ---                | ---               |
-| `TRY_AND_PAY`      | YES               |
 | `DEFERRED_PAYMENT` | YES               |
-| `SUBSCRIPTION`     | NO                |
 
 If the request was successfully processed, you receive HTTP status code 200 and *application* object with at least following information in the response:
 - Application unique ID
@@ -444,9 +440,7 @@ OTP is required to verify *application*. See [Verify Application](#reference/app
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability                                  |
 | ---               | ---                                           |
@@ -467,7 +461,7 @@ Possible error codes explanation:
 | 500         | FAILURE                    | Unexpected condition was encountered and no more specific message is suitable.  |
 
 + Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
+    + applicationId (string, required, `11b00a1ef1`)
 
 
 ### Request application OTP [POST]
@@ -496,9 +490,7 @@ To send OTP to customer see [Request application OTP](#reference/application-ope
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability                                  |
 | ---               | ---                                           |
@@ -519,7 +511,7 @@ Possible error codes explanation:
 | 500         | FAILURE                | Unexpected condition was encountered and no more specific message is suitable.  |
 
 + Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
+    + applicationId (string, required, `11b00a1ef1`)
 
 
 ### Verify application [POST]
@@ -556,9 +548,7 @@ To determine what additional data is needed see `additionalData` array on *appli
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability                                     |
 | ---               | ---                                              |
@@ -586,7 +576,7 @@ Possible error codes explanation:
 | 500         | FAILURE                       | Unexpected condition was encountered and no more specific message is suitable.                          |
 
 + Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
+    + applicationId (string, required, `11b00a1ef1`)
 
 
 ### Send application additional data [POST]
@@ -615,9 +605,7 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability                                                                                                                  |
 | ---               | ---                                                                                                                           |
@@ -643,7 +631,7 @@ In other cases, you receive one of the following errors:
 
 
 + Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
+    + applicationId (string, required, `11b00a1ef1`)
 
 
 ### Cancel application [PUT]
@@ -670,9 +658,7 @@ When there's some changes within *order* that may have an importatnt impact on t
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -715,7 +701,7 @@ In other cases, you receive one of the following errors:
 
 
 + Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
+    + applicationId (string, required, `11b00a1ef1`)
 
 
 ### Change application order [PUT]
@@ -742,9 +728,7 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -794,7 +778,7 @@ In other cases, you receive one of the following errors:
 | 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
+    + applicationId (string, required, `11b00a1ef1`)
 
 
 ### Mark order items as cancelled [PUT]
@@ -826,15 +810,13 @@ When some or all order items were shipped to the customer, use `/financing/v1/ap
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | YES       |
 
-| Application state | Availability                                                                                            |
-| ---               | ---                                                                                                     |
-| `PROCESSING`      | NO                                                                                                      |
-| `REJECTED`        | NO                                                                                                      |
-| `CANCELLED`       | NO                                                                                                      |
+| Application state | Availability|
+| ---               | ---   |
+| `PROCESSING`      | NO    |
+| `REJECTED`        | NO    |
+| `CANCELLED`       | NO    |
 | `READY`           | YES   |
 
 Use `/financing/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole Order) as sent at once.
@@ -878,7 +860,7 @@ In other cases, you receive one of the following errors:
 | 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
+    + applicationId (string, required, `11b00a1ef1`)
 
 
 ### Mark order items as sent [PUT]
@@ -910,9 +892,7 @@ Undeliverable items (all except `PHYSICAL` and `DIGITAL`) and items with `order.
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability                                                                                           |
 | ---               | ---                                                                                                    |
@@ -962,7 +942,7 @@ In other cases, you receive one of the following errors:
 | 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
+    + applicationId (string, required, `11b00a1ef1`)
 
 
 ### Mark order items as delivered [PUT]
@@ -993,9 +973,7 @@ When some or all order items were returned by the customer to you, use `/financi
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | NO        |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -1045,7 +1023,7 @@ In other cases, you receive one of the following errors:
 | 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
+    + applicationId (string, required, `11b00a1ef1`)
 
 
 ### Mark order items as returned [PUT]
@@ -1074,7 +1052,7 @@ Based on *application* financing type and partner setting, credit note may be is
 ## Applications payments  [/financing/v1/applications/{applicationId}/payments]
 
 + Parameters
-    + applicationId (string, required, `02-11b00a1ef1`)
+    + applicationId (string, required, `11b00a1ef1`)
 
 
 ### Get payments on specific application [GET]
@@ -1115,9 +1093,7 @@ This should be used by partner before issuing an invoice, to include correct bil
 
 | Financing type     | Supported |
 | ---                | ---       |
-| `TRY_AND_PAY`      | YES       |
 | `DEFERRED_PAYMENT` | YES       |
-| `SUBSCRIPTION`     | YES       |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -1146,11 +1122,9 @@ This should be used by partner before issuing an invoice, to include correct bil
 ## Orders [/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}]
 If you need to find out current information about particular *order* - primarily its state (or its order items' states) and other details - use `/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
 
-| Financing type     | Supported                                                                      |
-| ---                | ---                                                                            |
-| `TRY_AND_PAY`      | YES                                                                            |
-| `DEFERRED_PAYMENT` | YES                                                                            |
-| `SUBSCRIPTION`     | NO                                                                             |
+| Financing type     | Supported   | 
+| ---                | ---         |
+| `DEFERRED_PAYMENT` | YES         |                                                                  |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -1203,7 +1177,7 @@ use `/financing/v1/orders` with at least one of following parameter:
 + Parameters
     + orderNumber (string, optional, `1234567890`) - Order number
     + orderVariableSymbol (string, optional, `1234567890`) - Order variable symbol
-    + applicationId (string, optional, `02-11b00a1ef1`) - Application ID
+    + applicationId (string, optional, `11b00a1ef1`) - Application ID
 
 + Response 200(application/json; charset=utf-8)
 
@@ -1502,7 +1476,6 @@ Financing application base information
     + `PROCESSING_APPROVED` - Approved by HC, to be signed by client
     + `PROCESSING_REVIEW` - Manual review by HC in progress
     + `PROCESSING_WAIT_CLIENT` - To be completed by client
-    + `PROCESSING_ALT_OFFER` - Alternative offered to client
     + `PROCESSING_SIGNED` - Signed by client, to verification by HC
     + `CANCELLED_NOT_PAID` - Cancelled before delivery
     + `READY_TO_SHIP` - Financing approved, goods ready to be shipped to client
@@ -1522,15 +1495,6 @@ Financing application
 + `order` (Order, optional) - Order data
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-    + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
-+ One Of
-       - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
-        + `paymentFrequency` (enum, optional) - payment frequency for recurring payment
-            + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
-            + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
-            + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
-        + `paymentFirstDate`: `2016-10-12` (string, optional) - First payment date for recurring payment
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Flag indicating already approved terms and conditions
 + `additionalData` (array[string], optional) - List of additional data that customer has to add to complete the application if stateReason is `PROCESSING_ADDITIONAL_DATA`.
@@ -1568,8 +1532,6 @@ Customer data
 + `dueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
-+ `ordersCountLimit`: 4 (number, optional) - The maximum orders count that the customer can make. Not set if there is no limit.
-+ `ordersCountRemaining`: 2 (number, optional) - The remaining orders count that the customer can make. Not set if there is no limit.
 
 ## ApplicationRequestCustomer (CustomerBase)
 Customer data
@@ -1832,7 +1794,7 @@ Request for generating invoice info.
         + `CATEGORY_EXTENDED` - Customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
     + `orderNumber`: `12345678` (string, optional) - Order number.
     + `orderVariableSymbol`: `12345678` (string, optional) - Variable symbol.
-    + `applicationId`: `02-11200a0ee1` (string, optional) - Application identifier.
+    + `applicationId`: `11200a0ee1` (string, optional) - Application identifier.
 + `billingDate`: `2017-06-20` (string, optional) - Date of issuing an invoice. Default value: today.
 
 ## AccountNumber (object)
@@ -1857,7 +1819,7 @@ Payment information
 ### Properties
 + `paymentId`: `1a12` (string, required) - unique payment identifier
 + `date`: `2017-05-20` (string, required) - Payment date
-+ `applicationId`: `02-11200a0ee1` (string, required) - Application ID that this payment belongs to
++ `applicationId`: `11200a0ee1` (string, required) - Application ID that this payment belongs to
 + `value` (Amount, required) - Payment amount
 + `variableSymbol`: `1234567890` (string, optional) - Payment variable symbol
 + `invoice` (InvoiceInfo, optional) - Invoice data.
@@ -1881,15 +1843,6 @@ Financing application request
 + `order` (OrderBase, required) - Order information
 + `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-    + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
-+ One Of
-       - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
-        + `paymentFrequency` (enum, optional) - payment frequency for recurring payment
-            + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
-            + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
-            + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
-        + `paymentFirstDate`: `2016-10-12` (string, optional) - first payment date for recurring payment
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Personal data processing agreement
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResults).
@@ -1929,15 +1882,6 @@ Precheck data (has similar structure as `Application`).
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-    + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
-+ One Of
-        - `settingsSubscription` - Properties Settings for SUBSCRIPTION Application type.
-        + `paymentFrequency` (enum, optional) - payment frequency for recurring payment
-            + `WEEKLY` - Payment with weekly frequency. Repeated every week at the same day as set in subscriptionPaymentFirstDate.
-            + `MONTHLY` - Payment with monthly frequency. Repeated every month at the same day as set in subscriptionPaymentFirstDate.
-            + `QUARTERLY` - Payment with quarterly frequency. Repeated every 3 months at the same day as set in subscriptionPaymentFirstDate.
-        + `paymentFirstDate`: `2016-10-12` (string, optional) - First payment date for recurring payment
 
 ## PrecheckRequestCustomer (ApplicationRequestCustomer)
 + `additionalData` (AdditionalDataRequest, optional) - Additional data about the customer
@@ -1980,8 +1924,6 @@ Precheck result.
 ### Properties
 + `type` (enum, required) - Precheck result type for Funding type.
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-    + `TRY_AND_PAY` - Customer pay after he tries the goods. ("vyzkoušej a zaplať")
-    + `SUBSCRIPTION` - Recurring payment ("předplatné, nebo opakovaná platba")
 + `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the HCO.
     true = Application is going to be likely approved.
     false = Application is going to be likely rejected.
@@ -2008,8 +1950,6 @@ Precheck result.
 + `customerDueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
-+ `customerOrdersCountLimit`: 4 (number, optional) - The maximum orders count that the customer can make. Not set if there is no limit.
-+ `customerOrdersCountRemaining`: 2 (number, optional) - The remaining orders count that the customer can make. Not set if there is no limit.
 + `message` (string, optional) - Custom message for customer.
     Examples:
     “V HCO peněžence nemáte dostatečný limit.”
@@ -2035,7 +1975,7 @@ Precheck results.
 Order change request data (HC asks partner to correct order data).
 
 ### Properties
-+ `applicationId`: `02-11200a0ee1` (string, required) - Application identifier.
++ `applicationId`: `11200a0ee1` (string, required) - Application identifier.
 + `type` (enum, required) - Change type.
     + PERSONAL_INFO - HC is trying correct customer's personal info (typos in name, surname... etc.).
     + ORDER_ITEMS - HC received order items change proposal from customer.
