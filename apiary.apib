@@ -612,7 +612,7 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 | `REJECTED`        | NO                                                                                                                            |
 | `CANCELLED`       | YES                                                                                                                           |
 | `PROCESSING`      | YES                                                                                                                           |
-| `READY`           | YES *(for financing types `TRY_AND_PAY` and `DEFERRED_PAYMENT` available only when `Application.stateReason = READY_TO_SHIP`) |
+| `READY`           | YES *(for financing types and `DEFERRED_PAYMENT` available only when `Application.stateReason = READY_TO_SHIP`) |
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Application unique ID
