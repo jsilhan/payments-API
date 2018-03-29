@@ -2,10 +2,10 @@ FORMAT: 1A
 HOST: https://api.homecredit.cz
 
 # New API without installment
-API documentation for Home Credit One-Click API.
+API documentation for Lymet API.
 
 ## Getting started
-This online document describes Home Credit One-Click API - the means for partner e-shops through which they can offer their customers the benefits of one of Home Credit's payment method.
+This online document describes Lymet API - the means for partner e-shops through which they can offer their customers the benefits of one of Home Credit's payment method.
 
 The aim of here described services is to allow customers the smooth running through the process of an online purchase. The services that allow achieving this goal are divided into the following groups:
 
@@ -13,12 +13,12 @@ The aim of here described services is to allow customers the smooth running thro
 | ---                     | ---                                                                                                                                                                                               |
 | Security                | Security rules and principles                                                                                                                                                                     |
 | Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle                                                                                                                                                                                                           |
-| Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to HC                                                        |
-| Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
+| Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to Lymet                                                        |
+| Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow Lymet asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
 | Health check            | Health check usage description                                                                                                                                                                    |
 
 ### Basic implementation
-The most basic and minimum way how to implement HCO API is to at least implement:
+The most basic and minimum way how to implement Lymet API is to at least implement:
 1. [Login](#reference/security/login-partner)
     - Needed for all operations.
 1. [Create application](#reference/application-operations/create-application)
@@ -29,7 +29,7 @@ The most basic and minimum way how to implement HCO API is to at least implement
 1. [Generate invoice info](#reference/application-operations/invoices/generate-invoice-info)
     - To put all the necessary information to invoices (correct due date, bank number...). 
 1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent)  or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
-    - HCO won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
+    - Lymet won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
 
 [![Sequence diagram of minimum implementation](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramMinimum.png)](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramMinimum.png)
 
@@ -40,8 +40,8 @@ It's always needed to send all attributes marked as required, but filling option
 You can use advanced operations to improve customer experience.
 
 1. [Precheck](#reference/precheck-operations/precheck)
-    - Merchant can prevent customer to be redirected to HCO gateway if the customer is not suitable for HCO by precheck operation.
-1. Operations to integrate HCO better in merchant checkout:
+    - Merchant can prevent customer to be redirected to Lymet gateway if the customer is not suitable for Lymet by precheck operation.
+1. Operations to integrate Lymet better in merchant checkout:
     - [Request application OTP](#reference/application-operations/request-application-otp)
     - [Verify application](#reference/application-operations/verify-application)
     - [Send application additional data](#reference/application-operations/send-application-additional-data)
@@ -285,7 +285,7 @@ curl -H "Authorization: Bearer secret_token" https://api.homecredit.cz/financing
 }
 ```
 
-> IMPORTANT NOTE: You must keep your access token and login credentials safe. NEVER put login credentials nor access token into client page. If you plan to integrate API calls in client flow without submitting the page to server, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call HC API.
+> IMPORTANT NOTE: You must keep your access token and login credentials safe. NEVER put login credentials nor access token into client page. If you plan to integrate API calls in client flow without submitting the page to server, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call Lymet API.
 
 > NEVER transfer access token nor login credentials over plain HTTP. Such requests will be refused.
 
@@ -1056,7 +1056,7 @@ Based on *application* financing type and partner setting, credit note may be is
 ### Get payments on specific application [GET]
 Get payments on specific *application*
 
-List of realized payments from HC to partner. In case of recurring payment, list may contain more items.
+List of realized payments from Lymet to partner. In case of recurring payment, list may contain more items.
 
 feature | supported by resource
 --- | ---
@@ -1191,14 +1191,14 @@ use `/financing/v1/orders` with at least one of following parameter:
     + Attributes (Errors)
 
 # Group Precheck operations
-Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to HC
+Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to Lymet
 
 ## Precheck [/financing/v1/precheck]
 Precheck *application*
 
-Returns probability of *application's* approval and limits of particular customer, if known to HC
+Returns probability of *application's* approval and limits of particular customer, if known to Lymet
 
-It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call HC API - **NEVER put access token directly to client side**.
+It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call Lymet API - **NEVER put access token directly to client side**.
 
 Possible error codes explanation:
 | Status code | Code                | Explanation                                                                     |
@@ -1208,7 +1208,7 @@ Possible error codes explanation:
 | 500         | FAILURE             | Internal failure                                                                |
 
 ### Precheck [POST]
-Returns probability of *application's* approval and limits of particular customer, if known to HC
+Returns probability of *application's* approval and limits of particular customer, if known to Lymet
 
 + Request (application/json; charset=utf-8)
     + Attributes (PrecheckRequest)
@@ -1228,9 +1228,9 @@ Returns probability of *application's* approval and limits of particular custome
 
 
 # Group Merchantsite operations
-Services that should be developed and exposed by partner e-shops to allow HC asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders*
+Services that should be developed and exposed by partner e-shops to allow Lymet asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders*
 
-> **ATTENTION:** This set of APIs is NOT exposed from HC. Instead, it should be developed by partner and accept calls specified below.
+> **ATTENTION:** This set of APIs is NOT exposed from Lymet. Instead, it should be developed by partner and accept calls specified below.
 
 ## Order change request [/financing/v1/{application.merchantUrls.changeEndpoint}]
 Order change request
@@ -1457,24 +1457,24 @@ Financial amount with VAT rate.
 Financing application base information
 
 ### Properties
-+ `id`: `11200a0ee1` (string, required) - Unique identifier in HCO
++ `id`: `11200a0ee1` (string, required) - Unique identifier in Lymet
 + `state` (enum, required) - Application state.
-    + `PROCESSING` - Application is being processed by HC
+    + `PROCESSING` - Application is being processed by Lymet
     + `READY` - Application was approved and is ready for financing
     + `REJECTED` - Application was rejected
     + `CANCELLED` - Application was cancelled by client, either before approval or after delivery
 + `stateReason`: `PROCESSING_APPROVED` (enum, required) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
-    + `PROCESSING_ADDITIONAL_DATA` - Additional data needed (redirect to HC or send Application additional data)
-    + `PROCESSING_VERIFICATION` - Verification needed (redirect to HC or send Application verification)
+    + `PROCESSING_ADDITIONAL_DATA` - Additional data needed (redirect to Lymet or send Application additional data)
+    + `PROCESSING_VERIFICATION` - Verification needed (redirect to Lymet or send Application verification)
     + `PROCESSING_VALIDATION_IN_PROGRESS` - Customer data is being validated.
-    + `PROCESSING_REDIRECT_NEEDED` - Redirect to HC is needed. Redirect user to `gatewayRedirectUrl`.
+    + `PROCESSING_REDIRECT_NEEDED` - Redirect to Lymet is needed. Redirect user to `gatewayRedirectUrl`.
     + `PROCESSING_NEW` - New application created
-    + `PROCESSING_PREAPPROVED` - Preliminary approval by HC
-    + `REJECTED` - Rejected by HC
-    + `PROCESSING_APPROVED` - Approved by HC, to be signed by client
-    + `PROCESSING_REVIEW` - Manual review by HC in progress
+    + `PROCESSING_PREAPPROVED` - Preliminary approval by Lymet
+    + `REJECTED` - Rejected by Lymet
+    + `PROCESSING_APPROVED` - Approved by Lymet, to be signed by client
+    + `PROCESSING_REVIEW` - Manual review by Lymet in progress
     + `PROCESSING_WAIT_CLIENT` - To be completed by client
-    + `PROCESSING_SIGNED` - Signed by client, to verification by HC
+    + `PROCESSING_SIGNED` - Signed by client, to verification by Lymet
     + `CANCELLED_NOT_PAID` - Cancelled before delivery
     + `READY_TO_SHIP` - Financing approved, goods ready to be shipped to client
     + `READY_SHIPPED` - Goods shipped to client
@@ -1523,10 +1523,10 @@ Customer data
 
 ### Properties
 + `type` (enum, required) - Customer type.
-    + `UNKNOWN` - Customer is uknown for HCO.
-    + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
-    + `FULL` -  HCO knows the customer. Customer has at least one paid order.
-    + `BLOCKED` - HCO knows the customer. Customer is blocked.
+    + `UNKNOWN` - Customer is uknown for Lymet.
+    + `FIRST_ORDER` - Lymet knows the customer. Customer has no paid orders.
+    + `FULL` -  Lymet knows the customer. Customer has at least one paid order.
+    + `BLOCKED` - Lymet knows the customer. Customer is blocked.
 + `dueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
@@ -1536,7 +1536,7 @@ Customer data
 
 ### Properties
 + `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. Required for [Advanced implementation](#introduction/getting-started/advanced-implementation).
-+ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components.  Required for [Advanced implementation](#introduction/getting-started/advanced-implementation). Fill this property with data created with HCO JS library.
++ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components.  Required for [Advanced implementation](#introduction/getting-started/advanced-implementation). Fill this property with data created with Lymet JS library.
 + `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability.
 
 
@@ -1577,7 +1577,7 @@ Object used to change order information.
 
    Date and time until order is reserved.
 
-   Until 'reservationDate' HCO will try to notify partner with Application notification about approval or rejection.
+   Until 'reservationDate' Lymet will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 
@@ -1594,7 +1594,7 @@ Specification of the reason why the application is cancelled.
     + `APPLICATION_CANCELLED_CART_CONTENT_CHANGED` - Cart content changed or customer returned from the cart
     + `APPLICATION_CANCELLED_BY_CUSTOMER` - Customer cancelled order (in his profile or through customer center)
     + `APPLICATION_CANCELLED_BY_ERP` - Cancelled by e-shop's back-office process (e.g. some items unavailable)
-    + `APPLICATION_CANCELLED_EXPIRED` - Application expired (too long waiting time for response from HC)
+    + `APPLICATION_CANCELLED_EXPIRED` - Application expired (too long waiting time for response from Lymet)
     + `APPLICATION_CANCELLED_UNFINISHED` - Customer did not finish order
     + `APPLICATION_CANCELLED_BY_ESHOP_RULES` - Internal e-shop rules breached (e.g. problem with customer's additional data)
     + `APPLICATION_CANCELLED_OTHER` - Other reason - specified in `customReason`
@@ -1605,7 +1605,7 @@ Object used to change order items.
 
 ### Properties
 + `items` (array[OrderItemChangeRequest], optional) - List of changed items. All items are considered when empty.
-    > * ATTENTION: Ignored if marking order items as sent or delivered (HCO currently can't handle partial delivery).
+    > * ATTENTION: Ignored if marking order items as sent or delivered (Lymet currently can't handle partial delivery).
 + `totalPrice` (Amount, optional) - Total amount of items (from orderItems array), including VAT.
 + `totalVat` (array[VatAmount], optional) - Total VAT amounts of items (from orderItems array) split by their VAT rates.
 
@@ -1654,7 +1654,7 @@ Order information, needed to create an application.
 
    Date and time until order is reserved.
 
-   Until 'reservationDate' HCO will try to notify partner with Application notification about approval or rejection.
+   Until 'reservationDate' Lymet will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 
@@ -1826,11 +1826,11 @@ Payment information
 Collection of URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
 ### Properties
-+ `approvedRedirect` (string, required) - URL of the partner used for redirection of the customer back to partner website (from HCO gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
-+ `rejectedRedirect` (string, required) - URL of the partner used for redirection of the customer back to partner website (from HCO gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
++ `approvedRedirect` (string, required) - URL of the partner used for redirection of the customer back to partner website (from Lymet gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
++ `rejectedRedirect` (string, required) - URL of the partner used for redirection of the customer back to partner website (from Lymet gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
 + `notificationEndpoint` (string, required) - URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
 + `paymentsEndpoint` (string, optional) - URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
-+ `changeEndpoint` (string, optional) - URL of the partner used as a endpoint for processing information about order changes made by customer in HC.
++ `changeEndpoint` (string, optional) - URL of the partner used as a endpoint for processing information about order changes made by customer in Lymet.
 
 
 ## ApplicationRequest (object)
@@ -1902,7 +1902,7 @@ Order information, needed to create an application.
 
    Date and time until order is reserved.
 
-   Until 'reservationDate' HCO will try to notify partner with Application notification about approval or rejection.
+   Until 'reservationDate' Lymet will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 + `items` (array[ApplicationRequestOrderItem], optional) - Order items
@@ -1921,7 +1921,7 @@ Precheck result.
 ### Properties
 + `type` (enum, required) - Precheck result type for Funding type.
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-+ `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the HCO.
++ `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the Lymet.
     true = Application is going to be likely approved.
     false = Application is going to be likely rejected.
 + `probabilityOfApproval` (number, required) - Probability of approval.
@@ -1937,20 +1937,20 @@ Precheck result.
     + `ADDITIONAL_DATA_LIMIT` - The customer has insufficient limit and will be asked to send additional data to increase limit.
     + `INSUFFICIENT_LIMIT` - The customer has insufficient limit and there is no way to increase it.
     + `INSUFFICIENT_LIMIT_OPPORTUNITY` - The customer has insufficient limit and can increase it by paying previous not paid orders.
-    + `DETAILS_NOT_MATCHING` - We know the customer, but his personal details does not match with details in his HCO account. Customer will be asked for correcting not matching details.
+    + `DETAILS_NOT_MATCHING` - We know the customer, but his personal details does not match with details in his Lymet account. Customer will be asked for correcting not matching details.
     + `NOT_AVAILABLE` - Funding type is not available.
 + `customerType` (enum, required) - Customer type.
-    + `UNKNOWN` - Customer is uknown for HCO.
-    + `FIRST_ORDER` - HCO knows the customer. Customer has no paid orders.
-    + `FULL` -  HCO knows the customer. Customer has at least one paid order.
-    + `BLOCKED` - HCO knows the customer. Customer is blocked.
+    + `UNKNOWN` - Customer is uknown for Lymet.
+    + `FIRST_ORDER` - Lymet knows the customer. Customer has no paid orders.
+    + `FULL` -  Lymet knows the customer. Customer has at least one paid order.
+    + `BLOCKED` - Lymet knows the customer. Customer is blocked.
 + `customerDueDateCategory` (enum, required)
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
 + `message` (string, optional) - Custom message for customer.
     Examples:
-    “V HCO peněžence nemáte dostatečný limit.”
-    “Uveďte do objednávky jméno a příjmení, které používáte ve službě HCO.”
+    “V Lymet peněžence nemáte dostatečný limit.”
+    “Uveďte do objednávky jméno a příjmení, které používáte ve službě Lymet.”
     etc.
 + `additionalData` (array[string], optional) - List of additional data that customer has to send.
     Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`.
@@ -1969,14 +1969,14 @@ Precheck results.
     Current customer's limits in case we know him and customer give us an approval for their usage [TODO legal].
 
 ## OrderChangeNotification (object)
-Order change request data (HC asks partner to correct order data).
+Order change request data (Lymet asks partner to correct order data).
 
 ### Properties
 + `applicationId`: `11200a0ee1` (string, required) - Application identifier.
 + `type` (enum, required) - Change type.
-    + PERSONAL_INFO - HC is trying correct customer's personal info (typos in name, surname... etc.).
-    + ORDER_ITEMS - HC received order items change proposal from customer.
-    + DELIVER_ADDRESS - HC received delivery address change proposal from customer.
+    + PERSONAL_INFO - Lymet is trying correct customer's personal info (typos in name, surname... etc.).
+    + ORDER_ITEMS - Lymet received order items change proposal from customer.
+    + DELIVER_ADDRESS - Lymet received delivery address change proposal from customer.
 + `order` (OrderExtended, required) - Corrected order data.
 
 ## Error (object)
