@@ -1560,6 +1560,7 @@ Object used to change order information.
 ### Properties
 + reason (string, optional) - Reason of change.
 + order (OrderChange, required) - Changed order data.
++ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## OrderChange (object)
 + `number`: `AA234` (string, optional) - Order number (internal for e-shop)
@@ -1615,6 +1616,7 @@ Object used to mark order items as returned.
 ### Properties
 + `document` (Document, optional) - Attached document (credit note, ...)
 + `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (credit note, ...)
++ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## OrderItemsSendRequest (OrderItemsChangeRequest)
 Object used to mark order items as sent.
@@ -1625,6 +1627,7 @@ Object used to mark order items as sent.
 + `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Shipping date and time (fill just the date if you can't specify a shipping time)
 + `deliveryCarrier` (DeliveryCarrier, optional) - Carrier
 + `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number
++ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## OrderItemsDeliverRequest (OrderItemsSendRequest)
 Object used to mark order items as delivered.
@@ -1634,6 +1637,9 @@ Object used to mark order items as delivered.
 
 ## OrderItemsCancelRequest (OrderItemsChangeRequest)
 Object used to mark order items as cancelled.
+
+### Properties
++ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## OrderBase (object)
 Order information, needed to create an application.
@@ -1854,6 +1860,7 @@ Financing application request
 
 ## VerifyRequest (object)
 + `otp`: `123456` (string, required)
++ `consents` (array[Consent], optional) - Collection of customer consents
 
 
 ## AdditionalDataRequest (object)
@@ -1864,6 +1871,7 @@ Additional data about the customer.
 + `idCard`: 123456789 (string, optional) - ID card number
 + `idCardExpiryDate`: `2020-05-19` (string, optional) - ID card expiration date
 + `idCardScan` (IdCardScan, optional) - ID card scan
++ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## IdCardScan (object)
 
@@ -1880,6 +1888,7 @@ Precheck data (has similar structure as `Application`).
 + `agreementPersonalDataProcessing`: `true` (boolean, optional) - Flag indicating already approved personal data processing
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
++ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## PrecheckRequestCustomer (ApplicationRequestCustomer)
 + `additionalData` (AdditionalDataRequest, optional) - Additional data about the customer
