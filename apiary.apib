@@ -1,7 +1,7 @@
 FORMAT: 1A
 HOST: https://api.homecredit.cz
 
-# New API without installment
+# New JVB API without installment
 API documentation for Lymet API.
 
 ## Getting started
@@ -1845,6 +1845,7 @@ Financing application request
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResults).
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
++ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## RequestApplicationOTPRequest (object)
 
@@ -1996,3 +1997,10 @@ Order change request data (Lymet asks partner to correct order data).
 + itemsPerPage: 10 (number, required) - Number of items per page
 + nextPage: `transactions?sort=category&limit=10&after=25` (string, optional) - Request to retrieve next page, if it exists and can be unambiguously specified
 + prevPage: `transactions?sort=category&limit=10&before=25` (string, optional) - Request to retrieve previous page, if it exists and can be unambiguously specified
+
+## Consent (object)
+Consent
+
+### Properties
++ `slug`: `telco` (string, required) - Name of purpose for personal data processing
++ `businessDate`: `2017-01-15T00:00:00+02:00` (string, optional) - business date and time
