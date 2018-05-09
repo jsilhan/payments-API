@@ -1311,38 +1311,10 @@ Notification about new payment.
 
 
 # Group Health check
-To easily find out current API state use the [API state check resource](#reference/api-status-check/api-status-check).
 To check the availability of back-end services use the [health check resource](#reference/health-check/health-check).
 
-## API status check [/info]
-If the API is up and runing, you receive HTTP status code 204 and object of information about it.
-
-In other cases, you receive one of the following errors:
-| Status code | Code                  |
-| ---         | ---                   |
-| 406         | NOT_ACCEPTABLE        |
-| 500         | INTERNAL_SERVER_ERROR |
-
-> Note: resource DOES NOT require valid *access_token* in the HTTP header of the request
-
-### API status check [GET]
-Get current state of the API
-
-+ Response 200(application/json; charset=utf-8)
-
-        API is up and running
-
-    + Attributes (ApiInfo)
-
-
-+ Response 500(application/json; charset=utf-8)
-        Error in processing request
-
-    + Attributes (Errors)
-
-
-## API health check [/financing/v1/health{?timeout}]
-If the API back-end services is up and runing, you receive HTTP status code 204.
+## API health check [/v1/health{?timeout}]
+If the API back-end services are up and runing, you receive HTTP status code 200 with optional version info.
 
 In other cases, you receive one of the following errors:
 | Status code | Code                  |
@@ -1350,17 +1322,23 @@ In other cases, you receive one of the following errors:
 | 500         | INTERNAL_SERVER_ERROR |
 | 504         | GATEWAY_TIMEOUT       |
 
-> Note: resource DOES require valid *access_token* in the HTTP header of the request
+> Note: resource DOES NOT require valid *access_token* in the HTTP header of the request
 
 + Parameters
-    + timeout: `2000` (string, optional) - Optional timeout (in miliseconds) for completition of the request (504 is returned when not fulfilled)
+    + timeout: `2000` (integer, optional) - Optional timeout (in miliseconds) for completion of the request (504 is returned when not fulfilled)
 
 ### API health check [GET]
 Get current state of the API
 
-+ Response 204
++ Request (application/json; charset=utf-8)
+    + Parameters
+        + timeout: 2000 (integer, optional) - Optional timeout (in miliseconds) for completion of the request
 
-+ Response 500(application/json; charset=utf-8)
++ Response 200 (application/json; charset=utf-8)
+
+    + Attributes (HealthCheckResponse)
+
++ Response 500 (application/json; charset=utf-8)
         Error in processing request
 
     + Attributes (Errors)
@@ -2008,3 +1986,9 @@ Consent
 ### Properties
 + `slug`: `telco` (string, required) - Name of purpose for personal data processing
 + `businessDate`: `2017-01-15T00:00:00+02:00` (string, optional) - business date and time
+
+## HealthCheckResponse (object)
+Health check response
+
+### Properties
++ `projectVersion`: `Lymet 2.40.0` (string, optional) - Version of the project
