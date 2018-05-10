@@ -375,14 +375,21 @@ Create new *application* of particular financing type
     + Attributes (ApplicationRequest)
 
 
-+ Response 200(application/json; charset=utf-8)
++ Response 201 (application/json; charset=utf-8)
 
         Application was created
 
     + Attributes (Application)
 
 
-+ Response 400(application/json; charset=utf-8)
++ Response 200 (application/json; charset=utf-8)
+
+        Application exists
+
+    + Attributes (Application)
+
+
++ Response 400 (application/json; charset=utf-8)
 
         There was an error processing request
 
@@ -1544,7 +1551,7 @@ Object used to change order information.
     + `PERSONAL_PARTNER` - Personal collection at partner network
     + `ONLINE` - Online delivery (e.g. for intangible assets)
 + `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
-+ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional)
++ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional, nullable)
 
    Date and time until order is reserved.
 
@@ -1626,7 +1633,7 @@ Order information, needed to create an application.
     + `PERSONAL_PARTNER` - Personal collection at partner network
     + `ONLINE` - Online delivery (e.g. for intangible assets)
 + `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
-+ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional)
++ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional, nullable)
 
    Date and time until order is reserved.
 
@@ -1875,7 +1882,7 @@ Order information, needed to create an application.
     + `PERSONAL_PARTNER` - Personal collection at partner network
     + `ONLINE` - Online delivery (e.g. for intangible assets)
 + `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
-+ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional)
++ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional, nullable)
 
    Date and time until order is reserved.
 
