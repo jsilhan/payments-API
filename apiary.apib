@@ -1809,11 +1809,11 @@ Payment information
 Collection of URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
 ### Properties
-+ `approvedRedirect` (string, required) - URL of the partner used for redirection of the customer back to partner website (from Lymet gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
-+ `rejectedRedirect` (string, required) - URL of the partner used for redirection of the customer back to partner website (from Lymet gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
-+ `notificationEndpoint` (string, required) - URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
-+ `paymentsEndpoint` (string, optional) - URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
-+ `changeEndpoint` (string, optional) - URL of the partner used as a endpoint for processing information about order changes made by customer in Lymet.
++ `approvedRedirect`: `http://www.example.com/paymentApproved.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from Lymet gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
++ `rejectedRedirect`: `http://www.example.com/paymentRejected.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from Lymet gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
++ `notificationEndpoint`: `http://www.example.com/notifications` (string, required) - URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
++ `paymentsEndpoint`: `http://www.example.com/paymentNotification` (string, optional) - URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
++ `changeEndpoint`: `http://www.example.com/changeEndpoint` (string, optional) - URL of the partner used as a endpoint for processing information about order changes made by customer in Lymet.
 
 
 ## ApplicationRequest (object)
