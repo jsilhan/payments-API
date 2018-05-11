@@ -375,14 +375,21 @@ Create new *application* of particular financing type
     + Attributes (ApplicationRequest)
 
 
-+ Response 200(application/json; charset=utf-8)
++ Response 201 (application/json; charset=utf-8)
 
         Application was created
 
     + Attributes (Application)
 
 
-+ Response 400(application/json; charset=utf-8)
++ Response 200 (application/json; charset=utf-8)
+
+        Application exists
+
+    + Attributes (Application)
+
+
++ Response 400 (application/json; charset=utf-8)
 
         There was an error processing request
 
@@ -1332,11 +1339,10 @@ Get current state of the API
 
     + Attributes (HealthCheckResponse)
 
-+ Response 500 (application/json; charset=utf-8)
-        Error in processing request
++ Response 503
+    Service is not available
 
-    + Attributes (Errors)
-
+    + Body
 
 # Data Structures
 
@@ -1544,7 +1550,7 @@ Object used to change order information.
     + `PERSONAL_PARTNER` - Personal collection at partner network
     + `ONLINE` - Online delivery (e.g. for intangible assets)
 + `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
-+ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional)
++ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional, nullable)
 
    Date and time until order is reserved.
 
@@ -1626,7 +1632,7 @@ Order information, needed to create an application.
     + `PERSONAL_PARTNER` - Personal collection at partner network
     + `ONLINE` - Online delivery (e.g. for intangible assets)
 + `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
-+ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional)
++ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional, nullable)
 
    Date and time until order is reserved.
 
@@ -1802,11 +1808,11 @@ Payment information
 Collection of URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
 ### Properties
-+ `approvedRedirect` (string, required) - URL of the partner used for redirection of the customer back to partner website (from Lymet gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
-+ `rejectedRedirect` (string, required) - URL of the partner used for redirection of the customer back to partner website (from Lymet gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
-+ `notificationEndpoint` (string, required) - URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
-+ `paymentsEndpoint` (string, optional) - URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
-+ `changeEndpoint` (string, optional) - URL of the partner used as a endpoint for processing information about order changes made by customer in Lymet.
++ `approvedRedirect`: `http://www.example.com/paymentApproved.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from Lymet gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
++ `rejectedRedirect`: `http://www.example.com/paymentRejected.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from Lymet gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
++ `notificationEndpoint`: `http://www.example.com/notifications` (string, required) - URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
++ `paymentsEndpoint`: `http://www.example.com/paymentNotification` (string, optional) - URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
++ `changeEndpoint`: `http://www.example.com/changeEndpoint` (string, optional) - URL of the partner used as a endpoint for processing information about order changes made by customer in Lymet.
 
 
 ## ApplicationRequest (object)
@@ -1817,6 +1823,7 @@ Financing application request
 + `order` (OrderBase, required) - Order information
 + `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
++ `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResults).
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
 + `consents` (array[Consent], optional) - Collection of customer consents
@@ -1875,7 +1882,7 @@ Order information, needed to create an application.
     + `PERSONAL_PARTNER` - Personal collection at partner network
     + `ONLINE` - Online delivery (e.g. for intangible assets)
 + `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
-+ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional)
++ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional, nullable)
 
    Date and time until order is reserved.
 
