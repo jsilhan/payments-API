@@ -1220,17 +1220,34 @@ Returns probability of *application's* approval and limits of particular custome
 + Request (application/json; charset=utf-8)
     + Attributes (PrecheckRequest)
 
-
-+ Response 200(application/json; charset=utf-8)
++ Response 200 (application/json; charset=utf-8)
 
         Probability of approval
 
     + Attributes (PrecheckResults)
 
++ Request Missing some fields (application/json; charset=utf-8)
+    + Attributes
+        + `customer` (PrecheckRequestCustomer, optional) - Customer data
+        + `order` (PrecheckRequestOrder, optional) - Order data
+        + `type` (enum, optional) - Financing type
+            + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+        + `consents` (array[Consent], optional) - Collection of customer consents    
 
-+ Response 400(application/json; charset=utf-8)
++ Response 422 (application/json; charset=utf-8)
         Error in processing request
+    + Attributes (Errors)
 
++ Request (application/json; charset=utf-8)
+    + Body
+    ```
+    {
+        nonsense
+    }
+    ```
+
++ Response 400 (application/json; charset=utf-8)
+        Error in processing request
     + Attributes (Errors)
 
 
@@ -1862,6 +1879,7 @@ Precheck data (has similar structure as `Application`).
 + `order` (PrecheckRequestOrder, optional) - Order data
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
++ `agreementTermsAndConditions`: true (boolean, required) - Agreement to our Terms and Conditions
 + `consents` (array[Consent], optional) - Collection of customer consents
 
 ## PrecheckRequestCustomer (ApplicationRequestCustomer)
