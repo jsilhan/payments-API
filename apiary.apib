@@ -1107,17 +1107,40 @@ This should be used by partner before issuing an invoice, to include correct bil
 | `CANCELLED`       | NO           |
 | `READY`           | YES          |
 
-+ Request
++ Request (application/json; charset=utf-8)
     + Attributes (InvoiceInfoRequest)
 
-+ Response 200(application/json; charset=utf-8)
++ Response 200 (application/json; charset=utf-8)
 
         Invoice info
 
     + Attributes (InvoiceInfo)
 
 
-+ Response 404(application/json; charset=utf-8)
++ Request (application/json; charset=utf-8)
+    + Body
+    ```
+    {
+        "applicationId": "nonexistent_app_id"
+    }
+    ```
+
++ Response 404 (application/json; charset=utf-8)
+
+        Invoice info can not be generated
+
+    + Attributes (Errors)
+
+
++ Request Wrong request (application/json; charset=utf-8)
+    + Body
+    ```
+    {
+        'data': 'nonsense'
+    }
+    ```
+
++ Response 400 (application/json; charset=utf-8)
 
         Invoice info can not be generated
 
@@ -1220,17 +1243,34 @@ Returns probability of *application's* approval and limits of particular custome
 + Request (application/json; charset=utf-8)
     + Attributes (PrecheckRequest)
 
-
-+ Response 200(application/json; charset=utf-8)
++ Response 200 (application/json; charset=utf-8)
 
         Probability of approval
 
     + Attributes (PrecheckResults)
 
++ Request Missing some fields (application/json; charset=utf-8)
+    + Attributes
+        + `customer` (PrecheckRequestCustomer, optional) - Customer data
+        + `order` (PrecheckRequestOrder, optional) - Order data
+        + `type` (enum, optional) - Financing type
+            + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+        + `consents` (array[Consent], optional) - Collection of customer consents    
 
-+ Response 400(application/json; charset=utf-8)
++ Response 422 (application/json; charset=utf-8)
         Error in processing request
+    + Attributes (Errors)
 
++ Request (application/json; charset=utf-8)
+    + Body
+    ```
+    {
+        nonsense
+    }
+    ```
+
++ Response 400 (application/json; charset=utf-8)
+        Error in processing request
     + Attributes (Errors)
 
 
@@ -1768,13 +1808,13 @@ Billing information, to be included in invoice.
 Request for generating invoice info.
 
 ### Properties
-+ One of
-    + `customerDueDateCategory` (enum, optional) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response or [Get application](#reference/application-operations/application-detail) response.
++ One Of
+    + `customerDueDateCategory`: `CATEGORY_CLASSIC` (enum, required) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response or [Get application](#reference/application-operations/application-detail) response.
         + `CATEGORY_CLASSIC` - Customer with classic due date (14 days, with the exception of events (Christmas, etc.))
         + `CATEGORY_EXTENDED` - Customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
-    + `orderNumber`: `12345678` (string, optional) - Order number.
-    + `orderVariableSymbol`: `12345678` (string, optional) - Variable symbol.
-    + `applicationId`: `11200a0ee1` (string, optional) - Application identifier.
+    + `orderNumber`: `12345678` (string, required) - Order number.
+    + `orderVariableSymbol`: `12345678` (string, required) - Variable symbol.
+    + `applicationId`: `11200a0ee1` (string, required) - Application identifier.
 + `billingDate`: `2017-06-20` (string, optional) - Date of issuing an invoice. Default value: today.
 
 ## AccountNumber (object)
@@ -1862,6 +1902,7 @@ Precheck data (has similar structure as `Application`).
 + `order` (PrecheckRequestOrder, optional) - Order data
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
++ `agreementTermsAndConditions`: true (boolean, required) - Agreement to our Terms and Conditions
 + `consents` (array[Consent], optional) - Collection of customer consents
 
 ## PrecheckRequestCustomer (ApplicationRequestCustomer)
@@ -1982,11 +2023,23 @@ Order change request data (Lymet asks partner to correct order data).
 + prevPage: `transactions?sort=category&limit=10&before=25` (string, optional) - Request to retrieve previous page, if it exists and can be unambiguously specified
 
 ## Consent (object)
-Consent
+Customer consent for processing of personal data according to GDPR. `slug` uniquely defines scope of the consent and purpose of processing, `businessDate` is the datetime customer agreed to the processing of this particular piece of personal data for the purpose defined by `slug`.
 
 ### Properties
-+ `slug`: `telco` (string, required) - Name of purpose for personal data processing
-+ `businessDate`: `2017-01-15T00:00:00+02:00` (string, optional) - business date and time
++ `slug`: `scoring_precheck` (enum, required) - Name of purpose for personal data processing
+    + scoring_precheck - Consent with precheck scoring
+    + scoring_data_basic  - Basic consent with data scoring
+    + scoring_data_extended - Extended consent with data scoring
+    + scoring_data_historical_orders  - Consent with data scoring historical orders from e-shops
+    + scoring_data_web_behaviour - Consent with scoring web behaviour on e-shop and gate data
+    + scoring_data_device - Consent with scoring data obtained from devices
+    + third_party_telco - Consent with data transfer to telco operators and use for scoring
+    + third_party_homecredit - Consent with transfer of Homecredit data and their use for scoring
+    + store_personal_id - Consent with personal ID processing
+    + third_party_insolvency - Consent with transfer of data and personal ID into ISIR and their use for scoring
+    + third_party_solus - Consent with transfer of data and personal ID into SOLUS and use for scoring
+    + marketing - Consent with sending marketing messages
++ `businessDate`: `2017-01-15T00:00:00+02:00` (string, optional) - Datetime customer agreed to the processing of personal data and purpose of processing defined by the `slug`
 
 ## HealthCheckResponse (object)
 Health check response
