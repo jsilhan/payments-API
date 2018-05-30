@@ -1107,17 +1107,40 @@ This should be used by partner before issuing an invoice, to include correct bil
 | `CANCELLED`       | NO           |
 | `READY`           | YES          |
 
-+ Request
++ Request (application/json; charset=utf-8)
     + Attributes (InvoiceInfoRequest)
 
-+ Response 200(application/json; charset=utf-8)
++ Response 200 (application/json; charset=utf-8)
 
         Invoice info
 
     + Attributes (InvoiceInfo)
 
 
-+ Response 404(application/json; charset=utf-8)
++ Request (application/json; charset=utf-8)
+    + Body
+    ```
+    {
+        "applicationId": "nonexistent_app_id"
+    }
+    ```
+
++ Response 404 (application/json; charset=utf-8)
+
+        Invoice info can not be generated
+
+    + Attributes (Errors)
+
+
++ Request Wrong request (application/json; charset=utf-8)
+    + Body
+    ```
+    {
+        'data': 'nonsense'
+    }
+    ```
+
++ Response 400 (application/json; charset=utf-8)
 
         Invoice info can not be generated
 
@@ -1785,13 +1808,13 @@ Billing information, to be included in invoice.
 Request for generating invoice info.
 
 ### Properties
-+ One of
-    + `customerDueDateCategory` (enum, optional) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response or [Get application](#reference/application-operations/application-detail) response.
++ One Of
+    + `customerDueDateCategory`: `CATEGORY_CLASSIC` (enum, required) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response or [Get application](#reference/application-operations/application-detail) response.
         + `CATEGORY_CLASSIC` - Customer with classic due date (14 days, with the exception of events (Christmas, etc.))
         + `CATEGORY_EXTENDED` - Customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
-    + `orderNumber`: `12345678` (string, optional) - Order number.
-    + `orderVariableSymbol`: `12345678` (string, optional) - Variable symbol.
-    + `applicationId`: `11200a0ee1` (string, optional) - Application identifier.
+    + `orderNumber`: `12345678` (string, required) - Order number.
+    + `orderVariableSymbol`: `12345678` (string, required) - Variable symbol.
+    + `applicationId`: `11200a0ee1` (string, required) - Application identifier.
 + `billingDate`: `2017-06-20` (string, optional) - Date of issuing an invoice. Default value: today.
 
 ## AccountNumber (object)
