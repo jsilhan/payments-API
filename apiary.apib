@@ -1249,17 +1249,89 @@ Returns probability of *application's* approval and limits of particular custome
 
     + Attributes (PrecheckResults)
 
+
++ Request minimal case 1 (application/json; charset=utf-8)
+    + Body
+    ```
+        {
+            "customer": {
+                "firstName": "John",
+                "lastName": "Newborn",
+                "email": "john.newborn@country.com",
+                "phone": "+420123456789"
+            }
+        }
+    ```
+
++ Response 200 (application/json; charset=utf-8)
+
+        Probability of approval
+
+    + Attributes (PrecheckResults)
+
+
++ Request minimal case 2 (application/json; charset=utf-8)
+    + Body
+    ```
+        {
+            "customer": {
+                "fullName": "John Newborn",
+                "email": "john.newborn@country.com",
+                "phone": "+420123456789"
+            }
+        }
+    ```
+
++ Response 200 (application/json; charset=utf-8)
+
+        Probability of approval
+
+    + Attributes (PrecheckResults)
+
+
++ Request minimal case 3 (application/json; charset=utf-8)
+    + Body
+    ```
+        {
+            "customer": {
+                "fullName": "John Augustus Milverton",
+                "email": "john.milverton@appleseed.example.com",
+                "phone": "+420123456789"
+            }
+        }
+    ```
+
++ Response 200 (application/json; charset=utf-8)
+
+        Probability of approval
+
+    + Attributes (PrecheckResults)
+
+
 + Request Missing some fields (application/json; charset=utf-8)
     + Attributes
-        + `customer` (PrecheckRequestCustomer, optional) - Customer data
-        + `order` (PrecheckRequestOrder, optional) - Order data
-        + `type` (enum, optional) - Financing type
-            + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-        + `consents` (array[Consent], optional) - Collection of customer consents    
+        + `customer` (PrecheckRequestCustomer, required)
+        + `order` (PrecheckRequestOrder)
+        + `type` (enum, optional)
+            + `DEFERRED_PAYMENT`
+        + `consents` (array[Consent])
 
 + Response 422 (application/json; charset=utf-8)
         Error in processing request
     + Attributes (Errors)
+
+
++ Request Missing customer field (application/json; charset=utf-8)
+    + Attributes
+        + `order` (PrecheckRequestOrder)
+        + `type` (enum, optional)
+            + `DEFERRED_PAYMENT`
+        + `consents` (array[Consent])
+
++ Response 422 (application/json; charset=utf-8)
+        Error in processing request
+    + Attributes (Errors)
+
 
 + Request (application/json; charset=utf-8)
     + Body
@@ -1521,11 +1593,29 @@ Customer data
 
 ### Properties
 + `firstName`: `John` (string, optional) -  Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
-For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression `^[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž]$`.
 + `lastName`: `Newborn` (string, optional) - Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
-For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression `^[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž]$`.
 + `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
-For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression (just the name without academical degrees) `^(?P<firstname>[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž])\s(?P<lastname>[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž])$`.
++ `titleBefore`: `Ing.` (string, optional) - Academical degree, in front of the name
++ `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
++ `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
++ `phone`: `+420123456789` (string, required) - Phone number with country code (including leading `+`)
++ `addresses` (array[Address], optional) - Addresses. All types are allowed.
++ `tin`: `12333321` (string, optional) - Tax identification number (ICO)
++ `vatin`: `CZ8402154456` (string, optional) - VAT identification number
+
+
+## CustomerRequestBase (object)
+Customer data
+
+### Properties
++ One of
+    + properties
+        + `firstName`: `John` (string, required) -  Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
+        For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression `^[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž]$`.
+        + `lastName`: `Newborn` (string, required) - Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
+        For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression `^[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž]$`.
+    + `fullName`: `Ing. John Newborn, Csc.` (string, required) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
+    For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression (just the name without academical degrees) `^(?P<firstname>[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž])\s(?P<lastname>[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž])$`.
 + `titleBefore`: `Ing.` (string, optional) - Academical degree, in front of the name
 + `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
@@ -1547,7 +1637,7 @@ Customer data
     + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
     + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
 
-## ApplicationRequestCustomer (CustomerBase)
+## ApplicationRequestCustomer (CustomerRequestBase)
 Customer data
 
 ### Properties
@@ -1898,11 +1988,10 @@ Additional data about the customer.
 Precheck data (has similar structure as `Application`).
 
 ### Properties
-+ `customer` (PrecheckRequestCustomer, optional) - Customer data
++ `customer` (PrecheckRequestCustomer, required) - Customer data
 + `order` (PrecheckRequestOrder, optional) - Order data
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-+ `agreementTermsAndConditions`: true (boolean, optional) - Agreement to our Terms and Conditions
 + `consents` (array[Consent], optional) - Collection of customer consents
 
 ## PrecheckRequestCustomer (ApplicationRequestCustomer)
