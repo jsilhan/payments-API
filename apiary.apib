@@ -1249,61 +1249,17 @@ Returns probability of *application's* approval and limits of particular custome
 
     + Attributes (PrecheckResults)
 
-
-+ Request without agreementTermsAndConditions and consents (application/json; charset=utf-8)
++ Request Missing some fields (application/json; charset=utf-8)
     + Attributes
         + `customer` (PrecheckRequestCustomer, optional) - Customer data
         + `order` (PrecheckRequestOrder, optional) - Order data
         + `type` (enum, optional) - Financing type
             + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-
-+ Response 200 (application/json; charset=utf-8)
-       Probability of approval
-    + Attributes (PrecheckResults)
-
-
-+ Request Missing order field (application/json; charset=utf-8)
-    + Attributes
-        + `customer` (PrecheckRequestCustomer, required)
-        + `type` (enum, optional)
-            + `DEFERRED_PAYMENT`
-
-+ Response 422 (application/json; charset=utf-8)
-
-        Probability of approval
-
-    + Attributes (Errors)
-
-
-+ Request Missing order field (application/json; charset=utf-8)
-    + Attributes
-        + `customer` (PrecheckRequestCustomer, required)
-
-+ Response 422 (application/json; charset=utf-8)
-
-        Probability of approval
-
-    + Attributes (Errors)
-
-
-+ Request Missing customer field (application/json; charset=utf-8)
-    + Attributes
-        + `order` (PrecheckRequestOrder, optional) - Order data
-
-+ Response 422 (application/json; charset=utf-8)
-        Probability of approval
-    + Attributes (Errors)
-
-
-+ Request Missing customer and order field (application/json; charset=utf-8)
-    + Attributes
-        + `type` (enum, optional) - Financing type
-            + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+        + `consents` (array[Consent], optional) - Collection of customer consents    
 
 + Response 422 (application/json; charset=utf-8)
         Error in processing request
     + Attributes (Errors)
-
 
 + Request (application/json; charset=utf-8)
     + Body
@@ -1942,8 +1898,8 @@ Additional data about the customer.
 Precheck data (has similar structure as `Application`).
 
 ### Properties
-+ `customer` (PrecheckRequestCustomer, required) - Customer data
-+ `order` (PrecheckRequestOrder, required) - Order data
++ `customer` (PrecheckRequestCustomer, optional) - Customer data
++ `order` (PrecheckRequestOrder, optional) - Order data
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
 + `agreementTermsAndConditions`: true (boolean, optional) - Agreement to our Terms and Conditions
