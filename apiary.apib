@@ -360,7 +360,7 @@ If the request was successfully processed, you receive HTTP status code 201 and 
 
 If the request was recognized as duplication, you receive HTTP status code 200 and the *application* object created during the first related successful request.
 
-In other cases, you receive one of the following errors:
+In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
 | ---         | ---                   | ---                                                                              |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
@@ -410,7 +410,7 @@ If the request was successfully processed, you receive HTTP status code 200 and 
 - Application substate
 - Gateway redirect URL
 
-In other cases, you receive one of the following errors:
+In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Message                                                                          |
 | ---         | ---                   | ---                                                                              |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
@@ -625,14 +625,15 @@ If the request was successfully processed, you receive HTTP status code 200 and 
 - Application state
 - Application substate
 
-In other cases, you receive one of the following errors:
-| Status code | Code                  | Explanation                                                                      |
-| ---         | ---                   | ---                                                                              |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
-| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
-| 422         | APPLICATION_REJECTED  | When you try to cancel already `REJECTED` `Application`, which is not allowed    |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
+In other cases, you may receive errors similar to the following ones:
+| Status code | Code                  | Explanation                                                                             |
+| ---         | ---                   | ---                                                                                     |
+| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)         |
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                               |
+| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors        |
+| 422         | NOT_SUPPORTED         | The request was well-formed but server was not able to follow due to various errors     |
+| 422         | APPLICATION_REJECTED  | When you try to cancel already `REJECTED` `Application`, which is not allowed           |
+| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.          |
 
 
 + Parameters
@@ -696,7 +697,7 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application state
   - Application substate
 
-In other cases, you receive one of the following errors:
+In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                     |
 | ---         | ---                   | ---                                                                             |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.) |
@@ -774,7 +775,7 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application state
   - Application substate
 
-In other cases, you receive one of the following errors:
+In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
 | ---         | ---                   | ---                                                                              |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
@@ -856,7 +857,7 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application state
   - Application substate
 
-In other cases, you receive one of the following errors:
+In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
 | ---         | ---                   | ---                                                                              |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
@@ -938,7 +939,7 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application state
   - Application substate
 
-In other cases, you receive one of the following errors:
+In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
 | ---         | ---                   | ---                                                                              |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
@@ -1019,7 +1020,7 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application state
   - Application substate
 
-In other cases, you receive one of the following errors:
+In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
 | ---         | ---                   | ---                                                                              |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
@@ -1184,7 +1185,7 @@ If the request was successfully processed, you receive HTTP status code 200 and 
   - Application state
   - Application substate
 
-In other cases, you receive one of the following errors:
+In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
 | ---         | ---                   | ---                                                                              |
 | 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
@@ -1435,7 +1436,7 @@ To check the availability of back-end services use the [health check resource](#
 ## API health check [/v1/health]
 If the API back-end services are up and runing, you receive HTTP status code 200 with optional version info.
 
-In other cases, you receive one of the following errors:
+In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  |
 | ---         | ---                   |
 | 500         | INTERNAL_SERVER_ERROR |
