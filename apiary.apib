@@ -360,6 +360,8 @@ If the request was successfully processed, you receive HTTP status code 201 and 
 
 If the request was recognized as duplication, you receive HTTP status code 200 and the *application* object created during the first related successful request.
 
+__Note__: If the optional *agreementTermsAndConditions* field was not sent with the request (or it was sent with a value of `false`), the *application* will be created with *agreementTermsAndConditions* value set to `false`, *state* `PROCESSING` and *stateReason* `PROCESSING_REDIRECT_NEEDED`.
+
 In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
 | ---         | ---                   | ---                                                                              |
