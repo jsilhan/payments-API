@@ -617,9 +617,9 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 | Application state | Availability                                                                                                                  |
 | ---               | ---                                                                                                                           |
 | `REJECTED`        | NO                                                                                                                            |
-| `CANCELLED`       | YES                                                                                                                           |
-| `PROCESSING`      | YES                                                                                                                           |
-| `READY`           | YES *(for financing types and `DEFERRED_PAYMENT` available only when `Application.stateReason = READY_TO_SHIP`) |
+| `CANCELLED`       | NO                                                                                                                            |
+| `PROCESSING`      | YES *(with the exception of `validation` being in progress)                                                                   |
+| `READY`           | YES *(for financing types and `DEFERRED_PAYMENT` available only when the Application is not paid)                             |
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Application unique ID
@@ -628,14 +628,17 @@ If the request was successfully processed, you receive HTTP status code 200 and 
 - Application substate
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                  | Explanation                                                                             |
-| ---         | ---                   | ---                                                                                     |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)         |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                               |
-| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors        |
-| 422         | NOT_SUPPORTED         | The request was well-formed but server was not able to follow due to various errors     |
-| 422         | APPLICATION_REJECTED  | When you try to cancel already `REJECTED` `Application`, which is not allowed           |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.          |
+| Status code | Code                                | Explanation                                                                                           |
+| ---         | ---                                 | ---                                                                                                   |
+| 400         | INVALID_REQUEST                     | Request was not well formatted (malformed request syntax, size too large, etc.)                       |
+| 404         | OBJECT_NOT_FOUND                    | The requested resource could not be found                                                             |
+| 422         | UNPROCESSABLE                       | The request was well-formed but was unable to be followed due to semantic errors                      |
+| 422         | APPLICATION_REJECTED                | When you try to cancel `Application` already `REJECTED`, which is not allowed                         |
+| 422         | APPLICATION_ALREADY_CANCELLED       | When you try to cancel `Application` that has been cancelled already                                  |
+| 422         | APPLICATION_VALIDATION_IN_PROGRESS  | When you try to cancel `Application` which undergoes validation                                       |
+| 422         | APPLICATION_PAID                    | When you try to cancel `Application` already paid, which is not allowed                               |
+| 422         | NOT_SUPPORTED                       | The request was well-formed but server was not able to change application state due internal rules    |
+| 500         | INTERNAL_SERVER_ERROR               | Unexpected condition was encountered and no more specific message is suitable.                        |
 
 
 + Parameters
