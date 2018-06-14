@@ -72,7 +72,7 @@ You can use advanced operations to improve customer experience.
 
 Example request:
 ```
-curl -X GET https://api.homecredit.cz/financing/v1/examples?sort=category&limit=10&after=15
+curl -X GET https://api.platba.lymet.cz/financing/v1/examples?sort=category&limit=10&after=15
 ```
 
 Example response pagingInfo:
@@ -262,7 +262,7 @@ To access our API, you have to obtain *access token* first; this token is a stri
 So the real example using curl will look like:
 
 ```
-curl -H "Authorization: Bearer secret_token" https://api.homecredit.cz/financing/v1/applications
+curl -H "Authorization: Bearer secret_token" https://api.platba.lymet.cz/financing/v1/applications
 ```
 
 - access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/v1/partner` resource.
