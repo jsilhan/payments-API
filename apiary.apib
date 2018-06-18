@@ -40,7 +40,7 @@ It's always needed to send all attributes marked as required, but filling option
 You can use advanced operations to improve customer experience.
 
 1. [Precheck](#reference/precheck-operations/precheck)
-    - Merchant can prevent customer to be redirected to Lymet gateway if the customer is not suitable for Lymet by precheck operation.
+    - Merchant can prevent customer to be redirected to Lymet gateway if the customer is found by precheck operation not to be eligible for Lymet.
 1. Operations to integrate Lymet better in merchant checkout:
     - [Request application OTP](#reference/application-operations/request-application-otp)
     - [Verify application](#reference/application-operations/verify-application)
@@ -1618,11 +1618,8 @@ Customer data
 + One of
     + properties
         + `firstName`: `John` (string, required) -  Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
-        For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression `^[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž]$`.
         + `lastName`: `Newborn` (string, required) - Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
-        For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression `^[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž]$`.
     + `fullName`: `Ing. John Newborn, Csc.` (string, required) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
-    For [advanced implementation](#introduction/getting-started/advanced-implementation) should be matched by following regular expression (just the name without academical degrees) `^(?P<firstname>[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž])\s(?P<lastname>[A-ZÁ-Ž]'?[-  a-zA-Zá-žÁ-Ž]*[a-zA-Zá-žÁ-Ž])$`.
 + `titleBefore`: `Ing.` (string, optional) - Academical degree, in front of the name
 + `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
