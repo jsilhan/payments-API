@@ -2115,19 +2115,19 @@ Order change request data (Lymet asks partner to correct order data).
 Customer consent for processing of personal data according to GDPR. `slug` uniquely defines scope of the consent and purpose of processing, `businessDate` is the datetime customer agreed to the processing of this particular piece of personal data for the purpose defined by `slug`.
 
 ### Properties
-+ `slug`: `scoring-precheck` (enum, required) - Name of purpose for personal data processing
-    + `scoring-precheck` - Consent with precheck scoring
-    + `scoring-data-basic`  - Basic consent with data scoring
-    + `scoring-data-extended` - Extended consent with data scoring
-    + `scoring-data-historical-orders`  - Consent with data scoring historical orders from e-shops
-    + `scoring-data-web-behaviour` - Consent with scoring web behaviour on e-shop and gate data
-    + `scoring-data-device` - Consent with scoring data obtained from devices
-    + `third-party-telco` - Consent with data transfer to telco operators and use for scoring
-    + `third-party-homecredit` - Consent with transfer of Homecredit data and their use for scoring
-    + `store-personal-id` - Consent with personal ID processing
-    + `third-party-insolvency` - Consent with transfer of data and personal ID into ISIR and their use for scoring
-    + `third-party-solus` - Consent with transfer of data and personal ID into SOLUS and use for scoring
-    + `marketing` - Consent with sending marketing messages
++ `slug`: `SCORING_PRECHECK` (enum, required) - Name of purpose for personal data processing
+    + `SCORING_PRECHECK` - Consent with precheck scoring
+    + `SCORING_DATA_BASIC`  - Basic consent with data scoring
+    + `SCORING_DATA_EXTENDED` - Extended consent with data scoring
+    + `SCORING_DATA_HISTORICAL_ORDERS`  - Consent with data scoring historical orders from e-shops
+    + `SCORING_DATA_WEB_BEHAVIOUR` - Consent with scoring web behaviour on e-shop and gate data
+    + `SCORING_DATA_DEVICE` - Consent with scoring data obtained from devices
+    + `THIRD_PARTY_TELCO` - Consent with data transfer to telco operators and use for scoring
+    + `THIRD_PARTY_HOMECREDIT` - Consent with transfer of Homecredit data and their use for scoring
+    + `STORE_PERSONAL_ID` - Consent with personal ID processing
+    + `THIRD_PARTY_INSOLVENCY` - Consent with transfer of data and personal ID into ISIR and their use for scoring
+    + `THIRD_PARTY_SOLUS` - Consent with transfer of data and personal ID into SOLUS and use for scoring
+    + `MARKETING` - Consent with sending marketing messages
 + `businessDate`: `2017-01-15T00:00:00+02:00` (string, optional) - Datetime customer agreed to the processing of personal data and purpose of processing defined by the `slug`
 
 ## HealthCheckResponse (object)
