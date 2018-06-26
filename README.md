@@ -1,10 +1,10 @@
-# One-Click API repo
+# Lymet API for partners
 
-This is the One-Click API for Czech & Slovak e-shop integration.
+This is the API description for Czech e-shop integration.
 
 
 ## Contents
-- apiary.apib - this is the source of documentation in API Blueprint format, it is online published to [Apiary](http://docs.oneclickapi.apiary.io/). This can be edited directly using text editor or online using Apiary (synchronization is two-way)
+- apiary.apib - this is the source of documentation in API Blueprint format, it is online published to [Apiary](https://lymetapi.docs.apiary.io). This can be edited directly using text editor or online using Apiary (synchronization is two-way)
 - packages.json - dependecies for offline generation of HTML output
 - gulpfile.js - Gulp task runner configuration
 
