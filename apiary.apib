@@ -753,9 +753,9 @@ Use `/financing/v1/applications/{applicationId}/order/cancel` resource with an e
 
 If you want to cancel specific order item/s, use `/financing/v1/applications/{applicationId}/order/cancel` resource with properly filled request that contains cancelled order items info. In this case request should contain at least following data:
 - Order items (array of cancelled order items)
-  - *one or more particular order item identificators (`code`/`EAN`/`name`)* - `code`, `ean` and `name` is used for identifying order item sent in `Create application`.
+  - *one or more particular order item identificators (`code`/`EAN`/`name`/`type`)* - `code`, `ean`, `name` and `type` is used for identifying order item sent in `Create application`.
 
-> * **ATTENTION:** If multiple properties (`code`, `ean` or `name`) are used for identifying some order item, it all must exact match the item data.
+> * **ATTENTION:** If multiple properties (`code`, `ean`, `name` or `type`) are used for identifying some order item, it all must exact match the item data.
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
@@ -835,9 +835,9 @@ Use `/financing/v1/applications/{applicationId}/order/send` resource with an emp
 
 If you want to mark specific order item/s as sent, use `/financing/v1/applications/{applicationId}/order/send` resource with properly filled request that contains sent order items info. In this case request should contain at least following data:
 - Order items (array of sent order items)
-  - *one or more particular order item identificators (`code`/`EAN`/`name`)* - `code`, `ean` and `name` is used for identifying order item sent in `Create application`.
+  - *one or more particular order item identificators (`code`/`EAN`/`name`/`type`)* - `code`, `ean`, `name` and `type` is used for identifying order item sent in `Create application`.
 
-> * **ATTENTION:** If multiple properties (`code`, `ean` or `name`) are used for identifying some order item, it all must exact match the item data.
+> * **ATTENTION:** If multiple properties (`code`, `ean`, `name` or `type`) are used for identifying some order item, it all must exact match the item data.
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
@@ -917,9 +917,9 @@ Use `/financing/v1/applications/{applicationId}/order/deliver` resource with an 
 
 If you want to mark specific order item/s as delivered, use `/financing/v1/applications/{applicationId}/order/deliver` resource with properly filled request that contains delivered order items info. In this case request should contain at least following data:
 - Order items (array of delivered order items)
-  - *one or more particular order item identificators (`code`/`EAN`/`name`)* - `code`, `ean` and `name` is used for identifying order item sent in `Create application`.
+  - *one or more particular order item identificators (`code`/`EAN`/`name`/`type`)* - `code`, `ean`, `name` and `type` is used for identifying order item sent in `Create application`.
 
-> * **ATTENTION:** If multiple properties (`code`, `ean` or `name`) are used for identifying some order item, it all must exact match the item data.
+> * **ATTENTION:** If multiple properties (`code`, `ean`, `name` or `type`) are used for identifying some order item, it all must exact match the item data.
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
@@ -998,9 +998,9 @@ Use `/financing/v1/applications/{applicationId}/order/return` resource with an e
 
 If you want to mark specific order item/s as returned, use `/financing/v1/applications/{applicationId}/order/return` resource with properly filled request that contains returned order items info. In this case request should contain at least following data:
 - Order items (array of returned order items)
-  - *one or more particular order item identificators (`code`/`EAN`/`name`)* - `code`, `ean` and `name` is used for identifying order item sent in `Create application`.
+  - *one or more particular order item identificators (`code`/`EAN`/`name`/`type`)* - `code`, `ean`, `name` and `type` is used for identifying order item sent in `Create application`.
 
-> * **ATTENTION:** If multiple properties (`code`, `ean` or `name`) are used for identifying some order item, it all must exact match the item data.
+> * **ATTENTION:** If multiple properties (`code`, `ean`, `name` or `type`) are used for identifying some order item, it all must exact match the item data.
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Order number
