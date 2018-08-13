@@ -2059,12 +2059,13 @@ Precheck result.
 + `code`: OK (enum, required) - Result code.
     + `OK`
     + `UNKNOWN`
+    + `NOT_AVAILABLE` - Funding type is not available.
     + `ADDITIONAL_DATA_SECURITY` - The customer will be asked to send additional data for security reasons.
     + `ADDITIONAL_DATA_LIMIT` - The customer has insufficient limit and will be asked to send additional data to increase limit.
     + `INSUFFICIENT_LIMIT` - The customer has insufficient limit and there is no way to increase it.
     + `INSUFFICIENT_LIMIT_OPPORTUNITY` - The customer has insufficient limit and can increase it by paying previous not paid orders.
     + `DETAILS_NOT_MATCHING` - We know the customer, but his personal details does not match with details in his Lymet account. Customer will be asked for correcting not matching details.
-    + `NOT_AVAILABLE` - Funding type is not available.
+    + `MANUAL_VERIFICATION` - The validators cannot determine the result - manual checking is required.
 + `customerType` (enum, required) - Customer type.
     + `UNKNOWN` - Customer is uknown for Lymet.
     + `FIRST_ORDER` - Lymet knows the customer. Customer has no paid orders.
