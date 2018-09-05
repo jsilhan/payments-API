@@ -5,7 +5,8 @@ HOST: https://api.platba.lymet.cz/
 API documentation for Lymet partners.
 
 ## Getting started
-This online document describes Lymet API - the means for partner e-shops through which they can offer their customers the benefits of one of Home Credit's payment method.
+This online document describes Lymet API - the means for partner e-shops through which they can offer their customers the benefits of one of 
+'s payment method.
 
 The aim of here described services is to allow customers the smooth running through the process of an online purchase. The services that allow achieving this goal are divided into the following groups:
 
@@ -317,7 +318,7 @@ Partner authenticate himself and obtain acces token
 Services that allows processing of *application* and *order* during their whole lifecycle.
 
 ## Create application [/financing/v1/applications]
-Elementary flow starts when customer wants to use one of Home Credit's payment method for financing his purchase made in partner e-shop.
+Elementary flow starts when customer wants to use one of MallPay's payment method for financing his purchase made in partner e-shop.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -1462,18 +1463,6 @@ Get current state of the API
     + Body
 
 # Data Structures
-
-## ApiInfo (object)
-API information
-
-### Properties
-+ `build` (object, required)
-    + `version`: `38.3.0-0-SNAPSHOT` (string, required) - ATL version
-    + `artifact`: `atl-cs-app` (string, required) - Maven artifact name
-    + `name`: `ATL CS - App` (string, required) - Official artifact name (human readable)
-    + `group`: `eu.homecredit.openapi-cs` (string, required) - Artifact group name
-    + `time`: 1510739838000 (number, required) - Artifact (build) creation time (timestamp)
-
 
 ## PartnerLogin (object)
 Partner login credentials
