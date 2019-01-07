@@ -2137,3 +2137,173 @@ Health check response
 
 ### Properties
 + `projectVersion`: `MALL Pay 2.40.0` (string, optional) - Version of the project
+
+# Group MIA
+For insurance services
+
+## Create Offer [/v1/mia/offer]
+
+### Request Available Services [POST]
+Get info on services available for sent products.
+
++ Request (application/json; charset=utf-8)
+    + Attributes (RequestServicesRequest)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (RequestServicesResponse)
+
+## Create Contract [/v1/mia/contract]
+
+### Create Contract [POST]
+Create a contract based on available services offering.
+
++ Request (application/json; charset=utf-8)
+    + Attributes (ContractCreateRequest)
+
++ Response 200 (application/json; charset=utf-8)
+    + Attributes (ContractCreateResponse)
+
+# Data Structures
+
+## RequestServicesRequest (object)
+### Properties
++ `items` (array[ServiceRequestProduct], required) - Array of products you want to receive possible services for. If you order multiple pieces of the same product, it is expected each piece will be represented by separate item, hence there is no quantity field.
+
+## RequestServicesResponse (object)
+### Properties
++ `offerId`: `UUID-comes-here` (string, required) - Id of the offers
++ `items` (array[ServiceResponseProduct], required) - description
+
+## ContractCreateRequest (CreateContract)
+Request for creating contract.
+### Properties
+
+## ContractCreateResponse (ResponseContract)
+Returns created `Contract`, errors otherwise.
+### Properties
+
+## ServiceAmount(Amount)
+Type of financial ammount.
+### Properties
++ `priceType`: `ABSOLUTE` (enum, optional, nullable) - Type of service offer price
+    + `ABSOLUTE` -  Price of service offer is absolute
+    + `PERCENT` - Price of service offer is constructed as a fraction of `unitPrice` of product this service is covering.
+
+## BaseProduct (object)
+### Properties
++ `name`: Nikon F (string, required) - Full product name
++ One Of
+    + `ean`: 1123456789123 (number, optional, nullable) - GTIN (EAN13), 13 or 14 digits length. May be used to improve product matching accuracy.
+    + `code`: `NIKON-F-BLACK-1964` (string, optional, nullable) - Optional product manufacturers code/SKU.  May be used to improve product matching accuracy.
++ `condition`: `NEW` (enum, required)
+    + `NEW` - new product
+    + `USED` - used product
+    + `UNPACKED` - like new product, possibly returned by customer in 14 day period after purchase. Also new products with damaged packaging. 
+    + `OTHER`
+
+## ServiceRequestProduct (BaseProduct)
+### Properties
++ `totalPrice` (Amount, optional) - Total price for all items
++ `totalVat` (VatAmount, optional) - Total VAT for all items
++ `unitPrice` (Amount, required) - Price per one piece, including VAT.
++ `unitVat` (VatAmount, required) - VAT amount per one piece.
++ `quantity`: 2 (number, required) - Number of products
++ `serialNumbers`: `64001000` (array[string], optional, nullable) - Serial Number of individual product piece. May be required for __Contract__ closing.
+
+## BaseProductDetail (ServiceRequestProduct)
++ `categorySlug`: `Camera-Still-Picture-Analog-35mm` (string, required) - Category slug, is used for product service selection.
+
+## ProductDetail (BaseProductDetail)
++ `id`: `uniqueproductid` (string, required)
++ `categorySlug`: `Camera-Still-Picture-Analog-35mm` (string, required) - Category slug, is used for product service selection.
+
+## ServiceResponseProduct (BaseProductDetail)
+### Properties
++ `services` (array[ServiceResponseGroup]) - services available for the product piece
+
+## ContractCreateProduct (object)
+### Properties
++ `id`: `uniqueproductid` (string, required) - Id of product returned in request for services
+
+## ServiceResponseItem (object)
+Individual selectable service.
+### Properties
++ `id`: `1` (string, required) - Unique Id of the service
++ `slug`: `option-slug` (string, required) - Unique slug of option
++ `name`: `ADP (Accidental Damage Protection) 1 year` (string, required)
++ `shortName`: `1 year` (string, required)
++ `description`: `Description of the service, may be quite long` (string, optional, nullable) - Description of a service offering item in the group.
++ `priority`: 1 (number, optional, nullable) - Offer ordering information, lower number means higher priority.
++ `totalPrice` (ServiceAmount, required) - Price of service including VAT and possibly type of price.
++ `totalVat` (VatAmount, required) - Total VAT for service.
++ `standalone`: true (boolean, required) - If service is marked as `standalone`, it is __not__ mutually exclusive with other services within the service group and may be selected individually, much like HTML checkbox. This allows for grouping of services that are not exclusive to each other.
+
+## ServiceResponseGroup (object)
+A grouping (for example by type or length) of individual services the customer may select from. Individual services go into `serviceGroupOptions` array.
+Unless the individual service is marked as `standalone`, it is assumed that the services within `serviceGroupOptions` mutually exclude each other, much like HTML radio button.
+The information above means that multiple service groups are not only encouraged, but may be required.
+### Properties
++ `id`: `1` (string, required) - Unique Id of the group.
++ `slug`: `adp-goup-slug` (string, required) - Slug of the category name
++ `name`: `ADP (Accidental Damage Protection) Insurance` (string, required) - Plain text name of options group, will be used for display.
++ `description`: `This is the description of the service group, which may, actually, be much longer than this` (string, optional, nullable) - Description of the group, to display to customers.
++ `options` (array[ServiceResponseItem], required) - A set of mutually exclusive options of (roughly) the same meaning this group is made of.
++ `priority`: 1 (number, optional, nullable) - Priority of the group as a whole, used for ordering of offers. Lower number means higher priority. Groups with same priority can be ordered at will (as long as they are ordered before/after any groups with lower/higher priority. If no priority is provided, may be ordered at will (after higher priority groups).
++ `excludes`: `2`, `3` (array[string], optional, nullable) - Ids of groups this group is mutually exclusive with. Customer cannot select offers from this group and **excludes** group at the same time.
+
+## SimpleContract (object)
+### Properties
++ `customer` (CustomerBase, required) - Destionation customer of the services
++ `order` (EshopOrderDetail, required) - Detail of the order from eshop
+
+##EshopOrderDetail (object)
+### Properties
++ `merchantName`: `Mall` (string, required) - Name of the e-Shop
++ `number`: `456789123` (string, required) - Order number
++ `variableSymbols`: `123456789`, `987654231` (array[string], optional, nullable) - VariableSymbols ot the order, must contain only numbers formatted as string.
++ `createdDate`: `2018-07-24` (string, required) - Date of order creation
++ `dueDate`: `2018-09-24` (string, optional, nullable) - Due date of the order
++ `invoicingDate`: `2018-08-24` (string, optional, nullable) - Date the order was invoiced
++ `paymentDate`: `2018-09-22` (string, optional, nullable) - Date the order was payed
++ `items` (array[ApplicationRequestOrderItem], optional, nullable) - order items
+
+## BaseContract (SimpleContract)
+### Properties
++ `activationDate`: `2018-05-05T18:34.0002+00:02` (string, optional, nullable) - Datetime of contract activation
++ `cancellationDate`: `2018-12-31T05:11.1234+00:01` (string, optional, nullable) - Datetime of contract cancellation
++ `state`: `NEW` (enum, required) - state of the reason
+    + NEW
+    + ACTIVE
+    + CANCELLED
++ `stateReason`: `CANCELLED_BY_ERP` (enum, optional, nullable) - reason for contract state
+    + CANCELLED_BY_ERP
+    + CANCELLED_CUSTOM_REASON
+    + CANCELLED_GOODS_RETURNED
+    + CANCELLED_IN_14_DAYS
+    + CANCELLED_NOT_PAID
+    + CANCELLED_UNFINISHED
++ `totalPrice` (Amount, optional) - Total order amount, including VAT
++ `totalVat` (array[VatAmount], optional) - Total VAT amounts split by their VAT rates
+
+## ResponseContract (BaseContract)
+This is a contract object that the API returns in resonse to most requests.
+### Properties
++ `id`: `kasjfkjůladsfkj-adf-12` (string, required) - Contract ID
++ `partnerId`: `fda-456123789` (string, optional, nullable) - Partner contract Id
++ `items` (array[ContractResponseItem], required) - Subject of the contract
++ `documents` (array[Document], optional, nullable) - Documents related to the contract, such as printable version of the contract, invoices etc.
+
+## CreateContract (SimpleContract)
+This is a contract object that the API returns in resonse to most requests.
+### Properties
++ `serviceOptionIds`: `1` (array[string], required) - Array of service IDs, only array with one item is allowed. The Id to put here is the service option Id.
+
+## ContractResponseItem (ProductDetail)
+### Properties
++ `services` (array[ContractItemService], required) - An array of Contract services for the item
+
+## ContractItemService
+### Properties
++ `offerId`: `UUID-comes-here` (string, required) - Id of the original offer the contract is based upon. Enables creating one contract
++ `serviceId`: `1` (string, required) - Id of the service option
++ `serviceActiveUntilDate`: `2020-08-03T13:22:5000+00:02` (string, nullable) - datetime of service expiration (when the service is no longer valid)
