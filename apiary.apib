@@ -1579,7 +1579,7 @@ Financing application
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `additionalData` (array[string], optional) - List of additional data that customer has to add to complete the application if stateReason is `PROCESSING_ADDITIONAL_DATA`.
-    Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`.
+    Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`, `THIRD_PARTY_TELCO_CONSENT`.
 + `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is `PROCESSING` and stateReason is `PROCESSING_ADDITIONAL_DATA` or `PROCESSING_VERIFICATION` or `PROCESSING_REDIRECT_NEEDED`.
 
 
@@ -2069,7 +2069,7 @@ Precheck result.
     “Uveďte do objednávky jméno a příjmení, které používáte ve službě MALL Pay.”
     etc.
 + `additionalData` (array[string], optional) - List of additional data that customer has to send.
-    Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`.
+    Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`, `THIRD_PARTY_TELCO_CONSENT`.
 + `additionalActions` (array[string], optional) - List of additional actions which will be required to finish application.
     Possible values in array: `MOBILE_VERIFICATION`, `ACCOUNT_REGISTRATION`, `LIMIT_INCREASE`, `CREDIT_TERM_SUPPLEMENT`, `PAPERFORM_SUPPLEMENT`.
 
