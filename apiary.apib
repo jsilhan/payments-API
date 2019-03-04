@@ -1977,7 +1977,7 @@ Additional data about the customer.
 + `idCard`: 123456789 (string, optional) - ID card number
 + `idCardExpiryDate`: `2020-05-19` (string, optional) - ID card expiration date
 + `idCardScan` (IdCardScan, optional) - ID card scan
-+ `consents` (array[Consent], optional) - Collection of customer consents
++ `consents` (array[Consent], optional) - Collection of customer consents, THIRD_PARTY_TELCO is required if THIRD_PARTY_TELCO_CONSENT is among requested additional data.
 
 ## IdCardScan (object)
 
