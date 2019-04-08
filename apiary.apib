@@ -1381,6 +1381,8 @@ Order change request
 ## Application notification [/financing/v1/{application.merchantUrls.notificationEndpoint}]
 We use this resource when there is need to let you know about important changes within particular *application*. Namely in following situations:
 
+> IMPORTANT NOTE: This service should be developed and exposed by partner e-shops to allow MALL Pay to asynchronously inform these partners about important changes regarding particular applications.
+
 | Trigger                                                             | Corresponding Application.stateReason | Expected reaction                                                      |
 | ---                                                                 | ---                                   | ---                                                                    |
 | Application was approved (approval process is proceeding correctly) | PROCESSING_APPROVED                   | Do not cancel customer's order prematurely                             |
@@ -1940,11 +1942,11 @@ Collection of URLs used for redirection of a customer back to a partner website 
 Services that should be developed and exposed by partner e-shops to allow MALL Pay to asynchronously inform these partners about important changes regarding particular applications and orders.
 
 ### Properties
-+ `approvedRedirect`: `http://www.example.com/paymentApproved.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
-+ `rejectedRedirect`: `http://www.example.com/paymentRejected.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
-+ `notificationEndpoint`: `http://www.example.com/notifications` (string, required) - URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
-+ `paymentsEndpoint`: `http://www.example.com/paymentNotification` (string, optional) - URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
-+ `changeEndpoint`: `http://www.example.com/changeEndpoint` (string, optional) - URL of the partner used as a endpoint for processing information about order changes made by customer in MALL Pay.
++ `approvedRedirect`: `http://www.yourEshop.com/paymentApproved.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
++ `rejectedRedirect`: `http://www.yourEshop.com/paymentRejected.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
++ `notificationEndpoint`: `http://www.yourEshop.com/notifications` (string, required) - URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
++ `paymentsEndpoint`: `http://www.yourEshop.com/paymentNotification` (string, optional) - URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
++ `changeEndpoint`: `http://www.yourEshop.com/changeEndpoint` (string, optional) - URL of the partner used as a endpoint for processing information about order changes made by customer in MALL Pay.
 
 
 ## ApplicationRequest (object)
