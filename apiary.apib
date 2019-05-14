@@ -1628,8 +1628,9 @@ Customer data
     + `FULL` -  MALL Pay knows the customer. Customer has at least one paid order.
     + `BLOCKED` - MALL Pay knows the customer. Customer is blocked.
 + `dueDateCategory` (enum, required)
-    + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
-    + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
+    + `CATEGORY_CLASSIC` - Customer with classic due date (14 days, with the exception of events (Christmas, etc.))
+    + `CATEGORY_EXTENDED` - Customer with extended due date (30 days, with the exception of events (Christmas, etc.))
+    + `CATEGORY_EXTENDED_NEXT_MONTH` - Customer with extra extended due date (20th day of next month, with the exception of events (Christmas, etc.))
 
 ## ApplicationRequestCustomer (CustomerRequestBase)
 Customer data
@@ -1653,7 +1654,7 @@ Customer data
 + `pageReviewsTime`: 100 (number, optional) - Total time spent on partners website in review and comments sections (in seconds)
 + `cartItemsRemoved`: 2 (number, optional) - Total count of removed items form shopping basket during current shopping
 + `itemsViewed`: 10 (number, optional) - Number of viewed pages with products
-+ `premiumTags` (array[string], optional) - List of custom premium tags (ie. information, that customer is club member, etc.)
++ `tags` (array[string], optional) - List of custom tags (ie. information, that customer is club member, vip customer, etc.)
 
 ## OrderChangeRequest (object)
 Object used to change order information.
@@ -1905,7 +1906,8 @@ Request for generating invoice info.
 + One Of
     + `customerDueDateCategory`: `CATEGORY_CLASSIC` (enum, required) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response or [Get application](#reference/application-operations/application-detail) response.
         + `CATEGORY_CLASSIC` - Customer with classic due date (14 days, with the exception of events (Christmas, etc.))
-        + `CATEGORY_EXTENDED` - Customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
+        + `CATEGORY_EXTENDED` - Customer with extended due date (30 days, with the exception of events (Christmas, etc.))
+        + `CATEGORY_EXTENDED_NEXT_MONTH` - Customer with extra extended due date (20th day of next month, with the exception of events (Christmas, etc.))
     + `orderNumber`: `12345678` (string, required) - Order number.
     + `orderVariableSymbol`: `12345678` (string, required) - Variable symbol.
     + `applicationId`: `11200a0ee1` (string, required) - Application identifier.
@@ -2065,8 +2067,9 @@ Precheck result.
     + `FULL` -  MALL Pay knows the customer. Customer has at least one paid order.
     + `BLOCKED` - MALL Pay knows the customer. Customer is blocked.
 + `customerDueDateCategory` (enum, required)
-    + `CATEGORY_CLASSIC` - customer with classic due date (14 days, with the exception of events (Christmas, etc.))
-    + `CATEGORY_EXTENDED` - customer with extended due date (20th day of next month, with the exception of events (Christmas, etc.))
+    + `CATEGORY_CLASSIC` - Customer with classic due date (14 days, with the exception of events (Christmas, etc.))
+    + `CATEGORY_EXTENDED` - Customer with extended due date (30 days, with the exception of events (Christmas, etc.))
+    + `CATEGORY_EXTENDED_NEXT_MONTH` - Customer with extra extended due date (20th day of next month, with the exception of events (Christmas, etc.))
 + `message` (string, optional) - Custom message for customer.
     Examples:
     “V MALL Pay peněžence nemáte dostatečný limit.”
