@@ -1575,9 +1575,9 @@ Financing application base information
 Financing application
 
 ### Properties
-+ `customer` (Customer, optional) - Customer data
-+ `order` (Order, optional) - Order data
-+ `type` (enum, optional) - Financing type
++ `customer` (Customer, required) - Customer data
++ `order` (Order, required) - Order data
++ `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `additionalData` (array[string], optional) - List of additional data that customer has to add to complete the application if stateReason is `PROCESSING_ADDITIONAL_DATA`.
