@@ -1,6 +1,6 @@
-# MALL Pay API for partners
+# MALL Pay payments API for partners
 
-This is the API description for Czech e-shop integration.
+This is the API description for payments services for Czech e-shops integration.
 
 
 ## Contents
