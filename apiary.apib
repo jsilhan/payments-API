@@ -1722,7 +1722,8 @@ Object used to mark order items as sent.
 
 ### Properties
 + `document` (Document, optional) - Attached invoice (invoice, proforma invoice...)
-+ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, ...). This string must contain only numbers, maximum length is 10 characters (digits).
++ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, ...). Symbol used for making the payment. This string must contain only numbers, maximum length is 10 characters (digits).
++ `specificSymbol`: `1234567890` (string, optional) - Specific symbol of the new document (invoice, proforma invoice, ...). Symbol used for making the payment. This string must contain only numbers, maximum length is 10 characters (digits).
 + `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Shipping date and time (fill just the date if you can't specify a shipping time)
 + `deliveryCarrier` (DeliveryCarrier, optional) - Carrier
 + `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number
