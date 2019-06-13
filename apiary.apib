@@ -1383,13 +1383,15 @@ We use this resource when there is need to let you know about important changes 
 
 > IMPORTANT NOTE: This service should be developed and exposed by partner e-shops to allow MALL Pay to asynchronously inform these partners about important changes regarding particular applications.
 
-| Trigger                                                             | Corresponding Application.stateReason | Expected reaction                                                      |
-| ---                                                                 | ---                                   | ---                                                                    |
-| Application was approved (approval process is proceeding correctly) | PROCESSING_APPROVED                   | Do not cancel customer's order prematurely                             |
-| Application was rejected                                            | REJECTED                              | You should probably cancel respective order and release reserved goods |
-| Application was cancelled                                           | CANCELLED_NOT_PAID                    | You should probably cancel respective order and release reserved goods |
-| Order to dispatch (we commit to finance customer's order)           | READY_TO_SHIP                         | Dispatch the order to the customer                                     |
-| Application is going to be paid out                                 | READY_PAID                            | Wait for us processing financial compensation with you                 |
+| Trigger                                                             | Corresponding Application.stateReason | Expected reaction                                                                        |
+| ---                                                                 | ---                                   | ---                                                                                      |
+| Application was approved (approval process is proceeding correctly) | PROCESSING_APPROVED                   | Do not cancel customer's order prematurely                                               |
+| Application was rejected                                            | REJECTED                              | You should probably cancel respective order and release reserved goods                   |
+| Application was cancelled                                           | CANCELLED_NOT_PAID                    | You should probably cancel respective order and release reserved goods                   |
+| Order to dispatch (we commit to finance customer's order)           | READY_TO_SHIP                         | Dispatch the order to the customer                                                       |
+| Application was paid to the partner                                 | READY_PAID                            | Financial compensation for the application has been processed - check your bank account  |
+
+> NOTE: READY_PAID state is set when at least part of the application price was paid to the partner, not necessarily full application price. This also applies to the `Application was paid to the partner` application notification trigger.
 
 We fill the request with at least following information:
 - Application unique ID
