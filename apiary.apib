@@ -613,12 +613,12 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 | ---                | ---       |
 | `DEFERRED_PAYMENT` | YES       |
 
-| Application state | Availability                                                                                                                  |
-| ---               | ---                                                                                                                           |
-| `REJECTED`        | NO                                                                                                                            |
-| `CANCELLED`       | NO                                                                                                                            |
-| `PROCESSING`      | YES *(with the exception of `validation` being in progress (state_reason == PROCESSING_VALIDATION_IN_PROGRESS))               |
-| `READY`           | YES *(available only when the Application's order is not paid)                                                                |
+| Application state | Availability                                                                                                                                                  |
+| ---               | ---                                                                                                                                                           |
+| `REJECTED`        | NO                                                                                                                                                            |
+| `CANCELLED`       | NO                                                                                                                                                            |
+| `PROCESSING`      | YES *(with the exception of `validation` being in progress (`state_reason == PROCESSING_VALIDATION_IN_PROGRESS`))                                             |
+| `READY`           | YES *(available only when the Application's order is not marked as sent (via *Mark order items as sent*) or delivered (via *Mark order items as delivered*))  |
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
 - Application unique ID
