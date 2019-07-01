@@ -749,8 +749,6 @@ When some or all order items were cancelled (as a result of reclamation etc.), u
 
 Use `/financing/v1/applications/{applicationId}/order/cancel` resource with an empty request to cancel all order items (the whole *order*) at once.
 
-> * TIP: Use an empty request if marking last item(s) on order as cancelled.
-
 If you want to cancel specific order item/s, use `/financing/v1/applications/{applicationId}/order/cancel` resource with properly filled request that contains cancelled order items info. In this case request should contain at least following data:
 - Order items (array of cancelled order items)
   - *one or more particular order item identificators (`code`/`EAN`/`name`/`type`)* - `code`, `ean`, `name` and `type` is used for identifying order item sent in `Create application`.
