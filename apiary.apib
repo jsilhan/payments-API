@@ -1387,8 +1387,8 @@ We use this resource when there is need to let you know about important changes 
 | Application was rejected                                            | REJECTED                              | You should probably cancel respective order and release reserved goods                   |
 | Application was cancelled                                           | CANCELLED_NOT_PAID                    | You should probably cancel respective order and release reserved goods                   |
 | Order to dispatch (we commit to finance customer's order)           | READY_TO_SHIP                         | Dispatch the order to the customer                                                       |
-| Order dispatched                                                    | READY_SHIPPED                         | None - serves as an acknowledgment
-| Order delivered                                                     | READY_DELIVERED                       | None - serves as an acknowledgment
+| Order dispatched                                                    | READY_SHIPPED                         | None - serves as an acknowledgment (partner should know about this change)               |
+| Order delivered                                                     | READY_DELIVERED                       | None - serves as an acknowledgment (partner should know about this change)               |
 | Application was paid to the partner                                 | READY_PAID                            | Financial compensation for the application has been processed - check your bank account  |
 
 > NOTE: READY_PAID state is set when at least part of the application price was paid to the partner, not necessarily full application price. This also applies to the `Application was paid to the partner` application notification trigger.
