@@ -31,7 +31,7 @@ The most basic and minimum way how to implement MALL Pay API is to at least impl
 1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent)  or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
     - MALL Pay won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
 
-[![Sequence diagram of minimum implementation](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramMinimum.png)](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramMinimum.png)
+[![Sequence diagram of minimum implementation](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramMinimum.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramMinimum.png)
 
 It's always needed to send all attributes marked as required, but filling optional parameters will result in better application approval rate. You should always consider to fill the most attributes as possible. Contact the sales support to find out which attributes correlate with approval rate the most.
 
@@ -48,7 +48,26 @@ You can use advanced operations to improve customer experience.
 
     > IMPORTANT NOTE: Despite the usage of these operations it's always necessary to check *application* `stateReason`. If `stateReason == PROCESSING_REDIRECT_NEEDED` there is no way how to complete *application* throught API calls and you have to redirect customer to `gatewayRedirectUrl`.
 
-[![Sequence diagram of advanced implementation](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramAdvanced.png)](https://github.com/mdostal-hci/oneclick-images/raw/master/SequenceDiagramAdvanced.png)
+[![Sequence diagram of advanced implementation](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramAdvanced.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramAdvanced.png)
+
+### Application states
+Applications have their own state and substates that can be managed by MALL Pay and merchants. 
+
+Existing states are listed below:
+
+| Application state | Description                                                                                             |
+| ---               | ---                                                                                                     |
+| `PROCESSING`      | Application is being processed by MALL Pay                                                              |
+| `READY`           | Application was approved and is ready for financing                                                     |
+| `REJECTED`        | Application was rejected by MALL Pay system                                                             |
+| `CANCELLED`       | Application was cancelled by client or by MALL Pay, either before approval or after delivery            |
+
+Simplified diagram of possible transitions between states:
+
+[![States diagram of Application](https://github.com/mall-pay/payments-API/raw/master/images/StatesDiagram.png)](https://github.com/mall-pay/payments-API/raw/master/images/StatesDiagram.png)
+
+Merchant can obtain current application state anytime with [Get application detail](#reference/application-operations/application-detail/get-application-detail) operation.
+MALL Pay proactively notify merchant about important state and substate changes - merchant is able to listen [Application](#reference/merchantsite-operations/application-notification/application-notification).
 
 ## Naming conventions
 - we use camelCase for all object and attribute names
