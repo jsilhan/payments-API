@@ -55,12 +55,12 @@ Applications have their own state and substates that can be managed by MALL Pay 
 
 Existing states are listed below:
 
-| Application state | Description                                                                               |
-| ---               | ---                                                                                       |
-| `PROCESSING`      | Application is being processed by MALL Pay                                                |                                            
-| `REJECTED`        | Application was approved and is ready for financing                                       |
-| `CANCELLED`       | Application was rejected                                                                  |
-| `READY`           | Application was cancelled by client, either before approval or after delivery             |
+| Application state | Description                                                                                             |
+| ---               | ---                                                                                                     |
+| `PROCESSING`      | Application is being processed by MALL Pay                                                              |
+| `READY`           | Application was approved and is ready for financing                                                     |
+| `REJECTED`        | Application was rejected by MALL Pay system                                                             |
+| `CANCELLED`       | Application was cancelled by client, either before approval or after delivery or by MALL Pay            |
 
 Simplified diagram of possible transitions between states:
 
