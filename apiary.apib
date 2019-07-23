@@ -50,6 +50,25 @@ You can use advanced operations to improve customer experience.
 
 [![Sequence diagram of advanced implementation](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramAdvanced.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramAdvanced.png)
 
+### Application states
+Applications have their own state and substates that can be managed by MALL Pay and merchants. 
+
+Existing states are listed below:
+
+| Application state | Description                                                                               |
+| ---               | ---                                                                                       |
+| `PROCESSING`      | Application is being processed by MALL Pay                                                |                                            
+| `REJECTED`        | Application was approved and is ready for financing                                       |
+| `CANCELLED`       | Application was rejected                                                                  |
+| `READY`           | Application was cancelled by client, either before approval or after delivery             |
+
+Simplified diagram of possible transitions between states:
+
+[![States diagram of Application](https://github.com/mall-pay/payments-API/raw/master/images/StatesDiagram.png)](https://github.com/mall-pay/payments-API/raw/master/images/StatesDiagram.png)
+
+Merchant can obtain current application state anytime with [Get application detail](#reference/application-operations/application-detail/get-application-detail) operation.
+MALL Pay proactively notify merchant about important state and substate changes - merchant is able to listen [Application](#reference/merchantsite-operations/application-notification/application-notification).
+
 ## Naming conventions
 - we use camelCase for all object and attribute names
 - we use CAPITAL_UNDERSCORE for enum values
