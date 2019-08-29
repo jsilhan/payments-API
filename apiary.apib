@@ -9,13 +9,13 @@ This online document describes MALL Pay API - the means for partner e-shops thro
 
 The aim of here described services is to allow customers the smooth running through the process of an online purchase. The services that allow achieving this goal are divided into the following groups:
 
-| Group of services       | Purpose                                                                                                                                                                                           |
-| ---                     | ---                                                                                                                                                                                               |
-| Security                | Security rules and principles                                                                                                                                                                     |
-| Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle                                                                                                                                                                                                           |
+| Group of services       | Purpose                                                                                                                                                                                                 |
+| ---                     | ---                                                                                                                                                                                                     |
+| Security                | Security rules and principles                                                                                                                                                                           |
+| Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle                                                                                                               |
 | Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to MALL Pay                                                        |
 | Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow MALL Pay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
-| Health check            | Health check usage description                                                                                                                                                                    |
+| Health check            | Health check usage description                                                                                                                                                                          |
 
 ### Basic implementation
 The most basic and minimum way how to implement MALL Pay API is to at least implement:
@@ -247,8 +247,7 @@ There are 3 levels of error severity:
 | Status code | Code                  | Explanation                                                                     | Message                                                                                                        |
 | ---         | ---                   | ---                                                                             | ---                                                                                                            |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.) | (*Various messages possible*) e.g. Unsupported combination of application state and order state                |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                       | (*Various messages possible*) e.g. Specified object was not found        
-|                                      
+| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                       | (*Various messages possible*) e.g. Specified object was not found                                              |
 | 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.  | (*Various messages possible*) e.g. Failed to parse given JSON                                                  |
 
 
@@ -1174,7 +1173,7 @@ If you need to find out current information about particular *order* - primarily
 
 | Financing type     | Supported   | 
 | ---                | ---         |
-| `DEFERRED_PAYMENT` | YES         |                                                                  |
+| `DEFERRED_PAYMENT` | YES         |
 
 | Application state | Availability |
 | ---               | ---          |
