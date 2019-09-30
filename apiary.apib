@@ -1684,7 +1684,7 @@ Object used to change order information.
 
 ## OrderChange (object)
 + `number`: `AA234` (string, optional) - Order number (internal for e-shop)
-+ `variableSymbols` (array[string], optional) - Variable symbols (internal for e-shop)
++ `variableSymbols` (array[string], optional) - Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered` operations). This string must contain only numbers, maximum length is 10 characters (digits).
 + `totalPrice` (Amount, optional) - Total order amount, including VAT
 + `totalVat` (array[VatAmount], optional) - Total VAT amounts split by their VAT rates
 + `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
@@ -1734,7 +1734,7 @@ Object used to mark order items as returned.
 
 ### Properties
 + `document` (Document, optional) - Attached document (credit note, ...)
-+ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (credit note, ...)
++ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (credit note, ...). This symbols is used by MALL Pay to pair payment from e-shop.
 + `consents` (array[Consent], optional) - Collection of customer consents
 
 ## OrderItemsSendRequest (OrderItemsChangeRequest)
@@ -1742,8 +1742,8 @@ Object used to mark order items as sent.
 
 ### Properties
 + `document` (Document, optional) - Attached invoice (invoice, proforma invoice...)
-+ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (invoice, proforma invoice, ...). Symbol used for making the payment to your account. This string must contain only numbers, maximum length is 10 characters (digits).
-+ `specificSymbol`: `1234567890` (string, optional) - Specific symbol of the new document (invoice, proforma invoice, ...). Symbol used for making the payment to your account. This string must contain only numbers, maximum length is 10 characters (digits).
++ `variableSymbol`: `1234567890` (string, optional) - Required if was not specified earlier in 'Create application' operation. Symbol used for making the payment to your account. This string must contain only numbers, maximum length is 10 characters (digits).
++ `specificSymbol`: `1234567890` (string, optional) - Symbol used for making the payment to your account. This string must contain only numbers, maximum length is 10 characters (digits).
 + `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Shipping date and time (fill just the date if you can't specify a shipping time)
 + `deliveryCarrier` (DeliveryCarrier, optional) - Carrier
 + `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number
@@ -1766,7 +1766,7 @@ Order information, needed to create an application.
 
 ### Properties
 + `number`: `AA234` (string, required) - Order number (internal for e-shop)
-+ `variableSymbols` (array[string], optional) - Variable symbols (internal for e-shop)
++ `variableSymbols` (array[string], optional) - Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered` operations). This string must contain only numbers, maximum length is 10 characters (digits).
 + `totalPrice` (Amount, required) - Total order amount, including VAT
 + `totalVat` (array[VatAmount], required) - Total VAT amounts split by their VAT rates
 + `addresses` (array[Address], required) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
@@ -1907,7 +1907,7 @@ Attached document (e.g. invoice, credit note etc.)
 ## DocumentExtraData (object)
 
 ### Properties
-+ `variableSymbol`: `1234567890` (string, optional) - variable symbol (internal for e-shop)
++ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of this document (proforma, invoice, ...)
 
 
 ## InvoiceInfo (object)
@@ -2026,7 +2026,7 @@ Order information, needed to create an application.
 
 ### Properties
 + `number`: `AA234` (string, optional) - Order number (internal for e-shop)
-+ `variableSymbols` (array[string], optional) - Variable symbols (internal for e-shop)
++ `variableSymbols` (array[string], optional) - Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered` operations). This string must contain only numbers, maximum length is 10 characters (digits).
 + `totalPrice` (Amount, optional) - Total order amount, including VAT
 + `totalVat` (array[VatAmount], optional) - Total VAT amounts split by their VAT rates
 + `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
