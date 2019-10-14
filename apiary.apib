@@ -1769,7 +1769,7 @@ Order information, needed to create an application.
 + `variableSymbols` (array[string], optional) - Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered`) or we expect you make payment on our account with this symbol (if not specified later in `Mark order items as returned` operation). Strings must contain only numbers, maximum length is 10 characters (digits).
 + `totalPrice` (Amount, required) - Total order amount, including VAT
 + `totalVat` (array[VatAmount], required) - Total VAT amounts split by their VAT rates
-+ `addresses` (array[Address], required) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
++ `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
 + `deliveryType` (enum, optional) - Delivery type, for `DELIVERY_CARRIER` type can be further specified by `deliveryCarrier` attribute.
     + `DELIVERY_CARRIER` - If delivered by carrier - use `deliveryCarrier` for further specification.
     + `PERSONAL_BRANCH` - Personal collection at branch
@@ -1915,7 +1915,7 @@ Billing information, to be included in invoice.
 
 ### Properties
 + `fullName`: `Ing. Jan Novák, Csc.` (string, optional) - Customer full name, including academical degrees and salutation (Mr./Mrs./..). Empty if requested via customerDueDateCategory.
-+ `address` (Address, optional) - Billing address. Empty if requested via customerDueDateCategory.
++ `address` (Address, optional) - Billing address.
 + `dueDate`: `2017-06-20` (string, required) - Invoice due date.
 + `accountNumber` (AccountNumber, required) - Invoice account number.
 
