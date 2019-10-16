@@ -350,6 +350,22 @@ Use `/financing/v1/applications` resource with properly filled request that cont
   - Number
   - Total Price (including VAT)
   - Total VAT (array of total amounts split by VAT rates)
+  - Order items (array, at least one item is required)
+    - Code
+    - Order item name
+    - Total price (all pieces, including VAT)
+    - Total VAT
+- Additional information necessary for the continuation and completion of the process
+  - Your URL where the customer should be redirected after application approval
+  - Your URL where the customer should be redirected after application rejection
+  - URL of your notification endpoint you want us to send you notifications about particular application updates
+  
+For best customer experience request should containt following data:
+- Customer information
+  - Extra data
+    - Historical count of customer's transactions made in partner's e-shop
+- Order details
+  - Delivery carrier information
   - Addresses (array, at least one item is required - type BILLING)
     - Country
     - City
@@ -357,18 +373,10 @@ Use `/financing/v1/applications` resource with properly filled request that cont
     - Street number
     - ZIP
     - Address type
-  - Order items (array, at least one item is required)
-    - Code
-    - Order item name
-    - Total price (all pieces, including VAT)
-    - Total VAT
-- Financing type
-- Details of selected financing type (if required depends on selected financing type)
-- Personal data processing agreement
-- Additional information necessary for the continuation and completion of the process
-  - Your URL where the customer should be redirected after application approval
-  - Your URL where the customer should be redirected after application rejection
-  - URL of your notification endpoint you want us to send you notifications about particular application updates
+  - Order items
+    - Image
+- Personal data processing and terms and conditions agreement 
+
 
 If the request was successfully processed, you receive HTTP status code 201 and *application* object with at least following information in the response:
 - Application unique ID
