@@ -701,7 +701,9 @@ When there's some changes within *order* that may have an importatnt impact on t
 | `REJECTED`        | NO           |
 | `CANCELLED`       | NO           |
 | `PROCESSING`      | YES          |
-| `READY`           | YES          |
+| `READY`           | YES *        |
+
+* Order items can't be changed when some of them are marked as sent (via Mark order items as sent) or delivered (via Mark order items as delivered)
 
 Use `/financing/v1/applications/{applicationId}/order` resource with properly filled request that contains (only) changed data (resource allows partial put).
 
