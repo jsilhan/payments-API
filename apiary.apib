@@ -328,7 +328,7 @@ Partner authenticate himself and obtain acces token
 
         Unable to authenticate partner
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 # Group Application operations
@@ -407,21 +407,21 @@ Create new *application* of particular financing type
 
         Application was created
 
-    + Attributes (Application)
+    + Attributes (ApplicationResponse)
 
 
 + Response 200 (application/json; charset=utf-8)
 
         Application exists
 
-    + Attributes (Application)
+    + Attributes (ApplicationResponse)
 
 
 + Response 400 (application/json; charset=utf-8)
 
         There was an error processing request
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Application detail [/financing/v1/applications/{applicationId}]
@@ -457,14 +457,14 @@ Get specific *application* detail by ID
 
         Actual application data
 
-    + Attributes (Application)
+    + Attributes (ApplicationResponse)
 
 
 + Response 404(application/json; charset=utf-8)
 
         Application does not exist
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Request application OTP [/financing/v1/applications/{applicationId}/requestOTP]
@@ -514,7 +514,7 @@ Request sending of one-time password to customer by SMS. This OTP is required to
 
         SMS with OTP was NOT send to customer
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Verify application  [/financing/v1/applications/{applicationId}/verify]
@@ -559,14 +559,14 @@ Use `/financing/v1/applications/{applicationId}/verify` resource with properly f
 
         Application was verified correctly
 
-    + Attributes (Application)
+    + Attributes (ApplicationResponse)
 
 
 + Response 422(application/json; charset=utf-8)
 
         Application was not verified
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Send application additional data [/financing/v1/applications/{applicationId}/additionalData]
@@ -622,14 +622,14 @@ Send additional data needed to complete the *application*.
 
         Data was accepted
 
-    + Attributes (Application)
+    + Attributes (ApplicationResponse)
 
 
 + Response 400(application/json; charset=utf-8)
 
         Error in processing request
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Cancel application [/financing/v1/applications/{applicationId}/cancel]
@@ -680,13 +680,13 @@ Cancel *application*, or cancel recurring payment.
 
         Application was cancelled
 
-    + Attributes (Application)
+    + Attributes (ApplicationResponse)
 
 
 + Response 422(application/json; charset=utf-8)
     Application can not be cancelled
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Change application order [/financing/v1/applications/{applicationId}/order]
@@ -746,19 +746,19 @@ In other cases, you may receive errors similar to the following ones:
 Change *order*. Used to change order items, total amount, billing details etc.
 
 + Request (application/json; charset=utf-8)
-    + Attributes (OrderChangeRequest)
+    + Attributes (ApplicationOrderChangeRequest)
 
 
 + Response 200(application/json; charset=utf-8)
         Order was changed
 
-    + Attributes (OrderExtended)
+    + Attributes (OrderExtendedResponse)
 
 
 + Response 422(application/json; charset=utf-8)
     Order can not be changed.
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Mark order items as cancelled  [/financing/v1/applications/{applicationId}/order/cancel]
@@ -831,14 +831,14 @@ System notification. Some or all of the order items were cancelled. Based on *ap
         Some order items or the whole order was cancelled
 
 
-    + Attributes (OrderExtended)
+    + Attributes (OrderExtendedResponse)
 
 
 + Response 422(application/json; charset=utf-8)
 
         Order items can not be canceled.
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Mark order items as sent [/financing/v1/applications/{applicationId}/order/send]
@@ -912,13 +912,13 @@ Based on *application* financing type and partner setting, application payment m
 + Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as shipped
 
-    + Attributes (OrderExtended)
+    + Attributes (OrderExtendedResponse)
 
 
 + Response 422(application/json; charset=utf-8)
         State change can not be processed
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Mark order items as delivered [/financing/v1/applications/{applicationId}/order/deliver]
@@ -995,13 +995,13 @@ Based on *application* financing type and partner setting, application payment m
 + Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as delivered
 
-    + Attributes (OrderExtended)
+    + Attributes (OrderExtendedResponse)
 
 
 + Response 422(application/json; charset=utf-8)
         State change can not be processed
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Mark order items as returned [/financing/v1/applications/{applicationId}/order/return]
@@ -1076,13 +1076,13 @@ Based on *application* financing type and partner setting, credit note may be is
 + Response 200(application/json; charset=utf-8)
         Order items or whole order is marked as returned
 
-    + Attributes (OrderExtended)
+    + Attributes (OrderExtendedResponse)
 
 
 + Response 422(application/json; charset=utf-8)
         State change can not be processed
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Applications payments  [/financing/v1/applications/{applicationId}/payments]
@@ -1118,7 +1118,7 @@ Collection is sorted by paymentId attribute.
 
         Application does not exist
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Invoices [/financing/v1/invoices]
@@ -1160,7 +1160,7 @@ This should be used by partner before issuing an invoice, to include correct bil
 
         Invoice info can not be generated
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 + Request Wrong request (application/json; charset=utf-8)
@@ -1175,13 +1175,13 @@ This should be used by partner before issuing an invoice, to include correct bil
 
         Invoice info can not be generated
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 ## Orders [/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}]
 If you need to find out current information about particular *order* - primarily its state (or its order items' states) and other details - use `/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
 
-| Financing type     | Supported   | 
+| Financing type     | Supported   |
 | ---                | ---         |
 | `DEFERRED_PAYMENT` | YES         |
 
@@ -1242,14 +1242,14 @@ use `/financing/v1/orders` with at least one of following parameter:
 
         Order data
 
-    + Attributes (OrderExtended)
+    + Attributes (OrderExtendedResponse)
 
 
 + Response 404(application/json; charset=utf-8)
 
         Order not found
 
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 # Group Precheck operations
 Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to MALL Pay
@@ -1278,7 +1278,7 @@ Returns probability of *application's* approval and limits of particular custome
 
         Probability of approval
 
-    + Attributes (PrecheckResults)
+    + Attributes (PrecheckResultsResponse)
 
 
 + Request minimal case 1 (application/json; charset=utf-8)
@@ -1298,7 +1298,7 @@ Returns probability of *application's* approval and limits of particular custome
 
         Probability of approval
 
-    + Attributes (PrecheckResults)
+    + Attributes (PrecheckResultsResponse)
 
 
 + Request minimal case 2 (application/json; charset=utf-8)
@@ -1317,7 +1317,7 @@ Returns probability of *application's* approval and limits of particular custome
 
         Probability of approval
 
-    + Attributes (PrecheckResults)
+    + Attributes (PrecheckResultsResponse)
 
 
 + Request minimal case 3 (application/json; charset=utf-8)
@@ -1336,32 +1336,32 @@ Returns probability of *application's* approval and limits of particular custome
 
         Probability of approval
 
-    + Attributes (PrecheckResults)
+    + Attributes (PrecheckResultsResponse)
 
 
 + Request Missing some fields (application/json; charset=utf-8)
     + Attributes
-        + `customer` (PrecheckRequestCustomer, required)
-        + `order` (PrecheckRequestOrder)
+        + `customer` (PrecheckCustomerRequest, required)
+        + `order` (PrecheckOrderRequest)
         + `type` (enum, optional)
             + `DEFERRED_PAYMENT`
         + `consents` (array[Consent])
 
 + Response 422 (application/json; charset=utf-8)
         Error in processing request
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 + Request Missing customer field (application/json; charset=utf-8)
     + Attributes
-        + `order` (PrecheckRequestOrder)
+        + `order` (PrecheckOrderRequest)
         + `type` (enum, optional)
             + `DEFERRED_PAYMENT`
         + `consents` (array[Consent])
 
 + Response 422 (application/json; charset=utf-8)
         Error in processing request
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 + Request (application/json; charset=utf-8)
@@ -1374,7 +1374,7 @@ Returns probability of *application's* approval and limits of particular custome
 
 + Response 400 (application/json; charset=utf-8)
         Error in processing request
-    + Attributes (Errors)
+    + Attributes (ErrorsResponse)
 
 
 # Group Merchantsite operations
@@ -1433,7 +1433,7 @@ We fill the request with at least following information:
 Notify partner about changes in application.
 
 + Request (application/json; charset=utf-8)
-    + Attributes (ApplicationBase)
+    + Attributes (ApplicationBaseResponse)
 
 
 + Response 200 (application/json; charset=utf-8)
@@ -1569,7 +1569,7 @@ Financial amount with VAT rate.
 ### Properties
 + `vatRate`: 15 (number, required) - VAT rate as natural number (15 represents 15% rate)
 
-## ApplicationBase (object)
+## ApplicationBaseResponse (object)
 Financing application base information
 
 ### Properties
@@ -1601,12 +1601,12 @@ Financing application base information
     + `CANCELLED_RETURNED` - Cancelled after delivery, goods returned to merchant
 
 
-## Application (ApplicationBase)
+## ApplicationResponse (ApplicationBaseResponse)
 Financing application
 
 ### Properties
-+ `customer` (Customer, required) - Customer data
-+ `order` (Order, required) - Order data
++ `customer` (CustomerResponse, required) - Customer data
++ `order` (OrderResponse, required) - Order data
 + `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
@@ -1615,13 +1615,24 @@ Financing application
 + `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is `PROCESSING` and stateReason is `PROCESSING_ADDITIONAL_DATA` or `PROCESSING_VERIFICATION` or `PROCESSING_REDIRECT_NEEDED`.
 
 
+## ApplicationRequest (object)
+Financing application request
+
+### Properties
++ `customer` (CustomerRequest, required) - Customer information
++ `order` (OrderRequest, required) - Order information
++ `type` (enum, required) - Financing type
+    + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
++ `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
++ `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResultsResponse).
++ `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
++ `consents` (array[Consent], optional) - Collection of customer consents
+
+
 ## CustomerBase (object)
 Customer data
 
 ### Properties
-+ `firstName`: `John` (string, optional) -  Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
-+ `lastName`: `Newborn` (string, optional) - Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
-+ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
 + `titleBefore`: `Ing.` (string, optional) - Academical degree, in front of the name
 + `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
@@ -1631,7 +1642,7 @@ Customer data
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
 
 
-## CustomerRequestBase (object)
+## CustomerRequest (CustomerBase)
 Customer data
 
 ### Properties
@@ -1640,33 +1651,28 @@ Customer data
         + `firstName`: `John` (string, required) -  Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
         + `lastName`: `Newborn` (string, required) - Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
     + `fullName`: `Ing. John Newborn, Csc.` (string, required) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
-+ `titleBefore`: `Ing.` (string, optional) - Academical degree, in front of the name
-+ `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
 + `phone`: `+420123456789` (string, required) - Phone number with country code (including leading `+`)
 + `addresses` (array[Address], optional) - Addresses. All types are allowed.
 + `tin`: `12333321` (string, optional) - Tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
++ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. Required for [Advanced implementation](#introduction/getting-started/advanced-implementation).
++ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components.  Required for [Advanced implementation](#introduction/getting-started/advanced-implementation). Fill this property with data created with MALL Pay JS library.
++ `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability.
 
-## Customer (CustomerBase)
+## CustomerResponse (CustomerBase)
 Customer data
 
 ### Properties
++ `firstName`: `John` (string, optional) -  Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
++ `lastName`: `Newborn` (string, optional) - Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
++ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
 + `type` (enum, required) - Customer type.
     + `UNKNOWN` - Customer is uknown for MALL Pay.
     + `FIRST_ORDER` - MALL Pay knows the customer. Customer has no paid orders.
     + `FULL` -  MALL Pay knows the customer. Customer has at least one paid order.
     + `BLOCKED` - MALL Pay knows the customer. Customer is blocked.
 + `dueDateCategory` (DueDateCategory, required)
-
-
-## ApplicationRequestCustomer (CustomerRequestBase)
-Customer data
-
-### Properties
-+ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. Required for [Advanced implementation](#introduction/getting-started/advanced-implementation).
-+ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components.  Required for [Advanced implementation](#introduction/getting-started/advanced-implementation). Fill this property with data created with MALL Pay JS library.
-+ `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability.
 
 
 ## CustomerExtraData (object)
@@ -1684,36 +1690,13 @@ Customer data
 + `itemsViewed`: 10 (number, optional) - Number of viewed pages with products
 + `tags` (array[string], optional) - List of custom tags (ie. information, that customer is club member, vip customer, etc.)
 
-## OrderChangeRequest (object)
+## ApplicationOrderChangeRequest (object)
 Object used to change order information.
 
 ### Properties
 + reason (string, optional) - Reason of change.
-+ order (OrderChange, required) - Changed order data.
++ order (OrderChangeRequest, required) - Changed order data.
 + `consents` (array[Consent], optional) - Collection of customer consents
-
-## OrderChange (object)
-+ `number`: `AA234` (string, optional) - Order number (internal for e-shop)
-+ `variableSymbols` (array[string], optional) - Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered`) or we expect you make payment on our account with this symbol (if not specified later in `Mark order items as returned` operation). Strings must contain only numbers, maximum length is 10 characters (digits).
-+ `totalPrice` (Amount, optional) - Total order amount, including VAT
-+ `totalVat` (array[VatAmount], optional) - Total VAT amounts split by their VAT rates
-+ `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
-+ `deliveryType` (enum, optional) - Delivery type, for `DELIVERY_CARRIER` type can be further specified by `deliveryCarrier` attribute.
-    + `DELIVERY_CARRIER` - If delivered by carrier - use `deliveryCarrier` for further specification.
-    + `PERSONAL_BRANCH` - Personal collection at branch
-    + `PERSONAL_PARTNER` - Personal collection at partner network
-    + `ONLINE` - Online delivery (e.g. for intangible assets)
-+ `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
-+ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional, nullable)
-
-   Date and time until order is reserved.
-
-   Until 'reservationDate' MALL Pay will try to notify partner with Application notification about approval or rejection.
-
-   After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
-
-+ `items` (array[ApplicationRequestOrderItem], optional) - Order items
-+ `documents` (array[Document], optional) - Attached documents (invoices etc.)
 
 
 ## ApplicationCancelRequest (object)
@@ -1743,7 +1726,7 @@ Object used to change order items.
 Object used to mark order items as returned.
 
 ### Properties
-+ `document` (Document, optional) - Attached document (credit note, ...)
++ `document` (DocumentRequest, optional) - Attached document (credit note, ...)
 + `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (credit note, ...). This symbols is used by MALL Pay to pair payment from e-shop.
 + `consents` (array[Consent], optional) - Collection of customer consents
 
@@ -1751,7 +1734,7 @@ Object used to mark order items as returned.
 Object used to mark order items as sent.
 
 ### Properties
-+ `document` (Document, optional) - Attached invoice (invoice, proforma invoice...)
++ `document` (DocumentRequest, optional) - Attached invoice (invoice, proforma invoice...)
 + `variableSymbol`: `1234567890` (string, optional) - Required if was not specified earlier in 'Create application' or 'Change application order' operations. Symbol used for making the payment to your account. This string must contain only numbers, maximum length is 10 characters (digits).
 + `specificSymbol`: `1234567890` (string, optional) - Symbol used for making the payment to your account. This string must contain only numbers, maximum length is 10 characters (digits).
 + `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Shipping date and time (fill just the date if you can't specify a shipping time)
@@ -1794,13 +1777,18 @@ Order information, needed to create an application.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 
-+ `items` (array[ApplicationRequestOrderItem], required) - Order items
-+ `documents` (array[Document], optional) - Attached documents (invoices etc.)
++ `items` (array[OrderItemRequest], required) - Order items
 + `merchantId` (string, optional) - Merchant identification (ie. in case of multiple e-shops managed by one credentials)
 
 
-## Order (OrderBase)
-Order information.
+## OrderRequest (OrderBase)
+
+### Properties
++ `documents` (array[DocumentRequest], optional) - Attached documents (invoices etc.)
++ `items` (array[OrderItemRequest], required) - Order items
+
+
+## OrderResponse (OrderBase)
 
 ### Properties
 + `state` (enum, required) - Order state.
@@ -1809,16 +1797,44 @@ Order information.
     + `DELIVERED` - All order items was delivered to customer
     + `RETURNED` - All order items was returned to merchant
     + `CANCELLED` - Order was fully cancelled
-+ `items` (array[OrderItem], required) - Order items
 + `deliveryDate`: `2017-01-17T00:00:00+02:00` (string, optional) - Date and time of delivery
 + `deliveryTrackingNumber`: `EX12221` (string, optional) - Delivery tracking number
 + `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Date and time of order shipping
++ `documents` (array[DocumentResponse], optional) - Attached documents (invoices etc.)
++ `items` (array[OrderItemResponse], required) - Order items
 
-## OrderExtended (Order)
-Additional information about Application.
+
+## OrderExtendedResponse (OrderResponse)
+
+Order with additional information about Application.
 
 ### Properties
-+ `applicationInfo` (ApplicationBase, required) - Base information about respective application
++ `applicationInfo` (ApplicationBaseResponse, required) - Base information about respective application
+
+
+## OrderChangeRequest (object)
++ `number`: `AA234` (string, optional) - Order number (internal for e-shop)
++ `variableSymbols` (array[string], optional) - Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered`) or we expect you make payment on our account with this symbol (if not specified later in `Mark order items as returned` operation). Strings must contain only numbers, maximum length is 10 characters (digits).
++ `totalPrice` (Amount, optional) - Total order amount, including VAT
++ `totalVat` (array[VatAmount], optional) - Total VAT amounts split by their VAT rates
++ `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
++ `deliveryType` (enum, optional) - Delivery type, for `DELIVERY_CARRIER` type can be further specified by `deliveryCarrier` attribute.
+    + `DELIVERY_CARRIER` - If delivered by carrier - use `deliveryCarrier` for further specification.
+    + `PERSONAL_BRANCH` - Personal collection at branch
+    + `PERSONAL_PARTNER` - Personal collection at partner network
+    + `ONLINE` - Online delivery (e.g. for intangible assets)
++ `deliveryCarrier` (DeliveryCarrier, optional) - Delivery carrier, when applicable.
++ `reservationDate`: `2017-07-15T00:00:00+02:00` (string, optional, nullable)
+
+   Date and time until order is reserved.
+
+   Until 'reservationDate' MALL Pay will try to notify partner with Application notification about approval or rejection.
+
+   After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
+
++ `items` (array[OrderItemRequest], optional) - Order items
++ `documents` (array[DocumentRequest], optional) - Attached documents (invoices etc.)
+
 
 ## OrderItemBase (object)
 Order item base information, needed to identify order item
@@ -1830,7 +1846,7 @@ Order item base information, needed to identify order item
 + `quantity`: 1 (number, optional) - Item quantity. If empty, considered as 1.
 
 
-## ApplicationRequestOrderItem (OrderItemBase)
+## OrderItemRequest (OrderItemBase)
 Order item information, needed to create an application.
 
 ### Properties
@@ -1852,11 +1868,11 @@ Order item information, needed to create an application.
 + `unitVat` (VatAmount, optional) - VAT amount per one piece. If empty, automatically considered that `unitVat` is `totalVat` / `quantity`.
 + `totalPrice` (Amount, required) - Total price for all pieces, VAT inclusive. Can be both positive (goods, ...) or negative (discount, ...) or `0`.
 + `totalVat` (VatAmount, required) - Total VAT amount for all pieces. Can be both positive (goods, ...) or negative (discount, ...) or `0` (if `vatRate` is `0`).
-+ `image` (File, optional) - Item image
++ `image` (FileRequest, optional) - Item image
 + `productUrl`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
 
 
-## OrderItem (ApplicationRequestOrderItem)
+## OrderItemResponse (OrderItemRequest)
 Order item information.
 
 ### Properties
@@ -1869,6 +1885,7 @@ Order item information.
 + `sentDate`: `2017-01-10` (string, optional) - Date when item was sent. Only when the whole order was NOT sent at once.
 + `deliveryDate`: `2017-01-12` (string, optional) - Date when item was delivered. Only when the whole order was NOT sent at once.
 + `deliveryTrackingNumber`: `EX21121` (string, optional) - Tracking number for the item. Only when the whole order was NOT sent at once.
++ `image` (FileResponse, optional) - Item image
 
 
 ## OrderItemChangeRequest (object)
@@ -1891,7 +1908,7 @@ Order item base information
 + `quantity`: 1 (number, optional) - Item quantity. If empty, considered as 1.
 
 
-## File (object)
+## FileRequest (object)
 
 ### Properties
 + `filename`: `invoice.pdf` (string, required) - File name.
@@ -1900,7 +1917,21 @@ Order item base information
     + `url`: `https://www.partner.com/file?id=12345` (string, required) - File URL.
 
 
-## Document (object)
+## FileResponse (object)
+
+### Properties
++ `filename`: `invoice.pdf` (string, required) - File name.
++ `url`: `https://www.partner.com/file?id=12345` (string, required) - File URL.
+
+
+## PrivateFileResponse (object)
+
+### Properties
++ `filename`: `invoice.pdf` (string, required) - File name.
++ `url`: `https://www.partner.com/file?id=12345` (string, required) - File URL (URL is accessible only 1 hour from its generation for security reasons)
+
+
+## DocumentRequest (object)
 Attached document (e.g. invoice, credit note etc.)
 
 ### Properties
@@ -1909,7 +1940,20 @@ Attached document (e.g. invoice, credit note etc.)
     + `PROFORMA_INVOICE` - Proforma invoice
     + `CREDIT_NOTE` - Credit note
     + `OTHER` - Other document type
-+ `file` (File, required) - Attached file
++ `file` (FileRequest, required) - Attached file
++ `description`: `This is an invoice` (string, optional) - File description
++ `extraData` (DocumentExtraData, optional) - Additional data, if applicable
+
+## DocumentResponse (object)
+Attached document (e.g. invoice, credit note etc.)
+
+### Properties
++ `type` (enum, required) - Type of the document
+    + `INVOICE` - Invoice
+    + `PROFORMA_INVOICE` - Proforma invoice
+    + `CREDIT_NOTE` - Credit note
+    + `OTHER` - Other document type
++ `file` (PrivateFileResponse, required) - Attached file
 + `description`: `This is an invoice` (string, optional) - File description
 + `extraData` (DocumentExtraData, optional) - Additional data, if applicable
 
@@ -1979,19 +2023,6 @@ Services that should be developed and exposed by partner e-shops to allow MALL P
 + `changeEndpoint`: `http://www.yourEshop.com/changeEndpoint` (string, optional) - URL of the partner used as a endpoint for processing information about order changes made by customer in MALL Pay.
 
 
-## ApplicationRequest (object)
-Financing application request
-
-### Properties
-+ `customer` (ApplicationRequestCustomer, required) - Customer information
-+ `order` (OrderBase, required) - Order information
-+ `type` (enum, required) - Financing type
-    + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-+ `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
-+ `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResults).
-+ `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
-+ `consents` (array[Consent], optional) - Collection of customer consents
-
 ## RequestApplicationOTPRequest (object)
 
 ## RequestApplicationOTPResponse (object)
@@ -2015,23 +2046,23 @@ Additional data about the customer.
 ## IdCardScan (object)
 
 ### Properties
-+ `front` (File, optional) - Front side
-+ `back` (File, optional) - Back side
++ `front` (FileRequest, optional) - Front side
++ `back` (FileRequest, optional) - Back side
 
 ## PrecheckRequest (object)
 Precheck data (has similar structure as `Application`).
 
 ### Properties
-+ `customer` (PrecheckRequestCustomer, required) - Customer data
-+ `order` (PrecheckRequestOrder, optional) - Order data
++ `customer` (PrecheckCustomerRequest, required) - Customer data
++ `order` (PrecheckOrderRequest, optional) - Order data
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
 + `consents` (array[Consent], optional) - Collection of customer consents
 
-## PrecheckRequestCustomer (ApplicationRequestCustomer)
+## PrecheckCustomerRequest (CustomerRequest)
 + `additionalData` (AdditionalDataRequest, optional) - Additional data about the customer
 
-## PrecheckRequestOrder (object)
+## PrecheckOrderRequest (object)
 Order information, needed to create an application.
 
 ### Properties
@@ -2053,8 +2084,8 @@ Order information, needed to create an application.
    Until 'reservationDate' MALL Pay will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
-+ `items` (array[ApplicationRequestOrderItem], optional) - Order items
-+ `documents` (array[Document], optional) - Attached documents (invoices etc.)
++ `items` (array[OrderItemRequest], optional) - Order items
++ `documents` (array[DocumentRequest], optional) - Attached documents (invoices etc.)
 + `merchantId` (string, optional) - Merchant identification (ie. in case of multiple e-shops managed by one credentials)
 
 
@@ -2064,7 +2095,7 @@ Order information, needed to create an application.
 + `key`: `property` (string, required) - Key
 + `value`: `value` (object, required) - Value
 
-## PrecheckResult (object)
+## PrecheckResultResponse (object)
 Precheck result.
 
 ### Properties
@@ -2105,12 +2136,12 @@ Precheck result.
 + `additionalActions` (array[string], optional) - List of additional actions which will be required to finish application.
     Possible values in array: `MOBILE_VERIFICATION`, `ACCOUNT_REGISTRATION`, `LIMIT_INCREASE`, `CREDIT_TERM_SUPPLEMENT`, `PAPERFORM_SUPPLEMENT`.
 
-## PrecheckResults (object)
+## PrecheckResultsResponse (object)
 Precheck results.
 
 ### Properties
 + `id` (string, required) - Unique identificator of precheck. Send this identificator in ApplicationRequest for better approval rate.
-+ `results` (array[PrecheckResult], required) - Precheck results for each type of product.
++ `results` (array[PrecheckResultResponse], required) - Precheck results for each type of product.
 + `limits` (Limits, optional)
     Customer limits.
     Estimated in case we don!t know the customer.
@@ -2125,9 +2156,9 @@ Order change request data (MALL Pay asks partner to correct order data).
     + PERSONAL_INFO - MALL Pay is trying correct customer's personal info (typos in name, surname... etc.).
     + ORDER_ITEMS - MALL Pay received order items change proposal from customer.
     + DELIVER_ADDRESS - MALL Pay received delivery address change proposal from customer.
-+ `order` (OrderExtended, required) - Corrected order data.
++ `order` (OrderExtendedResponse, required) - Corrected order data.
 
-## Error (object)
+## ErrorResponse (object)
 + code: `ERR_1000_SOME_ERROR_CODE` (string, required) - Unique internal error code
 + message: `Some error/validation message description` (string, required) - Human readable error description (non-localized)
 + severity (enum, required)
@@ -2137,8 +2168,8 @@ Order change request data (MALL Pay asks partner to correct order data).
 + attribute: `personalBirthNumber` (string, optional) - JSON path of request attribute that caused the error (if applicable)
 + ticketId: `UAT1:AMS:20160516-091658.450:45e4` (string, optional) - Internal ticket ID, used for error backtracking
 
-## Errors (object)
-+ errors (array[Error], fixed-type, required) - Array with errors
+## ErrorsResponse (object)
++ errors (array[ErrorResponse], fixed-type, required) - Array with errors
 
 ## PagingInfo (object)
 + itemsPerPage: 10 (number, required) - Number of items per page
