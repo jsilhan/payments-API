@@ -1777,8 +1777,8 @@ Order information, needed to create an application.
 ### Properties
 + `number`: `AA234` (string, required) - Order number (internal for e-shop)
 + `variableSymbols` (array[string], optional) - Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered`) or we expect you make payment on our account with this symbol (if not specified later in `Mark order items as returned` operation). Strings must contain only numbers, maximum length is 10 characters (digits).
-+ `totalPrice` (Amount, required) - Total order amount, including VAT
-+ `totalVat` (array[VatAmount], required) - Total VAT amounts split by their VAT rates
++ `totalPrice` (Amount, required) - Total order amount, including VAT. Needs to be positive.
++ `totalVat` (array[VatAmount], required) - Total VAT amounts split by their VAT rates.
 + `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
 + `deliveryType` (enum, optional) - Delivery type, for `DELIVERY_CARRIER` type can be further specified by `deliveryCarrier` attribute.
     + `DELIVERY_CARRIER` - If delivered by carrier - use `deliveryCarrier` for further specification.
@@ -1848,10 +1848,10 @@ Order item information, needed to create an application.
 + `description`: `Mobile phone with 32GB of RAM` (string, optional)
 + `producer`: `Apple` (string, optional)
 + `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - List of item categories
-+ `unitPrice` (Amount, optional) - Price per one piece. If empty, automatically considered that `unitPrice` is `totalPrice` / `quantity`.
++ `unitPrice` (Amount, optional) - Price per one piece. If empty, automatically considered that `unitPrice` is `totalPrice` / `quantity`. Can be both positive (goods, ...) or negative (discount, ...).
 + `unitVat` (VatAmount, optional) - VAT amount per one piece. If empty, automatically considered that `unitVat` is `totalVat` / `quantity`.
-+ `totalPrice` (Amount, required) - Total price for all pieces, VAT inclusive
-+ `totalVat` (VatAmount, required) - Total VAT amount for all pieces
++ `totalPrice` (Amount, required) - Total price for all pieces, VAT inclusive. Can be both positive (goods, ...) or negative (discount, ...) or `0`.
++ `totalVat` (VatAmount, required) - Total VAT amount for all pieces. Can be both positive (goods, ...) or negative (discount, ...) or `0` (if `vatRate` is `0`).
 + `image` (File, optional) - Item image
 + `productUrl`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
 
