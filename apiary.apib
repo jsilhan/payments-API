@@ -1868,7 +1868,7 @@ Order item information, needed to create an application.
 + `unitVat` (VatAmount, optional) - VAT amount per one piece. If empty, automatically considered that `unitVat` is `totalVat` / `quantity`.
 + `totalPrice` (Amount, required) - Total price for all pieces, VAT inclusive. Can be both positive (goods, ...) or negative (discount, ...) or `0`.
 + `totalVat` (VatAmount, required) - Total VAT amount for all pieces. Can be both positive (goods, ...) or negative (discount, ...) or `0` (if `vatRate` is `0`).
-+ `image` (File, optional) - Item image
++ `image` (FileRequest, optional) - Item image
 + `productUrl`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
 
 
