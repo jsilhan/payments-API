@@ -26,8 +26,6 @@ The most basic and minimum way how to implement MALL Pay API is to at least impl
 1. Redirect handlers.
     - Special URLs for customers that shows payment success or rejection.
 1. [Application notification](#reference/merchantsite-operations/application-notification)
-1. [Generate invoice info](#reference/application-operations/invoices/generate-invoice-info)
-    - To put all the necessary information to invoices (correct due date, bank number...). 
 1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent)  or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
     - MALL Pay won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
 
@@ -1126,6 +1124,7 @@ Collection is sorted by paymentId attribute.
 ### Generate invoice info [POST]
 Generates billing information to be included in invoice for specific date for specific order or delivery.
 This should be used by partner before issuing an invoice, to include correct billing information.
+Helpful to put all the necessary information correctly to invoices (correct due date, bank number...). 
 
 | Financing type     | Supported |
 | ---                | ---       |
