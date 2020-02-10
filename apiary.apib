@@ -508,7 +508,7 @@ Cancel *application*.
 
 
 ## Change application order [/financing/v1/applications/{applicationId}/order]
-When there's some changes within *order* that may have an importatnt impact on the approval process (e.g. change in order items that impacts the total price of the *order* or other billing information) after its submission, use `/financing/v1/applications/{applicationId}/order` resource in order we can adjust everything properly. `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
+When there's some changes within *order* before delivery (e.g. change in order items that impacts the total price of the *order*, or other billing information), use `/financing/v1/applications/{applicationId}/order` resource in order we can adjust everything properly. `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -521,7 +521,7 @@ When there's some changes within *order* that may have an importatnt impact on t
 | `PROCESSING`      | YES          |
 | `READY`           | YES *        |
 
-* Order items can't be changed when some of them are marked as sent (via Mark order items as sent) or delivered (via Mark order items as delivered)
+> \* Order items can't be changed when some of them are marked as sent (via Mark order items as sent) or delivered (via Mark order items as delivered)
 
 Use `/financing/v1/applications/{applicationId}/order` resource with properly filled request that contains (only) changed data (resource allows partial put).
 
