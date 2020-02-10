@@ -378,7 +378,6 @@ In other cases, you may receive errors similar to the following ones:
 | ---         | ---                   | ---                                                                              |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
 | 422         | UNPROCESSABLE         | Request was well-formed but was unable to be followed due to semantic errors     |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 
 ### Create application [POST]
@@ -429,7 +428,6 @@ In other cases, you may receive errors similar to the following ones:
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
 | 404         | APPLICATION_NOT_FOUND | The requested resource could not be found                                        |
 | 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
     + applicationId (string, required, `11200a0ee1`)
@@ -483,7 +481,6 @@ In other cases, you may receive errors similar to the following ones:
 | 422         | APPLICATION_VALIDATION_IN_PROGRESS  | When you try to cancel `Application` which undergoes validation                                       |
 | 422         | APPLICATION_PAID                    | When you try to cancel `Application` already paid, which is not allowed                               |
 | 422         | NOT_SUPPORTED                       | The request was well-formed but server was not able to change application state due internal rules    |
-| 500         | INTERNAL_SERVER_ERROR               | Unexpected condition was encountered and no more specific message is suitable.                        |
 
 
 + Parameters
@@ -555,7 +552,6 @@ In other cases, you may receive errors similar to the following ones:
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.) |
 | 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                       |
 | 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                              |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.  |
 
 
 + Parameters
@@ -631,7 +627,6 @@ In other cases, you may receive errors similar to the following ones:
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
 | 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
 | 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
     + applicationId (string, required, `11b00a1ef1`)
@@ -713,7 +708,6 @@ In other cases, you may receive errors similar to the following ones:
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
 | 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
 | 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
     + applicationId (string, required, `11b00a1ef1`)
@@ -795,7 +789,6 @@ In other cases, you may receive errors similar to the following ones:
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
 | 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
 | 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
     + applicationId (string, required, `11b00a1ef1`)
@@ -876,7 +869,6 @@ In other cases, you may receive errors similar to the following ones:
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
 | 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
 | 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 + Parameters
     + applicationId (string, required, `11b00a1ef1`)
@@ -1041,7 +1033,6 @@ In other cases, you may receive errors similar to the following ones:
 | ---         | ---                   | ---                                                                              |
 | 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
 | 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.   |
 
 
 ### Get order [GET]
@@ -1087,7 +1078,6 @@ Possible error codes explanation:
 | ---         | ---                 | ---                                                                             |
 | 400         | INVALID_REQUEST     | Request was not well formatted (malformed request syntax, size too large, etc.) |
 | 422         | PERSONAL_ID_INVALID | PersonalId is not valid                                                         |
-| 500         | FAILURE             | Internal failure                                                                |
 
 ### Precheck [POST]
 Returns probability of *application's* approval and limits of particular customer, if known to MALL Pay
@@ -1270,9 +1260,9 @@ To check the availability of back-end services use the [health check resource](#
 If the API back-end services are up and runing, you receive HTTP status code 200 with optional version info.
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                  |
-| ---         | ---                   |
-| 500         | INTERNAL_SERVER_ERROR |
+| Status code | Description                                             |
+| ---         | ---                                                     |
+| 503         | `Service Unavailable` - there is planned service outage |
 
 > Note: resource DOES NOT require valid *access_token* in the HTTP header of the request
 
