@@ -52,12 +52,14 @@ Simplified diagram of possible transitions between states:
 Merchant can obtain current application state anytime with [Get application detail](#reference/application-operations/application-detail/get-application-detail) operation.
 MALL Pay proactively notify merchant about important state and substate changes - merchant is able to handle [Application notification](#reference/merchantsite-operations/application-notification/application-notification).
 
-## Naming conventions
+## Conventions
+
+### Naming conventions
 - we use camelCase for all object and attribute names
 - we use CAPITAL_UNDERSCORE for enum values
 - we use plural in resource names
 
-## Paging
+### Paging
 - some resources (stated in documentation) that return collection of objects support pagination. We are using technique known as 'cursor-based pagination'.
 - on request:
   - query parameter `limit` specifies maximum number of objects in returned collection
@@ -86,7 +88,7 @@ Example response pagingInfo:
 }
 ```
 
-## Sorting
+### Sorting
 - some resources (stated in documentation) supports result sorting. You can specify sorting attributes and order using `sort` request parameter. For ascending order, specify just attribute name; for descending order, add unary - in front of attribute name. You can specify multiple attributes for sorting, separated by comma.
 - each resource that supports sorting specifies list of attributes that can be used for sorting.
 
@@ -96,7 +98,7 @@ Examples:
 - `/banking/accounts?sort=accountType,-accountCurrency,accountName` - get list of accounts, sorted by type (ascending), then by currency descending and then by account name (ascending)
 
 
-## Filtering
+### Filtering
 Some resources (stated in documentation) supports results filtering. Such resources have list of filters specified together with possible operations and possible values.
 
 You can specify filtering by passing `filter` attribute. General pattern to specify filter is:
@@ -110,7 +112,7 @@ You can specify filtering by passing `filter` attribute. General pattern to spec
 Multiple filters can be specified on each request, separated by semi-colon. They are joined by "AND", so each result item must satisfy all conditions.
 
 
-### Filtering examples
+#### Filtering examples
 - get a list of partners with category in (1, 5, 10)
 ```
 GET /general/partners?filter=category|in|1,5,10
@@ -122,7 +124,7 @@ GET /general/contracts?filter=contractDate|gt|2016-02-10;contractDate|lteq|2016-
 ```
 
 
-### List of operators
+#### List of operators
 | Operator | Meaning                |
 | ---      | ---                    |
 | lt       | less than              |
@@ -133,7 +135,7 @@ GET /general/contracts?filter=contractDate|gt|2016-02-10;contractDate|lteq|2016-
 | in       | value in list          |
 
 
-## Request restrictions
+### Request restrictions
 Please, keep in mind following restrictions regarding requests:
 - Maximum request size is **10 MB**.
 - Maximum size of accepted single file is **500 kB**.
@@ -154,18 +156,18 @@ Please, keep in mind following restrictions regarding requests:
 | image/gif                                                                 | *.gif                      |
 
 
-## API calls limits
+### API calls limits
 When you reach API calls limit (you call our API more times than is your quota), you receive HTTP error 429. To inform you about limits we use following response headers:
 - `X-Rate-Limit-Limit` - The number of allowed requests in the current period
 - `X-Rate-Limit-Remaining` - The number of remaining requests in the current period
 - `X-Rate-Limit-Reset` - The number of seconds left in the current period
 
 
-## Response encoding
+### Response encoding
 Unless stated otherwise, all responses are sent as `Content-Type: application/json; charset=utf-8`
 
 
-## HTTP status codes
+### HTTP status codes
 We use following status codes throughout the API, except for OAuth flow when response codes are prescribed in RFC
 - 200 `OK` - request was successful
 - 201 `Created` - request was successfull and resource was created
@@ -181,7 +183,7 @@ We use following status codes throughout the API, except for OAuth flow when res
 - 503 `Service Unavailable` - there is planned service outage
 
 
-## Error handling
+### Error handling
 Besides HTTP status codes, which are the main indication if something goes wrong, we also use `errors` object to report more details about errors.
 
 Errors object example:
@@ -226,7 +228,7 @@ There are 3 levels of error severity:
 - `WARN` - non-critical error, execution can continue but further user interaction is advisable (for request to proceed, you MUST specify this error code in `override` request attribute). This MIGHT be indicated also by appropriate HTTP status code.
 - `INFO` - information only, execution can continue without user interaction.
 
-### Errors overview
+#### Errors overview
 | Status code | Code                  | Explanation                                                                     | Message                                                                                                        |
 | ---         | ---                   | ---                                                                             | ---                                                                                                            |
 | 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.) | (*Various messages possible*) e.g. Unsupported combination of application state and order state                |
@@ -234,7 +236,7 @@ There are 3 levels of error severity:
 | 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.  | (*Various messages possible*) e.g. Failed to parse given JSON                                                  |
 
 
-## Formats
+### Formats
 - **date** and **time** uses [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) formatting, e.g.:
   - date is represented as `YYYY-mm-dd`. Timezone (local) is added when necessary.
     - time is represented as `Thh:mm:ss`. Timezone is added when necessary. Time with arbitrary number of digits respresenting miliseconds is also accepted (when [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format criteria is met) but the time without miliseconds is always returned.
@@ -245,7 +247,7 @@ There are 3 levels of error severity:
 - **money format** uses [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) formatting (in minor units, e.g.: 12590 represents 125,90 CZK)
 
 
-## Documentation principles
+### Documentation principles
 - attributes in request/response object are optional, unless stated otherwise (`required` flag under attribute name)
 - required attribute in optional object means, that if optional object is specified, it must contain required attribute.
 - all values in request/response attributes are just examples, except for enum values - these are the only possible values for given attribute.
