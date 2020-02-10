@@ -489,7 +489,7 @@ In other cases, you may receive errors similar to the following ones:
 
 
 ### Cancel application [PUT]
-Cancel *application*, or cancel recurring payment.
+Cancel *application*.
 
 + Request (application/json; charset=utf-8)
     + Attributes (ApplicationCancelRequest)
@@ -912,7 +912,7 @@ Based on *application* financing type and partner setting, credit note may be is
 ### Get payments on specific application [GET]
 Get payments on specific *application*
 
-List of realized payments from MALL Pay to partner. In case of recurring payment, list may contain more items.
+List of realized payments from MALL Pay to partner. In case of multiple invoices, list may contain more items.
 
 feature | supported by resource
 --- | ---
