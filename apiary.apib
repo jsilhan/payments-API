@@ -1208,13 +1208,12 @@ We use this resource when there is need to let you know about important changes 
 
 > NOTE: READY_PAID state is set when at least part of the application price was paid to the partner, not necessarily full application price. This also applies to the `Application was paid to the partner` application notification trigger.
 
-We fill the request with at least following information:
+We fill the request with following information:
 - Application unique ID
 - Application state
 - Application substate
-- Timestamp of the notification [TBD - not yet available]
 
-> USEFUL NOTE: If you think it takes us unusually long time to send you particular notification, do not hesitate to use `/financing/v1/applications/{applicationId}` resource (where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation) to directly find out information you seek.
+> IMPORTANT: You should always double check the state of Application on `/financing/v1/applications/{applicationId}` resource due to security reasons.
 
 ### Application notification [POST]
 Notify partner about changes in application.
@@ -1888,7 +1887,7 @@ Precheck results.
 + `limits` (Limits, optional)
     Customer limits.
     Estimated in case we don!t know the customer.
-    Current customer's limits in case we know him and customer give us an approval for their usage [TODO legal].
+    Current customer's limits in case we know him and customer give us an approval for their usage.
 
 ## ErrorResponse (object)
 + code: `ERR_1000_SOME_ERROR_CODE` (string, required) - Unique internal error code
