@@ -363,7 +363,7 @@ For best customer experience request should containt following data:
 - Personal data processing and terms and conditions agreement 
 
 
-If the request was successfully processed, you receive HTTP status code 201 and *application* object with at least following information in the response:
+If the request was successfully processed, you receive HTTP status code 201 and *application* object with following important information in the response:
 - Application unique ID
 - Application state
 - Application substate
@@ -415,12 +415,7 @@ If you need to find out current information about particular *application* - pri
 | ---                | ---               |
 | `DEFERRED_PAYMENT` | YES               |
 
-If the request was successfully processed, you receive HTTP status code 200 and *application* object with at least following information in the response:
-- Application unique ID
-- Application type
-- Application state
-- Application substate
-- Gateway redirect URL
+If the request was successfully processed, you receive HTTP status code 200 and *application* object.
 
 In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Message                                                                          |
@@ -464,11 +459,7 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 | `PROCESSING`      | YES *(with the exception of `validation` being in progress (`state_reason == PROCESSING_VALIDATION_IN_PROGRESS`))                                             |
 | `READY`           | YES *(available only when the Application's order is not marked as sent (via *Mark order items as sent*) or delivered (via *Mark order items as delivered*))  |
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
-- Application unique ID
-- Application type
-- Application state
-- Application substate
+If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
 | Status code | Code                                | Explanation                                                                                           |
@@ -524,27 +515,7 @@ When there's some changes within *order* before delivery (e.g. change in order i
 
 Use `/financing/v1/applications/{applicationId}/order` resource with properly filled request that contains (only) changed data (resource allows partial put).
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
-- Order number
-- Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates)
-- Addresses (array)
-  - Country
-  - City
-  - Street
-  - Street number
-  - ZIP
-  - Address type
-- Order items (array)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-  - Order item state
-- Order state
-- Application basic information
-  - ID
-  - Application state
-  - Application substate
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                     |
@@ -599,27 +570,7 @@ If you want to cancel specific order item/s, use `/financing/v1/applications/{ap
 
 > * **ATTENTION:** If multiple properties (`code`, `ean`, `name` or `type`) are used for identifying some order item, it all must exact match the item data.
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
-- Order number
-- Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates)
-- Addresses (array)
-  - Country
-  - City
-  - Street
-  - Street number
-  - ZIP
-  - Address type
-- Order items (array)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-  - Order item state
-- Order state
-- Application basic information
-  - ID
-  - Application state
-  - Application substate
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
@@ -680,27 +631,7 @@ If you want to mark specific order item/s as sent, use `/financing/v1/applicatio
 
 > * **ATTENTION:** If multiple properties (`code`, `ean`, `name` or `type`) are used for identifying some order item, it all must exact match the item data.
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
-- Order number
-- Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates)
-- Addresses (array)
-  - Country
-  - City
-  - Street
-  - Street number
-  - ZIP
-  - Address type
-- Order items (array)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-  - Order item state
-- Order state
-- Application basic information
-  - ID
-  - Application state
-  - Application substate
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
@@ -759,27 +690,7 @@ If you want to mark specific order item/s as delivered, use `/financing/v1/appli
 
 > * **ATTENTION:** If multiple properties (`code`, `ean`, `name` or `type`) are used for identifying some order item, it all must exact match the item data.
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
-- Order number
-- Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates)
-- Addresses (array)
-  - Country
-  - City
-  - Street
-  - Street number
-  - ZIP
-  - Address type
-- Order items (array)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-  - Order item state
-- Order state
-- Application basic information
-  - ID
-  - Application state
-  - Application substate
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
@@ -839,27 +750,7 @@ If you want to mark specific order item/s as returned, use `/financing/v1/applic
 
 > * **ATTENTION:** If multiple properties (`code`, `ean`, `name` or `type`) are used for identifying some order item, it all must exact match the item data.
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
-- Order number
-- Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates)
-- Addresses (array)
-  - Country
-  - City
-  - Street
-  - Street number
-  - ZIP
-  - Address type
-- Order items (array)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-  - Order item state
-- Order state
-- Application basic information
-  - ID
-  - Application state
-  - Application substate
+If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
@@ -1004,27 +895,7 @@ If you need to find out current information about particular *order* - primarily
 | `READY`           | YES          |
 
 
-If the request was successfully processed, you receive HTTP status code 200 and object of information about specified *order* plus basic information about respective *application* (ID, state, substate) with at least following information in the response:
-- Order number
-- Order total price (including VAT)
-- Order total VAT (array of VAT amounts split by VAT rates)
-- Addresses (array)
-  - Country
-  - City
-  - Street
-  - Street number
-  - ZIP
-  - Address type
-- Order items (array)
-  - Order item name
-  - Total price (all pieces, including VAT)
-  - Total VAT
-  - Order item state
-- Order state
-- Application basic information
-  - ID
-  - Application state
-  - Application substate
+If the request was successfully processed, you receive HTTP status code 200 and object of information about specified *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
 | Status code | Code                  | Explanation                                                                      |
