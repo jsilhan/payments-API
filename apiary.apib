@@ -33,21 +33,6 @@ The most basic and minimum way how to implement MALL Pay API is to at least impl
 
 It's always needed to send all attributes marked as required, but filling optional parameters will result in better application approval rate. You should always consider to fill the most attributes as possible. Contact the sales support to find out which attributes correlate with approval rate the most.
 
-
-### Advanced implementation
-You can use advanced operations to improve customer experience.
-
-1. [Precheck](#reference/precheck-operations/precheck)
-    - Merchant can prevent customer to be redirected to MALL Pay gateway if the customer is found by precheck operation not to be eligible for MALL Pay.
-1. Operations to integrate MALL Pay better in merchant checkout:
-    - [Request application OTP](#reference/application-operations/request-application-otp)
-    - [Verify application](#reference/application-operations/verify-application)
-    - [Send application additional data](#reference/application-operations/send-application-additional-data)
-
-    > IMPORTANT NOTE: Despite the usage of these operations it's always necessary to check *application* `stateReason`. If `stateReason == PROCESSING_REDIRECT_NEEDED` there is no way how to complete *application* throught API calls and you have to redirect customer to `gatewayRedirectUrl`.
-
-[![Sequence diagram of advanced implementation](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramAdvanced.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramAdvanced.png)
-
 ### Application states
 Applications have their own state and substates that can be managed by MALL Pay and merchants. 
 
@@ -461,171 +446,6 @@ Get specific *application* detail by ID
 + Response 404(application/json; charset=utf-8)
 
         Application does not exist
-
-    + Attributes (ErrorsResponse)
-
-
-## Request application OTP [/financing/v1/applications/{applicationId}/requestOTP]
-If you want to integrate customer *application* authorisation into merchant's checkout, this method is needed for sending the OTP to customer by SMS.
-OTP is required to verify *application*. See [Verify Application](#reference/application-operations/verify-application) method.
-
-| Financing type     | Supported |
-| ---                | ---       |
-| `DEFERRED_PAYMENT` | YES       |
-
-| Application state | Availability                                  |
-| ---               | ---                                           |
-| `PROCESSING`      | YES (`stateReason = PROCESSING_VERIFICATION`) |
-| `REJECTED`        | NO                                            |
-| `CANCELLED`       | NO                                            |
-| `READY`           | NO                                            |
-
-Possible error codes explanation:
-| Status code | Code                       | Explanation                                                                     |
-| ---         | ---                        | ---                                                                             |
-| 400         | INVALID_REQUEST            | Request was not well formatted (malformed request syntax, size too large, etc.) |
-| 404         | OBJECT_NOT_FOUND           | The requested resource could not be found                                       |
-| 422         | EXPLOITED_MAX_SMS_SENT     | Number of available SMS for time unit exceeded                                  |
-| 422         | REPEATED_REQUEST_TOO_EARLY | Repeated request violated security time span                                    |
-| 422         | NOT_ALLOWED                | Not allowed (other reasons)                                                     |
-| 422         | NO_VERIF_MOBILE            | Customer has not verified mobile                                                |
-| 500         | FAILURE                    | Unexpected condition was encountered and no more specific message is suitable.  |
-
-+ Parameters
-    + applicationId (string, required, `11b00a1ef1`)
-
-
-### Request application OTP [POST]
-Request sending of one-time password to customer by SMS. This OTP is required to verify *application*. See [Verify Application](#reference/application-operations/verify-application) method.
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (RequestApplicationOTPRequest)
-
-+ Response 200(application/json; charset=utf-8)
-
-        SMS with OTP was send to customer's primary phone number
-
-    + Attributes (RequestApplicationOTPResponse)
-
-
-+ Response 422(application/json; charset=utf-8)
-
-        SMS with OTP was NOT send to customer
-
-    + Attributes (ErrorsResponse)
-
-
-## Verify application  [/financing/v1/applications/{applicationId}/verify]
-If you want to integrate customer *application authorisation* into merchant's checkout, this method is needed for verifying the *application* with the OTP sent to customer by SMS.
-To send OTP to customer see [Request application OTP](#reference/application-operations/request-application-otp) method.
-
-| Financing type     | Supported |
-| ---                | ---       |
-| `DEFERRED_PAYMENT` | YES       |
-
-| Application state | Availability                                  |
-| ---               | ---                                           |
-| `PROCESSING`      | YES (`stateReason = PROCESSING_VERIFICATION`) |
-| `REJECTED`        | NO                                            |
-| `CANCELLED`       | NO                                            |
-| `READY`           | NO                                            |
-
-Possible error codes explanation:
-| Status code | Code                   | Explanation                                                                     |
-| ---         | ---                    | ---                                                                             |
-| 400         | INVALID_REQUEST        | Request was not well formatted (malformed request syntax, size too large, etc.) |
-| 404         | OBJECT_NOT_FOUND       | The requested resource could not be found                                       |
-| 422         | NOT_AUTHORIZED         | Incorrect OTP code                                                              |
-| 422         | OTP_EXPIRED            | Validity of OTP code expired                                                    |
-| 422         | NOT_ALLOWED            | Verification is not allowed                                                     |
-| 500         | FAILURE                | Unexpected condition was encountered and no more specific message is suitable.  |
-
-+ Parameters
-    + applicationId (string, required, `11b00a1ef1`)
-
-
-### Verify application [POST]
-Verify *application* with OTP sent to customer by SMS. To send OTP to customer see [Request application OTP](#reference/application-operations/request-application-otp) method.
-
-Use `/financing/v1/applications/{applicationId}/verify` resource with properly filled request that contains customer's OTP in request.
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (VerifyRequest, required)
-
-
-+ Response 200(application/json; charset=utf-8)
-
-        Application was verified correctly
-
-    + Attributes (ApplicationResponse)
-
-
-+ Response 422(application/json; charset=utf-8)
-
-        Application was not verified
-
-    + Attributes (ErrorsResponse)
-
-
-## Send application additional data [/financing/v1/applications/{applicationId}/additionalData]
-If you want to integrate gathering customer additional data needed for completing the *application* into merchant's checkout, this method is needed for completing the *application* with the additional data.
-
-This operation is needed because of some customers' applications, that are not approved/rejected just with data send in *Create application*, but they are approved/rejected after additional data are sent.
-
-To determine what additional data is needed see `additionalData` array on *application* ([Application detail](#reference/application-operations/application-detail)).
-
- > IMPORTANT NOTE: It's always necessary to check *application* `stateReason`. If `stateReason` after sending additional data is still `stateReason == PROCESSING_ADDITIONAL_DATA` check `additionalData` for new data to send.
-
-| Financing type     | Supported |
-| ---                | ---       |
-| `DEFERRED_PAYMENT` | YES       |
-
-| Application state | Availability                                     |
-| ---               | ---                                              |
-| `PROCESSING`      | YES (`stateReason = PROCESSING_ADDITIONAL_DATA`) |
-| `REJECTED`        | NO                                               |
-| `CANCELLED`       | NO                                               |
-| `READY`           | NO                                               |
-
-Possible *application* `state` and `stateReason` after calling this operation:
-1. Application state `READY` or `REJECTED` if sent application data are processed and checked so *application* is completed.
-1. Application state `PROCESSING` with state reason `PROCESSING_ADDITIONAL_DATA` if there are more additional data needed.
-    * For example: customer is firstly asked to add `PERSONAL_ID`. After sending personal id via this operation system evaluate that it's not enough and customer is asked to add `ID_CARD_NO`.
-1. Application state `PROCESSING` with state reason `PROCESSING_REVIEW` if the manual review of application is needed. There is no way how to complete *application* in this state throught API calls or via redirection to `gatewayRedirectUrl`.
-1. Application state `PROCESSING` with state reason `PROCESSING_VERIFICATION` if additional data was processed and checked so *application* can be completed by verify application process (see [Verify application](#reference/application-operations/verify-application) method). Other way how to complete *application* is to redirect customer to `gatewayRedirectUrl`.
-1. Application state `PROCESSING` with state reason `PROCESSING_REDIRECT_NEEDED` if there is no way how to complete *application* throught API calls and you have to redirect customer to `gatewayRedirectUrl`.
-
-Possible error codes explanation:
-| Status code | Code                          | Explanation                                                                                             |
-| ---         | ---                           | ---                                                                                                     |
-| 400         | INVALID_REQUEST               | Request was not well formatted (malformed request syntax, size too large, etc.)                         |
-| 404         | OBJECT_NOT_FOUND              | The requested resource could not be found                                                               |
-| 422         | PERSONAL_ID_INVALID           | PersonalId is not valid, please send valid PersonalId                                                   |
-| 422         | ADDITIONAL_DATA_NOT_REQUIRED  | Application is not in state which allows use of this method. See stateReason for recommended next step. |
-| 422         | ADDITIONAL_DATA_NOT_MATCHING  | Additional data does not match with client details. See stateReason for recommended next step.          |
-| 500         | FAILURE                       | Unexpected condition was encountered and no more specific message is suitable.                          |
-
-+ Parameters
-    + applicationId (string, required, `11b00a1ef1`)
-
-
-### Send application additional data [POST]
-Send additional data needed to complete the *application*.
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (AdditionalDataRequest)
-
-
-+ Response 200(application/json; charset=utf-8)
-
-        Data was accepted
-
-    + Attributes (ApplicationResponse)
-
-
-+ Response 400(application/json; charset=utf-8)
-
-        Error in processing request
 
     + Attributes (ErrorsResponse)
 
@@ -1344,7 +1164,6 @@ Returns probability of *application's* approval and limits of particular custome
         + `order` (PrecheckOrderRequest)
         + `type` (enum, optional)
             + `DEFERRED_PAYMENT`
-        + `consents` (array[Consent])
 
 + Response 422 (application/json; charset=utf-8)
         Error in processing request
@@ -1356,7 +1175,6 @@ Returns probability of *application's* approval and limits of particular custome
         + `order` (PrecheckOrderRequest)
         + `type` (enum, optional)
             + `DEFERRED_PAYMENT`
-        + `consents` (array[Consent])
 
 + Response 422 (application/json; charset=utf-8)
         Error in processing request
@@ -1380,28 +1198,6 @@ Returns probability of *application's* approval and limits of particular custome
 Services that should be developed and exposed by partner e-shops to allow MALL Pay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders*
 
 > **ATTENTION:** This set of APIs is NOT exposed from MALL Pay. Instead, it should be developed by partner and accept calls specified below.
-
-## Order change request [/financing/v1/{application.merchantUrls.changeEndpoint}]
-Order change request
-
-We use this resource when there is need to correct *order* data (billing information, order items etc.) stored at your side.
-
-### Order change request [POST]
-Order change request
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (OrderChangeNotification)
-
-+ Response 200 (application/json; charset=utf-8)
-
-        {
-            "status": "OK"
-        }
-
-+ Response 400 (application/json; charset=utf-8)
-
-        Can not process changes
-
 
 ## Application notification [/financing/v1/{application.merchantUrls.notificationEndpoint}]
 We use this resource when there is need to let you know about important changes within particular *application*. Namely in following situations:
@@ -1579,25 +1375,25 @@ Financing application base information
     + `REJECTED` - Application was rejected
     + `CANCELLED` - Application was cancelled by client, either before approval or after delivery
 + `stateReason`: `PROCESSING_APPROVED` (enum, required) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
-    + `PROCESSING_ADDITIONAL_DATA` - Additional data needed (redirect to MALL Pay or send Application additional data)
-    + `PROCESSING_VERIFICATION` - Verification needed (redirect to MALL Pay or send Application verification)
+    + `PROCESSING_ADDITIONAL_DATA` - Additional data needed. Redirect to MALL Pay is needed. Redirect user to `gatewayRedirectUrl`.
+    + `PROCESSING_VERIFICATION` - Verification needed. Redirect to MALL Pay is needed. Redirect user to `gatewayRedirectUrl`.
     + `PROCESSING_VALIDATION_IN_PROGRESS` - Customer data is being validated.
     + `PROCESSING_REDIRECT_NEEDED` - Redirect to MALL Pay is needed. Redirect user to `gatewayRedirectUrl`.
-    + `PROCESSING_NEW` - New application created
-    + `PROCESSING_PREAPPROVED` - Preliminary approval by MALL Pay
-    + `REJECTED` - Rejected byMALL Pay
-    + `PROCESSING_APPROVED` - Approved by MALL Pay, to be signed by client
-    + `PROCESSING_REVIEW` - Manual review by MALL Pay in progress
-    + `PROCESSING_WAIT_CLIENT` - To be completed by client
-    + `PROCESSING_SIGNED` - Signed by client, to verification by MALL Pay
-    + `CANCELLED_NOT_PAID` - Cancelled before delivery
-    + `READY_TO_SHIP` - Financing approved, goods ready to be shipped to client
-    + `READY_SHIPPED` - Goods shipped to client
-    + `READY_DELIVERING` - Verification of goods delivery
-    + `READY_DELIVERED` - Goods delivered to client
-    + `READY_PAID` - Paid to merchant
-    + `CANCELLED_TO_RETURN` - Cancelled after delivery, goods to be returned (not implemented)
-    + `CANCELLED_RETURNED` - Cancelled after delivery, goods returned to merchant
+    + `PROCESSING_NEW` - New application created.
+    + `PROCESSING_PREAPPROVED` - Preliminary approval by MALL Pay.
+    + `REJECTED` - Rejected by MALL Pay.
+    + `PROCESSING_APPROVED` - Approved by MALL Pay, to be signed by client.
+    + `PROCESSING_REVIEW` - Manual review by MALL Pay in progress.
+    + `PROCESSING_WAIT_CLIENT` - To be completed by client.
+    + `PROCESSING_SIGNED` - Signed by client, to verification by MALL Pay.
+    + `CANCELLED_NOT_PAID` - Cancelled before delivery.
+    + `READY_TO_SHIP` - Financing approved, goods ready to be shipped to client.
+    + `READY_SHIPPED` - Goods shipped to client.
+    + `READY_DELIVERING` - Verification of goods delivery.
+    + `READY_DELIVERED` - Goods delivered to client.
+    + `READY_PAID` - Paid to merchant.
+    + `CANCELLED_TO_RETURN` - Cancelled after delivery, goods to be returned (not implemented).
+    + `CANCELLED_RETURNED` - Cancelled after delivery, goods returned to merchant.
 
 
 ## ApplicationResponse (ApplicationBaseResponse)
@@ -1625,7 +1421,6 @@ Financing application request
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResultsResponse).
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
-+ `consents` (array[Consent], optional) - Collection of customer consents
 
 
 ## CustomerBase (object)
@@ -1655,8 +1450,8 @@ Customer data
 + `addresses` (array[Address], optional) - Addresses. All types are allowed.
 + `tin`: `12333321` (string, optional) - Tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - VAT identification number
-+ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer. Required for [Advanced implementation](#introduction/getting-started/advanced-implementation).
-+ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components.  Required for [Advanced implementation](#introduction/getting-started/advanced-implementation). Fill this property with data created with MALL Pay JS library.
++ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer.
++ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components. Fill this property with data created with MALL Pay JS library.
 + `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability.
 
 ## CustomerResponse (CustomerBase)
@@ -1695,7 +1490,6 @@ Object used to change order information.
 ### Properties
 + reason (string, optional) - Reason of change.
 + order (OrderChangeRequest, required) - Changed order data.
-+ `consents` (array[Consent], optional) - Collection of customer consents
 
 
 ## ApplicationCancelRequest (object)
@@ -1727,7 +1521,6 @@ Object used to mark order items as returned.
 ### Properties
 + `document` (DocumentRequest, optional) - Attached document (credit note, ...)
 + `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (credit note, ...). This symbols is used by MALL Pay to pair payment from e-shop.
-+ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## OrderItemsSendRequest (OrderItemsChangeRequest)
 Object used to mark order items as sent.
@@ -1739,7 +1532,6 @@ Object used to mark order items as sent.
 + `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Shipping date and time (fill just the date if you can't specify a shipping time)
 + `deliveryCarrier` (DeliveryCarrier, optional) - Carrier
 + `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number
-+ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## OrderItemsDeliverRequest (OrderItemsSendRequest)
 Object used to mark order items as delivered.
@@ -1749,9 +1541,6 @@ Object used to mark order items as delivered.
 
 ## OrderItemsCancelRequest (OrderItemsChangeRequest)
 Object used to mark order items as cancelled.
-
-### Properties
-+ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## OrderBase (object)
 Order information, needed to create an application.
@@ -2019,34 +1808,7 @@ Services that should be developed and exposed by partner e-shops to allow MALL P
 + `rejectedRedirect`: `http://www.yourEshop.com/paymentRejected.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
 + `notificationEndpoint`: `http://www.yourEshop.com/notifications` (string, required) - URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
 + `paymentsEndpoint`: `http://www.yourEshop.com/paymentNotification` (string, optional) - URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
-+ `changeEndpoint`: `http://www.yourEshop.com/changeEndpoint` (string, optional) - URL of the partner used as a endpoint for processing information about order changes made by customer in MALL Pay.
 
-
-## RequestApplicationOTPRequest (object)
-
-## RequestApplicationOTPResponse (object)
-+ `phone`: `+420123****89` (string, required) - OTP SMS was sent on this phone number. Number is obfuscated.
-
-## VerifyRequest (object)
-+ `otp`: `123456` (string, required)
-+ `consents` (array[Consent], optional) - Collection of customer consents
-
-
-## AdditionalDataRequest (object)
-Additional data about the customer.
-
-### Properties
-+ `personalId`: 7203201234 (string, optional) - Personal identification number (format XXXXXXYYYY or XXXXXX/YYYY)
-+ `idCard`: 123456789 (string, optional) - ID card number
-+ `idCardExpiryDate`: `2020-05-19` (string, optional) - ID card expiration date
-+ `idCardScan` (IdCardScan, optional) - ID card scan
-+ `consents` (array[Consent], optional) - Collection of customer consents, THIRD_PARTY_TELCO is required if THIRD_PARTY_TELCO_CONSENT is among requested additional data.
-
-## IdCardScan (object)
-
-### Properties
-+ `front` (FileRequest, optional) - Front side
-+ `back` (FileRequest, optional) - Back side
 
 ## PrecheckRequest (object)
 Precheck data (has similar structure as `Application`).
@@ -2056,10 +1818,8 @@ Precheck data (has similar structure as `Application`).
 + `order` (PrecheckOrderRequest, optional) - Order data
 + `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-+ `consents` (array[Consent], optional) - Collection of customer consents
 
 ## PrecheckCustomerRequest (CustomerRequest)
-+ `additionalData` (AdditionalDataRequest, optional) - Additional data about the customer
 
 ## PrecheckOrderRequest (object)
 Order information, needed to create an application.
@@ -2146,17 +1906,6 @@ Precheck results.
     Estimated in case we don!t know the customer.
     Current customer's limits in case we know him and customer give us an approval for their usage [TODO legal].
 
-## OrderChangeNotification (object)
-Order change request data (MALL Pay asks partner to correct order data).
-
-### Properties
-+ `applicationId`: `11200a0ee1` (string, required) - Application identifier.
-+ `type` (enum, required) - Change type.
-    + PERSONAL_INFO - MALL Pay is trying correct customer's personal info (typos in name, surname... etc.).
-    + ORDER_ITEMS - MALL Pay received order items change proposal from customer.
-    + DELIVER_ADDRESS - MALL Pay received delivery address change proposal from customer.
-+ `order` (OrderExtendedResponse, required) - Corrected order data.
-
 ## ErrorResponse (object)
 + code: `ERR_1000_SOME_ERROR_CODE` (string, required) - Unique internal error code
 + message: `Some error/validation message description` (string, required) - Human readable error description (non-localized)
@@ -2174,25 +1923,6 @@ Order change request data (MALL Pay asks partner to correct order data).
 + itemsPerPage: 10 (number, required) - Number of items per page
 + nextPage: `transactions?sort=category&limit=10&after=25` (string, optional) - Request to retrieve next page, if it exists and can be unambiguously specified
 + prevPage: `transactions?sort=category&limit=10&before=25` (string, optional) - Request to retrieve previous page, if it exists and can be unambiguously specified
-
-## Consent (object)
-Customer consent for processing of personal data according to GDPR. `slug` uniquely defines scope of the consent and purpose of processing, `businessDate` is the datetime customer agreed to the processing of this particular piece of personal data for the purpose defined by `slug`.
-
-### Properties
-+ `slug`: `SCORING_PRECHECK` (enum, required) - Name of purpose for personal data processing
-    + `SCORING_PRECHECK` - Consent with precheck scoring
-    + `SCORING_DATA_BASIC`  - Basic consent with data scoring
-    + `SCORING_DATA_EXTENDED` - Extended consent with data scoring
-    + `SCORING_DATA_HISTORICAL_ORDERS`  - Consent with data scoring historical orders from e-shops
-    + `SCORING_DATA_WEB_BEHAVIOUR` - Consent with scoring web behaviour on e-shop and gate data
-    + `SCORING_DATA_DEVICE` - Consent with scoring data obtained from devices
-    + `THIRD_PARTY_TELCO` - Consent with data transfer to telco operators and use for scoring
-    + `THIRD_PARTY_HOMECREDIT` - Consent with transfer of Homecredit data and their use for scoring
-    + `STORE_PERSONAL_ID` - Consent with personal ID processing
-    + `THIRD_PARTY_INSOLVENCY` - Consent with transfer of data and personal ID into ISIR and their use for scoring
-    + `THIRD_PARTY_SOLUS` - Consent with transfer of data and personal ID into SOLUS and use for scoring
-    + `MARKETING` - Consent with sending marketing messages
-+ `businessDate`: `2017-01-15T00:00:00+02:00` (string, optional) - Datetime customer agreed to the processing of personal data and purpose of processing defined by the `slug`
 
 ## HealthCheckResponse (object)
 Health check response
