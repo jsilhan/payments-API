@@ -549,7 +549,9 @@ Change *order*. Used to change order items, total amount, billing details etc.
 
 
 ## Mark order items as cancelled  [/financing/v1/applications/{applicationId}/order/cancel]
-When some or all order items were cancelled (as a result of reclamation etc.), use `/financing/v1/applications/{applicationId}/order/cancel` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
+When some or all order items were cancelled (won't be ever delivered), use `/financing/v1/applications/{applicationId}/order/cancel` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
+
+If you want to cancel some items after marking those items as sent or delivered, use [Mark order items as returned](#reference/application-operations/mark-order-items-as-returned) operation.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -723,7 +725,9 @@ Based on *application* financing type and partner setting, application payment m
 
 
 ## Mark order items as returned [/financing/v1/applications/{applicationId}/order/return]
-When some or all order items were returned by the customer to you, use `/financing/v1/applications/{applicationId}/order/return` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
+When some or all order items were returned by the customer to you (after delivery), use `/financing/v1/applications/{applicationId}/order/return` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
+
+If you want to cancel some items before marking those items as sent or delivered, use [Mark order items as cancelled](#reference/application-operations/mark-order-items-as-cancelled) operation.
 
 | Financing type     | Supported |
 | ---                | ---       |
