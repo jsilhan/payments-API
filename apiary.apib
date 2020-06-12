@@ -1504,7 +1504,7 @@ Order item information, needed to create an application.
 + `description`: `Mobile phone with 32GB of RAM` (string, optional)
 + `producer`: `Apple` (string, optional)
 + `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - List of item categories
-+ `unitPrice` (Amount, optional) - Price per one piece. If empty, automatically considered that `unitPrice` is `totalPrice` / `quantity`. Can be both positive (goods, ...) or negative (discount, ...).
++ `unitPrice` (Amount, optional) - Price per one piece, VAT inclusive. If empty, automatically considered that `unitPrice` is `totalPrice` / `quantity`. Can be both positive (goods, ...) or negative (discount, ...).
 + `unitVat` (VatAmount, optional) - VAT amount per one piece. If empty, automatically considered that `unitVat` is `totalVat` / `quantity`.
 + `totalPrice` (Amount, required) - Total price for all pieces, VAT inclusive. Can be both positive (goods, ...) or negative (discount, ...) or `0`.
 + `totalVat` (VatAmount, required) - Total VAT amount for all pieces. Can be both positive (goods, ...) or negative (discount, ...) or `0` (if `vatRate` is `0`).
