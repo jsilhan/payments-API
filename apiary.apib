@@ -456,7 +456,7 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 | ---               | ---                                                                                                                                                           |
 | `REJECTED`        | NO                                                                                                                                                            |
 | `CANCELLED`       | NO                                                                                                                                                            |
-| `PROCESSING`      | YES *(with the exception of `validation` being in progress (`state_reason == PROCESSING_VALIDATION_IN_PROGRESS`))                                             |
+| `PROCESSING`      | YES                                                                                                                                                           |
 | `READY`           | YES *(available only when the Application's order is not marked as sent (via *Mark order items as sent*) or delivered (via *Mark order items as delivered*))  |
 
 If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled *order* plus basic information about respective *application* (ID, state, substate).
@@ -1064,8 +1064,7 @@ We use this resource when there is need to let you know about important changes 
 > IMPORTANT NOTE: This service should be developed and exposed by partner e-shops to allow MALL Pay to asynchronously inform these partners about important changes regarding particular applications.
 
 | Trigger                                                             | Corresponding Application.stateReason | Expected reaction                                                                        |
-| ---                                                                 | ---                                   | ---                                                                                      |
-| Application was approved (approval process is proceeding correctly) | PROCESSING_APPROVED                   | Do not cancel customer's order prematurely                                               |
+| ---                                                                 | ---                                   | ---                                                                                      |                                           |
 | Application was rejected                                            | REJECTED                              | You should probably cancel respective order and release reserved goods                   |
 | Application was cancelled                                           | CANCELLED_NOT_PAID                    | You should probably cancel respective order and release reserved goods                   |
 | Order to dispatch (we commit to finance customer's order)           | READY_TO_SHIP                         | Dispatch the order to the customer                                                       |
@@ -1232,14 +1231,10 @@ Financing application base information
     + `READY` - Application was approved and is ready for financing
     + `REJECTED` - Application was rejected
     + `CANCELLED` - Application was cancelled by client, either before approval or after delivery
-+ `stateReason`: `PROCESSING_APPROVED` (enum, required) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
-    + `PROCESSING_ADDITIONAL_DATA` - Additional data needed. Redirect to MALL Pay is needed. Redirect user to `gatewayRedirectUrl`.
-    + `PROCESSING_VERIFICATION` - Verification needed. Redirect to MALL Pay is needed. Redirect user to `gatewayRedirectUrl`.
-    + `PROCESSING_VALIDATION_IN_PROGRESS` - Customer data is being validated.
++ `stateReason`: `PROCESSING_REDIRECT_NEEDED` (enum, required) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
     + `PROCESSING_REDIRECT_NEEDED` - Redirect to MALL Pay is needed. Redirect user to `gatewayRedirectUrl`.
     + `PROCESSING_PREAPPROVED` - Preliminary approval by MALL Pay.
     + `REJECTED` - Rejected by MALL Pay.
-    + `PROCESSING_APPROVED` - Approved by MALL Pay, to be signed by client.
     + `CANCELLED_NOT_PAID` - Cancelled before delivery.
     + `READY_TO_SHIP` - Financing approved, goods ready to be shipped to client.
     + `READY_SHIPPED` - Goods shipped to client.
@@ -1257,9 +1252,7 @@ Financing application
 + `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
-+ `additionalData` (array[string], optional) - List of additional data that customer has to add to complete the application if stateReason is `PROCESSING_ADDITIONAL_DATA`.
-    Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`, `THIRD_PARTY_TELCO_CONSENT`.
-+ `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is `PROCESSING` and stateReason is `PROCESSING_ADDITIONAL_DATA` or `PROCESSING_VERIFICATION` or `PROCESSING_REDIRECT_NEEDED`.
++ `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is `PROCESSING` and stateReason is `PROCESSING_REDIRECT_NEEDED`.
 
 
 ## ApplicationRequest (object)
