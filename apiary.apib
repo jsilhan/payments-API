@@ -1183,24 +1183,24 @@ Delivery carrier
         + HDS_STANDARD
         + MALL_DEPOSIT - Ulozenka
 
-    + carrierCustom: `my custom carrier` (string, required) - For carriers not found in enumeration of customer ID, specify value as text
+    + carrierCustom: `my custom carrier` (string, required) - (max length 250) For carriers not found in enumeration of customer ID, specify value as text
 
 
 ## Address (object)
 Address
 
 ### Properties
-+ `name`: `John Doe` (string, optional) - Name on address
++ `name`: `John Doe` (string, optional) - (max length 100) Name on address
 + `country`: `CZ` (string, required)
 
     Country.
 
     (see [ISO 3166 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))
 
-+ `city`: `Prague` (string, required) - City.
-+ `streetAddress`: `Letenská` (string, required) - Street/city part.
-+ `streetNumber`: `22` (string) - Street number
-+ `zip`: `140 00` (string, required) - Postal code
++ `city`: `Prague` (string, required) - (max length 100) City.
++ `streetAddress`: `Letenská` (string, required) - (max length 100) Street/city part.
++ `streetNumber`: `22` (string) - (max length 50) Street number
++ `zip`: `140 00` (string, required) - (max length 30) Postal code
 + `addressType` (enum, required) - Type of the address. Only some of the types are allowed in each context.
     + `PERMANENT` - Permanent residential address
     + `CONTACT` - Contact address
@@ -1272,13 +1272,13 @@ Financing application request
 Customer data
 
 ### Properties
-+ `titleBefore`: `Ing.` (string, optional) - Academical degree, in front of the name
-+ `titleAfter`: `CSc.` (string, optional) - Academical degree, behind name
-+ `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
-+ `phone`: `+420123456789` (string, required) - Phone number with country code (including leading `+`)
++ `titleBefore`: `Ing.` (string, optional) - (max length 60) Academical degree, in front of the name
++ `titleAfter`: `CSc.` (string, optional) - (max length 60) Academical degree, behind name
++ `email`: `john.newborn@country.com` (string, required) - (max length 254) E-mail address of customer
++ `phone`: `+420123456789` (string, required) - (max length 13) Phone number with country code (including leading `+`)
 + `addresses` (array[Address], optional) - Addresses. All types are allowed.
-+ `tin`: `12333321` (string, optional) - Tax identification number (ICO)
-+ `vatin`: `CZ8402154456` (string, optional) - VAT identification number
++ `tin`: `12333321` (string, optional) - (max length 20) Tax identification number (ICO)
++ `vatin`: `CZ8402154456` (string, optional) - (max length 20) VAT identification number
 
 
 ## CustomerRequest (CustomerBase)
@@ -1287,15 +1287,15 @@ Customer data
 ### Properties
 + One of
     + properties
-        + `firstName`: `John` (string, required) -  Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
-        + `lastName`: `Newborn` (string, required) - Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
-    + `fullName`: `Ing. John Newborn, Csc.` (string, required) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
-+ `email`: `john.newborn@country.com` (string, required) - E-mail address of customer
-+ `phone`: `+420123456789` (string, required) - Phone number with country code (including leading `+`)
+        + `firstName`: `John` (string, required) - (max length 60) Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
+        + `lastName`: `Newborn` (string, required) - (max length 60) Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
+    + `fullName`: `Ing. John Newborn, Csc.` (string, required) - (max length 240) Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
++ `email`: `john.newborn@country.com` (string, required) - (max length 254) E-mail address of customer
++ `phone`: `+420123456789` (string, required) - (max length 13) Phone number with country code (including leading `+`)
 + `addresses` (array[Address], optional) - Addresses. All types are allowed.
-+ `tin`: `12333321` (string, optional) - Tax identification number (ICO)
-+ `vatin`: `CZ8402154456` (string, optional) - VAT identification number
-+ `ipAddress`: `172.10.10.1` (string, optional) - IPv4 or IPv6 address of a customer.
++ `tin`: `12333321` (string, optional) - (max length 20) Tax identification number (ICO)
++ `vatin`: `CZ8402154456` (string, optional) - (max length 20) VAT identification number
++ `ipAddress`: `172.10.10.1` (string, optional) - (max length 39) IPv4 or IPv6 address of a customer.
 + `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components. Fill this property with data created with MALL Pay JS library.
 + `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability.
 
@@ -1303,9 +1303,9 @@ Customer data
 Customer data
 
 ### Properties
-+ `firstName`: `John` (string, optional) -  Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
-+ `lastName`: `Newborn` (string, optional) - Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
-+ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
++ `firstName`: `John` (string, optional) - (max length 60) Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
++ `lastName`: `Newborn` (string, optional) - (max length 60) Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
++ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - (max length 240) Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
 + `type` (enum, required) - Customer type.
     + `UNKNOWN` - Customer is uknown for MALL Pay.
     + `FIRST_ORDER` - MALL Pay knows the customer. Customer has no paid orders.
@@ -1317,17 +1317,17 @@ Customer data
 ## CustomerExtraData (object)
 
 ### Properties
-+ `transactionsNumber`: 10 (number, optional) - Historical count of customer's cash transactions made in partner's e-shop
-+ `cashlessTransactionsNumber`: 5 (number, optional) - Historical count of customer's cashless transactions made in partner's e-shop
++ `transactionsNumber`: 10 (number, optional) - (positive integer) Historical count of customer's cash transactions made in partner's e-shop
++ `cashlessTransactionsNumber`: 5 (number, optional) - (positive integer) Historical count of customer's cashless transactions made in partner's e-shop
 + `transactionsSum` (Amount, optional) - Sum of all cash transactions made in partner's e-shop
 + `cashlessTransactionsSum` (Amount, optional) - Sum of all cashless transactions made in partner's e-shop
 + `latestTransactionDate`: `2017-01-10` (string, optional) - Newest transaction date on partner e-shop.
 + `earliestTransactionDate`: `2015-10-12` (string, optional) - Oldest transaction date on partner e-shop
-+ `pageTotalTime`: 250 (number, optional) - Total time spent on partners website (in seconds)
-+ `pageReviewsTime`: 100 (number, optional) - Total time spent on partners website in review and comments sections (in seconds)
-+ `cartItemsRemoved`: 2 (number, optional) - Total count of removed items form shopping basket during current shopping
-+ `itemsViewed`: 10 (number, optional) - Number of viewed pages with products
-+ `tags` (array[string], optional) - List of custom tags (ie. information, that customer is club member, vip customer, etc.)
++ `pageTotalTime`: 250 (number, optional) - (positive integer) Total time spent on partners website (in seconds)
++ `pageReviewsTime`: 100 (number, optional) - (positive integer) Total time spent on partners website in review and comments sections (in seconds)
++ `cartItemsRemoved`: 2 (number, optional) - (positive integer) Total count of removed items form shopping basket during current shopping
++ `itemsViewed`: 10 (number, optional) - (positive integer) Number of viewed pages with products
++ `tags` (array[string], optional) - (array[max length 10]) List of custom tags (ie. information, that customer is club member, vip customer, etc.)
 
 ## ApplicationOrderChangeRequest (object)
 Object used to change order information.
@@ -1391,8 +1391,8 @@ Object used to mark order items as cancelled.
 Order information, needed to create an application.
 
 ### Properties
-+ `number`: `AA234` (string, required) - Order number (internal for e-shop)
-+ `variableSymbols` (array[string], optional) - Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered`) or we expect you make payment on our account with this symbol (if not specified later in `Mark order items as returned` operation). Strings must contain only numbers, maximum length is 10 characters (digits).
++ `number`: `AA234` (string, required) - (max length 100) Order number (internal for e-shop)
++ `variableSymbols` (array[string], optional) - (max length 10) Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered`) or we expect you make payment on our account with this symbol (if not specified later in `Mark order items as returned` operation). Strings must contain only numbers, maximum length is 10 characters (digits).
 + `totalPrice` (Amount, required) - Total order amount, including VAT. Needs to be positive.
 + `totalVat` (array[VatAmount], required) - Total VAT amounts split by their VAT rates.
 + `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
@@ -1431,7 +1431,7 @@ Order information, needed to create an application.
     + `RETURNED` - All order items was returned to merchant
     + `CANCELLED` - Order was fully cancelled
 + `deliveryDate`: `2017-01-17T00:00:00+02:00` (string, optional) - Date and time of delivery
-+ `deliveryTrackingNumber`: `EX12221` (string, optional) - Delivery tracking number
++ `deliveryTrackingNumber`: `EX12221` (string, optional) - (max length 64) Delivery tracking number
 + `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Date and time of order shipping
 + `documents` (array[DocumentResponse], optional) - Attached documents (invoices etc.)
 + `items` (array[OrderItemResponse], required) - Order items
@@ -1473,10 +1473,10 @@ Order with additional information about Application.
 Order item base information, needed to identify order item
 
 ### Properties
-+ `code`: `EXC4677-1a` (string, required) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
-+ `ean`: 888462064002 (string, optional) - EAN code.
-+ `name`: `iPhone 6s 32GB SpaceGray` (string, required) - Item name
-+ `quantity`: 1 (number, optional) - Item quantity. If empty, considered as 1.
++ `code`: `EXC4677-1a` (string, required) - (max length 200) Internal code for item (internal to e-shop). Used to better identify the item for future changes
++ `ean`: 888462064002 (string, optional) - (max length 64) EAN code.
++ `name`: `iPhone 6s 32GB SpaceGray` (string, required) - (max length 255) Item name
++ `quantity`: 1 (number, optional) - (positive integer) Item quantity. If empty, considered as 1.
 
 
 ## OrderItemRequest (OrderItemBase)
@@ -1493,16 +1493,16 @@ Order item information, needed to create an application.
     + `STORE_CREDIT`
     + `FEE`
     + `INSURANCE`
-+ `variant`: `32GB SpaceGray` (string, optional) - Item variant
++ `variant`: `32GB SpaceGray` (string, optional) - (max length 250) Item variant
 + `description`: `Mobile phone with 32GB of RAM` (string, optional)
-+ `producer`: `Apple` (string, optional)
-+ `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - List of item categories
++ `producer`: `Apple` (string, optional) - (max length 250)
++ `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - (array[max length 250]) List of item categories
 + `unitPrice` (Amount, optional) - Price per one piece, VAT inclusive. If empty, automatically considered that `unitPrice` is `totalPrice` / `quantity`. Can be both positive (goods, ...) or negative (discount, ...).
 + `unitVat` (VatAmount, optional) - VAT amount per one piece. If empty, automatically considered that `unitVat` is `totalVat` / `quantity`.
 + `totalPrice` (Amount, required) - Total price for all pieces, VAT inclusive. Can be both positive (goods, ...) or negative (discount, ...) or `0`.
 + `totalVat` (VatAmount, required) - Total VAT amount for all pieces. Can be both positive (goods, ...) or negative (discount, ...) or `0` (if `vatRate` is `0`).
 + `image` (FileRequest, optional) - Item image
-+ `productUrl`: `https://www.example.com?itemId=10` (string, optional) - URL of the item in e-shop
++ `productUrl`: `https://www.example.com?itemId=10` (string, optional) - (max length 200) URL of the item in e-shop
 
 
 ## OrderItemResponse (OrderItemRequest)
@@ -1544,7 +1544,7 @@ Order item base information
 ## FileRequest (object)
 
 ### Properties
-+ `filename`: `invoice.pdf` (string, required) - File name.
++ `filename`: `invoice.pdf` (string, required) - (max length 100) File name.
 + One Of
     + `content`: `RmlsZSBjb250ZW50cy4gwq9cXyjjg4QpXy/Crw==` (string, required) - File content (Base64 encoded, maximum size of encoded string is 500kB)
     + `url`: `https://www.partner.com/file?id=12345` (string, required) - File URL.
@@ -1649,10 +1649,10 @@ Collection of URLs used for redirection of a customer back to a partner website 
 Services that should be developed and exposed by partner e-shops to allow MALL Pay to asynchronously inform these partners about important changes regarding particular applications and orders.
 
 ### Properties
-+ `approvedRedirect`: `http://www.yourEshop.com/paymentApproved.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
-+ `rejectedRedirect`: `http://www.yourEshop.com/paymentRejected.html` (string, required) - URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
-+ `notificationEndpoint`: `http://www.yourEshop.com/notifications` (string, required) - URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
-+ `paymentsEndpoint`: `http://www.yourEshop.com/paymentNotification` (string, optional) - URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
++ `approvedRedirect`: `http://www.yourEshop.com/paymentApproved.html` (string, required) - (max length 512) URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
++ `rejectedRedirect`: `http://www.yourEshop.com/paymentRejected.html` (string, required) - (max length 512) URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
++ `notificationEndpoint`: `http://www.yourEshop.com/notifications` (string, required) - (max length 512) URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
++ `paymentsEndpoint`: `http://www.yourEshop.com/paymentNotification` (string, optional) - (max length 512) URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
 
 
 ## PrecheckRequest (object)
