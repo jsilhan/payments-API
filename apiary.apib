@@ -1,11 +1,11 @@
 FORMAT: 1A
 HOST: https://api.partner.mallpay.cz
 
-# MALL Pay API for partners
-API documentation for MALL Pay partners.
+# mallpay API for partners
+API documentation for mallpay partners.
 
 ## Getting started
-This online document describes MALL Pay API - the means for partner e-shops through which they can offer their customers the benefits of one of MallPay's payment method.
+This online document describes mallpay API - the means for partner e-shops through which they can offer their customers the benefits of one of MallPay's payment method.
 
 The aim of here described services is to allow customers the smooth running through the process of an online purchase. The services that allow achieving this goal are divided into the following groups:
 
@@ -13,12 +13,12 @@ The aim of here described services is to allow customers the smooth running thro
 | ---                     | ---                                                                                                                                                                                                     |
 | Security                | Security rules and principles                                                                                                                                                                           |
 | Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle                                                                                                               |
-| Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to MALL Pay                                                        |
-| Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow MALL Pay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
+| Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to mallpay                                                        |
+| Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow mallpay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
 | Health check            | Health check usage description                                                                                                                                                                          |
 
 ### Basic implementation
-The most basic and minimum way how to implement MALL Pay API is to at least implement:
+The most basic and minimum way how to implement mallpay API is to at least implement:
 1. [Login](#reference/security/login-partner)
     - Needed for all operations.
 1. [Create application](#reference/application-operations/create-application)
@@ -27,30 +27,30 @@ The most basic and minimum way how to implement MALL Pay API is to at least impl
     - Special URLs for customers that shows payment success or rejection.
 1. [Application notification](#reference/merchantsite-operations/application-notification)
 1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent)  or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
-    - MALL Pay won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
+    - mallpay won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
 
 [![Sequence diagram of minimum implementation](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramMinimum.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramMinimum.png)
 
 It's always needed to send all attributes marked as required, but filling optional parameters will result in better application approval rate. You should always consider to fill the most attributes as possible. Contact the sales support to find out which attributes correlate with approval rate the most.
 
 ### Application states
-Applications have their own state and substates that can be managed by MALL Pay and merchants. 
+Applications have their own state and substates that can be managed by mallpay and merchants. 
 
 Existing states are listed below:
 
 | Application state | Description                                                                                             |
 | ---               | ---                                                                                                     |
-| `PROCESSING`      | Application is being processed by MALL Pay                                                              |
+| `PROCESSING`      | Application is being processed by mallpay                                                              |
 | `READY`           | Application was approved and is ready for financing                                                     |
-| `REJECTED`        | Application was rejected by MALL Pay system                                                             |
-| `CANCELLED`       | Application was cancelled by client or by MALL Pay, either before approval or after delivery            |
+| `REJECTED`        | Application was rejected by mallpay system                                                             |
+| `CANCELLED`       | Application was cancelled by client or by mallpay, either before approval or after delivery            |
 
 Simplified diagram of possible transitions between states:
 
 [![States diagram of Application](https://github.com/mall-pay/payments-API/raw/master/images/StatesDiagram.png)](https://github.com/mall-pay/payments-API/raw/master/images/StatesDiagram.png)
 
 Merchant can obtain current application state anytime with [Get application detail](#reference/application-operations/application-detail/get-application-detail) operation.
-MALL Pay proactively notify merchant about important state and substate changes - merchant is able to handle [Application notification](#reference/merchantsite-operations/application-notification/application-notification).
+mallpay proactively notify merchant about important state and substate changes - merchant is able to handle [Application notification](#reference/merchantsite-operations/application-notification/application-notification).
 
 ## Conventions
 
@@ -288,7 +288,7 @@ curl -H "Authorization: Bearer secret_token" https://api.partner.mallpay.cz/fina
 }
 ```
 
-> IMPORTANT NOTE: You must keep your access token and login credentials safe. NEVER put login credentials nor access token into client page. If you plan to integrate API calls in client flow without submitting the page to server, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call MALL Pay API.
+> IMPORTANT NOTE: You must keep your access token and login credentials safe. NEVER put login credentials nor access token into client page. If you plan to integrate API calls in client flow without submitting the page to server, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call mallpay API.
 
 > NEVER transfer access token nor login credentials over plain HTTP. Such requests will be refused.
 
@@ -793,7 +793,7 @@ Based on *application* financing type and partner setting, credit note may be is
 ### Get payments on specific application [GET]
 Get payments on specific *application*
 
-List of realized payments from MALL Pay to partner. In case of multiple invoices, list may contain more items.
+List of realized payments from mallpay to partner. In case of multiple invoices, list may contain more items.
 
 feature | supported by resource
 --- | ---
@@ -931,14 +931,14 @@ use `/financing/v1/orders` with at least one of following parameter:
     + Attributes (ErrorsResponse)
 
 # Group Precheck operations
-Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to MALL Pay
+Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to mallpay
 
 ## Precheck [/financing/v1/precheck]
 Precheck *application*
 
-Returns probability of *application's* approval and limits of particular customer, if known to MALL Pay
+Returns probability of *application's* approval and limits of particular customer, if known to mallpay
 
-It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call MALL Pay API - **NEVER put access token directly to client side**.
+It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call mallpay API - **NEVER put access token directly to client side**.
 
 Possible error codes explanation:
 | Status code | Code                | Explanation                                                                     |
@@ -947,7 +947,7 @@ Possible error codes explanation:
 | 422         | PERSONAL_ID_INVALID | PersonalId is not valid                                                         |
 
 ### Precheck [POST]
-Returns probability of *application's* approval and limits of particular customer, if known to MALL Pay
+Returns probability of *application's* approval and limits of particular customer, if known to mallpay
 
 + Request (application/json; charset=utf-8)
     + Attributes (PrecheckRequest)
@@ -1054,14 +1054,14 @@ Returns probability of *application's* approval and limits of particular custome
 
 
 # Group Merchantsite operations
-Services that should be developed and exposed by partner e-shops to allow MALL Pay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders*
+Services that should be developed and exposed by partner e-shops to allow mallpay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders*
 
-> **ATTENTION:** This set of APIs is NOT exposed from MALL Pay. Instead, it should be developed by partner and accept calls specified below.
+> **ATTENTION:** This set of APIs is NOT exposed from mallpay. Instead, it should be developed by partner and accept calls specified below.
 
 ## Application notification [/financing/v1/{application.merchantUrls.notificationEndpoint}]
 We use this resource when there is need to let you know about important changes within particular *application*. Namely in following situations:
 
-> IMPORTANT NOTE: This service should be developed and exposed by partner e-shops to allow MALL Pay to asynchronously inform these partners about important changes regarding particular applications.
+> IMPORTANT NOTE: This service should be developed and exposed by partner e-shops to allow mallpay to asynchronously inform these partners about important changes regarding particular applications.
 
 | Trigger                                                             | Corresponding Application.stateReason | Expected reaction                                                                        |
 | ---                                                                 | ---                                   | ---                                                                                      |                                           |
@@ -1225,16 +1225,16 @@ Financial amount with VAT rate.
 Financing application base information
 
 ### Properties
-+ `id`: `11200a0ee1` (string, required) - Unique identifier in MALL Pay
++ `id`: `11200a0ee1` (string, required) - Unique identifier in mallpay
 + `state` (enum, required) - Application state.
-    + `PROCESSING` - Application is being processed by MALL Pay
+    + `PROCESSING` - Application is being processed by mallpay
     + `READY` - Application was approved and is ready for financing
     + `REJECTED` - Application was rejected
     + `CANCELLED` - Application was cancelled by client, either before approval or after delivery
 + `stateReason`: `PROCESSING_REDIRECT_NEEDED` (enum, required) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
-    + `PROCESSING_REDIRECT_NEEDED` - Redirect to MALL Pay is needed. Redirect user to `gatewayRedirectUrl`.
-    + `PROCESSING_PREAPPROVED` - Preliminary approval by MALL Pay.
-    + `REJECTED` - Rejected by MALL Pay.
+    + `PROCESSING_REDIRECT_NEEDED` - Redirect to mallpay is needed. Redirect user to `gatewayRedirectUrl`.
+    + `PROCESSING_PREAPPROVED` - Preliminary approval by mallpay.
+    + `REJECTED` - Rejected by mallpay.
     + `CANCELLED_NOT_PAID` - Cancelled before delivery.
     + `READY_TO_SHIP` - Financing approved, goods ready to be shipped to client.
     + `READY_SHIPPED` - Goods shipped to client.
@@ -1296,7 +1296,7 @@ Customer data
 + `tin`: `12333321` (string, optional) - (max length 20) Tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - (max length 20) VAT identification number
 + `ipAddress`: `172.10.10.1` (string, optional) - (max length 39) IPv4 or IPv6 address of a customer.
-+ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components. Fill this property with data created with MALL Pay JS library.
++ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components. Fill this property with data created with mallpay JS library.
 + `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability.
 
 ## CustomerResponse (CustomerBase)
@@ -1307,10 +1307,10 @@ Customer data
 + `lastName`: `Newborn` (string, optional) - (max length 60) Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
 + `fullName`: `Ing. John Newborn, Csc.` (string, optional) - (max length 240) Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
 + `type` (enum, required) - Customer type.
-    + `UNKNOWN` - Customer is uknown for MALL Pay.
-    + `FIRST_ORDER` - MALL Pay knows the customer. Customer has no paid orders.
-    + `FULL` -  MALL Pay knows the customer. Customer has at least one paid order.
-    + `BLOCKED` - MALL Pay knows the customer. Customer is blocked.
+    + `UNKNOWN` - Customer is uknown for mallpay.
+    + `FIRST_ORDER` - mallpay knows the customer. Customer has no paid orders.
+    + `FULL` -  mallpay knows the customer. Customer has at least one paid order.
+    + `BLOCKED` - mallpay knows the customer. Customer is blocked.
 + `dueDateCategory` (DueDateCategory, required)
 
 
@@ -1346,7 +1346,7 @@ Specification of the reason why the application is cancelled.
     + `APPLICATION_CANCELLED_CART_CONTENT_CHANGED` - Cart content changed or customer returned from the cart
     + `APPLICATION_CANCELLED_BY_CUSTOMER` - Customer cancelled order (in his profile or through customer center)
     + `APPLICATION_CANCELLED_BY_ERP` - Cancelled by e-shop's back-office process (e.g. some items unavailable)
-    + `APPLICATION_CANCELLED_EXPIRED` - Application expired (too long waiting time for response from MALL Pay)
+    + `APPLICATION_CANCELLED_EXPIRED` - Application expired (too long waiting time for response from mallpay)
     + `APPLICATION_CANCELLED_UNFINISHED` - Customer did not finish order
     + `APPLICATION_CANCELLED_BY_ESHOP_RULES` - Internal e-shop rules breached (e.g. problem with customer's additional data)
     + `APPLICATION_CANCELLED_OTHER` - Other reason - specified in `customReason`
@@ -1365,7 +1365,7 @@ Object used to mark order items as returned.
 
 ### Properties
 + `document` (DocumentRequest, optional) - Attached document (credit note, ...)
-+ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (credit note, ...). This symbols is used by MALL Pay to pair payment from e-shop.
++ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (credit note, ...). This symbols is used by mallpay to pair payment from e-shop.
 
 ## OrderItemsSendRequest (OrderItemsChangeRequest)
 Object used to mark order items as sent.
@@ -1406,7 +1406,7 @@ Order information, needed to create an application.
 
    Date and time until order is reserved.
 
-   Until 'reservationDate' MALL Pay will try to notify partner with Application notification about approval or rejection.
+   Until 'reservationDate' mallpay will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 
@@ -1461,7 +1461,7 @@ Order with additional information about Application.
 
    Date and time until order is reserved.
 
-   Until 'reservationDate' MALL Pay will try to notify partner with Application notification about approval or rejection.
+   Until 'reservationDate' mallpay will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 
@@ -1646,11 +1646,11 @@ Payment information
 
 ## MerchantUrls (object)
 Collection of URLs used for redirection of a customer back to a partner website or as a notification endpoint.
-Services that should be developed and exposed by partner e-shops to allow MALL Pay to asynchronously inform these partners about important changes regarding particular applications and orders.
+Services that should be developed and exposed by partner e-shops to allow mallpay to asynchronously inform these partners about important changes regarding particular applications and orders.
 
 ### Properties
-+ `approvedRedirect`: `http://www.yourEshop.com/paymentApproved.html` (string, required) - (max length 512) URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
-+ `rejectedRedirect`: `http://www.yourEshop.com/paymentRejected.html` (string, required) - (max length 512) URL of the partner used for redirection of the customer back to partner website (from MALL Pay gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
++ `approvedRedirect`: `http://www.yourEshop.com/paymentApproved.html` (string, required) - (max length 512) URL of the partner used for redirection of the customer back to partner website (from mallpay gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
++ `rejectedRedirect`: `http://www.yourEshop.com/paymentRejected.html` (string, required) - (max length 512) URL of the partner used for redirection of the customer back to partner website (from mallpay gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
 + `notificationEndpoint`: `http://www.yourEshop.com/notifications` (string, required) - (max length 512) URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
 + `paymentsEndpoint`: `http://www.yourEshop.com/paymentNotification` (string, optional) - (max length 512) URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
 
@@ -1685,7 +1685,7 @@ Order information, needed to create an application.
 
    Date and time until order is reserved.
 
-   Until 'reservationDate' MALL Pay will try to notify partner with Application notification about approval or rejection.
+   Until 'reservationDate' mallpay will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 + `items` (array[OrderItemRequest], optional) - Order items
@@ -1705,7 +1705,7 @@ Precheck result.
 ### Properties
 + `type` (enum, required) - Precheck result type for Funding type.
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
-+ `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the MALL Pay.
++ `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the mallpay.
     true = Application is going to be likely approved.
     false = Application is going to be likely rejected.
 + `probabilityOfApproval` (number, required) - Probability of approval.
@@ -1722,18 +1722,18 @@ Precheck result.
     + `ADDITIONAL_DATA_LIMIT` - The customer has insufficient limit and will be asked to send additional data to increase limit.
     + `INSUFFICIENT_LIMIT` - The customer has insufficient limit and there is no way to increase it.
     + `INSUFFICIENT_LIMIT_OPPORTUNITY` - The customer has insufficient limit and can increase it by paying previous not paid orders.
-    + `DETAILS_NOT_MATCHING` - We know the customer, but his personal details does not match with details in his MALL Pay account. Customer will be asked for correcting not matching details.
+    + `DETAILS_NOT_MATCHING` - We know the customer, but his personal details does not match with details in his mallpay account. Customer will be asked for correcting not matching details.
     + `MANUAL_VERIFICATION` - The validators cannot determine the result - manual checking is required.
 + `customerType` (enum, required) - Customer type.
-    + `UNKNOWN` - Customer is uknown for MALL Pay.
-    + `FIRST_ORDER` - MALL Pay knows the customer. Customer has no paid orders.
-    + `FULL` -  MALL Pay knows the customer. Customer has at least one paid order.
-    + `BLOCKED` - MALL Pay knows the customer. Customer is blocked.
+    + `UNKNOWN` - Customer is uknown for mallpay.
+    + `FIRST_ORDER` - mallpay knows the customer. Customer has no paid orders.
+    + `FULL` -  mallpay knows the customer. Customer has at least one paid order.
+    + `BLOCKED` - mallpay knows the customer. Customer is blocked.
 + `customerDueDateCategory` (DueDateCategory, required)
 + `message` (string, optional) - Custom message for customer.
     Examples:
-    “V MALL Pay peněžence nemáte dostatečný limit.”
-    “Uveďte do objednávky jméno a příjmení, které používáte ve službě MALL Pay.”
+    “V mallpay peněžence nemáte dostatečný limit.”
+    “Uveďte do objednávky jméno a příjmení, které používáte ve službě mallpay.”
     etc.
 + `additionalData` (array[string], optional) - List of additional data that customer has to send.
     Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`, `THIRD_PARTY_TELCO_CONSENT`.
@@ -1771,7 +1771,7 @@ Precheck results.
 Health check response
 
 ### Properties
-+ `projectVersion`: `MALL Pay 2.40.0` (string, optional) - Version of the project
++ `projectVersion`: `mallpay 2.40.0` (string, optional) - Version of the project
 
 ## DueDateCategory (enum)
 
