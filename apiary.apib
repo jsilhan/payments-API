@@ -33,6 +33,20 @@ The most basic and minimum way how to implement mallpay API is to at least imple
 
 It's always needed to send all attributes marked as required, but filling optional parameters will result in better application approval rate. You should always consider to fill the most attributes as possible. Contact the sales support to find out which attributes correlate with approval rate the most.
 
+### Recurring on demand
+
+You can use mallpay API for recurring orders without customer's authorization but this feature is not enabled for everyone by default. If you want to use it please contact us. This feature helps if you need to implement recurring payments.
+
+It behaves almost the same as the previous application flow. You need to create an application with all required attributes. But in this case you must force to remember customer authorization by `isRecurring=true`. Our system will return ID of customer's authorization called **recurrence**. Save it.
+
+For making other orders (without customer's authorization) call `/financing/v1/recurrences/{id}/applications` endpoint with ID of recurrence. Mallpay will automatically approve the application if all conditions are OK. The way to find out the result of the application is the same as for common applications (notification endpoint or application state).
+
+[![Sequence diagram of recurrences](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramRecurrences.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramRecurrences.png)
+
+Of course you can use recurrence ID multiple times but it has some limitations. First of all, check if the recurrence is approved by the customer. Another reasons to reject your request are insufficient limit, the first order is too old (more than 13 months) or the first order is cancelled (by you or us).
+
+You can check the recurrence state anytime on `/financing/v1/recurrences/{id}`.
+
 ### Application states
 Applications have their own state and substates that can be managed by mallpay and merchants. 
 
@@ -362,12 +376,12 @@ For best customer experience request should containt following data:
     - Image
 - Personal data processing and terms and conditions agreement 
 
-
 If the request was successfully processed, you receive HTTP status code 201 and *application* object with following important information in the response:
 - Application unique ID
 - Application state
 - Application substate
 - Gateway redirect URL where you should redirect a customer after processing of the response
+- Recurrence ID if you sent `isRecurring=true` in request (for recurring orders)
 
 If the request was recognized as duplication, you receive HTTP status code 200 and the *application* object created during the first related successful request.
 
@@ -444,6 +458,50 @@ Get specific *application* detail by ID
 
     + Attributes (ErrorsResponse)
 
+## Create application from recurrence [/financing/v1/recurrences/{recurrenceId}/applications]
+
+It allows to create application without customer authorization at mallpay gate. It needs the recurrence ID to be received previously. This endpoint doesn't need any data about customer.
+
++ Parameters
+    + recurrenceId (string, required) - Recurrence ID from first application
+
+### Create application from recurrence [POST]
+
++ Request (application/json; charset=utf-8)
+    + Attributes (ApplicationWithoutCustomerRequest)
+
++ Response 201 (application/json; charset=utf-8)
+    Application was created
+    + Attributes (ApplicationResponse)
+
++ Response 400 (application/json; charset=utf-8)
+    There was an error processing request
+    + Attributes (ErrorsResponse)
+
++ Response 404 (application/json; charset=utf-8)
+    There is no recurrence
+    + Attributes (ErrorsResponse)
+
++ Response 422 (application/json; charset=utf-8)
+    Recurrence could not be used or invalid input data
+    + Attributes (ErrorsResponse)
+
+## Recurrence detail [/financing/v1/recurrences/{recurrenceId}]
+
+It allows to get recurrence detail. You can check if customer authorized your request and if recurrence is ready to be used.
+
++ Parameters
+    + recurrenceId (string, required)
+
+### Get recurrence [GET]
+
++ Response 200 (application/json; charset=utf-8)
+    Actual recurrence data
+    + Attributes (RecurrenceObject)
+
++ Response 404 (application/json; charset=utf-8)
+    There is no recurrence
+    + Attributes (ErrorsResponse)
 
 ## Cancel application [/financing/v1/applications/{applicationId}/cancel]
 If there is need to completely cancel customer's *order*, it is necessary to cancel respective *application*. For this purpose use `/financing/v1/applications/{applicationId}/cancel` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
@@ -1064,13 +1122,13 @@ We use this resource when there is need to let you know about important changes 
 > IMPORTANT NOTE: This service should be developed and exposed by partner e-shops to allow mallpay to asynchronously inform these partners about important changes regarding particular applications.
 
 | Trigger                                                             | Corresponding Application.stateReason | Expected reaction                                                                        |
-| ---                                                                 | ---                                   | ---                                                                                      |                                           |
-| Application was rejected                                            | REJECTED                              | You should probably cancel respective order and release reserved goods                   |
-| Application was cancelled                                           | CANCELLED_NOT_PAID                    | You should probably cancel respective order and release reserved goods                   |
-| Order to dispatch (we commit to finance customer's order)           | READY_TO_SHIP                         | Dispatch the order to the customer                                                       |
-| Order dispatched                                                    | READY_SHIPPED                         | None - serves as an acknowledgment (partner should know about this change)               |
-| Order delivered                                                     | READY_DELIVERED                       | None - serves as an acknowledgment (partner should know about this change)               |
-| Application was paid to the partner                                 | READY_PAID                            | Financial compensation for the application has been processed - check your bank account  |
+| ---                                                                 | ---                                   | ---                                                                                      |
+| Application was rejected                                            | `REJECTED`                            | You should probably cancel respective order and release reserved goods                   |
+| Application was cancelled                                           | `CANCELLED_NOT_PAID`                  | You should probably cancel respective order and release reserved goods                   |
+| Order to dispatch (we commit to finance customer's order)           | `READY_TO_SHIP`                       | Dispatch the order to the customer                                                       |
+| Order dispatched                                                    | `READY_SHIPPED`                       | None - serves as an acknowledgment (partner should know about this change)               |
+| Order delivered                                                     | `READY_DELIVERED`                     | None - serves as an acknowledgment (partner should know about this change)               |
+| Application was paid to the partner                                 | `READY_PAID`                          | Financial compensation for the application has been processed - check your bank account  |
 
 > NOTE: READY_PAID state is set when at least part of the application price was paid to the partner, not necessarily full application price. This also applies to the `Application was paid to the partner` application notification trigger.
 
@@ -1234,6 +1292,7 @@ Financing application base information
 + `stateReason`: `PROCESSING_REDIRECT_NEEDED` (enum, required) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
     + `PROCESSING_REDIRECT_NEEDED` - Redirect to mallpay is needed. Redirect user to `gatewayRedirectUrl`.
     + `PROCESSING_PREAPPROVED` - Preliminary approval by mallpay.
+    + `PROCESSING_VALIDATION_IN_PROGRESS` - Currently being approved in mallpay. Check it later.
     + `REJECTED` - Rejected by mallpay.
     + `CANCELLED_NOT_PAID` - Cancelled before delivery.
     + `READY_TO_SHIP` - Financing approved, goods ready to be shipped to client.
@@ -1252,14 +1311,14 @@ Financing application
 + `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
-+ `gatewayRedirectUrl` (string, required) - Gateway redirect URL. Redirect user to this URL if state is `PROCESSING` and stateReason is `PROCESSING_REDIRECT_NEEDED`.
++ `gatewayRedirectUrl` (string, optional) - Gateway redirect URL. Redirect user to this URL if state is `PROCESSING` and stateReason is `PROCESSING_REDIRECT_NEEDED`.
++ `recurrence` (RecurrenceObject, optional) - Recurrence data
 
 
-## ApplicationRequest (object)
+## ApplicationWithoutCustomerRequest (object)
 Financing application request
 
 ### Properties
-+ `customer` (CustomerRequest, required) - Customer information
 + `order` (OrderRequest, required) - Order information
 + `type` (enum, required) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
@@ -1267,6 +1326,21 @@ Financing application request
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResultsResponse).
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
 
+## ApplicationRequest (ApplicationWithoutCustomerRequest)
+
+### Properties
++ `customer` (CustomerRequest, required) - Customer information
++ `isRecurring`: `false` (boolean, optional) - Ensures recurrence ID in reponse. Default is `false`
+
+## RecurrenceObject (object)
+
+### Properties
++ `id` (string, required) - Unique identifier in mallpay
++ `state` (enum, required) - Recurrence state
+    + `APPROVING` - Recurrence is waiting to be approved by user
+    + `READY` - Recurrence is ready to be used
+    + `CANCELLED` - Recurrence was cancelled by you or us
+    + `EXPIRED` - Recurrence is too old
 
 ## CustomerBase (object)
 Customer data
