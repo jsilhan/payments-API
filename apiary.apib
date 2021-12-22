@@ -17,8 +17,8 @@ The aim of here described services is to allow customers the smooth running thro
 | Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow mallpay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
 | Health check            | Health check usage description                                                                                                                                                                          |
 
-### Basic implementation
-The most basic and minimum way how to implement mallpay API is to at least implement:
+### Deferred payment
+The most basic and minimum way how to implement mallpay's deferred payment is to at least implement:
 1. [Login](#reference/security/login-partner)
     - Needed for all operations.
 1. [Create application](#reference/application-operations/create-application)
@@ -35,7 +35,7 @@ It's always needed to send all attributes marked as required, but filling option
 
 ### Recurring on demand
 
-You can use mallpay API for recurring orders without customer's authorization but this feature is not enabled for everyone by default. If you want to use it please contact us. This feature helps if you need to implement recurring payments.
+You can extend basic deferred payment option with recurring option. This feature allows you to create recurring payments such a subscriptions. It allows you to create recurring orders without customer's presence (all actions are performed in the background without the customer or with the customer not leaving the e-shop to the payment gateway). This feature is not enabled for everyone by default. If you want to use it please contact us. 
 
 It behaves almost the same as the previous application flow. You need to create an application with all required attributes. But in this case you must force to remember customer authorization by `isRecurring=true`. Our system will return ID of customer's authorization called **recurrence**. Save it.
 
