@@ -69,8 +69,8 @@ mallpay proactively notify merchant about important state and substate changes -
 ## Conventions
 
 ### Naming conventions
-- we use camelCase for all object and attribute names
-- we use CAPITAL_UNDERSCORE for enum values
+- we use `camelCase` for all object and attribute names
+- we use `CAPITAL_UNDERSCORE` for enum values
 - we use plural in resource names
 
 ### Paging
@@ -83,9 +83,9 @@ mallpay proactively notify merchant about important state and substate changes -
   - items in collection are always sorted accoridng to attribute which could be passed in after/before parameters. Even if you specify different sorting order, this attribute will be last sorting criterion; if you do not specify sorting order, result collection will be sorted according to this attribute.
 - on response:
   - `pagingInfo` object is returned as part of response body with following attributes:
-    - _nextPage_ - request to retrieve next page. Either nextPage or previousPage is returned, depending whether you specify `after` or `before` parameter. If you specify neither `before` nor `after` parameter, these attributes will be omitted from response.
-    - _prevPage_ - request to retrieve previous page (see `nextPage` attribute description above).
-    - _itemsPerPage_ - number of items per page
+    - `nextPage` - request to retrieve next page. Either `nextPage` or `previousPage` is returned, depending whether you specify `after` or `before` parameter. If you specify neither `before` nor `after` parameter, these attributes will be omitted from response.
+    - `prevPage` - request to retrieve previous page (see `nextPage` attribute description above).
+    - `itemsPerPage` - number of items per page
 
 
 Example request:
@@ -141,12 +141,12 @@ GET /general/contracts?filter=contractDate|gt|2016-02-10;contractDate|lteq|2016-
 #### List of operators
 | Operator | Meaning                |
 | ---      | ---                    |
-| lt       | less than              |
-| lteq     | less than or equals    |
-| eq       | equals                 |
-| gteq     | greater than or equals |
-| gt       | greater than           |
-| in       | value in list          |
+| `lt`     | less than              |
+| `lteq`   | less than or equals    |
+| `eq`     | equals                 |
+| `gteq`   | greater than or equals |
+| `gt`     | greater than           |
+| `in`     | value in list          |
 
 
 ### Request restrictions
@@ -155,19 +155,19 @@ Please, keep in mind following restrictions regarding requests:
 - Maximum size of accepted single file is **500 kB**.
 - Here is the list of suppported files:
 
-| MIME type                                                                 | Example(s)                 |
-| ---                                                                       | ---                        |
-| application/pdf                                                           | *.pdf                      |
-| application/vnd.openxmlformats-officedocument.spreadsheetml.sheet         | *.xlsx                     |
-| application/vnd.openxmlformats-officedocument.wordprocessingml.document   | *.docx                     |
-| application/vnd.openxmlformats-officedocument.presentationml.presentation | *.pptx                     |
-| application/vnd.ms-excel                                                  | *.xls, *.xlt, *.xla        |
-| application/msword                                                        | *.doc, *.dot               |
-| application/vnd.ms-powerpoint                                             | *.ppt, *.pot, *.pps, *.ppa |
-| plain/text                                                                | *.csv, *.txt               |
-| image/jpeg                                                                | *.jpg, *.jpeg              |
-| image/png                                                                 | *.png                      |
-| image/gif                                                                 | *.gif                      |
+| MIME type                                                                   | Example(s)                   |
+| ---                                                                         | ---                          |
+| `application/pdf`                                                           | `*.pdf`                      |
+| `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`         | `*.xlsx`                     |
+| `application/vnd.openxmlformats-officedocument.wordprocessingml.document`   | `*.docx`                     |
+| `application/vnd.openxmlformats-officedocument.presentationml.presentation` | `*.pptx`                     |
+| `application/vnd.ms-excel`                                                  | `*.xls, *.xlt, *.xla`        |
+| `application/msword`                                                        | `*.doc, *.dot`               |
+| `application/vnd.ms-powerpoint`                                             | `*.ppt, *.pot, *.pps, *.ppa` |
+| `plain/text`                                                                | `*.csv, *.txt`               |
+| `image/jpeg`                                                                | `*.jpg, *.jpeg`              |
+| `image/png`                                                                 | `*.png`                      |
+| `image/gif`                                                                 | `*.gif`                      |
 
 
 ### API calls limits
@@ -228,13 +228,13 @@ Errors object example:
 ```
 
 Error object attributes
-| Attribute name | Description                                                     |
-| ---            | ---                                                             |
-| code           | unique error code                                               |
-| message        | human readable error description (non-localized)                |
-| severity       | error severity ([see below](#error-severity))                   |
-| attribute      | json path of request attribute that caused the error (optional) |
-| ticketId       | internal ticket ID, used for error backtracking                 |
+| Attribute name   | Description                                                     |
+| ---              | ---                                                             |
+| `code`           | unique error code                                               |
+| `message`        | human readable error description (non-localized)                |
+| `severity`       | error severity ([see below](#error-severity))                   |
+| `attribute`      | json path of request attribute that caused the error (optional) |
+| `ticketId`       | internal ticket ID, used for error backtracking                 |
 
 <a name="error-severity"></a>
 There are 3 levels of error severity:
@@ -243,11 +243,11 @@ There are 3 levels of error severity:
 - `INFO` - information only, execution can continue without user interaction.
 
 #### Errors overview
-| Status code | Code                  | Explanation                                                                     | Message                                                                                                        |
-| ---         | ---                   | ---                                                                             | ---                                                                                                            |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.) | (*Various messages possible*) e.g. Unsupported combination of application state and order state                |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                       | (*Various messages possible*) e.g. Specified object was not found                                              |
-| 500         | INTERNAL_SERVER_ERROR | Unexpected condition was encountered and no more specific message is suitable.  | (*Various messages possible*) e.g. Failed to parse given JSON                                                  |
+| Status code | Code                    | Explanation                                                                     | Message                                                                                                        |
+| ---         | ---                     | ---                                                                             | ---                                                                                                            |
+| 400         | `INVALID_REQUEST`       | Request was not well formatted (malformed request syntax, size too large, etc.) | (*Various messages possible*) e.g. Unsupported combination of application state and order state                |
+| 404         | `OBJECT_NOT_FOUND`      | The requested resource could not be found                                       | (*Various messages possible*) e.g. Specified object was not found                                              |
+| 500         | `INTERNAL_SERVER_ERROR` | Unexpected condition was encountered and no more specific message is suitable.  | (*Various messages possible*) e.g. Failed to parse given JSON                                                  |
 
 
 ### Formats
@@ -388,10 +388,10 @@ If the request was recognized as duplication, you receive HTTP status code 200 a
 __Note__: If the optional *agreementTermsAndConditions* field was not sent with the request (or it was sent with a value of `false`), the *application* will be created with *agreementTermsAndConditions* value set to `false`, *state* `PROCESSING` and *stateReason* `PROCESSING_REDIRECT_NEEDED`.
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                  | Explanation                                                                      |
-| ---         | ---                   | ---                                                                              |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
-| 422         | UNPROCESSABLE         | Request was well-formed but was unable to be followed due to semantic errors     |
+| Status code | Code                    | Explanation                                                                      |
+| ---         | ---                     | ---                                                                              |
+| 400         | `INVALID_REQUEST`       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 422         | `UNPROCESSABLE`         | Request was well-formed but was unable to be followed due to semantic errors     |
 
 
 ### Create application [POST]
@@ -432,11 +432,11 @@ If you need to find out current information about particular *application* - pri
 If the request was successfully processed, you receive HTTP status code 200 and *application* object.
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                  | Message                                                                          |
-| ---         | ---                   | ---                                                                              |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
-| 404         | APPLICATION_NOT_FOUND | The requested resource could not be found                                        |
-| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
+| Status code | Code                    | Message                                                                          |
+| ---         | ---                     | ---                                                                              |
+| 400         | `INVALID_REQUEST`       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | `APPLICATION_NOT_FOUND` | The requested resource could not be found                                        |
+| 422         | `UNPROCESSABLE`         | The request was well-formed but was unable to be followed due to semantic errors |
 
 + Parameters
     + applicationId (string, required, `11200a0ee1`)
@@ -520,16 +520,16 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 If the request was successfully processed, you receive HTTP status code 200 and object of information about cancelled *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                                | Explanation                                                                                           |
-| ---         | ---                                 | ---                                                                                                   |
-| 400         | INVALID_REQUEST                     | Request was not well formatted (malformed request syntax, size too large, etc.)                       |
-| 404         | OBJECT_NOT_FOUND                    | The requested resource could not be found                                                             |
-| 422         | UNPROCESSABLE                       | The request was well-formed but was unable to be followed due to semantic errors                      |
-| 422         | APPLICATION_REJECTED                | When you try to cancel `Application` already `REJECTED`, which is not allowed                         |
-| 422         | APPLICATION_ALREADY_CANCELLED       | When you try to cancel `Application` that has been cancelled already                                  |
-| 422         | APPLICATION_VALIDATION_IN_PROGRESS  | When you try to cancel `Application` which undergoes validation                                       |
-| 422         | APPLICATION_PAID                    | When you try to cancel `Application` already paid, which is not allowed                               |
-| 422         | NOT_SUPPORTED                       | The request was well-formed but server was not able to change application state due internal rules    |
+| Status code | Code                                  | Explanation                                                                                           |
+| ---         | ---                                   | ---                                                                                                   |
+| 400         | `INVALID_REQUEST`                     | Request was not well formatted (malformed request syntax, size too large, etc.)                       |
+| 404         | `OBJECT_NOT_FOUND`                    | The requested resource could not be found                                                             |
+| 422         | `UNPROCESSABLE`                       | The request was well-formed but was unable to be followed due to semantic errors                      |
+| 422         | `APPLICATION_REJECTED`                | When you try to cancel `Application` already `REJECTED`, which is not allowed                         |
+| 422         | `APPLICATION_ALREADY_CANCELLED`       | When you try to cancel `Application` that has been cancelled already                                  |
+| 422         | `APPLICATION_VALIDATION_IN_PROGRESS`  | When you try to cancel `Application` which undergoes validation                                       |
+| 422         | `APPLICATION_PAID`                    | When you try to cancel `Application` already paid, which is not allowed                               |
+| 422         | `NOT_SUPPORTED`                       | The request was well-formed but server was not able to change application state due internal rules    |
 
 
 + Parameters
@@ -576,11 +576,11 @@ Use `/financing/v1/applications/{applicationId}/order` resource with properly fi
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                  | Explanation                                                                     |
-| ---         | ---                   | ---                                                                             |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.) |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                       |
-| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                              |
+| Status code | Code                    | Explanation                                                                     |
+| ---         | ---                     | ---                                                                             |
+| 400         | `INVALID_REQUEST`       | Request was not well formatted (malformed request syntax, size too large, etc.) |
+| 404         | `OBJECT_NOT_FOUND`      | The requested resource could not be found                                       |
+| 422         | `NOT_SUPPORTED`         | Resource is not supported for given financing type                              |
 
 
 + Parameters
@@ -633,11 +633,11 @@ If you want to cancel specific order item/s, use `/financing/v1/applications/{ap
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                  | Explanation                                                                      |
-| ---         | ---                   | ---                                                                              |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
-| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
+| Status code | Code                    | Explanation                                                                      |
+| ---         | ---                     | ---                                                                              |
+| 400         | `INVALID_REQUEST`       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | `OBJECT_NOT_FOUND`      | The requested resource could not be found                                        |
+| 422         | `NOT_SUPPORTED`         | Resource is not supported for given financing type                               |
 
 + Parameters
     + applicationId (string, required, `11b00a1ef1`)
@@ -692,11 +692,11 @@ If you want to mark specific order item/s as sent, use `/financing/v1/applicatio
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                  | Explanation                                                                      |
-| ---         | ---                   | ---                                                                              |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
-| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
+| Status code | Code                    | Explanation                                                                      |
+| ---         | ---                     | ---                                                                              |
+| 400         | `INVALID_REQUEST`       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | `OBJECT_NOT_FOUND`      | The requested resource could not be found                                        |
+| 422         | `NOT_SUPPORTED`         | Resource is not supported for given financing type                               |
 
 + Parameters
     + applicationId (string, required, `11b00a1ef1`)
@@ -749,11 +749,11 @@ If you want to mark specific order item/s as delivered, use `/financing/v1/appli
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                  | Explanation                                                                      |
-| ---         | ---                   | ---                                                                              |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
-| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
+| Status code | Code                    | Explanation                                                                      |
+| ---         | ---                     | ---                                                                              |
+| 400         | `INVALID_REQUEST`       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | `OBJECT_NOT_FOUND`      | The requested resource could not be found                                        |
+| 422         | `NOT_SUPPORTED`         | Resource is not supported for given financing type                               |
 
 + Parameters
     + applicationId (string, required, `11b00a1ef1`)
@@ -809,11 +809,11 @@ If you want to mark specific order item/s as returned, use `/financing/v1/applic
 If the request was successfully processed, you receive HTTP status code 200 and object of information about changed *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                  | Explanation                                                                      |
-| ---         | ---                   | ---                                                                              |
-| 400         | INVALID_REQUEST       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
-| 422         | NOT_SUPPORTED         | Resource is not supported for given financing type                               |
+| Status code | Code                    | Explanation                                                                      |
+| ---         | ---                     | ---                                                                              |
+| 400         | `INVALID_REQUEST`       | Request was not well formatted (malformed request syntax, size too large, etc.)  |
+| 404         | `OBJECT_NOT_FOUND`      | The requested resource could not be found                                        |
+| 422         | `NOT_SUPPORTED`         | Resource is not supported for given financing type                               |
 
 + Parameters
     + applicationId (string, required, `11b00a1ef1`)
@@ -954,10 +954,10 @@ If you need to find out current information about particular *order* - primarily
 If the request was successfully processed, you receive HTTP status code 200 and object of information about specified *order* plus basic information about respective *application* (ID, state, substate).
 
 In other cases, you may receive errors similar to the following ones:
-| Status code | Code                  | Explanation                                                                      |
-| ---         | ---                   | ---                                                                              |
-| 404         | OBJECT_NOT_FOUND      | The requested resource could not be found                                        |
-| 422         | UNPROCESSABLE         | The request was well-formed but was unable to be followed due to semantic errors |
+| Status code | Code                    | Explanation                                                                      |
+| ---         | ---                     | ---                                                                              |
+| 404         | `OBJECT_NOT_FOUND`      | The requested resource could not be found                                        |
+| 422         | `UNPROCESSABLE`         | The request was well-formed but was unable to be followed due to semantic errors |
 
 
 ### Get order [GET]
@@ -999,10 +999,10 @@ Returns probability of *application's* approval and limits of particular custome
 It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call mallpay API - **NEVER put access token directly to client side**.
 
 Possible error codes explanation:
-| Status code | Code                | Explanation                                                                     |
-| ---         | ---                 | ---                                                                             |
-| 400         | INVALID_REQUEST     | Request was not well formatted (malformed request syntax, size too large, etc.) |
-| 422         | PERSONAL_ID_INVALID | PersonalId is not valid                                                         |
+| Status code | Code                  | Explanation                                                                     |
+| ---         | ---                   | ---                                                                             |
+| 400         | `INVALID_REQUEST`     | Request was not well formatted (malformed request syntax, size too large, etc.) |
+| 422         | `PERSONAL_ID_INVALID` | PersonalId is not valid                                                         |
 
 ### Precheck [POST]
 Returns probability of *application's* approval and limits of particular customer, if known to mallpay
