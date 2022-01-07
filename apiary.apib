@@ -503,6 +503,24 @@ It allows to get recurrence detail. You can check if customer authorized your re
     There is no recurrence
     + Attributes (ErrorsResponse)
 
+### Update recurrence [PATCH]
+At this moment it allows to change the recurrence state only. It's not neccessary but if you want to be sure that nobody can use the recurrence in the future you can cancel it.
+
++ Request (application/json; charset=utf-8)
+    + Attributes (RecurrenceUpdateRequest)
+
++ Response 200(application/json; charset=utf-8)
+    Recurrence was updated
+    + Attributes (RecurrenceObject)
+
++ Response 404 (application/json; charset=utf-8)
+    There is no recurrence
+    + Attributes (ErrorsResponse)
+
++ Response 422(application/json; charset=utf-8)
+    Recurrence can not be updated
+    + Attributes (ErrorsResponse)
+
 ## Cancel application [/financing/v1/applications/{applicationId}/cancel]
 If there is need to completely cancel customer's *order*, it is necessary to cancel respective *application*. For this purpose use `/financing/v1/applications/{applicationId}/cancel` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
 
@@ -1410,6 +1428,11 @@ Object used to change order information.
 + reason (string, optional) - Reason of change.
 + order (OrderChangeRequest, required) - Changed order data.
 
+## RecurrenceUpdateRequest (object)
+
+### Properties
++ `state`: `CANCELLED` (enum, required) - This endpoint allows only one option
+    + `CANCELLED` - Recurrence will be canceled
 
 ## ApplicationCancelRequest (object)
 Specification of the reason why the application is cancelled.
