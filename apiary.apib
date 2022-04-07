@@ -17,8 +17,8 @@ The aim of here described services is to allow customers the smooth running thro
 | Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow mallpay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
 | Health check            | Health check usage description                                                                                                                                                                          |
 
-### Deferred payment
-The most basic and minimum way how to implement mallpay's deferred payment is to at least implement:
+### mallpay payment
+The most basic and minimum way how to implement mallpay's payment is to at least implement:
 1. [Login](#reference/security/login-partner)
     - Needed for all operations.
 1. [Create application](#reference/application-operations/create-application)
@@ -35,7 +35,7 @@ It's always needed to send all attributes marked as required, but filling option
 
 ### Recurring on demand
 
-You can extend basic deferred payment option with recurring option. This feature allows you to create recurring payments such a subscriptions. It allows you to create recurring orders without customer's presence (all actions are performed in the background without the customer or with the customer not leaving the e-shop to the payment gateway). This feature is not enabled for everyone by default. If you want to use it please contact us. 
+You can extend basic mallpay payment option with recurring option. This feature allows you to create recurring payments such a subscriptions. It allows you to create recurring orders without customer's presence (all actions are performed in the background without the customer or with the customer not leaving the e-shop to the payment gateway). This feature is not allowed with `PAY_IN_THREE` type and is not enabled for everyone by default. If you want to use it please contact us.
 
 It behaves almost the same as the previous application flow. You need to create an application with all required attributes. But in this case you must force to remember customer authorization by `isRecurring=true`. Our system will return ID of customer's authorization called **recurrence**. Save it.
 
@@ -339,6 +339,7 @@ Elementary flow starts when customer wants to use one of MallPay's payment metho
 | Financing type     | Supported |
 | ---                | ---       |
 | `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
 
 Use `/financing/v1/applications` resource with properly filled request that contains at least following data
 - Customer information
@@ -410,7 +411,7 @@ Create new *application* of particular financing type
 
 + Response 200 (application/json; charset=utf-8)
 
-        Application exists
+        Application data is duplicate. Existing application is returned.
 
     + Attributes (ApplicationResponse)
 
@@ -425,9 +426,10 @@ Create new *application* of particular financing type
 ## Application detail [/financing/v1/applications/{applicationId}]
 If you need to find out current information about particular *application* - primarily its state and other details - use `/financing/v1/applications/{applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
 
-| Financing type     | Supported         |
-| ---                | ---               |
-| `DEFERRED_PAYMENT` | YES               |
+| Financing type     | Supported |
+| ---                | ---       |
+| `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
 
 If the request was successfully processed, you receive HTTP status code 200 and *application* object.
 
@@ -462,6 +464,11 @@ Get specific *application* detail by ID
 
 It allows to create application without customer authorization at mallpay gate. It needs the recurrence ID to be received previously. This endpoint doesn't need any data about customer.
 
+| Financing type     | Supported |
+| ---                | ---       |
+| `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | NO        |
+
 + Parameters
     + recurrenceId (string, required) - Recurrence ID from first application
 
@@ -489,6 +496,11 @@ It allows to create application without customer authorization at mallpay gate. 
 ## Recurrence detail [/financing/v1/recurrences/{recurrenceId}]
 
 It allows to get recurrence detail. You can check if customer authorized your request and if recurrence is ready to be used.
+
+| Financing type     | Supported |
+| ---                | ---       |
+| `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | NO        |
 
 + Parameters
     + recurrenceId (string, required)
@@ -527,6 +539,7 @@ If there is need to completely cancel customer's *order*, it is necessary to can
 | Financing type     | Supported |
 | ---                | ---       |
 | `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
 
 | Application state | Availability                                                                                                                                                  |
 | ---               | ---                                                                                                                                                           |
@@ -579,6 +592,7 @@ When there's some changes within *order* before delivery (e.g. change in order i
 | Financing type     | Supported |
 | ---                | ---       |
 | `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -627,11 +641,12 @@ Change *order*. Used to change order items, total amount, billing details etc.
 ## Mark order items as cancelled  [/financing/v1/applications/{applicationId}/order/cancel]
 When some or all order items were cancelled (won't be ever delivered), use `/financing/v1/applications/{applicationId}/order/cancel` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
 
-If you want to cancel some items after marking those items as sent or delivered, use [Mark order items as returned](#reference/application-operations/mark-order-items-as-returned) operation.
-
 | Financing type     | Supported |
 | ---                | ---       |
 | `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
+
+If you want to cancel some items after marking those items as sent or delivered, use [Mark order items as returned](#reference/application-operations/mark-order-items-as-returned) operation.
 
 | Application state | Availability |
 | ---               | ---          |
@@ -691,13 +706,14 @@ When some or all order items were shipped to the customer, use `/financing/v1/ap
 | Financing type     | Supported |
 | ---                | ---       |
 | `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
 
 | Application state | Availability|
-| ---               | ---   |
-| `PROCESSING`      | NO    |
-| `REJECTED`        | NO    |
-| `CANCELLED`       | NO    |
-| `READY`           | YES   |
+| ---               | ---         |
+| `PROCESSING`      | NO          |
+| `REJECTED`        | NO          |
+| `CANCELLED`       | NO          |
+| `READY`           | YES         |
 
 Use `/financing/v1/applications/{applicationId}/order/send` resource with an empty request to mark all order items (the whole *order*) as sent at once.
 
@@ -748,13 +764,14 @@ When some or all order items were delivered to the customer, use `/financing/v1/
 | Financing type     | Supported |
 | ---                | ---       |
 | `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
 
-| Application state | Availability                                                                                           |
-| ---               | ---                                                                                                    |
-| `PROCESSING`      | NO                                                                                                     |
-| `REJECTED`        | NO                                                                                                     |
-| `CANCELLED`       | NO                                                                                                     |
-| `READY`           | YES  |
+| Application state | Availability |
+| ---               | ---          |
+| `PROCESSING`      | NO           |
+| `REJECTED`        | NO           |
+| `CANCELLED`       | NO           |
+| `READY`           | YES          |
 
 Use `/financing/v1/applications/{applicationId}/order/deliver` resource with an empty request to mark all order items (the whole *order*) as delivered at once.
 
@@ -803,11 +820,12 @@ Based on *application* financing type and partner setting, application payment m
 ## Mark order items as returned [/financing/v1/applications/{applicationId}/order/return]
 When some or all order items were returned by the customer to you (after delivery), use `/financing/v1/applications/{applicationId}/order/return` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation.
 
-If you want to cancel some items before marking those items as sent or delivered, use [Mark order items as cancelled](#reference/application-operations/mark-order-items-as-cancelled) operation.
-
 | Financing type     | Supported |
 | ---                | ---       |
 | `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
+
+If you want to cancel some items before marking those items as sent or delivered, use [Mark order items as cancelled](#reference/application-operations/mark-order-items-as-cancelled) operation.
 
 | Application state | Availability |
 | ---               | ---          |
@@ -898,14 +916,15 @@ Collection is sorted by paymentId attribute.
 
 ## Invoices [/financing/v1/invoices]
 
+| Financing type     | Supported |
+| ---                | ---       |
+| `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | NO        |
+
 ### Generate invoice info [POST]
 Generates billing information to be included in invoice for specific date for specific order or delivery.
 This should be used by partner before issuing an invoice, to include correct billing information.
 Helpful to put all the necessary information correctly to invoices (correct due date, bank number...). 
-
-| Financing type     | Supported |
-| ---                | ---       |
-| `DEFERRED_PAYMENT` | YES       |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -957,9 +976,10 @@ Helpful to put all the necessary information correctly to invoices (correct due 
 ## Orders [/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}]
 If you need to find out current information about particular *order* - primarily its state (or its order items' states) and other details - use `/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
 
-| Financing type     | Supported   |
-| ---                | ---         |
-| `DEFERRED_PAYMENT` | YES         |
+| Financing type     | Supported |
+| ---                | ---       |
+| `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
 
 | Application state | Availability |
 | ---               | ---          |
@@ -1013,6 +1033,11 @@ Services that allow partner e-shops find out a probability of *application's* ap
 Precheck *application*
 
 Returns probability of *application's* approval and limits of particular customer, if known to mallpay
+
+| Financing type     | Supported |
+| ---                | ---       |
+| `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
 
 It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call mallpay API - **NEVER put access token directly to client side**.
 
@@ -1099,6 +1124,7 @@ Returns probability of *application's* approval and limits of particular custome
         + `order` (PrecheckOrderRequest)
         + `type` (enum, optional)
             + `DEFERRED_PAYMENT`
+            + `PAY_IN_THREE`
 
 + Response 422 (application/json; charset=utf-8)
         Error in processing request
@@ -1110,6 +1136,7 @@ Returns probability of *application's* approval and limits of particular custome
         + `order` (PrecheckOrderRequest)
         + `type` (enum, optional)
             + `DEFERRED_PAYMENT`
+            + `PAY_IN_THREE`
 
 + Response 422 (application/json; charset=utf-8)
         Error in processing request
@@ -1136,6 +1163,11 @@ Services that should be developed and exposed by partner e-shops to allow mallpa
 
 ## Application notification [/financing/v1/{application.merchantUrls.notificationEndpoint}]
 We use this resource when there is need to let you know about important changes within particular *application*. Namely in following situations:
+
+| Financing type     | Supported |
+| ---                | ---       |
+| `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
 
 > IMPORTANT NOTE: This service should be developed and exposed by partner e-shops to allow mallpay to asynchronously inform these partners about important changes regarding particular applications.
 
@@ -1175,6 +1207,11 @@ Notify partner about changes in application.
         Can not process changes
 
 ## Payment notification [/financing/v1/{application.merchantUrls.paymentEndpoint}]
+
+| Financing type     | Supported |
+| ---                | ---       |
+| `DEFERRED_PAYMENT` | YES       |
+| `PAY_IN_THREE`     | YES       |
 
 ### Payment notification [POST]
 Notification about new payment.
@@ -1326,11 +1363,12 @@ Financing application
 ### Properties
 + `customer` (CustomerResponse, required) - Customer data
 + `order` (OrderResponse, required) - Order data
-+ `type` (enum, required) - Financing type
++ `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+    + `PAY_IN_THREE` - Pay in three ("třetinka")
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `gatewayRedirectUrl` (string, optional) - Gateway redirect URL. Redirect user to this URL if state is `PROCESSING` and stateReason is `PROCESSING_REDIRECT_NEEDED`.
-+ `recurrence` (RecurrenceObject, optional) - Recurrence data
++ `recurrence` (RecurrenceObject, optional) - Recurrence data. Recurrent payment is not allowed for `PAY_IN_THREE` type.
 
 
 ## ApplicationWithoutCustomerRequest (object)
@@ -1338,8 +1376,9 @@ Financing application request
 
 ### Properties
 + `order` (OrderRequest, required) - Order information
-+ `type` (enum, required) - Financing type
++ `type` (enum, optional) - Financing type
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+    + `PAY_IN_THREE` - Pay in three ("třetinka")
 + `agreementTermsAndConditions`: `true` (boolean, optional) - Terms and conditions agreement
 + `precheckIds` (array[string], optional) - Array of all precheck ids related to this application. See [Precheck operation](#reference/precheck-operations/precheck) and it's response (PrecheckResultsResponse).
 + `merchantUrls` (MerchantUrls, required) - Collection of partner's URLs used for redirection of a customer back to a partner website or as a notification endpoint
@@ -1758,8 +1797,9 @@ Precheck data (has similar structure as `Application`).
 ### Properties
 + `customer` (PrecheckCustomerRequest, required) - Customer data
 + `order` (PrecheckOrderRequest, optional) - Order data
-+ `type` (enum, optional) - Financing type
++ `type` (enum, optional) - Financing type, if type is not sent `DEFERRED_PAYMENT` is selected.
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+    + `PAY_IN_THREE` - Pay in three ("třetinka")
 
 ## PrecheckCustomerRequest (CustomerRequest)
 
@@ -1802,6 +1842,7 @@ Precheck result.
 ### Properties
 + `type` (enum, required) - Precheck result type for Funding type.
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
+    + `PAY_IN_THREE` - Pay in three ("třetinka")
 + `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the mallpay.
     true = Application is going to be likely approved.
     false = Application is going to be likely rejected.
