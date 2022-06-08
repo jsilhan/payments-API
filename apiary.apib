@@ -1189,6 +1189,8 @@ We fill the request with following information:
 
 > IMPORTANT: You should always double check the state of Application on `/financing/v1/applications/{applicationId}` resource due to security reasons.
 
+If notification is not processed due to error or unavailability it is automatically sent again (retried) after 1, 5, 5, 5 a 5 minutes by default (5 tries in total). 
+
 ### Application notification [POST]
 Notify partner about changes in application.
 
