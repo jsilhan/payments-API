@@ -1614,7 +1614,7 @@ Order item base information, needed to identify order item
 + `code`: `EXC4677-1a` (string, required) - (max length 200) Internal code for item (internal to e-shop). Used to better identify the item for future changes
 + `ean`: 888462064002 (string, optional) - (max length 64) EAN code.
 + `name`: `iPhone 6s 32GB SpaceGray` (string, required) - (max length 255) Item name
-+ `quantity`: 1 (number, optional) - (positive integer) Item quantity. If empty, considered as 1.
++ `quantity`: 1 (number, optional) - (positive float/decimal up to 3 decimal places) Item quantity. If empty, considered as 1.
 
 
 ## OrderItemRequest (OrderItemBase)
@@ -1676,7 +1676,7 @@ Order item base information
     + `STORE_CREDIT`
     + `FEE`
     + `INSURANCE`
-+ `quantity`: 1 (number, optional) - Item quantity. If empty, considered as 1.
++ `quantity`: 1 (number, optional) - (positive float/decimal up to 3 decimal places) Item quantity. If empty, considered as 1.
 
 
 ## FileRequest (object)
