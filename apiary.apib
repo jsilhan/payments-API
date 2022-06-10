@@ -5,7 +5,7 @@ HOST: https://api.partner.mallpay.cz
 API documentation for mallpay partners.
 
 ## Getting started
-This online document describes mallpay API - the means for partner e-shops through which they can offer their customers the benefits of one of MallPay's payment method.
+This online document describes mallpay API - the means for partner e-shops through which they can offer their customers the benefits of one of mallpay's payment method.
 
 The aim of here described services is to allow customers the smooth running through the process of an online purchase. The services that allow achieving this goal are divided into the following groups:
 
@@ -360,7 +360,7 @@ Use `/financing/v1/applications` resource with properly filled request that cont
   - Your URL where the customer should be redirected after application rejection
   - URL of your notification endpoint you want us to send you notifications about particular application updates
   
-For best customer experience request should containt following data:
+For best customer experience request should contain following data:
 - Customer information
   - Extra data
     - Historical count of customer's transactions made in partner's e-shop
@@ -1323,12 +1323,21 @@ Address
     + `BILLING` - Billing address
 
 
+## OrderAddress (Address)
+Order address
+
+### Properties
++ `addressType` (enum, required) - Type of the address. Only some of the types are allowed in each context.
+    + `DELIVERY` - Delivery address
+    + `BILLING` - Billing address
+
+
 ## Amount (object)
 Financial amount
 
 ### Properties
 + `amount`: 12590 (number, required) - Amount in minor units (12590 represents 125,90 CZK) [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217)
-+ `currency`: `CZK` (string, required) - Amount currency. [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217)
++ `currency`: `CZK` (string, required) - Amount currency. [ISO 4217](https://en.wikipedia.org/wiki/ISO_4217) (only CZK value is allowed)
 
 ## VatAmount (Amount)
 Financial amount with VAT rate.
@@ -1408,29 +1417,19 @@ Customer data
 + `titleBefore`: `Ing.` (string, optional) - (max length 60) Academical degree, in front of the name
 + `titleAfter`: `CSc.` (string, optional) - (max length 60) Academical degree, behind name
 + `email`: `john.newborn@country.com` (string, required) - (max length 254) E-mail address of customer
-+ `phone`: `+420123456789` (string, required) - (max length 13) Phone number with country code (including leading `+`)
 + `addresses` (array[Address], optional) - Addresses. All types are allowed.
 + `tin`: `12333321` (string, optional) - (max length 20) Tax identification number (ICO)
 + `vatin`: `CZ8402154456` (string, optional) - (max length 20) VAT identification number
-
++ `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability.
 
 ## CustomerRequest (CustomerBase)
 Customer data
 
 ### Properties
-+ One of
-    + properties
-        + `firstName`: `John` (string, required) - (max length 60) Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
-        + `lastName`: `Newborn` (string, required) - (max length 60) Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
-    + `fullName`: `Ing. John Newborn, Csc.` (string, required) - (max length 240) Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
-+ `email`: `john.newborn@country.com` (string, required) - (max length 254) E-mail address of customer
-+ `phone`: `+420123456789` (string, required) - (max length 13) Phone number with country code (including leading `+`)
-+ `addresses` (array[Address], optional) - Addresses. All types are allowed.
-+ `tin`: `12333321` (string, optional) - (max length 20) Tax identification number (ICO)
-+ `vatin`: `CZ8402154456` (string, optional) - (max length 20) VAT identification number
-+ `ipAddress`: `172.10.10.1` (string, optional) - (max length 39) IPv4 or IPv6 address of a customer.
-+ `fingerprintComponents` (array[KeyValue], optional) - Fingerprints components. Fill this property with data created with mallpay JS library.
-+ `extraData` (CustomerExtraData, optional) - Additional data, that may improve the approval probability.
++ `firstName`: `John` (string, optional) - (max length 60) Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
++ `lastName`: `Newborn` (string, optional) - (max length 60) Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
++ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - (max length 240) Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
++ `phone`: `+420123456789` (string, optional) - (max length 13) Phone number with country code (including leading `+`). Phone number is by default required if you are not able to send it contact us.
 
 ## CustomerResponse (CustomerBase)
 Customer data
@@ -1439,6 +1438,7 @@ Customer data
 + `firstName`: `John` (string, optional) - (max length 60) Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
 + `lastName`: `Newborn` (string, optional) - (max length 60) Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
 + `fullName`: `Ing. John Newborn, Csc.` (string, optional) - (max length 240) Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
++ `phone`: `+420123456789` (string, optional) - (max length 13) Phone number with country code (including leading `+`).
 + `type` (enum, required) - Customer type.
     + `UNKNOWN` - Customer is uknown for mallpay.
     + `FIRST_ORDER` - mallpay knows the customer. Customer has no paid orders.
@@ -1503,24 +1503,24 @@ Object used to mark order items as returned.
 
 ### Properties
 + `document` (DocumentRequest, optional) - Attached document (credit note, ...)
-+ `variableSymbol`: `1234567890` (string, optional) - Variable symbol of the new document (credit note, ...). This symbols is used by mallpay to pair payment from e-shop.
++ `variableSymbol`: `1234567890` (string, optional) - (max length 10)  Variable symbol of the new document (credit note, ...). This symbols is used by mallpay to pair payment from e-shop.
 
 ## OrderItemsSendRequest (OrderItemsChangeRequest)
 Object used to mark order items as sent.
 
 ### Properties
 + `document` (DocumentRequest, optional) - Attached invoice (invoice, proforma invoice...)
-+ `variableSymbol`: `1234567890` (string, optional) - Required if was not specified earlier in 'Create application' or 'Change application order' operations. Symbol used for making the payment to your account. This string must contain only numbers, maximum length is 10 characters (digits).
-+ `specificSymbol`: `1234567890` (string, optional) - Symbol used for making the payment to your account. This string must contain only numbers, maximum length is 10 characters (digits).
-+ `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Shipping date and time (fill just the date if you can't specify a shipping time)
++ `variableSymbol`: `1234567890` (string, optional) - (max length 10)  Required if was not specified earlier in 'Create application' or 'Change application order' operations. Symbol used for making the payment to your account. This string must contain only numbers, maximum length is 10 characters (digits).
++ `specificSymbol`: `1234567890` (string, optional) - (max length 10)  Symbol used for making the payment to your account. This string must contain only numbers, maximum length is 10 characters (digits).
++ `sentDate`: `2017-01-12` (string, optional) - Shipping date
 + `deliveryCarrier` (DeliveryCarrier, optional) - Carrier
-+ `deliveryTrackingNumber`: `EEX1221` (string, optional) - Delivery tracking number
++ `deliveryTrackingNumber`: `EEX1221` (string, optional) - (max length 64) Delivery tracking number
 
 ## OrderItemsDeliverRequest (OrderItemsSendRequest)
 Object used to mark order items as delivered.
 
 ### Properties
-+ `deliveryDate`: `2017-01-15T00:00:00+02:00` (string, optional) - Delivery date and time (fill just the date if you can't specify a time of delivery)
++ `deliveryDate`: `2017-01-15` (string, optional) - Delivery date
 
 ## OrderItemsCancelRequest (OrderItemsChangeRequest)
 Object used to mark order items as cancelled.
@@ -1533,7 +1533,7 @@ Order information, needed to create an application.
 + `variableSymbols` (array[string], optional) - (max length 10) Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered`) or we expect you make payment on our account with this symbol (if not specified later in `Mark order items as returned` operation). Strings must contain only numbers, maximum length is 10 characters (digits).
 + `totalPrice` (Amount, required) - Total order amount, including VAT. Needs to be positive.
 + `totalVat` (array[VatAmount], required) - Total VAT amounts split by their VAT rates.
-+ `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
++ `addresses` (array[OrderAddress], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
 + `deliveryType` (enum, optional) - Delivery type, for `DELIVERY_CARRIER` type can be further specified by `deliveryCarrier` attribute.
     + `DELIVERY_CARRIER` - If delivered by carrier - use `deliveryCarrier` for further specification.
     + `PERSONAL_BRANCH` - Personal collection at branch
@@ -1548,16 +1548,12 @@ Order information, needed to create an application.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 
-+ `items` (array[OrderItemRequest], required) - Order items
-+ `merchantId` (string, optional) - Merchant identification (ie. in case of multiple e-shops managed by one credentials)
-
-
 ## OrderRequest (OrderBase)
 
 ### Properties
 + `documents` (array[DocumentRequest], optional) - Attached documents (invoices etc.)
 + `items` (array[OrderItemRequest], required) - Order items
-
++ `merchantId` (string, optional) - Merchant identification (ie. in case of multiple e-shops managed by one credentials)
 
 ## OrderResponse (OrderBase)
 
@@ -1573,7 +1569,7 @@ Order information, needed to create an application.
 + `sentDate`: `2017-01-12T00:00:00+02:00` (string, optional) - Date and time of order shipping
 + `documents` (array[DocumentResponse], optional) - Attached documents (invoices etc.)
 + `items` (array[OrderItemResponse], required) - Order items
-
++ `merchantId` (string, required) - Merchant identification
 
 ## OrderExtendedResponse (OrderResponse)
 
@@ -1581,7 +1577,6 @@ Order with additional information about Application.
 
 ### Properties
 + `applicationInfo` (ApplicationBaseResponse, required) - Base information about respective application
-
 
 ## OrderChangeRequest (object)
 + `number`: `AA234` (string, optional) - Order number (internal for e-shop)
@@ -1606,7 +1601,6 @@ Order with additional information about Application.
 + `items` (array[OrderItemRequest], optional) - Order items
 + `documents` (array[DocumentRequest], optional) - Attached documents (invoices etc.)
 
-
 ## OrderItemBase (object)
 Order item base information, needed to identify order item
 
@@ -1614,13 +1608,6 @@ Order item base information, needed to identify order item
 + `code`: `EXC4677-1a` (string, required) - (max length 200) Internal code for item (internal to e-shop). Used to better identify the item for future changes
 + `ean`: 888462064002 (string, optional) - (max length 64) EAN code.
 + `name`: `iPhone 6s 32GB SpaceGray` (string, required) - (max length 255) Item name
-+ `quantity`: 1 (number, optional) - (positive float/decimal up to 3 decimal places) Item quantity. If empty, considered as 1.
-
-
-## OrderItemRequest (OrderItemBase)
-Order item information, needed to create an application.
-
-### Properties
 + `type` (enum, optional) - Item type
     + `PHYSICAL`
     + `DISCOUNT`
@@ -1634,16 +1621,21 @@ Order item information, needed to create an application.
 + `variant`: `32GB SpaceGray` (string, optional) - (max length 250) Item variant
 + `description`: `Mobile phone with 32GB of RAM` (string, optional)
 + `producer`: `Apple` (string, optional) - (max length 250)
-+ `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - (array[max length 250]) List of item categories
-+ `unitPrice` (Amount, optional) - Price per one piece, VAT inclusive. If empty, automatically considered that `unitPrice` is `totalPrice` / `quantity`. Can be both positive (goods, ...) or negative (discount, ...).
-+ `unitVat` (VatAmount, optional) - VAT amount per one piece. If empty, automatically considered that `unitVat` is `totalVat` / `quantity`.
++ `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - List of item categories
 + `totalPrice` (Amount, required) - Total price for all pieces, VAT inclusive. Can be both positive (goods, ...) or negative (discount, ...) or `0`.
 + `totalVat` (VatAmount, required) - Total VAT amount for all pieces. Can be both positive (goods, ...) or negative (discount, ...) or `0` (if `vatRate` is `0`).
-+ `image` (FileRequest, optional) - Item image
 + `productUrl`: `https://www.example.com?itemId=10` (string, optional) - (max length 200) URL of the item in e-shop
 
+## OrderItemRequest (OrderItemBase)
+Order item information, needed to create an application.
 
-## OrderItemResponse (OrderItemRequest)
+### Properties
++ `image` (FileRequest, optional) - Item image
++ `unitPrice` (Amount, optional) - Price per one piece, VAT inclusive. If empty, automatically considered that `unitPrice` is `totalPrice` / `quantity`. Can be both positive (goods, ...) or negative (discount, ...).
++ `unitVat` (VatAmount, optional) - VAT amount per one piece. If empty, automatically considered that `unitVat` is `totalVat` / `quantity`.
++ `quantity`: 1 (number, optional) - (positive float/decimal up to 3 decimal places) Item quantity. If empty, considered as 1.
+
+## OrderItemResponse (OrderItemBase)
 Order item information.
 
 ### Properties
@@ -1655,17 +1647,19 @@ Order item information.
     + `CANCELLED` - Order item was cancelled
 + `sentDate`: `2017-01-10` (string, optional) - Date when item was sent. Only when the whole order was NOT sent at once.
 + `deliveryDate`: `2017-01-12` (string, optional) - Date when item was delivered. Only when the whole order was NOT sent at once.
-+ `deliveryTrackingNumber`: `EX21121` (string, optional) - Tracking number for the item. Only when the whole order was NOT sent at once.
++ `deliveryTrackingNumber`: `EX21121` (string, optional) - (max length 64) Tracking number for the item. Only when the whole order was NOT sent at once.
 + `image` (FileResponse, optional) - Item image
-
++ `unitPrice` (Amount, required) - Price per one piece, VAT inclusive. If empty, automatically considered that `unitPrice` is `totalPrice` / `quantity`. Can be both positive (goods, ...) or negative (discount, ...).
++ `unitVat` (VatAmount, required) - VAT amount per one piece. If empty, automatically considered that `unitVat` is `totalVat` / `quantity`.
++ `quantity`: 1 (number, required) - (positive float/decimal up to 3 decimal places) Item quantity.
 
 ## OrderItemChangeRequest (object)
 Order item base information
 
 ### Properties
-+ `code`: `EXC4677-1a` (string, optional) - Internal code for item (internal to e-shop). Used to better identify the item for future changes
-+ `ean`: 888462064002 (string, optional) - EAN code.
-+ `name`: `iPhone 6s 32GB SpaceGray` (string, optional) - Item name
++ `code`: `EXC4677-1a` (string, optional) - (max length 200) Internal code for item (internal to e-shop). Used to better identify the item for future changes
++ `ean`: 888462064002 (string, optional) - (max length 64) EAN code.
++ `name`: `iPhone 6s 32GB SpaceGray` (string, optional) - (max length 255) Item name
 + `type`: `PHYSICAL` (enum, optional) - Item Type
     + `PHYSICAL`
     + `DISCOUNT`
@@ -1676,13 +1670,12 @@ Order item base information
     + `STORE_CREDIT`
     + `FEE`
     + `INSURANCE`
-+ `quantity`: 1 (number, optional) - (positive float/decimal up to 3 decimal places) Item quantity. If empty, considered as 1.
-
++ `quantity`: 1 (number, optional) - (positive float/decimal up to 3 decimal places) Item quantity. If empty, considered as whole item quantity is selected
 
 ## FileRequest (object)
 
 ### Properties
-+ `filename`: `invoice.pdf` (string, required) - (max length 100) File name.
++ `filename`: `invoice.pdf` (string, optional) - (max length 100) File name. Is highly recommended to send filename value. Otherwise is used default filename value with guessed postfix.
 + One Of
     + `content`: `RmlsZSBjb250ZW50cy4gwq9cXyjjg4QpXy/Crw==` (string, required) - File content (Base64 encoded, maximum size of encoded string is 500kB)
     + `url`: `https://www.partner.com/file?id=12345` (string, required) - File URL.
@@ -1691,14 +1684,14 @@ Order item base information
 ## FileResponse (object)
 
 ### Properties
-+ `filename`: `invoice.pdf` (string, required) - File name.
++ `filename`: `invoice.pdf` (string, required) - (max length 100) File name.
 + `url`: `https://www.partner.com/file?id=12345` (string, required) - File URL.
 
 
 ## PrivateFileResponse (object)
 
 ### Properties
-+ `filename`: `invoice.pdf` (string, required) - File name.
++ `filename`: `invoice.pdf` (string, required) - (max length 100) File name.
 + `url`: `https://www.partner.com/file?id=12345` (string, required) - File URL (URL is accessible only 1 hour from its generation for security reasons)
 
 
@@ -1728,7 +1721,6 @@ Attached document (e.g. invoice, credit note etc.)
 + `description`: `This is an invoice` (string, optional) - File description
 + `extraData` (DocumentExtraData, optional) - Additional data, if applicable
 
-
 ## DocumentExtraData (object)
 
 ### Properties
@@ -1750,10 +1742,11 @@ Request for generating invoice info.
 ### Properties
 + One Of
     + `customerDueDateCategory`: `CATEGORY_CLASSIC` (DueDateCategory, required) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response or [Get application](#reference/application-operations/application-detail) response.
-    + `orderNumber`: `12345678` (string, required) - Order number.
-    + `orderVariableSymbol`: `12345678` (string, required) - Variable symbol.
+    + `orderNumber`: `12345678` (string, required) - (max length 100) Order number.
+    + `orderVariableSymbol`: `12345678` (string, required) - (max length 10) Variable symbol.
     + `applicationId`: `11200a0ee1` (string, required) - Application identifier.
-+ `billingDate`: `2017-06-20` (string, optional) - Date of issuing an invoice. Default value: today.
++ `billingDate`: `2017-06-20` (string, optional) - Date of issuing an invoice. Default value: today
++ `merchantId` (string, optional) - Merchant identification (ie. in case of multiple e-shops managed by one credentials).
 
 ## AccountNumber (object)
 Account number with bank code.
@@ -1792,6 +1785,15 @@ Services that should be developed and exposed by partner e-shops to allow mallpa
 + `notificationEndpoint`: `http://www.yourEshop.com/notifications` (string, required) - (max length 512) URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
 + `paymentsEndpoint`: `http://www.yourEshop.com/paymentNotification` (string, optional) - (max length 512) URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
 
+## PrecheckCustomerRequest (CustomerBase)
+Customer data
+
+### Properties
++ `firstName`: `John` (string, optional) - (max length 60) Customer first (given) name. Must be paired with `lastName`. Required if `fullName` is empty.
++ `lastName`: `Newborn` (string, optional) - (max length 60) Customer last (family) name. Must be paired with `firstName`. Required if `fullName` is empty.
++ `fullName`: `Ing. John Newborn, Csc.` (string, optional) - (max length 240) Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
++ `phone`: `+420123456789` (string, required) - (max length 13) Phone number with country code (including leading `+`).
++ `addresses` (array[PrecheckAddress], optional) - Addresses. All types are allowed.
 
 ## PrecheckRequest (object)
 Precheck data (has similar structure as `Application`).
@@ -1803,17 +1805,74 @@ Precheck data (has similar structure as `Application`).
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `PAY_IN_THREE` - Pay in three ("třetinka")
 
-## PrecheckCustomerRequest (CustomerRequest)
-
-## PrecheckOrderRequest (object)
-Order information, needed to create an application.
+## PrecheckAddress (object)
+Address information for precheck validation
 
 ### Properties
-+ `number`: `AA234` (string, optional) - Order number (internal for e-shop)
-+ `variableSymbols` (array[string], optional) - Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered`) or we expect you make payment on our account with this symbol (if not specified later in `Mark order items as returned` operation). Strings must contain only numbers, maximum length is 10 characters (digits).
++ `name`: `John Doe` (string, optional) - Name on address
++ `country`: `CZ` (string, optional)
+
+    Country.
+
+    (see [ISO 3166 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2))
+
++ `city`: `Prague` (string, optional) - (max length 100) City.
++ `streetAddress`: `Letenská` (string, optional) - (max length 100) Street/city part.
++ `streetNumber`: `22` (string) - (max length 50) Street number
++ `zip`: `140 00` (string, optional) - (max length 30) Postal code
++ `addressType` (enum, optional) - Type of the address. Only some of the types are allowed in each context.
+    + `PERMANENT` - Permanent residential address
+    + `CONTACT` - Contact address
+    + `DELIVERY` - Delivery address
+    + `BILLING` - Billing address
+
+
+## PrecheckOrderAddress (Address)
+Order address information for precheck validation
+
+### Properties
++ `addressType` (enum, optional) - Type of the address. Only some of the types are allowed in each context.
+    + `DELIVERY` - Delivery address
+    + `BILLING` - Billing address
+
+## PrecheckOrderItemRequest (object)
+Order item information for precheck validation
+
+### Properties
++ `code`: `EXC4677-1a` (string, optional) - (max length 200) Internal code for item (internal to e-shop). Used to better identify the item for future changes
++ `ean`: 888462064002 (string, optional) - (max length 64) EAN code.
++ `name`: `iPhone 6s 32GB SpaceGray` (string, optional) - (max length 255) Item name
++ `type` (enum, optional) - Item type
+    + `PHYSICAL`
+    + `DISCOUNT`
+    + `SHIPPING_FEE`
+    + `SALES_TAX`
+    + `DIGITAL`
+    + `GIFT_CARD`
+    + `STORE_CREDIT`
+    + `FEE`
+    + `INSURANCE`
++ `variant`: `32GB SpaceGray` (string, optional) - (max length 250) Item variant
++ `description`: `Mobile phone with 32GB of RAM` (string, optional)
++ `producer`: `Apple` (string, optional) - (max length 250)
++ `categories`: `mobile phones`,`FullHD`, `64GB` (array[string], optional) - List of item categories
++ `totalPrice` (Amount, optional) - Total price for all pieces, VAT inclusive. Can be both positive (goods, ...) or negative (discount, ...) or `0`.
++ `totalVat` (VatAmount, optional) - Total VAT amount for all pieces. Can be both positive (goods, ...) or negative (discount, ...) or `0` (if `vatRate` is `0`).
++ `productUrl`: `https://www.example.com?itemId=10` (string, optional) - (max length 200) URL of the item in e-shop
++ `unitPrice` (Amount, optional) - Price per one piece, VAT inclusive. If empty, automatically considered that `unitPrice` is `totalPrice` / `quantity`. Can be both positive (goods, ...) or negative (discount, ...).
++ `unitVat` (VatAmount, optional) - VAT amount per one piece. If empty, automatically considered that `unitVat` is `totalVat` / `quantity`.
++ `quantity`: 1 (number, optional) - (positive float/decimal up to 3 decimal places) Item quantity. If empty, considered as 1.
+
+
+## PrecheckOrderRequest (object)
+Order information for precheck validation
+
+### Properties
++ `number`: `AA234` (string, optional) - (max length 100) Order number (internal for e-shop)
++ `variableSymbols` (array[string], optional) - (max length 10)  Variable symbols for pairing. First symbol in array is used for making the payment to your account (if not specified later in `Mark order items as sent` or `Mark order items as delivered`) or we expect you make payment on our account with this symbol (if not specified later in `Mark order items as returned` operation). Strings must contain only numbers, maximum length is 10 characters (digits).
 + `totalPrice` (Amount, optional) - Total order amount, including VAT
 + `totalVat` (array[VatAmount], optional) - Total VAT amounts split by their VAT rates
-+ `addresses` (array[Address], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
++ `addresses` (array[PrecheckOrderAddress], optional) - Addresses. Only `BILLING` and `DELIVERY` types are allowed.
 + `deliveryType` (enum, optional) - Delivery type, for `DELIVERY_CARRIER` type can be further specified by `deliveryCarrier` attribute.
     + `DELIVERY_CARRIER` - If delivered by carrier - use `deliveryCarrier` for further specification.
     + `PERSONAL_BRANCH` - Personal collection at branch
@@ -1827,16 +1886,8 @@ Order information, needed to create an application.
    Until 'reservationDate' mallpay will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
-+ `items` (array[OrderItemRequest], optional) - Order items
-+ `documents` (array[DocumentRequest], optional) - Attached documents (invoices etc.)
++ `items` (array[PrecheckOrderItemRequest], optional) - Order items
 + `merchantId` (string, optional) - Merchant identification (ie. in case of multiple e-shops managed by one credentials)
-
-
-## KeyValue (object)
-
-### Properties
-+ `key`: `property` (string, required) - Key
-+ `value`: `value` (object, required) - Value
 
 ## PrecheckResultResponse (object)
 Precheck result.
