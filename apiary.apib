@@ -914,65 +914,6 @@ Collection is sorted by paymentId attribute.
     + Attributes (ErrorsResponse)
 
 
-## Invoices [/financing/v1/invoices]
-
-| Financing type     | Supported |
-| ---                | ---       |
-| `DEFERRED_PAYMENT` | YES       |
-| `PAY_IN_THREE`     | NO        |
-
-### Generate invoice info [POST]
-Generates billing information to be included in invoice for specific date for specific order or delivery.
-This should be used by partner before issuing an invoice, to include correct billing information.
-Helpful to put all the necessary information correctly to invoices (correct due date, bank number...). 
-
-| Application state | Availability |
-| ---               | ---          |
-| `PROCESSING`      | NO           |
-| `REJECTED`        | NO           |
-| `CANCELLED`       | NO           |
-| `READY`           | YES          |
-
-+ Request (application/json; charset=utf-8)
-    + Attributes (InvoiceInfoRequest)
-
-+ Response 200 (application/json; charset=utf-8)
-
-        Invoice info
-
-    + Attributes (InvoiceInfo)
-
-
-+ Request (application/json; charset=utf-8)
-    + Body
-    ```
-    {
-        "applicationId": "nonexistent_app_id"
-    }
-    ```
-
-+ Response 404 (application/json; charset=utf-8)
-
-        Invoice info can not be generated
-
-    + Attributes (ErrorsResponse)
-
-
-+ Request Wrong request (application/json; charset=utf-8)
-    + Body
-    ```
-    {
-        'data': 'nonsense'
-    }
-    ```
-
-+ Response 400 (application/json; charset=utf-8)
-
-        Invoice info can not be generated
-
-    + Attributes (ErrorsResponse)
-
-
 ## Orders [/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}]
 If you need to find out current information about particular *order* - primarily its state (or its order items' states) and other details - use `/financing/v1/orders{?orderNumber,orderVariableSymbol,applicationId}` resource where `{applicationId}` is the application ID you received in the response of `/financing/v1/applications` after its creation, `{orderNumber}` is your order's number and `{orderVariableSymbol}` is your order's variable symbol.
 
@@ -1444,7 +1385,6 @@ Customer data
     + `FIRST_ORDER` - mallpay knows the customer. Customer has no paid orders.
     + `FULL` -  mallpay knows the customer. Customer has at least one paid order.
     + `BLOCKED` - mallpay knows the customer. Customer is blocked.
-+ `dueDateCategory` (DueDateCategory, required)
 
 
 ## CustomerExtraData (object)
@@ -1726,7 +1666,6 @@ Attached document (e.g. invoice, credit note etc.)
 ### Properties
 + `variableSymbol`: `1234567890` (string, optional) - Variable symbol of this document (proforma, invoice, ...)
 
-
 ## InvoiceInfo (object)
 Billing information, to be included in invoice.
 
@@ -1735,18 +1674,6 @@ Billing information, to be included in invoice.
 + `address` (Address, optional) - Billing address.
 + `dueDate`: `2017-06-20` (string, required) - Invoice due date.
 + `accountNumber` (AccountNumber, required) - Invoice account number.
-
-## InvoiceInfoRequest (object)
-Request for generating invoice info.
-
-### Properties
-+ One Of
-    + `customerDueDateCategory`: `CATEGORY_CLASSIC` (DueDateCategory, required) - Category of the due date. See [Precheck method](#reference/precheck-operations/precheck) response or [Get application](#reference/application-operations/application-detail) response.
-    + `orderNumber`: `12345678` (string, required) - (max length 100) Order number.
-    + `orderVariableSymbol`: `12345678` (string, required) - (max length 10) Variable symbol.
-    + `applicationId`: `11200a0ee1` (string, required) - Application identifier.
-+ `billingDate`: `2017-06-20` (string, optional) - Date of issuing an invoice. Default value: today
-+ `merchantId` (string, optional) - Merchant identification (ie. in case of multiple e-shops managed by one credentials).
 
 ## AccountNumber (object)
 Account number with bank code.
@@ -1920,7 +1847,6 @@ Precheck result.
     + `FIRST_ORDER` - mallpay knows the customer. Customer has no paid orders.
     + `FULL` -  mallpay knows the customer. Customer has at least one paid order.
     + `BLOCKED` - mallpay knows the customer. Customer is blocked.
-+ `customerDueDateCategory` (DueDateCategory, required)
 + `message` (string, optional) - Custom message for customer.
     Examples:
     “V mallpay peněžence nemáte dostatečný limit.”
@@ -1963,10 +1889,3 @@ Health check response
 
 ### Properties
 + `projectVersion`: `mallpay 2.40.0` (string, optional) - Version of the project
-
-## DueDateCategory (enum)
-
-### Members
-+ `CATEGORY_CLASSIC` - Customer with classic due date (14 days, with the exception of events (Christmas, etc.))
-+ `CATEGORY_CLASSIC_2` - Customer with extended due date (30 days, with the exception of events (Christmas, etc.))
-+ `CATEGORY_EXTENDED` - Customer with extra extended due date (20th day of next month, with the exception of events (Christmas, etc.))
