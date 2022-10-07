@@ -1,11 +1,11 @@
 FORMAT: 1A
 HOST: https://api.partner.mallpay.cz
 
-# mallpay API for partners
-API documentation for mallpay partners.
+# Skip Pay API for partners
+API documentation for Skip Pay partners.
 
 ## Getting started
-This online document describes mallpay API - the means for partner e-shops through which they can offer their customers the benefits of one of mallpay's payment method.
+This online document describes Skip Pay API - the means for partner e-shops through which they can offer their customers the benefits of one of Skip Pay's payment method.
 
 The aim of here described services is to allow customers the smooth running through the process of an online purchase. The services that allow achieving this goal are divided into the following groups:
 
@@ -13,12 +13,12 @@ The aim of here described services is to allow customers the smooth running thro
 | ---                     | ---                                                                                                                                                                                                     |
 | Security                | Security rules and principles                                                                                                                                                                           |
 | Application operations  | Services that allows processing of *application* and *order* during their whole lifecycle                                                                                                               |
-| Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to mallpay                                                        |
-| Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow mallpay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
+| Precheck operations     | Services that allow partner e-shops find out a probability of *application's* approval and limits of particular *customer*, if known to Skip Pay                                                        |
+| Merchantsite operations | Services that should be developed and exposed by partner e-shops to allow Skip Pay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders* |
 | Health check            | Health check usage description                                                                                                                                                                          |
 
-### mallpay payment
-The most basic and minimum way how to implement mallpay's payment is to at least implement:
+### Skip Pay payment
+The most basic and minimum way how to implement Skip Pay's payment is to at least implement:
 1. [Login](#reference/security/login-partner)
     - Needed for all operations.
 1. [Create application](#reference/application-operations/create-application)
@@ -27,7 +27,7 @@ The most basic and minimum way how to implement mallpay's payment is to at least
     - Special URLs for customers that shows payment success or rejection.
 1. [Application notification](#reference/merchantsite-operations/application-notification)
 1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent)  or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
-    - mallpay won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
+    - Skip Pay won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
 
 [![Sequence diagram of minimum implementation](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramMinimum.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramMinimum.png)
 
@@ -35,11 +35,11 @@ It's always needed to send all attributes marked as required, but filling option
 
 ### Recurring on demand
 
-You can extend basic mallpay payment option with recurring option. This feature allows you to create recurring payments such a subscriptions. It allows you to create recurring orders without customer's presence (all actions are performed in the background without the customer or with the customer not leaving the e-shop to the payment gateway). This feature is not allowed with `PAY_IN_THREE` type and is not enabled for everyone by default. If you want to use it please contact us.
+You can extend basic Skip Pay payment option with recurring option. This feature allows you to create recurring payments such a subscriptions. It allows you to create recurring orders without customer's presence (all actions are performed in the background without the customer or with the customer not leaving the e-shop to the payment gateway). This feature is not allowed with `PAY_IN_THREE` type and is not enabled for everyone by default. If you want to use it please contact us.
 
 It behaves almost the same as the previous application flow. You need to create an application with all required attributes. But in this case you must force to remember customer authorization by `isRecurring=true`. Our system will return ID of customer's authorization called **recurrence**. Save it.
 
-For making other orders (without customer's authorization) call `/financing/v1/recurrences/{id}/applications` endpoint with ID of recurrence. Mallpay will automatically approve the application if all conditions are OK. The way to find out the result of the application is the same as for common applications (notification endpoint or application state).
+For making other orders (without customer's authorization) call `/financing/v1/recurrences/{id}/applications` endpoint with ID of recurrence. Skip Pay will automatically approve the application if all conditions are OK. The way to find out the result of the application is the same as for common applications (notification endpoint or application state).
 
 [![Sequence diagram of recurrences](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramRecurrences.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramRecurrences.png)
 
@@ -48,23 +48,23 @@ Of course you can use recurrence ID multiple times but it has some limitations. 
 You can check the recurrence state anytime on `/financing/v1/recurrences/{id}`.
 
 ### Application states
-Applications have their own state and substates that can be managed by mallpay and merchants. 
+Applications have their own state and substates that can be managed by Skip Pay and merchants. 
 
 Existing states are listed below:
 
 | Application state | Description                                                                                             |
 | ---               | ---                                                                                                     |
-| `PROCESSING`      | Application is being processed by mallpay                                                              |
+| `PROCESSING`      | Application is being processed by Skip Pay                                                              |
 | `READY`           | Application was approved and is ready for financing                                                     |
-| `REJECTED`        | Application was rejected by mallpay system                                                             |
-| `CANCELLED`       | Application was cancelled by client or by mallpay, either before approval or after delivery            |
+| `REJECTED`        | Application was rejected by Skip Pay system                                                             |
+| `CANCELLED`       | Application was cancelled by client or by Skip Pay, either before approval or after delivery            |
 
 Simplified diagram of possible transitions between states:
 
 [![States diagram of Application](https://github.com/mall-pay/payments-API/raw/master/images/StatesDiagram.png)](https://github.com/mall-pay/payments-API/raw/master/images/StatesDiagram.png)
 
 Merchant can obtain current application state anytime with [Get application detail](#reference/application-operations/application-detail/get-application-detail) operation.
-mallpay proactively notify merchant about important state and substate changes - merchant is able to handle [Application notification](#reference/merchantsite-operations/application-notification/application-notification).
+Skip Pay proactively notify merchant about important state and substate changes - merchant is able to handle [Application notification](#reference/merchantsite-operations/application-notification/application-notification).
 
 ## Conventions
 
@@ -302,7 +302,7 @@ curl -H "Authorization: Bearer secret_token" https://api.partner.mallpay.cz/fina
 }
 ```
 
-> IMPORTANT NOTE: You must keep your access token and login credentials safe. NEVER put login credentials nor access token into client page. If you plan to integrate API calls in client flow without submitting the page to server, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call mallpay API.
+> IMPORTANT NOTE: You must keep your access token and login credentials safe. NEVER put login credentials nor access token into client page. If you plan to integrate API calls in client flow without submitting the page to server, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call Skip Pay API.
 
 > NEVER transfer access token nor login credentials over plain HTTP. Such requests will be refused.
 
@@ -334,7 +334,7 @@ Partner authenticate himself and obtain acces token
 Services that allows processing of *application* and *order* during their whole lifecycle.
 
 ## Create application [/financing/v1/applications]
-Elementary flow starts when customer wants to use one of MallPay's payment method for financing his purchase made in partner e-shop.
+Elementary flow starts when customer wants to use one of Skip Pay's payment method for financing his purchase made in partner e-shop.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -462,7 +462,7 @@ Get specific *application* detail by ID
 
 ## Create application from recurrence [/financing/v1/recurrences/{recurrenceId}/applications]
 
-It allows to create application without customer authorization at mallpay gate. It needs the recurrence ID to be received previously. This endpoint doesn't need any data about customer.
+It allows to create application without customer authorization at Skip Pay gate. It needs the recurrence ID to be received previously. This endpoint doesn't need any data about customer.
 
 | Financing type     | Supported |
 | ---                | ---       |
@@ -887,7 +887,7 @@ Based on *application* financing type and partner setting, credit note may be is
 ### Get payments on specific application [GET]
 Get payments on specific *application*
 
-List of realized payments from mallpay to partner. In case of multiple invoices, list may contain more items.
+List of realized payments from Skip Pay to partner. In case of multiple invoices, list may contain more items.
 
 feature | supported by resource
 --- | ---
@@ -968,19 +968,19 @@ use `/financing/v1/orders` with at least one of following parameter:
     + Attributes (ErrorsResponse)
 
 # Group Precheck operations
-Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to mallpay
+Services that allow partner e-shops find out a probability of *application's* approval and limits of particular customer, if known to Skip Pay
 
 ## Precheck [/financing/v1/precheck]
 Precheck *application*
 
-Returns probability of *application's* approval and limits of particular customer, if known to mallpay
+Returns probability of *application's* approval and limits of particular customer, if known to Skip Pay
 
 | Financing type     | Supported |
 | ---                | ---       |
 | `DEFERRED_PAYMENT` | YES       |
 | `PAY_IN_THREE`     | YES       |
 
-It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call mallpay API - **NEVER put access token directly to client side**.
+It has to be called with valid access token (see the [Security section](#reference/security)) from your server. If you plan to integrate it in client flow, you should implement REST endpoint bound to your shopping basket session, that will be used as a proxy to call Skip Pay API - **NEVER put access token directly to client side**.
 
 Possible error codes explanation:
 | Status code | Code                  | Explanation                                                                     |
@@ -989,7 +989,7 @@ Possible error codes explanation:
 | 422         | `PERSONAL_ID_INVALID` | PersonalId is not valid                                                         |
 
 ### Precheck [POST]
-Returns probability of *application's* approval and limits of particular customer, if known to mallpay
+Returns probability of *application's* approval and limits of particular customer, if known to Skip Pay
 
 + Request (application/json; charset=utf-8)
     + Attributes (PrecheckRequest)
@@ -1098,9 +1098,9 @@ Returns probability of *application's* approval and limits of particular custome
 
 
 # Group Merchantsite operations
-Services that should be developed and exposed by partner e-shops to allow mallpay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders*
+Services that should be developed and exposed by partner e-shops to allow Skip Pay asynchronously inform these partner e-shops about important changes regarding particular *applications* and *orders*
 
-> **ATTENTION:** This set of APIs is NOT exposed from mallpay. Instead, it should be developed by partner and accept calls specified below.
+> **ATTENTION:** This set of APIs is NOT exposed from Skip Pay. Instead, it should be developed by partner and accept calls specified below.
 
 ## Application notification [/financing/v1/{application.merchantUrls.notificationEndpoint}]
 We use this resource when there is need to let you know about important changes within particular *application*. Namely in following situations:
@@ -1110,7 +1110,7 @@ We use this resource when there is need to let you know about important changes 
 | `DEFERRED_PAYMENT` | YES       |
 | `PAY_IN_THREE`     | YES       |
 
-> IMPORTANT NOTE: This service should be developed and exposed by partner e-shops to allow mallpay to asynchronously inform these partners about important changes regarding particular applications.
+> IMPORTANT NOTE: This service should be developed and exposed by partner e-shops to allow Skip Pay to asynchronously inform these partners about important changes regarding particular applications.
 
 | Trigger                                                             | Corresponding Application.stateReason | Expected reaction                                                                        |
 | ---                                                                 | ---                                   | ---                                                                                      |
@@ -1290,17 +1290,17 @@ Financial amount with VAT rate.
 Financing application base information
 
 ### Properties
-+ `id`: `11200a0ee1` (string, required) - Unique identifier in mallpay
++ `id`: `11200a0ee1` (string, required) - Unique identifier in Skip Pay
 + `state` (enum, required) - Application state.
-    + `PROCESSING` - Application is being processed by mallpay
+    + `PROCESSING` - Application is being processed by Skip Pay
     + `READY` - Application was approved and is ready for financing
     + `REJECTED` - Application was rejected
     + `CANCELLED` - Application was cancelled by client, either before approval or after delivery
 + `stateReason`: `PROCESSING_REDIRECT_NEEDED` (enum, required) - Describes internal state of application, e.g. when state is PROCESSING - reason why application remains in processing state
-    + `PROCESSING_REDIRECT_NEEDED` - Redirect to mallpay is needed. Redirect user to `gatewayRedirectUrl`.
-    + `PROCESSING_PREAPPROVED` - Preliminary approval by mallpay.
-    + `PROCESSING_VALIDATION_IN_PROGRESS` - Currently being approved in mallpay. Check it later.
-    + `REJECTED` - Rejected by mallpay.
+    + `PROCESSING_REDIRECT_NEEDED` - Redirect to Skip Pay is needed. Redirect user to `gatewayRedirectUrl`.
+    + `PROCESSING_PREAPPROVED` - Preliminary approval by Skip Pay.
+    + `PROCESSING_VALIDATION_IN_PROGRESS` - Currently being approved in Skip Pay. Check it later.
+    + `REJECTED` - Rejected by Skip Pay.
     + `CANCELLED_NOT_PAID` - Cancelled before delivery.
     + `READY_TO_SHIP` - Financing approved, goods ready to be shipped to client.
     + `READY_SHIPPED` - Goods shipped to client.
@@ -1344,7 +1344,7 @@ Financing application request
 ## RecurrenceObject (object)
 
 ### Properties
-+ `id` (string, required) - Unique identifier in mallpay
++ `id` (string, required) - Unique identifier in Skip Pay
 + `state` (enum, required) - Recurrence state
     + `APPROVING` - Recurrence is waiting to be approved by user
     + `READY` - Recurrence is ready to be used
@@ -1381,10 +1381,10 @@ Customer data
 + `fullName`: `Ing. John Newborn, Csc.` (string, optional) - (max length 240) Customer full name, including academical degrees and salutation. Required only if `firstName` or `lastName` are empty.
 + `phone`: `+420123456789` (string, optional) - (max length 13) Phone number with country code (including leading `+`).
 + `type` (enum, required) - Customer type.
-    + `UNKNOWN` - Customer is uknown for mallpay.
-    + `FIRST_ORDER` - mallpay knows the customer. Customer has no paid orders.
-    + `FULL` -  mallpay knows the customer. Customer has at least one paid order.
-    + `BLOCKED` - mallpay knows the customer. Customer is blocked.
+    + `UNKNOWN` - Customer is uknown for Skip Pay.
+    + `FIRST_ORDER` - Skip Pay knows the customer. Customer has no paid orders.
+    + `FULL` -  Skip Pay knows the customer. Customer has at least one paid order.
+    + `BLOCKED` - Skip Pay knows the customer. Customer is blocked.
 
 
 ## CustomerExtraData (object)
@@ -1424,7 +1424,7 @@ Specification of the reason why the application is cancelled.
     + `APPLICATION_CANCELLED_CART_CONTENT_CHANGED` - Cart content changed or customer returned from the cart
     + `APPLICATION_CANCELLED_BY_CUSTOMER` - Customer cancelled order (in his profile or through customer center)
     + `APPLICATION_CANCELLED_BY_ERP` - Cancelled by e-shop's back-office process (e.g. some items unavailable)
-    + `APPLICATION_CANCELLED_EXPIRED` - Application expired (too long waiting time for response from mallpay)
+    + `APPLICATION_CANCELLED_EXPIRED` - Application expired (too long waiting time for response from Skip Pay)
     + `APPLICATION_CANCELLED_UNFINISHED` - Customer did not finish order
     + `APPLICATION_CANCELLED_BY_ESHOP_RULES` - Internal e-shop rules breached (e.g. problem with customer's additional data)
     + `APPLICATION_CANCELLED_OTHER` - Other reason - specified in `customReason`
@@ -1443,7 +1443,7 @@ Object used to mark order items as returned.
 
 ### Properties
 + `document` (DocumentRequest, optional) - Attached document (credit note, ...)
-+ `variableSymbol`: `1234567890` (string, optional) - (max length 10)  Variable symbol of the new document (credit note, ...). This symbols is used by mallpay to pair payment from e-shop.
++ `variableSymbol`: `1234567890` (string, optional) - (max length 10)  Variable symbol of the new document (credit note, ...). This symbols is used by Skip Pay to pair payment from e-shop.
 
 ## OrderItemsSendRequest (OrderItemsChangeRequest)
 Object used to mark order items as sent.
@@ -1484,7 +1484,7 @@ Order information, needed to create an application.
 
    Date and time until order is reserved.
 
-   Until 'reservationDate' mallpay will try to notify partner with Application notification about approval or rejection.
+   Until 'reservationDate' Skip Pay will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 
@@ -1534,7 +1534,7 @@ Order with additional information about Application.
 
    Date and time until order is reserved.
 
-   Until 'reservationDate' mallpay will try to notify partner with Application notification about approval or rejection.
+   Until 'reservationDate' Skip Pay will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 
@@ -1704,11 +1704,11 @@ Payment information
 
 ## MerchantUrls (object)
 Collection of URLs used for redirection of a customer back to a partner website or as a notification endpoint.
-Services that should be developed and exposed by partner e-shops to allow mallpay to asynchronously inform these partners about important changes regarding particular applications and orders.
+Services that should be developed and exposed by partner e-shops to allow Skip Pay to asynchronously inform these partners about important changes regarding particular applications and orders.
 
 ### Properties
-+ `approvedRedirect`: `http://www.yourEshop.com/paymentApproved.html` (string, required) - (max length 512) URL of the partner used for redirection of the customer back to partner website (from mallpay gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
-+ `rejectedRedirect`: `http://www.yourEshop.com/paymentRejected.html` (string, required) - (max length 512) URL of the partner used for redirection of the customer back to partner website (from mallpay gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
++ `approvedRedirect`: `http://www.yourEshop.com/paymentApproved.html` (string, required) - (max length 512) URL of the partner used for redirection of the customer back to partner website (from Skip Pay gateway) after application approval. Do not implement any business logic on accessing this URL by customer. Implement business logic to READY notification via `notificationEndpoint`.
++ `rejectedRedirect`: `http://www.yourEshop.com/paymentRejected.html` (string, required) - (max length 512) URL of the partner used for redirection of the customer back to partner website (from Skip Pay gateway) after application rejection.  Do not implement any business logic on accessing this URL by customer. Implement business logic to REJECTED notification via `notificationEndpoint`.
 + `notificationEndpoint`: `http://www.yourEshop.com/notifications` (string, required) - (max length 512) URL of the partner used as a notification endpoint for obtaining important updates about application (approval, rejection, storno, etc.).
 + `paymentsEndpoint`: `http://www.yourEshop.com/paymentNotification` (string, optional) - (max length 512) URL of the partner used as a notification endpoint for obtaining information about payments connected with application.
 
@@ -1810,7 +1810,7 @@ Order information for precheck validation
 
    Date and time until order is reserved.
 
-   Until 'reservationDate' mallpay will try to notify partner with Application notification about approval or rejection.
+   Until 'reservationDate' Skip Pay will try to notify partner with Application notification about approval or rejection.
 
    After this date and time, e-shop does not guarantee items availability (if application processing is longer, it may endanger order fullfillment).
 + `items` (array[PrecheckOrderItemRequest], optional) - Order items
@@ -1823,7 +1823,7 @@ Precheck result.
 + `type` (enum, required) - Precheck result type for Funding type.
     + `DEFERRED_PAYMENT` - Pay later ("zaplať později")
     + `PAY_IN_THREE` - Pay in three ("třetinka")
-+ `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the mallpay.
++ `recommendation` (boolean, required) - A recommendation of whether the order should be passed to the Skip Pay.
     true = Application is going to be likely approved.
     false = Application is going to be likely rejected.
 + `probabilityOfApproval` (number, required) - Probability of approval.
@@ -1840,17 +1840,17 @@ Precheck result.
     + `ADDITIONAL_DATA_LIMIT` - The customer has insufficient limit and will be asked to send additional data to increase limit.
     + `INSUFFICIENT_LIMIT` - The customer has insufficient limit and there is no way to increase it.
     + `INSUFFICIENT_LIMIT_OPPORTUNITY` - The customer has insufficient limit and can increase it by paying previous not paid orders.
-    + `DETAILS_NOT_MATCHING` - We know the customer, but his personal details does not match with details in his mallpay account. Customer will be asked for correcting not matching details.
+    + `DETAILS_NOT_MATCHING` - We know the customer, but his personal details does not match with details in his Skip Pay account. Customer will be asked for correcting not matching details.
     + `MANUAL_VERIFICATION` - The validators cannot determine the result - manual checking is required.
 + `customerType` (enum, required) - Customer type.
-    + `UNKNOWN` - Customer is uknown for mallpay.
-    + `FIRST_ORDER` - mallpay knows the customer. Customer has no paid orders.
-    + `FULL` -  mallpay knows the customer. Customer has at least one paid order.
-    + `BLOCKED` - mallpay knows the customer. Customer is blocked.
+    + `UNKNOWN` - Customer is uknown for Skip Pay.
+    + `FIRST_ORDER` - Skip Pay knows the customer. Customer has no paid orders.
+    + `FULL` -  Skip Pay knows the customer. Customer has at least one paid order.
+    + `BLOCKED` - Skip Pay knows the customer. Customer is blocked.
 + `message` (string, optional) - Custom message for customer.
     Examples:
-    “V mallpay peněžence nemáte dostatečný limit.”
-    “Uveďte do objednávky jméno a příjmení, které používáte ve službě mallpay.”
+    “V Skip Pay peněžence nemáte dostatečný limit.”
+    “Uveďte do objednávky jméno a příjmení, které používáte ve službě Skip Pay.”
     etc.
 + `additionalData` (array[string], optional) - List of additional data that customer has to send.
     Possible values in array: `PERSONAL_ID`, `ID_CARD_NO`, `ID_CARD_EXPIRY_DATE`, `ID_CARD_SCAN`, `THIRD_PARTY_TELCO_CONSENT`.
@@ -1888,4 +1888,4 @@ Precheck results.
 Health check response
 
 ### Properties
-+ `projectVersion`: `mallpay 2.40.0` (string, optional) - Version of the project
++ `projectVersion`: `Skip Pay 2.40.0` (string, optional) - Version of the project
