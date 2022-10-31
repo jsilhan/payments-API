@@ -43,7 +43,7 @@ For making other orders (without customer's authorization) call `/financing/v1/r
 
 [![Sequence diagram of recurrences](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramRecurrences.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramRecurrences.png)
 
-Of course you can use recurrence ID multiple times but it has some limitations. First of all, check if the recurrence is approved by the customer. Another reasons to reject your request are insufficient limit, the first order is too old (more than 13 months) or the first order is cancelled (by you or us).
+Of course you can use recurrence ID multiple times but it has some limitations. First of all, check if the recurrence is ready to be used (must be authorized by the customer and the first order must be approved). Another reasons to reject your request are insufficient limit, the recurrence was not used for more than 13 months or the first order (or just the recurrence itself) is cancelled (by you or us).
 
 You can check the recurrence state anytime on `/financing/v1/recurrences/{id}`.
 
@@ -52,12 +52,12 @@ Applications have their own state and substates that can be managed by Skip Pay 
 
 Existing states are listed below:
 
-| Application state | Description                                                                                             |
-| ---               | ---                                                                                                     |
-| `PROCESSING`      | Application is being processed by Skip Pay                                                              |
-| `READY`           | Application was approved and is ready for financing                                                     |
-| `REJECTED`        | Application was rejected by Skip Pay system                                                             |
-| `CANCELLED`       | Application was cancelled by client or by Skip Pay, either before approval or after delivery            |
+| Application state | Recurrence allowed state(s)     | Description                                                                                  |
+| ---               | ---                             | ---                                                                                          |
+| `PROCESSING`      | `APPROVING`                     | Application is being processed by Skip Pay                                                   |
+| `READY`           | `READY`, `CANCELLED`, `EXPIRED` | Application was approved and is ready for financing                                          |
+| `REJECTED`        | `CANCELLED`                     | Application was rejected by Skip Pay system                                                  |
+| `CANCELLED`       | `CANCELLED`                     | Application was cancelled by client or by Skip Pay, either before approval or after delivery |
 
 Simplified diagram of possible transitions between states:
 
@@ -1344,12 +1344,12 @@ Financing application request
 ## RecurrenceObject (object)
 
 ### Properties
-+ `id` (string, required) - Unique identifier in Skip Pay
++ `id`: `abcd1234` (string, required) - Unique identifier in Skip Pay
 + `state` (enum, required) - Recurrence state
-    + `APPROVING` - Recurrence is waiting to be approved by user
+    + `APPROVING` - Recurrence is waiting to be approved by customer
     + `READY` - Recurrence is ready to be used
-    + `CANCELLED` - Recurrence was cancelled by you or us
-    + `EXPIRED` - Recurrence is too old
+    + `CANCELLED` - Recurrence was cancelled (by you or us) or the first order was rejected or cancelled
+    + `EXPIRED` - Recurrence was not used for more than 13 months
 
 ## CustomerBase (object)
 Customer data
