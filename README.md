@@ -1,4 +1,4 @@
-# mallpay payments API for partners
+# Skip Pay payments API for partners
 
 This is the API description for payments services for Czech e-shops integration.
 
