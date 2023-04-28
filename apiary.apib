@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://api.partner.mallpay.cz
+HOST: https://api.partner.skippay.cz
 
 # Skip Pay API for partners
 API documentation for Skip Pay partners.
@@ -29,7 +29,7 @@ The most basic and minimum way how to implement Skip Pay's payment is to at leas
 1. [Mark order items as sent](#reference/application-operations/mark-order-items-as-sent)  or [Mark order items as delivered](#reference/application-operations/mark-order-items-as-delivered) (depends when merchant invoices the order)
     - Skip Pay won't send money if the order (order items) is not marked as `SENT` / `DELIVERED`.
 
-[![Sequence diagram of minimum implementation](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramMinimum.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramMinimum.png)
+[![Sequence diagram of minimum implementation](https://github.com/skip-pay/payments-API/raw/master/images/SequenceDiagramMinimum.png)](https://github.com/skip-pay/payments-API/raw/master/images/SequenceDiagramMinimum.png)
 
 It's always needed to send all attributes marked as required, but filling optional parameters will result in better application approval rate. You should always consider to fill the most attributes as possible. Contact the sales support to find out which attributes correlate with approval rate the most.
 
@@ -41,7 +41,7 @@ It behaves almost the same as the previous application flow. You need to create 
 
 For making other orders (without customer's authorization) call `/financing/v1/recurrences/{id}/applications` endpoint with ID of recurrence. Skip Pay will automatically approve the application if all conditions are OK. The way to find out the result of the application is the same as for common applications (notification endpoint or application state).
 
-[![Sequence diagram of recurrences](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramRecurrences.png)](https://github.com/mall-pay/payments-API/raw/master/images/SequenceDiagramRecurrences.png)
+[![Sequence diagram of recurrences](https://github.com/skip-pay/payments-API/raw/master/images/SequenceDiagramRecurrences.png)](https://github.com/skip-pay/payments-API/raw/master/images/SequenceDiagramRecurrences.png)
 
 Of course you can use recurrence ID multiple times but it has some limitations. First of all, check if the recurrence is ready to be used (must be authorized by the customer and the first order must be approved). Another reasons to reject your request are insufficient limit, the recurrence was not used for more than 13 months or the first order (or just the recurrence itself) is cancelled (by you or us).
 
@@ -61,7 +61,7 @@ Existing states are listed below:
 
 Simplified diagram of possible transitions between states:
 
-[![States diagram of Application](https://github.com/mall-pay/payments-API/raw/master/images/StatesDiagram.png)](https://github.com/mall-pay/payments-API/raw/master/images/StatesDiagram.png)
+[![States diagram of Application](https://github.com/skip-pay/payments-API/raw/master/images/StatesDiagram.png)](https://github.com/skip-pay/payments-API/raw/master/images/StatesDiagram.png)
 
 Merchant can obtain current application state anytime with [Get application detail](#reference/application-operations/application-detail/get-application-detail) operation.
 Skip Pay proactively notify merchant about important state and substate changes - merchant is able to handle [Application notification](#reference/merchantsite-operations/application-notification/application-notification).
@@ -90,7 +90,7 @@ Skip Pay proactively notify merchant about important state and substate changes 
 
 Example request:
 ```
-curl -X GET https://api.partner.mallpay.cz/financing/v1/examples?sort=category&limit=10&after=15
+curl -X GET https://api.partner.skippay.cz/financing/v1/examples?sort=category&limit=10&after=15
 ```
 
 Example response pagingInfo:
@@ -279,7 +279,7 @@ To access our API, you have to obtain *access token* first; this token is a stri
 So the real example using curl will look like:
 
 ```
-curl -H "Authorization: Bearer secret_token" https://api.partner.mallpay.cz/financing/v1/applications
+curl -H "Authorization: Bearer secret_token" https://api.partner.skippay.cz/financing/v1/applications
 ```
 
 - access token has limited time validity (for 2 hours). After it is expired, you have to obtain new one using `/authentication/v1/partner` resource.
